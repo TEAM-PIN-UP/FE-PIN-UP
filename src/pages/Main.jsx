@@ -1,5 +1,8 @@
 import React from 'react';
+import NaverMap from '../components/Map/NaverMap'
 
 export default function Main() {
-  return <div>Main</div>;
+  return <div>
+    <NaverMap/>
+  </div>;
 }

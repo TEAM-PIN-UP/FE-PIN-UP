@@ -39,11 +39,6 @@ const router = createBrowserRouter([
       { path: 'friend', element: <Friend /> },
       { path: 'profile', element: <Profile /> },    ],
   },
-  {
-    path: '/place',
-    element: <NaverMap />,
-    errorElement: <NotFound />,
-  },
 ]);
 
 function App() {
