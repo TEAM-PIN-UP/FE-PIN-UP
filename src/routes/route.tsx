@@ -5,6 +5,7 @@ import MapPage from "../page/Map";
 import UploadPage from "../page/Upload";
 import BookmarkPage from "../page/Bookmark";
 import ContentsPage from "../page/Contents";
+import ProfilePage from "../page/Profile";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "/contents",
         element: <ContentsPage />,
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage />,
       },
     ],
   },
