@@ -1,11 +1,18 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { B2 } from "../style/font";
 
 interface SearchInputProps {
+  type?: string;
   onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({ onChange }) => {
+const SearchInput: React.FC<SearchInputProps> = ({
+  type = "text",
+  onChange,
+  placeholder,
+}) => {
   const [searchValue, setSearchValue] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,15 +22,16 @@ const SearchInput: React.FC<SearchInputProps> = ({ onChange }) => {
 
   return (
     <StyledInput
-      type="text"
+      type={type}
       value={searchValue}
       onChange={handleChange}
-      placeholder="장소/가게 검색하기"
+      placeholder={placeholder}
     />
   );
 };
 
 const StyledInput = styled.input`
+  ${B2}
   background-color: var(--neutral_50);
   border: none;
   border-radius: var(--radius_24);

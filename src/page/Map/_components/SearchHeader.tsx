@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import Chip from "../../../components/Chip";
-import SearchInput from "./SearchInput";
+import SearchInput from "../../../components/SearchBar";
 
-const SearchHeader = React.forwardRef<HTMLDivElement, object>((props, ref) => {
+const SearchHeader = React.forwardRef<HTMLDivElement, object>((_, ref) => {
   return (
     <HeaderDiv ref={ref}>
       <SearchContainer>
-        <SearchInput />
+        <SearchInput placeholder="장소/가게 검색하기" />
       </SearchContainer>
 
       <ChipContainer>

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { H6 } from "../style/font";
 
 interface ChipProps {
   selected?: boolean;
@@ -15,6 +16,7 @@ const Chip: React.FC<ChipProps> = ({ selected = false, onClick, children }) => {
 };
 
 const StButton = styled.button<{ selected: boolean }>`
+  ${H6}
   background-color: ${({ selected }) =>
     selected ? "var(--neutral_800)" : "var(--neutral_50)"};
   border-radius: var(--radius_24);
