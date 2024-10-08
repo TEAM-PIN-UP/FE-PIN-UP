@@ -7,8 +7,8 @@ import NavBar from "./components/NavBar";
 function App(): React.JSX.Element {
   return (
     <>
-      <NavBar />
       <Outlet />
+      <NavBar />
     </>
   );
 }

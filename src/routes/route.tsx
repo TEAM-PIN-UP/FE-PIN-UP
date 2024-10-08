@@ -2,6 +2,9 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import LandingPage from "../page/Landing";
 import MapPage from "../page/Map";
+import UploadPage from "../page/Upload";
+import BookmarkPage from "../page/Bookmark";
+import ContentsPage from "../page/Contents";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +18,18 @@ const router = createBrowserRouter([
       {
         path: "/map",
         element: <MapPage />,
+      },
+      {
+        path: "/upload",
+        element: <UploadPage />,
+      },
+      {
+        path: "/bookmark",
+        element: <BookmarkPage />,
+      },
+      {
+        path: "/contents",
+        element: <ContentsPage />,
       },
     ],
   },
