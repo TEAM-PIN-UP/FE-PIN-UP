@@ -31,7 +31,7 @@ const GlobalStyle = createGlobalStyle`
         --radius_16 : 16px;
         --radius_20 : 20px;
         --radius_24 : 24px;
-        --radius_circle: 50%;
+        --radius_circle: 9999px;
         
         --spacing_4 : 4px;
         --spacing_6 : 6px;
