@@ -32,6 +32,9 @@ const ContentContainer = styled.div`
 `;
 
 const NavBarContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: auto;
   width: 100%;
   z-index: 9999999;

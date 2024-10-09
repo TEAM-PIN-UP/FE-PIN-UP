@@ -25,7 +25,7 @@ const StButton = styled.button<{ selected: boolean }>`
   ${H6}
   background-color: ${({ selected }) =>
     selected ? "var(--neutral_800)" : "var(--neutral_50)"};
-  border-radius: var(--radius_24);
+  border-radius: var(--radius_circle);
   color: ${({ selected }) =>
     selected ? "var(--white)" : "var(--neutral_800)"};
   gap: var(--spacing_4);

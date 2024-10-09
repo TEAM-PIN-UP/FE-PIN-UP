@@ -71,8 +71,7 @@ const PinMarker = forwardRef<naver.maps.Marker, PinMarkerProps>(
     const icon = {
       content: htmlContent,
       size: new naver.maps.Size(pinWidth, pinHeight),
-      origin: new naver.maps.Point(0, 0),
-      anchor: new naver.maps.Point(pinWidth / 2, pinHeight / 2),
+      anchor: new naver.maps.Point(pinWidth / 2, pinHeight),
     };
 
     return (
