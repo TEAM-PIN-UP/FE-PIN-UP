@@ -1,33 +1,19 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { B2 } from "../style/font";
 
-interface SearchInputProps {
-  type?: string;
+interface SearchBarProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({
-  type = "text",
-  onChange,
-  placeholder,
-}) => {
+const SearchBar: React.FC<SearchBarProps> = ({ onChange, ...rest }) => {
   const [searchValue, setSearchValue] = useState("");
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
     if (onChange) onChange(e);
   };
 
-  return (
-    <StyledInput
-      type={type}
-      value={searchValue}
-      onChange={handleChange}
-      placeholder={placeholder}
-    />
-  );
+  return <StyledInput value={searchValue} onChange={handleChange} {...rest} />;
 };
 
 const StyledInput = styled.input`
@@ -46,4 +32,4 @@ const StyledInput = styled.input`
   }
 `;
 
-export default SearchInput;
+export default SearchBar;

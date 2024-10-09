@@ -1,13 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import Chip from "../../../components/Chip";
-import SearchInput from "../../../components/SearchBar";
+import SearchBar from "../../../components/SearchBar";
+import { H6 } from "../../../style/font";
 
 const SearchHeader = React.forwardRef<HTMLDivElement, object>((_, ref) => {
   return (
     <HeaderDiv ref={ref}>
       <SearchContainer>
-        <SearchInput placeholder="장소/가게 검색하기" />
+        <SearchBar placeholder="장소/가게 검색하기" />
       </SearchContainer>
 
       <ChipContainer>
@@ -41,6 +42,7 @@ const ChipContainer = styled.div`
 `;
 
 const Sort = styled.button`
+  ${H6}
   align-items: center;
   background: transparent;
   border: none;
