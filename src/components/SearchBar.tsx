@@ -20,7 +20,7 @@ const StyledInput = styled.input`
   ${B2}
   background-color: var(--neutral_50);
   border: none;
-  border-radius: var(--radius_24);
+  border-radius: var(--radius_circle);
   color: var(--black);
   flex: 1;
   font-size: 16px;
