@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Sheet } from "react-modal-sheet";
 import {
   Container as MapDiv,
@@ -20,28 +20,31 @@ const MapPage: React.FC = () => {
   const defaultCenter = new naverMaps.LatLng(35.1658, 126.9078);
   const defaultZoom = 18;
 
-  const onSuccessGeolocation = (position: GeolocationPosition) => {
-    if (!map || !user) return;
+  const onSuccessGeolocation = useCallback(
+    (position: GeolocationPosition) => {
+      if (!map || !user) return;
 
-    const location = new naverMaps.LatLng(
-      position.coords.latitude,
-      position.coords.longitude
-    );
-    const exampleLocation = new naverMaps.LatLng(
-      position.coords.latitude + 0.0005,
-      position.coords.longitude + 0.0005
-    );
-    map.setCenter(location);
-    map.setZoom(defaultZoom);
-    user.setPosition(location);
-    pin?.setPosition(exampleLocation);
-    console.log("Coordinates: " + location.toString());
-  };
+      const location = new naverMaps.LatLng(
+        position.coords.latitude,
+        position.coords.longitude
+      );
+      const exampleLocation = new naverMaps.LatLng(
+        position.coords.latitude + 0.0005,
+        position.coords.longitude + 0.0005
+      );
+      map.setCenter(location);
+      map.setZoom(defaultZoom);
+      user.setPosition(location);
+      pin?.setPosition(exampleLocation);
+      console.log("Coordinates: " + location.toString());
+    },
+    [map, user, pin, naverMaps, defaultZoom]
+  );
 
-  const onErrorGeolocation = () => {
+  const onErrorGeolocation = useCallback(() => {
     if (!map || !user) return;
     console.error("Geolocation error.");
-  };
+  }, [map, user]);
 
   useEffect(() => {
     if (!map) return;
@@ -50,7 +53,7 @@ const MapPage: React.FC = () => {
         onSuccessGeolocation,
         onErrorGeolocation
       );
-  }, [map]);
+  }, [map, onErrorGeolocation, onSuccessGeolocation]);
 
   // Bottom sheet settings and refs
   const [snapPoints, setSnapPoints] = useState([0.9, 0.5, 0.2]);
