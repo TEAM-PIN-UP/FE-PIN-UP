@@ -105,6 +105,7 @@ const MapPage: React.FC = () => {
             <PinMarker
               image="pin_exampleimg.jpg"
               count="3"
+              name="딤딤섬123"
               ref={setPin}
               defaultPosition={new naverMaps.LatLng(35.1665, 126.9085)}
             />
