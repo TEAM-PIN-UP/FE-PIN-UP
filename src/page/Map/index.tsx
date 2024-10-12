@@ -103,7 +103,7 @@ const MapPage: React.FC = () => {
           >
             <UserPositionMarker ref={setUser} />
             <PinMarker
-              image="pin_exampleimg.jpg"
+              image="https://picsum.photos/200"
               count="3"
               name="딤딤섬123"
               ref={setPin}
