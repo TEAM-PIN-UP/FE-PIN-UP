@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { H6 } from "../style/font";
+
+import { H6 } from "@/style/font";
 
 interface ChipProps extends React.HtmlHTMLAttributes<HTMLButtonElement> {
   selected?: boolean;

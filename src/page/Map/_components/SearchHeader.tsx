@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import Chip from "../../../components/Chip";
-import SearchBar from "../../../components/SearchBar";
-import { H6 } from "../../../style/font";
+
+import Chip from "@/components/Chip";
+import SearchBar from "@/components/SearchBar";
+import { H6 } from "@/style/font";
 
 const SearchHeader = React.forwardRef<HTMLDivElement, object>((_, ref) => {
   return (

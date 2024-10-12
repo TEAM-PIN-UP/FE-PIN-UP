@@ -1,11 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "../App";
-import LandingPage from "../page/Landing";
-import MapPage from "../page/Map";
-import UploadPage from "../page/Upload";
-import BookmarkPage from "../page/Bookmark";
-import ContentsPage from "../page/Contents";
-import ProfilePage from "../page/Profile";
+
+import App from "@/App";
+import BookmarkPage from "@/page/Bookmark";
+import ContentsPage from "@/page/Contents";
+import LandingPage from "@/page/Landing";
+import MapPage from "@/page/Map";
+import ProfilePage from "@/page/Profile";
+import UploadPage from "@/page/Upload";
 
 const router = createBrowserRouter([
   {
