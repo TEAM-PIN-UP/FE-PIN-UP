@@ -85,7 +85,7 @@ const MapPage: React.FC = () => {
           (sheetHeaderHeight + searchHeaderHeight + navbarHeight) /
           screenHeight;
 
-        setSnapPoints([0.9, 0.5, snapPointValue]);
+        setSnapPoints((prev) => [prev[0], prev[1], snapPointValue]);
       }
     }, 0);
 
