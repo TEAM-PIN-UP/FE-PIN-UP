@@ -13,6 +13,8 @@ const ActivePinMarker = forwardRef<naver.maps.Marker, ActivePinMarkerProps>(
   ({ image, count, name, ...rest }, ref) => {
     const pinWidth = 36;
     const pinHeight = 44;
+    const totalWidth = 48;
+    const totalHeight = pinHeight + 25;
     const circleRadius = 28;
     const circleTopOffset = 13;
 
@@ -96,7 +98,7 @@ const ActivePinMarker = forwardRef<naver.maps.Marker, ActivePinMarkerProps>(
         padding: 2.5px 7.5px;
         text-overflow: ellipsis;
         white-space: nowrap;
-        width: 48px;
+        width: ${totalWidth}px;
       ">
         ${name.length > 3 ? `${name.slice(0, 3)}..` : name}
       </div>
@@ -105,8 +107,8 @@ const ActivePinMarker = forwardRef<naver.maps.Marker, ActivePinMarkerProps>(
 
     const icon = {
       content: htmlContent,
-      size: new naver.maps.Size(pinWidth, pinHeight),
-      anchor: new naver.maps.Point(pinWidth / 2, pinHeight),
+      size: new naver.maps.Size(totalWidth, totalHeight),
+      anchor: new naver.maps.Point(totalWidth / 2, pinHeight),
     };
 
     return <Marker icon={icon} ref={ref} {...rest} />;

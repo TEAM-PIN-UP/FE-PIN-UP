@@ -47,7 +47,6 @@ const MapPage: React.FC = () => {
               count="3"
               name="딤딤섬123"
               ref={setPin}
-              defaultPosition={new naverMaps.LatLng(35.1665, 126.9085)}
             />
             <InactivePinMarker type="cafe" name="딤딤섬123" ref={setPin2} />
             <InactivePinMarker type="food" name="딤딤섬123" ref={setPin3} />

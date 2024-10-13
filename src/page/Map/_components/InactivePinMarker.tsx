@@ -13,6 +13,8 @@ const InactivePinMarker = forwardRef<naver.maps.Marker, InactivePinMarkerProps>(
   ({ type, name, ...rest }, ref) => {
     const pinWidth = 28;
     const pinHeight = 28;
+    const totalWidth = 48;
+    const totalHeight = pinHeight + 25;
     const roundIcon = type === "cafe" ? RoundCafe : RoundFood;
 
     const htmlContent = `
@@ -46,7 +48,7 @@ const InactivePinMarker = forwardRef<naver.maps.Marker, InactivePinMarkerProps>(
         overflow: hidden;
         padding: 2.5px 7.5px;
         text-overflow: ellipsis;
-        width: 48px;
+        width: ${totalWidth}px;
         white-space: nowrap;
       ">
         ${name.length > 3 ? `${name.slice(0, 3)}..` : name}
@@ -56,8 +58,9 @@ const InactivePinMarker = forwardRef<naver.maps.Marker, InactivePinMarkerProps>(
 
     const icon = {
       content: htmlContent,
-      size: new naver.maps.Size(pinWidth, pinHeight),
-      anchor: new naver.maps.Point(pinWidth / 2, pinHeight),
+      size: new naver.maps.Size(totalWidth, totalHeight),
+      // Anchor should be set to center of circle icon
+      anchor: new naver.maps.Point(totalWidth / 2, pinHeight / 2),
     };
 
     return <Marker icon={icon} ref={ref} {...rest} />;
