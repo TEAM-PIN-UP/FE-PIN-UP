@@ -62,7 +62,7 @@ const MapPage: React.FC = () => {
             <Sheet.Container>
               <Sheet.Header ref={sheetHeaderRef} />
               <SearchHeader ref={searchHeaderRef} />
-              <Sheet.Content></Sheet.Content>
+              <Sheet.Content disableDrag={true}></Sheet.Content>
             </Sheet.Container>
           </Sheet>
         </StMapDiv>
