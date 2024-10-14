@@ -17,7 +17,7 @@ const useBottomSheetSnapPoints = () => {
       ) {
         // Get navbar height
         const screenHeight = window.innerHeight;
-        const attachHeight = attachRef.current.offsetHeight;
+        const attachHeight = attachRef.current.offsetHeight; // Height of the component the modal sheet is attached to
         const navbarHeight = screenHeight - attachHeight;
 
         // Get sheet header & search header height
@@ -25,11 +25,12 @@ const useBottomSheetSnapPoints = () => {
         const searchHeaderHeight = searchHeaderRef.current.offsetHeight;
 
         // Calculate bottom snap position
-        const snapPointValue =
+        const topSnap = (screenHeight - 28) / screenHeight;
+        const bottomSnap =
           (sheetHeaderHeight + searchHeaderHeight + navbarHeight) /
           screenHeight;
 
-        setSnapPoints((prev) => [prev[0], prev[1], snapPointValue]);
+        setSnapPoints((prev) => [topSnap, prev[1], bottomSnap]);
       }
     }, 0);
 
