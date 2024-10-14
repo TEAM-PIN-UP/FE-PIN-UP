@@ -52,7 +52,7 @@ const MapPage: React.FC = () => {
             <InactivePinMarker type="food" name="딤딤섬123" ref={setPin3} />
           </NaverMap>
 
-          <Sheet
+          <StSheet
             isOpen={true}
             onClose={() => {}}
             snapPoints={snapPoints}
@@ -64,7 +64,7 @@ const MapPage: React.FC = () => {
               <SearchHeader ref={searchHeaderRef} />
               <Sheet.Content disableDrag={true}></Sheet.Content>
             </Sheet.Container>
-          </Sheet>
+          </StSheet>
         </StMapDiv>
       </NavermapsProvider>
     </StDiv>
@@ -72,7 +72,6 @@ const MapPage: React.FC = () => {
 };
 
 const StDiv = styled.div`
-  flex-grow: 1;
   width: 100vw;
   height: 100%;
 `;
@@ -81,6 +80,10 @@ const StMapDiv = styled(MapDiv)`
   flex-grow: 1;
   width: 100vw;
   height: 100%;
+`;
+
+const StSheet = styled(Sheet)`
+  width: 100vw;
 `;
 
 export default MapPage;
