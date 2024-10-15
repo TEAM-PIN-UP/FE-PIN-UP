@@ -101,7 +101,7 @@ const MapPage: React.FC = () => {
             <Sheet.Container>
               <Sheet.Header ref={sheetHeaderRef} />
               <SearchHeader ref={searchHeaderRef} />
-              <StyledSheetContent disableDrag={true}>
+              <StSheetContent disableDrag={true}>
                 {DummyData.map((item, index) => (
                   <Restaurant
                     key={index}
@@ -110,7 +110,7 @@ const MapPage: React.FC = () => {
                     defaultImgUrl={item.defaultImgUrl}
                   />
                 ))}
-              </StyledSheetContent>
+              </StSheetContent>
             </Sheet.Container>
           </StSheet>
         </StMapDiv>
@@ -133,8 +133,8 @@ const StMapDiv = styled(MapDiv)`
 const StSheet = styled(Sheet)`
   width: 100vw;
 `;
-        
-const StyledSheetContent = styled(Sheet.Content)`
+
+const StSheetContent = styled(Sheet.Content)`
   overflow-y: auto;
   &::-webkit-scrollbar {
     display: none;

@@ -20,23 +20,23 @@ const ImageSwiper: React.FC<ImageSwiperProps> = ({defaultImgUrl}) => {
       grabCursor={true}
     >
       {images.map((image, index) => (
-        <StyledSwiperSlide key={index}>
-          <StyledImage 
+        <StSwiperSlide key={index}>
+          <StImage 
             src={image} 
             alt={`Slide ${index + 1}`} 
           />
-        </StyledSwiperSlide>
+        </StSwiperSlide>
       ))}
     </BasicSwiper>
   );
 };
 
-const StyledSwiperSlide = styled(SwiperSlide)`
+const StSwiperSlide = styled(SwiperSlide)`
   width: 120px !important;
   height: 120px;
 `;
 
-const StyledImage = styled.img`
+const StImage = styled.img`
   display: block;
   width: 100%;
   height: 100%;

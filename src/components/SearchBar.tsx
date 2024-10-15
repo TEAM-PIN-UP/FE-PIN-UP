@@ -51,11 +51,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ onChange, ...rest }) => {
   const showClearIcon = inputValue.length > 0;
 
   return (
-    <SearchBarContainer>
-      <IconWrapper>
+    <StSearchBarContainer>
+      <StIconWrapper>
         <img src={icon} alt="Search icon" />
-      </IconWrapper>
-      <StyledInput
+      </StIconWrapper>
+      <StInput
         ref={inputRef}
         value={inputValue}
         onChange={handleChange}
@@ -64,15 +64,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ onChange, ...rest }) => {
         {...rest}
       />
       {showClearIcon && (
-        <ClearIconWrapper onClick={handleClear}>
+        <StClear onClick={handleClear}>
           <img src={xCircle} alt="Clear search" />
-        </ClearIconWrapper>
+        </StClear>
       )}
-    </SearchBarContainer>
+    </StSearchBarContainer>
   );
 };
 
-const SearchBarContainer = styled.div`
+const StSearchBarContainer = styled.div`
   display: flex;
   align-items: center;
   background-color: var(--neutral_50);
@@ -81,12 +81,12 @@ const SearchBarContainer = styled.div`
   width: 100%;
 `;
 
-const IconWrapper = styled.div`
+const StIconWrapper = styled.div`
   display: flex;
   padding-right: var(--spacing_12);
 `;
 
-const StyledInput = styled.input`
+const StInput = styled.input`
   ${B2}
   background-color: transparent;
   border: none;
@@ -101,7 +101,7 @@ const StyledInput = styled.input`
   }
 `;
 
-const ClearIconWrapper = styled.div`
+const StClear = styled.div`
   display: flex;
   cursor: pointer;
   padding: var(--spacing_10) var(--spacing_12);
