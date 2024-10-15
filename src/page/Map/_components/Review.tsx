@@ -35,6 +35,18 @@ const Review = () => {
   return (
     <div>
       <p>리뷰 3</p>
+      {dummy.map((value, index) => {
+        return (
+          <ReviewSingle
+            key={index}
+            name={value.name}
+            score={value.score}
+            profileImg={value.profileImg}
+            date={value.date}
+            comment={value.comment}
+          />
+        );
+      })}
     </div>
   );
 };
