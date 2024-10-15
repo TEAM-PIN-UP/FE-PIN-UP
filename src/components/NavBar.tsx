@@ -66,7 +66,9 @@ const NavBar: React.FC = () => {
       <img
         src={profile}
         className="profile"
-        onClick={() => navigate("/profile")}
+        onClick={() => {
+          if (path !== "profile") navigate("/profile");
+        }}
       />
     </StNavBar>
   );
