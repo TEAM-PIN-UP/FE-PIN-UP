@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import Chip from "@/components/Chip";
 import SearchBar from "@/components/SearchBar";
+import ChevronDown from "@/image/icons/chevronDown.svg";
 import { H6 } from "@/style/font";
 
 const SearchHeader = React.forwardRef<HTMLDivElement, object>((_, ref) => {
@@ -17,7 +18,9 @@ const SearchHeader = React.forwardRef<HTMLDivElement, object>((_, ref) => {
         <Chip>음식점</Chip>
         <Chip>카페</Chip>
 
-        <Sort>가까운 순</Sort>
+        <Sort>
+          <span>가까운 순</span> <img src={ChevronDown} />
+        </Sort>
       </ChipContainer>
     </HeaderDiv>
   );
@@ -49,8 +52,9 @@ const Sort = styled.button`
   border: none;
   border-radius: var(--radius_12);
   color: var(--neutral_800);
-  display: flex;
   cursor: pointer;
+  display: flex;
+  gap: var(--spacing_4);
   padding: var(--spacing_4);
   margin-left: auto;
 `;
