@@ -3,27 +3,20 @@ import styled from 'styled-components';
 import BasicSwiper from '@/components/BasicSwiper';
 import { SwiperSlide } from 'swiper/react';
 
-const StyledSwiperSlide = styled(SwiperSlide)`
-  width: 120px !important;
-  height: 120px;
-`;
+interface ImageSwiperProps {
+  defaultImgUrl: string;
+}
 
-const StyledImage = styled.img`
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: var(--radius_12);
-  opacity: 1;
-`;
-
-const ImageSwiper: React.FC = () => {
-  const images = Array(5).fill('/swiper_exampleimg.jpg');
+const ImageSwiper: React.FC<ImageSwiperProps> = ({defaultImgUrl}) => {
+  const images = [
+    defaultImgUrl,
+    ...Array(4).fill('/swiper_exampleimg.jpg')
+  ];
 
   return (
     <BasicSwiper
       spaceBetween={8}
-      slidesPerView={5}
+      slidesPerView={3}
       grabCursor={true}
     >
       {images.map((image, index) => (
@@ -37,5 +30,19 @@ const ImageSwiper: React.FC = () => {
     </BasicSwiper>
   );
 };
+
+const StyledSwiperSlide = styled(SwiperSlide)`
+  width: 120px !important;
+  height: 120px;
+`;
+
+const StyledImage = styled.img`
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius_12);
+  opacity: 1;
+`;
 
 export default ImageSwiper;
