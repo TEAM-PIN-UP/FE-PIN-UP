@@ -10,8 +10,8 @@ import styled from "styled-components";
 
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useMapSetup from "@/hooks/useMapSetup";
-import InactivePinMarker from "@/page/Map/_components/InactivePinMarker";
 import ActivePinMarker from "./_components/ActivePinMarker";
+import InactivePinMarker from "./_components/InactivePinMarker";
 import SearchHeader from "./_components/SearchHeader";
 import UserPositionMarker from "./_components/UserPositionMarker";
 
