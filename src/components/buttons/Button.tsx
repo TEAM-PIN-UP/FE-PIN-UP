@@ -1,6 +1,7 @@
-import styled, { CSSProp } from "styled-components";
-import { H3, H4, H5 } from "../../style/font";
 import React, { useEffect, useState } from "react";
+import styled, { CSSProp } from "styled-components";
+
+import { H3, H4, H5 } from "@/style/font";
 
 interface buttonProps {
   size: "large" | "medium" | "small";

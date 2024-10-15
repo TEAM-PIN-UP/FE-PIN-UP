@@ -5,6 +5,8 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": { "@/*": ["src/*"] },
     "plugins": [
       {
         "name": "@styled/typescript-styled-plugin"

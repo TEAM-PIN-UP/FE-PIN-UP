@@ -1,15 +1,16 @@
-import styled from "styled-components";
-import mapPinActive from "../image/icons/mapPinActive26.svg";
-import mapPinInactive from "../image/icons/mapPinInactive26.svg";
-import bookMarkActive from "../image/icons/bookmarkActive.svg";
-import bookMarkInactive from "../image/icons/bookmarkInActive.svg";
-import uploadActive from "../image/icons/uploadActive.svg";
-import uploadInactive from "../image/icons/uploadInactive.svg";
-import contentsActive from "../image/icons/contentsActive.svg";
-import contentsInactive from "../image/icons/contentsInactive.svg";
-import profile from "../image/icons/profile.jpg";
-import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+
+import bookMarkActive from "@/image/icons/bookmarkActive.svg";
+import bookMarkInactive from "@/image/icons/bookmarkInActive.svg";
+import contentsActive from "@/image/icons/contentsActive.svg";
+import contentsInactive from "@/image/icons/contentsInactive.svg";
+import mapPinActive from "@/image/icons/mapPinActive26.svg";
+import mapPinInactive from "@/image/icons/mapPinInactive26.svg";
+import profile from "@/image/icons/profile.jpg";
+import uploadActive from "@/image/icons/uploadActive.svg";
+import uploadInactive from "@/image/icons/uploadInactive.svg";
 
 interface styleProps {
   path: string;
@@ -74,6 +75,7 @@ const NavBar: React.FC = () => {
 };
 
 const StNavBar = styled.div<styleProps>`
+  background-color: var(--white);
   display: flex;
   justify-content: space-between;
   width: 375px;
