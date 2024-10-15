@@ -13,22 +13,29 @@ interface RestaurantProps {
 
 const Restaurant: React.FC<RestaurantProps> = ({name, averageRating, defaultImgUrl}) => {
   return (
-    <Container>
-      <InfoContainer>
-        <TextContainer>
-          <Title>{name}</Title>
-          <Rating>⭐ {averageRating.toFixed(1)}</Rating>
-          <Detail>
-            <Distance>2.4km</Distance>
-            <ReviewNum>리뷰 4</ReviewNum>
-          </Detail>
-        </TextContainer>
-        <Profile/>
-      </InfoContainer>
-      <ImageSwiper defaultImgUrl={defaultImgUrl}/>
-    </Container>
+    <Wrapper>
+      <Container>
+        <InfoContainer>
+          <TextContainer>
+            <Title>{name}</Title>
+            <Rating>⭐ {averageRating.toFixed(1)}</Rating>
+            <Detail>
+              <Distance>2.4km</Distance>
+              <ReviewNum>리뷰 4</ReviewNum>
+            </Detail>
+          </TextContainer>
+          <Profile/>
+        </InfoContainer>
+        <ImageSwiper defaultImgUrl={defaultImgUrl}/>
+      </Container>
+      <Gap/>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  width: 100%;
+`;
 
 const Container = styled.div`
   width: 23.4375rem;
@@ -84,6 +91,12 @@ const Profile = styled.div`
   border-radius: var(--radius_circle);
   border: 1px solid var(--white);
   background: url(/pin_exampleimg.jpg) lightgray 50% / cover no-repeat;
+`
+
+const Gap = styled.div`
+  height: 0.5rem;
+  align-self: stretch;
+  background: var(--neutral_50);
 `
 
 export default Restaurant;
