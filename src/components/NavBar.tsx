@@ -67,7 +67,7 @@ const NavBar: React.FC = () => {
         src={profile}
         className="profile"
         onClick={() => {
-          path !== "profile" && navigate("/profile");
+          if (path !== "profile") navigate("/profile");
         }}
       />
     </StNavBar>
@@ -76,11 +76,11 @@ const NavBar: React.FC = () => {
 
 const StNavBar = styled.div<styleProps>`
   background-color: var(--white);
+  border-top: 1px solid var(--neutral_100);
   display: flex;
   justify-content: space-between;
-  width: 375px;
   padding: var(--spacing_12) var(--spacing_20) var(--spacing_24);
-  border-top: 1px solid var(--neutral_100);
+  width: 100%;
   .profile {
     width: 26px;
     height: 26px;
