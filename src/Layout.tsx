@@ -20,7 +20,8 @@ const StLayout = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  position: relative;
+  max-width: 440px;
+  min-width: 320px;
 `;
 
 const StContentContainer = styled.div`

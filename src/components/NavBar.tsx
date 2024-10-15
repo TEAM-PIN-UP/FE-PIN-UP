@@ -78,7 +78,7 @@ const StNavBar = styled.div<styleProps>`
   background-color: var(--white);
   display: flex;
   justify-content: space-between;
-  width: 375px;
+  width: 100%;
   padding: var(--spacing_12) var(--spacing_20) var(--spacing_24);
   border-top: 1px solid var(--neutral_100);
   .profile {
