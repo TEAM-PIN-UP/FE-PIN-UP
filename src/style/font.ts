@@ -9,6 +9,7 @@ export const H1 = css`
 `;
 
 export const H2 = css`
+  font-family: "SansVariable";
   font-size: 18px;
   font-weight: 600;
   line-height: 120%;
@@ -16,6 +17,7 @@ export const H2 = css`
 `;
 
 export const H3 = css`
+  font-family: "SansVariable";
   font-size: 16px;
   font-weight: 600;
   line-height: 120%;
@@ -23,6 +25,7 @@ export const H3 = css`
 `;
 
 export const H4 = css`
+  font-family: "SansVariable";
   font-size: 14px;
   font-weight: 600;
   line-height: 120%;
@@ -30,6 +33,7 @@ export const H4 = css`
 `;
 
 export const H5 = css`
+  font-family: "SansVariable";
   font-size: 13px;
   font-weight: 600;
   line-height: 120%;
@@ -37,6 +41,7 @@ export const H5 = css`
 `;
 
 export const H6 = css`
+  font-family: "SansVariable";
   font-size: 12px;
   font-weight: 600;
   line-height: 120%;
@@ -44,6 +49,7 @@ export const H6 = css`
 `;
 
 export const B1 = css`
+  font-family: "SansVariable";
   font-size: 18px;
   font-weight: 500;
   line-height: 120%;
@@ -51,6 +57,7 @@ export const B1 = css`
 `;
 
 export const B2 = css`
+  font-family: "SansVariable";
   font-size: 16px;
   font-weight: 500;
   line-height: 120%;
@@ -58,6 +65,7 @@ export const B2 = css`
 `;
 
 export const B3 = css`
+  font-family: "SansVariable";
   font-size: 14px;
   font-weight: 500;
   line-height: 120%;
@@ -65,6 +73,7 @@ export const B3 = css`
 `;
 
 export const B4 = css`
+  font-family: "SansVariable";
   font-size: 13px;
   font-weight: 500;
   line-height: 120%;
@@ -72,13 +81,23 @@ export const B4 = css`
 `;
 
 export const B5 = css`
+  font-family: "SansVariable";
   font-size: 12px;
   font-weight: 500;
   line-height: 120%;
   letter-spacing: -0.24px;
 `;
 
+export const B6 = css`
+  font-family: "SansVariable";
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 120%;
+  letter-spacing: -0.22px;
+`;
+
 export const C1 = css`
+  font-family: "SansVariable";
   font-size: 14px;
   font-weight: 400;
   line-height: 120%;
@@ -86,6 +105,7 @@ export const C1 = css`
 `;
 
 export const C2 = css`
+  font-family: "SansVariable";
   font-size: 13px;
   font-weight: 400;
   line-height: 120%;
@@ -93,6 +113,7 @@ export const C2 = css`
 `;
 
 export const C3 = css`
+  font-family: "SansVariable";
   font-size: 12px;
   font-weight: 400;
   line-height: 120%;
@@ -100,6 +121,7 @@ export const C3 = css`
 `;
 
 export const D1 = css`
+  font-family: "SansVariable";
   font-size: 14px;
   font-weight: 400;
   line-height: 140%;
@@ -107,6 +129,7 @@ export const D1 = css`
 `;
 
 export const D2 = css`
+  font-family: "SansVariable";
   font-size: 12px;
   font-weight: 400;
   line-height: 140%;
