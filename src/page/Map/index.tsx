@@ -116,6 +116,7 @@ const MapPage: React.FC = () => {
                   />
                 ))}
               </StSheetContent>
+              <StGap attach={attachRef.current?.offsetHeight ?? 85} />
             </Sheet.Container>
           </StSheet>
         </StMapDiv>
@@ -149,6 +150,10 @@ const StSheetContent = styled(Sheet.Content)`
   &::-webkit-scrollbar {
     display: none;
   }
+`;
+
+const StGap = styled.div<{ attach: number }>`
+  height: ${({ attach }) => `${window.innerHeight - attach + 20}px`};
 `;
 
 export default MapPage;
