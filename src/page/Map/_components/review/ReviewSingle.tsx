@@ -3,14 +3,7 @@ import profileImg from "@/image/icons/profile.jpg";
 import star from "@/image/icons/star.svg";
 import option from "@/image/icons/option.svg";
 import { B3, B6, D2, H4 } from "@/style/font";
-
-interface reviewProps {
-  profileImg: string;
-  name: string;
-  score: number;
-  date: string;
-  comment: string;
-}
+import { reviewProps } from "./Review";
 
 const ReviewSingle: React.FC<reviewProps> = (data) => {
   return (
