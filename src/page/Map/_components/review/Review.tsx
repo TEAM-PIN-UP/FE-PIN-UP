@@ -90,7 +90,7 @@ const StReview = styled.div`
     width: 100%;
     height: 1px;
     background-color: var(--neutral_50);
-    margin: var(--spacing_16);
+    margin: var(--spacing_16) 0;
   }
 `;
 

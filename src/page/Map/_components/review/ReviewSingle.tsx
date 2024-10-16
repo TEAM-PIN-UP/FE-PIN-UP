@@ -4,8 +4,12 @@ import star from "@/image/icons/star.svg";
 import option from "@/image/icons/option.svg";
 import { B3, B6, D2, H4 } from "@/style/font";
 import { reviewProps } from "./Review";
+import ReviewModal from "./ReviewModal";
+import { useState } from "react";
 
 const ReviewSingle: React.FC<reviewProps> = (data) => {
+  const [openModal, setOpenModal] = useState<boolean>(false);
+
   return (
     <StReviewSingle>
       <img className="profileImg" src={profileImg} alt="profileImg" />
@@ -17,7 +21,15 @@ const ReviewSingle: React.FC<reviewProps> = (data) => {
             <p className="score">{data.score}</p>
             <p className="date">{data.date}</p>
           </div>
-          <img className="option" src={option} alt="option" />
+          <div className="option">
+            {openModal ? <ReviewModal setOpenModal={setOpenModal} /> : <></>}
+            <img
+              className="pointer"
+              src={option}
+              onClick={() => setOpenModal(true)}
+              alt="option"
+            />
+          </div>
         </div>
         <div className="reviewContent">{data.comment}</div>
       </div>
@@ -67,9 +79,15 @@ const StReviewSingle = styled.div`
         }
       }
       .option {
+        position: relative;
         width: 16px;
         height: 16px;
         margin-left: auto;
+        .pointer {
+          width: 16px;
+          height: 16px;
+          cursor: pointer;
+        }
       }
     }
     .reviewContent {
