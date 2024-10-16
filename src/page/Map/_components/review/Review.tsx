@@ -2,7 +2,7 @@ import styled from "styled-components";
 import ReviewSingle from "./ReviewSingle";
 import { H3 } from "@/style/font";
 
-const Review = () => {
+const Review: React.FC = () => {
   const dummy = [
     {
       profileImg: "aa",
