@@ -11,29 +11,34 @@ interface buttonProps {
 }
 
 interface styleProps {
-  width: number;
+  width: string;
   height: number;
+  padding: string;
   active: boolean;
   typo: CSSProp;
 }
 
 const Button: React.FC<buttonProps> = ({ size, active, onClick, children }) => {
-  const [width, setWidth] = useState<number>(72);
+  const [width, setWidth] = useState<string>("max-content");
   const [height, setHeight] = useState<number>(40);
+  const [padding, setPadding] = useState<string>("12px 16px");
   const [typo, setTypo] = useState<CSSProp>(H3);
 
   const buttonSizeCheckFunc = () => {
     if (size === "small") {
-      setWidth(72);
+      setWidth("max-content");
       setHeight(40);
+      setPadding("12px 16px");
       setTypo(H5);
     } else if (size === "medium") {
-      setWidth(120);
+      setWidth("max-content");
       setHeight(49);
+      setPadding("16px 48px");
       setTypo(H4);
     } else if (size === "large") {
-      setWidth(335);
+      setWidth("335px");
       setHeight(51);
+      setPadding("16px 0px");
       setTypo(H3);
     }
   };
@@ -46,6 +51,7 @@ const Button: React.FC<buttonProps> = ({ size, active, onClick, children }) => {
     <StButton
       width={width}
       height={height}
+      padding={padding}
       active={active}
       typo={typo}
       onClick={onClick}
@@ -61,8 +67,9 @@ const StButton = styled.button<styleProps>`
   justify-content: center;
   align-items: center;
   color: var(--white);
-  width: ${(props) => props.width}px;
+  width: ${(props) => props.width};
   height: ${(props) => props.height}px;
+  padding: ${(props) => props.padding};
   background-color: ${(props) =>
     props.active ? `var(--neutral_800)` : "var(--neutral_300)"};
   border-radius: var(--radius_circle);
