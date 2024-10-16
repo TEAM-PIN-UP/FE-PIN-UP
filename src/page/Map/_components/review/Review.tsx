@@ -1,4 +1,6 @@
+import styled from "styled-components";
 import ReviewSingle from "./ReviewSingle";
+import { H3 } from "@/style/font";
 
 const Review = () => {
   const dummy = [
@@ -28,27 +30,55 @@ const Review = () => {
       name: "임하늘",
       score: 3.5,
       date: "2024-10-11",
-      comment: "좋았음",
+      comment:
+        "평범한 불고기의 맛, 공기밥이 차가웠음, 가게 직원들 불친절 한 사람 너무 많았음",
     },
   ];
 
   return (
-    <div>
-      <p>리뷰 3</p>
+    <StReview>
+      <div className="reviewTitle">
+        <span>리뷰</span>
+        <span>4</span>
+      </div>
       {dummy.map((value, index) => {
         return (
-          <ReviewSingle
-            key={index}
-            name={value.name}
-            score={value.score}
-            profileImg={value.profileImg}
-            date={value.date}
-            comment={value.comment}
-          />
+          <>
+            <ReviewSingle
+              key={index}
+              name={value.name}
+              score={value.score}
+              profileImg={value.profileImg}
+              date={value.date}
+              comment={value.comment}
+            />
+            {index + 1 !== dummy.length ? <div className="midLine" /> : <></>}
+          </>
         );
       })}
-    </div>
+    </StReview>
   );
 };
+
+const StReview = styled.div`
+  width: 100%;
+  min-width: 320px;
+  max-width: 440px;
+  padding: var(--spacing_24) 0;
+  .reviewTitle {
+    display: flex;
+    gap: 4px;
+    padding: 0 var(--spacing_20);
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    ${H3}
+  }
+  .midLine {
+    width: 100%;
+    height: 1px;
+    background-color: var(--neutral_50);
+    margin: var(--spacing_16);
+  }
+`;
 
 export default Review;
