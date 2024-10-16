@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import profileImg from "@/image/icons/profile.jpg";
+import star from "@/image/icons/star.svg";
+import option from "@/image/icons/option.svg";
 
 interface reviewProps {
   profileImg: string;
@@ -12,18 +14,18 @@ interface reviewProps {
 const ReviewSingle: React.FC<reviewProps> = (data) => {
   return (
     <StReviewSingle>
-      <img src={profileImg} alt="profileImg" />
-      <div>
-        <div>
-          <div>
+      <img className="profileImg" src={profileImg} alt="profileImg" />
+      <div className="bucket">
+        <div className="commentInfo">
+          <div className="commentInfo">
             <p>{data.name}</p>
             <div>
-              <img alt="star" />
+              <img src={star} alt="star" />
               <p>{data.score}</p>
             </div>
             <p>{data.date}</p>
           </div>
-          <img alt="etc" />
+          <img src={option} alt="option" />
         </div>
         <div>{data.comment}</div>
       </div>
@@ -33,10 +35,17 @@ const ReviewSingle: React.FC<reviewProps> = (data) => {
 
 const StReviewSingle = styled.div`
   display: flex;
-  .profile {
+  .profileImg {
     width: 40px;
     height: 40px;
     border-radius: var(--radius_circle);
+  }
+  .bucket {
+    display: flex;
+    flex-direction: column;
+    .commentInfo {
+      display: flex;
+    }
   }
   .name {
   }
