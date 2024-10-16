@@ -1,9 +1,18 @@
 import styled from "styled-components";
 import ReviewSingle from "./ReviewSingle";
 import { H3 } from "@/style/font";
+import ReviewDefault from "./ReviewDefault";
+
+export interface reviewProps {
+  profileImg: string;
+  name: string;
+  score: number;
+  date: string;
+  comment: string;
+}
 
 const Review: React.FC = () => {
-  const dummy = [
+  const dummy: reviewProps[] = [
     {
       profileImg: "aa",
       name: "강석우",
@@ -39,23 +48,27 @@ const Review: React.FC = () => {
     <StReview>
       <div className="reviewTitle">
         <span>리뷰</span>
-        <span>4</span>
+        <span>{dummy.length}</span>
       </div>
-      {dummy.map((value, index) => {
-        return (
-          <>
-            <ReviewSingle
-              key={index}
-              name={value.name}
-              score={value.score}
-              profileImg={value.profileImg}
-              date={value.date}
-              comment={value.comment}
-            />
-            {index + 1 !== dummy.length ? <div className="midLine" /> : <></>}
-          </>
-        );
-      })}
+      {dummy.length > 0 ? (
+        dummy.map((value, index) => {
+          return (
+            <>
+              <ReviewSingle
+                key={index}
+                name={value.name}
+                score={value.score}
+                profileImg={value.profileImg}
+                date={value.date}
+                comment={value.comment}
+              />
+              {index + 1 !== dummy.length ? <div className="midLine" /> : <></>}
+            </>
+          );
+        })
+      ) : (
+        <ReviewDefault />
+      )}
     </StReview>
   );
 };
