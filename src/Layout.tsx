@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import NavBar from "@/components/NavBar";
 
 interface layoutProps {
@@ -20,8 +21,6 @@ const StLayout = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  max-width: 440px;
-  min-width: 320px;
 `;
 
 const StContentContainer = styled.div`
