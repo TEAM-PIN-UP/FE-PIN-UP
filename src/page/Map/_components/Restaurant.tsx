@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { B4, H3, H4 } from "@/style/font";
 import ImageSwiper from "./ImageSwiper";
 
-interface RestaurantProps {
+export interface RestaurantProps {
   name: string;
   averageRating: number;
   defaultImgUrl: string;
