@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import NavBar from "@/components/NavBar";
+import Toast from "./components/Toast";
 
 interface layoutProps {
   children: React.ReactNode;
@@ -9,6 +10,7 @@ interface layoutProps {
 const Layout: React.FC<layoutProps> = ({ children }) => {
   return (
     <StLayout>
+      <Toast />
       <StContentContainer>{children}</StContentContainer>
       <StNavBarContainer>
         <NavBar />
