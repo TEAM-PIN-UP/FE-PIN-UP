@@ -2,22 +2,19 @@ import styled from "styled-components";
 import alertIcon from "@/image/icons/alertCircleRed.svg";
 import { B4 } from "@/style/font";
 import { useEffect } from "react";
-
-interface ToastProps {
-  text: string;
-  toastOn: boolean;
-  setToastOn: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { useToastStore } from "@/store";
 
 interface ToastStyle {
   toastOn: boolean;
 }
 
-const Toast: React.FC<ToastProps> = ({ text, toastOn, setToastOn }) => {
+const Toast: React.FC = () => {
+  const { toastOn, pop, text } = useToastStore();
+
   useEffect(() => {
     if (toastOn) {
       const timer = setTimeout(() => {
-        setToastOn(false);
+        pop(false);
       }, 4000);
       return () => clearTimeout(timer);
     }
