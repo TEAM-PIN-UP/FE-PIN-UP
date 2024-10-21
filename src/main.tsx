@@ -4,11 +4,16 @@ import { RouterProvider } from "react-router-dom";
 
 import router from "@/routes/route.tsx";
 import GlobalStyle from "@/style/GlobalStyle.ts";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./index.css";
+
+const client = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <GlobalStyle />
-    <RouterProvider router={router} />
+    <QueryClientProvider client={client}>
+      <GlobalStyle />
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   </StrictMode>
 );

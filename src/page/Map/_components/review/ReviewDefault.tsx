@@ -1,4 +1,4 @@
-import Button from "@/components/buttons/Button";
+import Button from "@/components/Button";
 import { H3 } from "@/style/font";
 import styled from "styled-components";
 

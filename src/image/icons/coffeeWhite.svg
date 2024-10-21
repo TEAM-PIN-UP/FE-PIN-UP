@@ -1,0 +1,9 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="coffee">
+    <path id="Vector" d="M12 6H12.6C13.2365 6 13.847 6.26339 14.2971 6.73223C14.7471 7.20107 15 7.83696 15 8.5C15 9.16304 14.7471 9.79893 14.2971 10.2678C13.847 10.7366 13.2365 11 12.6 11H12" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path id="Vector_2" d="M2 6H12V11.5385C12 12.1913 11.7366 12.8174 11.2678 13.279C10.7989 13.7407 10.163 14 9.5 14H4.5C3.83696 14 3.20107 13.7407 2.73223 13.279C2.26339 12.8174 2 12.1913 2 11.5385V6Z" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path id="Vector_3" d="M4 1.66663V3.66663" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path id="Vector_4" d="M6.66663 1.66663V3.66663" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path id="Vector_5" d="M9.33337 1.66663V3.66663" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

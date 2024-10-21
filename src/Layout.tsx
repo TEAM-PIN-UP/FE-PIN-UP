@@ -1,5 +1,7 @@
 import styled from "styled-components";
+
 import NavBar from "@/components/NavBar";
+import Toast from "./components/Toast";
 
 interface layoutProps {
   children: React.ReactNode;
@@ -8,6 +10,7 @@ interface layoutProps {
 const Layout: React.FC<layoutProps> = ({ children }) => {
   return (
     <StLayout>
+      <Toast />
       <StContentContainer>{children}</StContentContainer>
       <StNavBarContainer>
         <NavBar />
@@ -20,8 +23,6 @@ const StLayout = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  max-width: 440px;
-  min-width: 320px;
 `;
 
 const StContentContainer = styled.div`

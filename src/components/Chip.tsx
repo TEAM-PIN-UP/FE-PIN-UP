@@ -24,13 +24,16 @@ const Chip: React.FC<ChipProps> = ({
 
 const StButton = styled.button<{ selected: boolean }>`
   ${H6}
+  align-items: center;
   background-color: ${({ selected }) =>
     selected ? "var(--neutral_800)" : "var(--neutral_50)"};
   border-radius: var(--radius_circle);
   color: ${({ selected }) =>
     selected ? "var(--white)" : "var(--neutral_800)"};
+  display: flex;
   gap: var(--spacing_4);
   height: 36;
+  justify-content: center;
   padding: var(--spacing_10) var(--spacing_12);
 `;
 

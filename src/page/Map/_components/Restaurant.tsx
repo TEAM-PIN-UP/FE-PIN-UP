@@ -1,17 +1,21 @@
 // Restaurant.tsx
-import React from 'react';
-import styled from 'styled-components';
-import ImageSwiper from './ImageSwiper';
+import React from "react";
+import styled from "styled-components";
 
-import { H3, H4, B4 } from "@/style/font";
+import { B4, H3, H4 } from "@/style/font";
+import ImageSwiper from "./ImageSwiper";
 
-interface RestaurantProps {
+export interface RestaurantProps {
   name: string;
   averageRating: number;
   defaultImgUrl: string;
 }
 
-const Restaurant: React.FC<RestaurantProps> = ({name, averageRating, defaultImgUrl}) => {
+const Restaurant: React.FC<RestaurantProps> = ({
+  name,
+  averageRating,
+  defaultImgUrl,
+}) => {
   return (
     <StWrapper>
       <StContainer>
@@ -24,11 +28,11 @@ const Restaurant: React.FC<RestaurantProps> = ({name, averageRating, defaultImgU
               <StReviewNum>리뷰 4</StReviewNum>
             </StDetail>
           </StTextContainer>
-          <StProfile/>
+          <StProfile />
         </StInfoContainer>
-        <ImageSwiper defaultImgUrl={defaultImgUrl}/>
+        <ImageSwiper defaultImgUrl={defaultImgUrl} />
       </StContainer>
-      <StGap/>
+      <StGap />
     </StWrapper>
   );
 };
@@ -56,7 +60,7 @@ const StTextContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: var(--spacing_6);
-`
+`;
 
 const StTitle = styled.div`
   ${H3};
@@ -73,7 +77,7 @@ const StDetail = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
-`
+`;
 
 const StDistance = styled.span`
   ${B4};
@@ -91,12 +95,12 @@ const StProfile = styled.div`
   border-radius: var(--radius_circle);
   border: 1px solid var(--white);
   background: url(/pin_exampleimg.jpg) lightgray 50% / cover no-repeat;
-`
+`;
 
 const StGap = styled.div`
   height: 0.5rem;
   align-self: stretch;
   background: var(--neutral_50);
-`
+`;
 
 export default Restaurant;

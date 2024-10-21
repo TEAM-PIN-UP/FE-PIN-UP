@@ -10,66 +10,44 @@ import styled from "styled-components";
 
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useMapSetup from "@/hooks/useMapSetup";
-import ActivePinMarker from "./_components/ActivePinMarker";
-import InactivePinMarker from "./_components/InactivePinMarker";
+import { useQuery } from "@tanstack/react-query";
+import Restaurant, { RestaurantProps } from "./_components/Restaurant";
 import SearchHeader from "./_components/SearchHeader";
 import UserPositionMarker from "./_components/UserPositionMarker";
-import Restaurant from "./_components/Restaurant";
+import InactivePinMarker from "./_components/markers/InactivePinMarker";
 
-const DummyData = [
-  {
-    "name": "롯데캐슬클라시아",
-    "defaultImgUrl": "https://search.pstatic.net/common/?type=b150&src=http://imgnews.naver.net/image/5286/2022/07/07/20220707500152_20220707111005245.jpg",
-    "latitude": 1270264290,
-    "longitude": 376085003,
-    "averageRating": 0.0
-  },
-  {
-    "name": "아소비 서울길음롯데캐슬클라시아2호점",
-    "defaultImgUrl": "https://search.pstatic.net/common/?type=b150&src=http://imgnews.naver.net/image/5239/2019/05/20/0000195912_001_20190520085409372.jpg",
-    "latitude": 1270264290,
-    "longitude": 376085003,
-    "averageRating": 0.0
-  },
-  {
-    "name": "컴포즈커피 길음롯데캐슬클라시아점",
-    "defaultImgUrl": "https://search.pstatic.net/common/?type=b150&src=https://ldb-phinf.pstatic.net/20220701_22/1656666283341LoiTN_JPEG/KakaoTalk_Moim_79DPRwwu4JjMCvOo9kCfZkmkuuyr2b.jpg",
-    "latitude": 1270276606,
-    "longitude": 376094436,
-    "averageRating": 0.0
-  },
-  {
-    "name": "롯데캐슬클라시아배드민턴장",
-    "defaultImgUrl": "https://search.pstatic.net/sunny/?type=b150&src=https://image.hogangnono.com/image/nowatermark/original/review/20211104113404_havvcviGeuNYQjdAX4?s=720x180&t=outside&q=100",
-    "latitude": 1270268359,
-    "longitude": 376079406,
-    "averageRating": 0.0
-  },
-  {
-    "name": "크린토피아 성북롯데캐슬클라시아점",
-    "defaultImgUrl": "https://search.pstatic.net/sunny/?type=b150&src=https://tr.xza.kr/imgdata/tr_xza_kr/202311/20231109062316-80762.jpg",
-    "latitude": 1270274666,
-    "longitude": 376095365,
-    "averageRating": 0.0
+interface PinProps extends RestaurantProps {
+  latitude: number;
+  longitude: number;
+}
+
+const fetchPlaces = async (): Promise<PinProps[]> => {
+  const response = await fetch("http://localhost:8080/search");
+  if (!response.ok) {
+    throw new Error("Failed to fetch places");
   }
-]
+  return response.json();
+};
 
 const MapPage: React.FC = () => {
   const naverMaps = useNavermaps();
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [user, setUser] = useState<naver.maps.Marker | null>(null);
-  const [pin, setPin] = useState<naver.maps.Marker | null>(null);
-  const [pin2, setPin2] = useState<naver.maps.Marker | null>(null);
-  const [pin3, setPin3] = useState<naver.maps.Marker | null>(null);
-  const defaultCenter = new naverMaps.LatLng(35.1658, 126.9078);
+  const defaultCenter = new naverMaps.LatLng(37.6077842, 127.0270642);
   const defaultZoom = 18;
 
   // Initialize geolocation and map setup
-  useMapSetup(map, user, pin, pin2, pin3, defaultZoom);
+  useMapSetup(map, user, defaultZoom);
 
   // Bottom sheet logic
   const { snapPoints, attachRef, sheetHeaderRef, searchHeaderRef } =
     useBottomSheetSnapPoints();
+
+  // Fetch data
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["places"],
+    queryFn: fetchPlaces,
+  });
 
   return (
     <StDiv ref={attachRef}>
@@ -81,14 +59,20 @@ const MapPage: React.FC = () => {
             ref={setMap}
           >
             <UserPositionMarker ref={setUser} />
-            <ActivePinMarker
-              image="https://picsum.photos/200"
-              count="3"
-              name="딤딤섬123"
-              ref={setPin}
-            />
-            <InactivePinMarker type="cafe" name="딤딤섬123" ref={setPin2} />
-            <InactivePinMarker type="food" name="딤딤섬123" ref={setPin3} />
+            {data &&
+              data.map((item, index) => (
+                <InactivePinMarker
+                  key={index}
+                  type="food"
+                  name={item.name}
+                  defaultPosition={
+                    new naverMaps.LatLng(
+                      item.longitude / 1e7,
+                      item.latitude / 1e7
+                    )
+                  }
+                />
+              ))}
           </NaverMap>
 
           <StSheet
@@ -102,15 +86,19 @@ const MapPage: React.FC = () => {
               <Sheet.Header ref={sheetHeaderRef} />
               <SearchHeader ref={searchHeaderRef} />
               <StSheetContent disableDrag={true}>
-                {DummyData.map((item, index) => (
-                  <Restaurant
-                    key={index}
-                    name={item.name}
-                    averageRating={item.averageRating}
-                    defaultImgUrl={item.defaultImgUrl}
-                  />
-                ))}
+                {isLoading && <span>Loading...</span>}
+                {error && <span>Error</span>}
+                {data &&
+                  data.map((item, index) => (
+                    <Restaurant
+                      key={index}
+                      name={item.name}
+                      averageRating={item.averageRating}
+                      defaultImgUrl={item.defaultImgUrl}
+                    />
+                  ))}
               </StSheetContent>
+              <StGap attach={attachRef.current?.offsetHeight ?? 85} />
             </Sheet.Container>
           </StSheet>
         </StMapDiv>
@@ -120,18 +108,23 @@ const MapPage: React.FC = () => {
 };
 
 const StDiv = styled.div`
-  width: 100vw;
+  width: 100%;
   height: 100%;
 `;
 
 const StMapDiv = styled(MapDiv)`
-  flex-grow: 1;
-  width: 100vw;
+  width: 100%;
   height: 100%;
 `;
 
 const StSheet = styled(Sheet)`
-  width: 100vw;
+  display: flex;
+  justify-content: center;
+  max-width: 440px;
+  min-width: 320px;
+  left: ${window.innerWidth > 440
+    ? `${(window.innerWidth - 440) / 2}px !important`
+    : "0px"};
 `;
 
 const StSheetContent = styled(Sheet.Content)`
@@ -139,6 +132,10 @@ const StSheetContent = styled(Sheet.Content)`
   &::-webkit-scrollbar {
     display: none;
   }
-`
+`;
+
+const StGap = styled.div<{ attach: number }>`
+  height: ${({ attach }) => `${window.innerHeight - attach + 20}px`};
+`;
 
 export default MapPage;

@@ -1,30 +1,21 @@
-import React from 'react';
-import styled from 'styled-components';
-import BasicSwiper from '@/components/BasicSwiper';
-import { SwiperSlide } from 'swiper/react';
+import React from "react";
+import styled from "styled-components";
+import { SwiperSlide } from "swiper/react";
+
+import BasicSwiper from "@/components/BasicSwiper";
 
 interface ImageSwiperProps {
   defaultImgUrl: string;
 }
 
-const ImageSwiper: React.FC<ImageSwiperProps> = ({defaultImgUrl}) => {
-  const images = [
-    defaultImgUrl,
-    ...Array(4).fill('/swiper_exampleimg.jpg')
-  ];
+const ImageSwiper: React.FC<ImageSwiperProps> = ({ defaultImgUrl }) => {
+  const images = [defaultImgUrl, ...Array(4).fill("/swiper_exampleimg.jpg")];
 
   return (
-    <BasicSwiper
-      spaceBetween={8}
-      slidesPerView={3}
-      grabCursor={true}
-    >
+    <BasicSwiper spaceBetween={8} slidesPerView="auto" grabCursor={true}>
       {images.map((image, index) => (
         <StSwiperSlide key={index}>
-          <StImage 
-            src={image} 
-            alt={`Slide ${index + 1}`} 
-          />
+          <StImage src={image} alt={`Slide ${index + 1}`} />
         </StSwiperSlide>
       ))}
     </BasicSwiper>

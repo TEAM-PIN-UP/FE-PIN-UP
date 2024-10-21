@@ -60,6 +60,7 @@ const GlobalStyle = createGlobalStyle`
         --transparent_15 : rgba(0, 0, 0, 0.15);
         --transparent_25 : rgba(0, 0, 0, 0.25);
         --transparent_50 : rgba(0, 0, 0, 0.50);
+        --transparent_70 : rgba(0, 0, 0, 0.70);
     }
 `;
 
