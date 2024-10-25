@@ -4,7 +4,8 @@ import { useNavermaps } from "react-naver-maps";
 const useMapSetup = (
   map: naver.maps.Map | null,
   user: naver.maps.Marker | null,
-  defaultZoom: number
+  defaultZoom: number,
+  setActivePinIndex: React.Dispatch<React.SetStateAction<number | null>>
 ) => {
   const naverMaps = useNavermaps();
 
@@ -38,7 +39,16 @@ const useMapSetup = (
         onErrorGeolocation
       );
     }
-  }, [map, onSuccessGeolocation, onErrorGeolocation]);
+
+    // Clear selected pin on map click
+    const mapClickListener = naver.maps.Event.addListener(map, "click", () =>
+      setActivePinIndex(null)
+    );
+
+    return () => {
+      naver.maps.Event.removeListener(mapClickListener);
+    };
+  }, [map, onSuccessGeolocation, onErrorGeolocation, setActivePinIndex]);
 };
 
 export default useMapSetup;
