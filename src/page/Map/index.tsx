@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Sheet } from "react-modal-sheet";
 import {
   Container as MapDiv,
@@ -30,6 +30,7 @@ const fetchPlaces = async (): Promise<PinProps[]> => {
 };
 
 const MapPage: React.FC = () => {
+  // Map
   const naverMaps = useNavermaps();
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [user, setUser] = useState<naver.maps.Marker | null>(null);
@@ -42,12 +43,27 @@ const MapPage: React.FC = () => {
   // Bottom sheet logic
   const { snapPoints, attachRef, sheetHeaderRef, searchHeaderRef } =
     useBottomSheetSnapPoints();
+  const [left, setLeft] = useState(0);
+  const updateLeftPosition = () => {
+    const newLeft = window.innerWidth > 440 ? (window.innerWidth - 440) / 2 : 0;
+    setLeft(newLeft);
+  };
 
   // Fetch data
   const { data, error, isLoading } = useQuery({
     queryKey: ["places"],
     queryFn: fetchPlaces,
   });
+
+  // Update bottom sheet alignment on window resize
+  useEffect(() => {
+    updateLeftPosition();
+    window.addEventListener("resize", updateLeftPosition);
+
+    return () => {
+      window.removeEventListener("resize", updateLeftPosition);
+    };
+  }, []);
 
   return (
     <StDiv ref={attachRef}>
@@ -81,6 +97,7 @@ const MapPage: React.FC = () => {
             snapPoints={snapPoints}
             initialSnap={1}
             mountPoint={attachRef.current!}
+            left={left}
           >
             <Sheet.Container>
               <Sheet.Header ref={sheetHeaderRef} />
@@ -117,14 +134,12 @@ const StMapDiv = styled(MapDiv)`
   height: 100%;
 `;
 
-const StSheet = styled(Sheet)`
+const StSheet = styled(Sheet)<{ left: number }>`
   display: flex;
   justify-content: center;
   max-width: 440px;
   min-width: 320px;
-  left: ${window.innerWidth > 440
-    ? `${(window.innerWidth - 440) / 2}px !important`
-    : "0px"};
+  left: ${({ left }) => `${left}px !important`};
 `;
 
 const StSheetContent = styled(Sheet.Content)`
