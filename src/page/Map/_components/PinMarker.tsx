@@ -21,7 +21,7 @@ const PinMarker = forwardRef<naver.maps.Marker, PinMarkerProps>(
     const totalHeight = pinHeight + 25;
 
     const circleRadius = 28;
-    const circleTopOffset = 13;
+    const circleTopOffset = 18;
 
     const roundIcon = type === "cafe" ? RoundCafe : RoundFood;
 
@@ -51,8 +51,8 @@ const PinMarker = forwardRef<naver.maps.Marker, PinMarkerProps>(
               left: 50%;
               overflow: hidden;
               position: absolute;
-              top: ${circleTopOffset}%;
-              transform: translate(-50%, -${circleTopOffset}%);
+              top: ${circleTopOffset}px;
+              transform: translate(-50%, -50%);
               width: ${circleRadius}px;
             ">
               <div style="
