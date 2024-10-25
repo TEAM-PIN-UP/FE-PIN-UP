@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Sheet } from "react-modal-sheet";
 import {
@@ -10,11 +11,11 @@ import styled from "styled-components";
 
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useMapSetup from "@/hooks/useMapSetup";
-import { useQuery } from "@tanstack/react-query";
 import PinMarker from "./_components/PinMarker";
 import Restaurant, { RestaurantProps } from "./_components/Restaurant";
 import SearchHeader from "./_components/SearchHeader";
 import UserPositionMarker from "./_components/UserPositionMarker";
+import Review from "./_components/review/Review";
 
 interface PinProps extends RestaurantProps {
   latitude: number;
@@ -37,7 +38,7 @@ const MapPage: React.FC = () => {
   const [activePinIndex, setActivePinIndex] = useState<number | null>(null);
   const defaultCenter = new naverMaps.LatLng(37.6077842, 127.0270642);
   const defaultZoom = 18;
-  useMapSetup(map, user, defaultZoom);
+  useMapSetup(map, user, defaultZoom, setActivePinIndex);
 
   // Bottom sheet logic
   const { snapPoints, attachRef, sheetHeaderRef, searchHeaderRef } =
@@ -54,15 +55,15 @@ const MapPage: React.FC = () => {
     queryFn: fetchPlaces,
   });
 
-  // Update bottom sheet alignment on window resize
   useEffect(() => {
+    // Update bottom sheet alignment on window resize
     updateLeftPosition();
     window.addEventListener("resize", updateLeftPosition);
 
     return () => {
       window.removeEventListener("resize", updateLeftPosition);
     };
-  }, []);
+  }, [map]);
 
   return (
     <StDiv ref={attachRef}>
@@ -79,7 +80,7 @@ const MapPage: React.FC = () => {
                 <PinMarker
                   key={index}
                   active={activePinIndex === index}
-                  type="food"
+                  type="cafe"
                   name={item.name}
                   image={item.defaultImgUrl}
                   count={Math.floor(Math.random() * 5 + 1).toString()}
@@ -109,6 +110,7 @@ const MapPage: React.FC = () => {
                 {isLoading && <span>Loading...</span>}
                 {error && <span>Error</span>}
                 {data &&
+                  !activePinIndex &&
                   data.map((item, index) => (
                     <Restaurant
                       key={index}
@@ -117,6 +119,11 @@ const MapPage: React.FC = () => {
                       defaultImgUrl={item.defaultImgUrl}
                     />
                   ))}
+                {activePinIndex && (
+                  <>
+                    <Review />
+                  </>
+                )}
               </StSheetContent>
               <StGap attach={attachRef.current?.offsetHeight ?? 85} />
             </Sheet.Container>

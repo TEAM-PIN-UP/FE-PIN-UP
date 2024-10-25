@@ -7,7 +7,7 @@ import RoundFood from "@/image/icons/roundFood.svg";
 
 interface PinMarkerProps extends MarkerProps {
   active: boolean;
-  type: "cafe" | "food";
+  type: "cafe" | "restaurant";
   name: string;
   image?: string;
   count?: string;
