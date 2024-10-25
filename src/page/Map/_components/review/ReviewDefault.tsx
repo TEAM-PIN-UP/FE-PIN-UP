@@ -1,6 +1,7 @@
+import styled from "styled-components";
+
 import Button from "@/components/Button";
 import { H3 } from "@/style/font";
-import styled from "styled-components";
 
 const ReviewDefault = () => {
   return (

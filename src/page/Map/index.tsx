@@ -84,7 +84,10 @@ const MapPage: React.FC = () => {
                   name={item.name}
                   image={item.defaultImgUrl}
                   count={Math.floor(Math.random() * 5 + 1).toString()}
-                  onClick={() => setActivePinIndex(index)}
+                  onClick={() => {
+                    setActivePinIndex(index);
+                    console.log(index);
+                  }}
                   defaultPosition={
                     new naverMaps.LatLng(
                       item.longitude / 1e7,
@@ -110,7 +113,7 @@ const MapPage: React.FC = () => {
                 {isLoading && <span>Loading...</span>}
                 {error && <span>Error</span>}
                 {data &&
-                  !activePinIndex &&
+                  activePinIndex === null &&
                   data.map((item, index) => (
                     <Restaurant
                       key={index}
@@ -119,11 +122,7 @@ const MapPage: React.FC = () => {
                       defaultImgUrl={item.defaultImgUrl}
                     />
                   ))}
-                {activePinIndex && (
-                  <>
-                    <Review />
-                  </>
-                )}
+                {activePinIndex !== null && <Review />}
               </StSheetContent>
               <StGap attach={attachRef.current?.offsetHeight ?? 85} />
             </Sheet.Container>

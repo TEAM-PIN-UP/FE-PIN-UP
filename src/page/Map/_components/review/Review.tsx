@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import ReviewSingle from "./ReviewSingle";
+
 import { H3 } from "@/style/font";
 import ReviewDefault from "./ReviewDefault";
+import ReviewSingle from "./ReviewSingle";
 
 export interface reviewProps {
   profileImg: string;

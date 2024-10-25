@@ -1,11 +1,12 @@
+import { useState } from "react";
 import styled from "styled-components";
+
+import option from "@/image/icons/option.svg";
 import profileImg from "@/image/icons/profile.jpg";
 import star from "@/image/icons/star.svg";
-import option from "@/image/icons/option.svg";
 import { B3, B6, D2, H4 } from "@/style/font";
 import { reviewProps } from "./Review";
 import ReviewModal from "./ReviewModal";
-import { useState } from "react";
 
 const ReviewSingle: React.FC<reviewProps> = (data) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
