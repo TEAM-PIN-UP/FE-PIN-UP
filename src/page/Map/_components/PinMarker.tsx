@@ -30,42 +30,42 @@ const PinMarker = forwardRef<naver.maps.Marker, PinMarkerProps>(
       ? // Active marker
         `
         <div style="
-            align-items: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         ">
-            <div style="
+          <div style="
             align-items: center;
             position: relative;
             height: ${pinHeight}px;
             justify-content: center;
             width: ${pinWidth}px;
-            ">
+          ">
             <img src="${Pin}" style="width: 100%; height: 100%;" alt="" />
-            
+          
             <div style="
-                border: 2px solid white;
-                border-radius: 50%;
-                height: ${circleRadius}px;
-                left: 50%;
-                overflow: hidden;
-                position: absolute;
-                top: ${circleTopOffset}%;
-                transform: translate(-50%, -${circleTopOffset}%);
-                width: ${circleRadius}px;
+              border: 2px solid white;
+              border-radius: 50%;
+              height: ${circleRadius}px;
+              left: 50%;
+              overflow: hidden;
+              position: absolute;
+              top: ${circleTopOffset}%;
+              transform: translate(-50%, -${circleTopOffset}%);
+              width: ${circleRadius}px;
             ">
-                <div style="
+              <div style="
                 background-color: rgba(0, 0, 0, 0.4);
                 height: 100%;
                 position: absolute;
                 width: 100%;
                 z-index: 1;
-                "></div>
+              "></div>
 
-                <img src="${image}" style="width: 100%; height: 100%; object-fit: cover;" alt="" />
+              <img src="${image}" style="width: 100%; height: 100%; object-fit: cover;" alt="" />
 
-                <div style="
+              <div style="
                 align-items: center;
                 border-radius: 50%;
                 color: white;
@@ -80,13 +80,13 @@ const PinMarker = forwardRef<naver.maps.Marker, PinMarkerProps>(
                 transform: translate(-50%, -50%);
                 width: 16px;
                 z-index: 1;
-                ">
+              ">
                 ${count ?? ""}
-                </div>
+              </div>
             </div>
-            </div>
+          </div>
 
-            <div style="
+          <div style="
             align-items: center;
             background-color: #222;
             border-radius: 99px;
@@ -95,36 +95,36 @@ const PinMarker = forwardRef<naver.maps.Marker, PinMarkerProps>(
             font-size: 12px;
             font-weight: 600;
             justify-content: center;
-            margin-top: 8px;
+            margin-top: 22px;
             overflow: hidden;
             padding: 2.5px 7.5px;
             text-overflow: ellipsis;
             white-space: nowrap;
             width: ${totalWidth}px;
-            ">
+          ">
             ${name.length > 3 ? `${name.slice(0, 3)}..` : name}
-            </div>
+          </div>
         </div>
         `
       : // Inactive marker
         `
         <div style="
-            align-items: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         ">
-            <div style="
+          <div style="
             align-items: center;
             height: ${pinHeight}px;
             justify-content: center;
             position: relative;
             width: ${pinWidth}px;
-            ">
+          ">
             <img src="${roundIcon}" style="width: 100%; height: 100%; object-fit: cover;" alt="" />
-            </div>
+          </div>
 
-            <div style="
+          <div style="
             align-items: center;
             background-color: rgba(0, 0, 0, 0.25);
             border-radius: 99px;
@@ -139,10 +139,10 @@ const PinMarker = forwardRef<naver.maps.Marker, PinMarkerProps>(
             text-overflow: ellipsis;
             white-space: nowrap;
             width: ${totalWidth}px;
-        ">
-          ${name.length > 3 ? `${name.slice(0, 3)}..` : name}
+          ">
+            ${name.length > 3 ? `${name.slice(0, 3)}..` : name}
+          </div>
         </div>
-      </div>
     `;
 
     const icon = {

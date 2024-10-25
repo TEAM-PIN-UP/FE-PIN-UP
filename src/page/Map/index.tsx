@@ -79,7 +79,7 @@ const MapPage: React.FC = () => {
                 <PinMarker
                   key={index}
                   active={activePinIndex === index}
-                  type={Math.floor(Math.random() * 2) < 1 ? "food" : "cafe"}
+                  type="food"
                   name={item.name}
                   image={item.defaultImgUrl}
                   count={Math.floor(Math.random() * 5 + 1).toString()}
