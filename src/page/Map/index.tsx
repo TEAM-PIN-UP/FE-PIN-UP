@@ -11,10 +11,10 @@ import styled from "styled-components";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useMapSetup from "@/hooks/useMapSetup";
 import { useQuery } from "@tanstack/react-query";
+import PinMarker from "./_components/PinMarker";
 import Restaurant, { RestaurantProps } from "./_components/Restaurant";
 import SearchHeader from "./_components/SearchHeader";
 import UserPositionMarker from "./_components/UserPositionMarker";
-import InactivePinMarker from "./_components/markers/InactivePinMarker";
 
 interface PinProps extends RestaurantProps {
   latitude: number;
@@ -30,14 +30,13 @@ const fetchPlaces = async (): Promise<PinProps[]> => {
 };
 
 const MapPage: React.FC = () => {
-  // Map
+  // Geolocation and map setup
   const naverMaps = useNavermaps();
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [user, setUser] = useState<naver.maps.Marker | null>(null);
+  const [activePinIndex, setActivePinIndex] = useState<number | null>(null);
   const defaultCenter = new naverMaps.LatLng(37.6077842, 127.0270642);
   const defaultZoom = 18;
-
-  // Initialize geolocation and map setup
   useMapSetup(map, user, defaultZoom);
 
   // Bottom sheet logic
@@ -77,10 +76,14 @@ const MapPage: React.FC = () => {
             <UserPositionMarker ref={setUser} />
             {data &&
               data.map((item, index) => (
-                <InactivePinMarker
+                <PinMarker
                   key={index}
-                  type="food"
+                  active={activePinIndex === index}
+                  type={Math.floor(Math.random() * 2) < 1 ? "food" : "cafe"}
                   name={item.name}
+                  image={item.defaultImgUrl}
+                  count={Math.floor(Math.random() * 5 + 1).toString()}
+                  onClick={() => setActivePinIndex(index)}
                   defaultPosition={
                     new naverMaps.LatLng(
                       item.longitude / 1e7,
