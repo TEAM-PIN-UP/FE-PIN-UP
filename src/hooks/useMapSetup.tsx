@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useNavermaps } from "react-naver-maps";
 
 const useMapSetup = (
@@ -8,6 +8,7 @@ const useMapSetup = (
   setActivePinIndex: React.Dispatch<React.SetStateAction<number | null>>
 ) => {
   const naverMaps = useNavermaps();
+  const isDragging = useRef(false);
 
   const onSuccessGeolocation = useCallback(
     (position: GeolocationPosition) => {
@@ -40,15 +41,51 @@ const useMapSetup = (
       );
     }
 
-    // Clear selected pin on map click
-    const mapClickListener = naver.maps.Event.addListener(
+    // Detect drag vs click
+    let startX = 0;
+    let startY = 0;
+
+    const handleMouseDown = (e: naver.maps.PointerEvent) => {
+      isDragging.current = false;
+      startX = e.offset.x;
+      startY = e.offset.y;
+    };
+
+    const handleMouseMove = (e: naver.maps.PointerEvent) => {
+      const dx = Math.abs(e.offset.x - startX);
+      const dy = Math.abs(e.offset.y - startY);
+
+      if (dx > 5 || dy > 5) {
+        isDragging.current = true;
+      }
+    };
+
+    const handleMouseUp = () => {
+      if (!isDragging.current) {
+        setActivePinIndex(null);
+      }
+    };
+
+    const mouseDownListener = naver.maps.Event.addListener(
       map,
       "mousedown",
-      () => setActivePinIndex(null)
+      handleMouseDown
+    );
+    const mouseMoveListener = naver.maps.Event.addListener(
+      map,
+      "mousemove",
+      handleMouseMove
+    );
+    const mouseUpListener = naver.maps.Event.addListener(
+      map,
+      "mouseup",
+      handleMouseUp
     );
 
     return () => {
-      naver.maps.Event.removeListener(mapClickListener);
+      naver.maps.Event.removeListener(mouseDownListener);
+      naver.maps.Event.removeListener(mouseMoveListener);
+      naver.maps.Event.removeListener(mouseUpListener);
     };
   }, [map, onSuccessGeolocation, onErrorGeolocation, setActivePinIndex]);
 };
