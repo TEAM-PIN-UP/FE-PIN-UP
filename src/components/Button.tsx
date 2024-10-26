@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled, { CSSProp } from "styled-components";
 
 import { H3, H4, H5 } from "@/style/font";
@@ -24,7 +24,7 @@ const Button: React.FC<buttonProps> = ({ size, active, onClick, children }) => {
   const [padding, setPadding] = useState<string>("12px 16px");
   const [typo, setTypo] = useState<CSSProp>(H3);
 
-  const buttonSizeCheckFunc = () => {
+  const buttonSizeCheckFunc = useCallback(() => {
     if (size === "small") {
       setWidth("max-content");
       setHeight(40);
@@ -41,11 +41,11 @@ const Button: React.FC<buttonProps> = ({ size, active, onClick, children }) => {
       setPadding("16px 0px");
       setTypo(H3);
     }
-  };
+  }, [size, setWidth, setHeight, setPadding, setTypo]);
 
   useEffect(() => {
     buttonSizeCheckFunc();
-  }, [size]);
+  }, [buttonSizeCheckFunc, size]);
 
   return (
     <StButton

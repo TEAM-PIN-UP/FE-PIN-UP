@@ -161,7 +161,7 @@ const StSheet = styled(Sheet)<{ left: number }>`
 `;
 
 const StGap = styled.div<{ $attachHeight: number }>`
-  height: ${({ $attachHeight: attach }) => `${window.innerHeight - attach}px`};
+  height: ${({ $attachHeight }) => `${window.innerHeight - $attachHeight}px`};
 `;
 
 export default MapPage;

@@ -63,7 +63,7 @@ const Review: React.FC = () => {
                 date={value.date}
                 comment={value.comment}
               />
-              {index + 1 !== dummy.length ? <div className="midLine" /> : <></>}
+              {index + 1 !== dummy.length && <div className="midLine" />}
             </>
           );
         })
