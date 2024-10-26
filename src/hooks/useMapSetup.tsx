@@ -41,8 +41,10 @@ const useMapSetup = (
     }
 
     // Clear selected pin on map click
-    const mapClickListener = naver.maps.Event.addListener(map, "click", () =>
-      setActivePinIndex(null)
+    const mapClickListener = naver.maps.Event.addListener(
+      map,
+      "mousedown",
+      () => setActivePinIndex(null)
     );
 
     return () => {
