@@ -42,7 +42,6 @@ const StWrapper = styled.div`
 `;
 
 const StContainer = styled.div`
-  width: 23.4375rem;
   padding: var(--spacing_20);
   margin: 0 auto;
 `;
