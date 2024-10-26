@@ -128,7 +128,7 @@ const MapPage: React.FC = () => {
                     ))}
                   {activePinIndex !== null && <Review />}
                   <StGap
-                    attachHeight={
+                    $attachHeight={
                       attachRef.current?.offsetHeight ?? window.innerHeight - 65
                     }
                   />
@@ -160,8 +160,8 @@ const StSheet = styled(Sheet)<{ left: number }>`
   left: ${({ left }) => `${left}px !important`};
 `;
 
-const StGap = styled.div<{ attachHeight: number }>`
-  height: ${({ attachHeight: attach }) => `${window.innerHeight - attach}px`};
+const StGap = styled.div<{ $attachHeight: number }>`
+  height: ${({ $attachHeight: attach }) => `${window.innerHeight - attach}px`};
 `;
 
 export default MapPage;

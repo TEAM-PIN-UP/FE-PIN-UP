@@ -1,11 +1,12 @@
-import styled from "styled-components";
-import alertIcon from "@/image/icons/alertCircleRed.svg";
-import { B4 } from "@/style/font";
 import { useEffect } from "react";
+import styled from "styled-components";
+
+import alertIcon from "@/image/icons/alertCircleRed.svg";
 import { useToastStore } from "@/store";
+import { B4 } from "@/style/font";
 
 interface ToastStyle {
-  toastOn: boolean;
+  $toastOn: boolean;
 }
 
 const Toast: React.FC = () => {
@@ -18,10 +19,10 @@ const Toast: React.FC = () => {
       }, 4000);
       return () => clearTimeout(timer);
     }
-  }, [toastOn]);
+  }, [pop, toastOn]);
 
   return (
-    <StToast toastOn={toastOn}>
+    <StToast $toastOn={toastOn}>
       <img src={alertIcon} alt="alert" />
       <span>{text}</span>
     </StToast>
@@ -34,7 +35,7 @@ const StToast = styled.div<ToastStyle>`
   left: 50%;
   transform: translate(-50%, 0);
   display: flex;
-  opacity: ${(props) => (props.toastOn ? 1 : 0)};
+  opacity: ${(props) => (props.$toastOn ? 1 : 0)};
   transition: opacity 1s;
   align-items: center;
   width: max-content;
