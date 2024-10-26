@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { Sheet } from "react-modal-sheet";
+import { useEffect, useRef, useState } from "react";
+import { Sheet, SheetRef } from "react-modal-sheet";
 import {
   Container as MapDiv,
   NaverMap,
@@ -41,8 +41,8 @@ const MapPage: React.FC = () => {
   useMapSetup(map, user, defaultZoom, setActivePinIndex);
 
   // Bottom sheet logic
-  const { snapPoints, attachRef, sheetHeaderRef, searchHeaderRef } =
-    useBottomSheetSnapPoints();
+  const sheetRef = useRef<SheetRef>();
+  const { snapPoints, attachRef, sheetHeaderRef } = useBottomSheetSnapPoints();
   const [left, setLeft] = useState(0);
   const updateLeftPosition = () => {
     const newLeft = window.innerWidth > 440 ? (window.innerWidth - 440) / 2 : 0;
@@ -99,6 +99,7 @@ const MapPage: React.FC = () => {
           </NaverMap>
 
           <StSheet
+            ref={sheetRef}
             isOpen={true}
             onClose={() => {}}
             snapPoints={snapPoints}
@@ -107,24 +108,32 @@ const MapPage: React.FC = () => {
             left={left}
           >
             <Sheet.Container>
-              <Sheet.Header ref={sheetHeaderRef} />
-              <SearchHeader ref={searchHeaderRef} />
-              <StSheetContent disableDrag={true}>
+              <Sheet.Header ref={sheetHeaderRef}>
+                <Sheet.Header />
+                <SearchHeader />
+              </Sheet.Header>
+              <Sheet.Content style={{ paddingBottom: sheetRef.current?.y }}>
                 {isLoading && <span>Loading...</span>}
                 {error && <span>Error</span>}
-                {data &&
-                  activePinIndex === null &&
-                  data.map((item, index) => (
-                    <Restaurant
-                      key={index}
-                      name={item.name}
-                      averageRating={item.averageRating}
-                      defaultImgUrl={item.defaultImgUrl}
-                    />
-                  ))}
-                {activePinIndex !== null && <Review />}
-              </StSheetContent>
-              <StGap attach={attachRef.current?.offsetHeight ?? 85} />
+                <Sheet.Scroller>
+                  {data &&
+                    activePinIndex === null &&
+                    data.map((item, index) => (
+                      <Restaurant
+                        key={index}
+                        name={item.name}
+                        averageRating={item.averageRating}
+                        defaultImgUrl={item.defaultImgUrl}
+                      />
+                    ))}
+                  {activePinIndex !== null && <Review />}
+                  <StGap
+                    attachHeight={
+                      attachRef.current?.offsetHeight ?? window.innerHeight - 65
+                    }
+                  />
+                </Sheet.Scroller>
+              </Sheet.Content>
             </Sheet.Container>
           </StSheet>
         </StMapDiv>
@@ -151,15 +160,8 @@ const StSheet = styled(Sheet)<{ left: number }>`
   left: ${({ left }) => `${left}px !important`};
 `;
 
-const StSheetContent = styled(Sheet.Content)`
-  overflow-y: auto;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const StGap = styled.div<{ attach: number }>`
-  height: ${({ attach }) => `${window.innerHeight - attach + 20}px`};
+const StGap = styled.div<{ attachHeight: number }>`
+  height: ${({ attachHeight: attach }) => `${window.innerHeight - attach}px`};
 `;
 
 export default MapPage;

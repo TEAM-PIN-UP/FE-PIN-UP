@@ -5,24 +5,17 @@ const useBottomSheetSnapPoints = () => {
 
   const attachRef = useRef<HTMLDivElement>(null);
   const sheetHeaderRef = useRef<HTMLDivElement>(null);
-  const searchHeaderRef = useRef<HTMLDivElement>(null);
 
   const calculateSnapPoints = useCallback(() => {
-    if (
-      attachRef.current &&
-      sheetHeaderRef.current &&
-      searchHeaderRef.current
-    ) {
+    if (attachRef.current && sheetHeaderRef.current) {
       const screenHeight = window.innerHeight;
       const attachHeight = attachRef.current.offsetHeight;
       const navbarHeight = screenHeight - attachHeight;
 
       const sheetHeaderHeight = sheetHeaderRef.current.offsetHeight;
-      const searchHeaderHeight = searchHeaderRef.current.offsetHeight;
 
-      const topSnap = (screenHeight - 28) / screenHeight;
-      const bottomSnap =
-        (sheetHeaderHeight + searchHeaderHeight + navbarHeight) / screenHeight;
+      const topSnap = -28 / screenHeight;
+      const bottomSnap = (sheetHeaderHeight + navbarHeight) / screenHeight;
 
       setSnapPoints([topSnap, 0.5, bottomSnap]);
     }
@@ -36,8 +29,6 @@ const useBottomSheetSnapPoints = () => {
 
     if (attachRef.current) resizeObserver.observe(attachRef.current);
     if (sheetHeaderRef.current) resizeObserver.observe(sheetHeaderRef.current);
-    if (searchHeaderRef.current)
-      resizeObserver.observe(searchHeaderRef.current);
 
     return () => resizeObserver.disconnect();
   }, [calculateSnapPoints]);
@@ -52,7 +43,7 @@ const useBottomSheetSnapPoints = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, [calculateSnapPoints]);
 
-  return { snapPoints, attachRef, sheetHeaderRef, searchHeaderRef };
+  return { snapPoints, attachRef, sheetHeaderRef };
 };
 
 export default useBottomSheetSnapPoints;
