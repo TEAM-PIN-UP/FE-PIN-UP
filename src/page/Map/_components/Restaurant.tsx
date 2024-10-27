@@ -39,53 +39,44 @@ const Restaurant: React.FC<RestaurantProps> = ({
 
 const StRestaurant = styled.div`
   width: 100%;
-  
   .container {
     width: 375px;
     padding: var(--spacing_20);
     margin: 0 auto;
-
     .infoContainer {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       align-self: stretch;
       padding-bottom: var(--spacing_16);
-
       .textContainer {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         gap: var(--spacing_6);
-
         .title {
           ${H3};
           color: var(--neutral_800);
         }
-
         .rating {
           ${H4};
           color: var(--neutral_800);
           text-align: center;
         }
-
         .detail {
           display: flex;
           align-items: flex-start;
           gap: 0.5rem;
-
           .distance {
             ${B4};
             color: var(--neutral_500);
           }
-
           .reviewNum {
             ${B4};
             color: var(--neutral_700);
           }
         }
       }
-
       .profile {
         width: 26px;
         height: 26px;
@@ -95,7 +86,6 @@ const StRestaurant = styled.div`
       }
     }
   }
-
   .gap {
     height: 8px;
     align-self: stretch;
