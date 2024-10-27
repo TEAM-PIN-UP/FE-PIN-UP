@@ -64,6 +64,7 @@ const StReviewSingle = styled.div`
         }
         .name {
           ${H4}
+          color: var(--neutral_800);
         }
         .star {
           width: 16px;
@@ -95,6 +96,7 @@ const StReviewSingle = styled.div`
       display: flex;
       ${D2}
       text-align: left;
+      color: var(--neutral_700);
     }
   }
 `;
