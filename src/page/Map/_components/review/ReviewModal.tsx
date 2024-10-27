@@ -1,7 +1,8 @@
-import { B4 } from "@/style/font";
 import styled from "styled-components";
+
 import edit from "@/image/icons/edit.svg";
 import trash from "@/image/icons/trash.svg";
+import { B4 } from "@/style/font";
 
 interface ReviewModalProps {
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -59,7 +60,7 @@ const StReviewModal = styled.div`
     }
   }
   .midLine {
-    margin: 0;
+    margin: 0 !important;
     background-color: var(--neutral_200);
   }
 `;

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { Sheet } from "react-modal-sheet";
 import {
   Container as MapDiv,
@@ -10,11 +11,11 @@ import styled from "styled-components";
 
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useMapSetup from "@/hooks/useMapSetup";
-import { useQuery } from "@tanstack/react-query";
+import PinMarker from "./_components/PinMarker";
 import Restaurant, { RestaurantProps } from "./_components/Restaurant";
 import SearchHeader from "./_components/SearchHeader";
 import UserPositionMarker from "./_components/UserPositionMarker";
-import InactivePinMarker from "./_components/markers/InactivePinMarker";
+import Review from "./_components/review/Review";
 
 interface PinProps extends RestaurantProps {
   latitude: number;
@@ -30,24 +31,39 @@ const fetchPlaces = async (): Promise<PinProps[]> => {
 };
 
 const MapPage: React.FC = () => {
+  // Geolocation and map setup
   const naverMaps = useNavermaps();
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [user, setUser] = useState<naver.maps.Marker | null>(null);
+  const [activePinIndex, setActivePinIndex] = useState<number | null>(null);
   const defaultCenter = new naverMaps.LatLng(37.6077842, 127.0270642);
   const defaultZoom = 18;
-
-  // Initialize geolocation and map setup
-  useMapSetup(map, user, defaultZoom);
+  useMapSetup(map, user, defaultZoom, setActivePinIndex);
 
   // Bottom sheet logic
   const { snapPoints, attachRef, sheetHeaderRef, searchHeaderRef } =
     useBottomSheetSnapPoints();
+  const [left, setLeft] = useState(0);
+  const updateLeftPosition = () => {
+    const newLeft = window.innerWidth > 440 ? (window.innerWidth - 440) / 2 : 0;
+    setLeft(newLeft);
+  };
 
   // Fetch data
   const { data, error, isLoading } = useQuery({
     queryKey: ["places"],
     queryFn: fetchPlaces,
   });
+
+  useEffect(() => {
+    // Update bottom sheet alignment on window resize
+    updateLeftPosition();
+    window.addEventListener("resize", updateLeftPosition);
+
+    return () => {
+      window.removeEventListener("resize", updateLeftPosition);
+    };
+  }, [map]);
 
   return (
     <StDiv ref={attachRef}>
@@ -61,10 +77,17 @@ const MapPage: React.FC = () => {
             <UserPositionMarker ref={setUser} />
             {data &&
               data.map((item, index) => (
-                <InactivePinMarker
+                <PinMarker
                   key={index}
-                  type="food"
+                  active={activePinIndex === index}
+                  type="cafe"
                   name={item.name}
+                  image={item.defaultImgUrl}
+                  count={Math.floor(Math.random() * 5 + 1).toString()}
+                  onClick={() => {
+                    setActivePinIndex(index);
+                    console.log(index);
+                  }}
                   defaultPosition={
                     new naverMaps.LatLng(
                       item.longitude / 1e7,
@@ -81,6 +104,7 @@ const MapPage: React.FC = () => {
             snapPoints={snapPoints}
             initialSnap={1}
             mountPoint={attachRef.current!}
+            left={left}
           >
             <Sheet.Container>
               <Sheet.Header ref={sheetHeaderRef} />
@@ -89,6 +113,7 @@ const MapPage: React.FC = () => {
                 {isLoading && <span>Loading...</span>}
                 {error && <span>Error</span>}
                 {data &&
+                  activePinIndex === null &&
                   data.map((item, index) => (
                     <Restaurant
                       key={index}
@@ -97,6 +122,7 @@ const MapPage: React.FC = () => {
                       defaultImgUrl={item.defaultImgUrl}
                     />
                   ))}
+                {activePinIndex !== null && <Review />}
               </StSheetContent>
               <StGap attach={attachRef.current?.offsetHeight ?? 85} />
             </Sheet.Container>
@@ -117,14 +143,12 @@ const StMapDiv = styled(MapDiv)`
   height: 100%;
 `;
 
-const StSheet = styled(Sheet)`
+const StSheet = styled(Sheet)<{ left: number }>`
   display: flex;
   justify-content: center;
   max-width: 440px;
   min-width: 320px;
-  left: ${window.innerWidth > 440
-    ? `${(window.innerWidth - 440) / 2}px !important`
-    : "0px"};
+  left: ${({ left }) => `${left}px !important`};
 `;
 
 const StSheetContent = styled(Sheet.Content)`
