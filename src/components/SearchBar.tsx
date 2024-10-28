@@ -11,8 +11,8 @@ interface SearchBarProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onChange, ...rest }) => {
-  const [inputValue, setInputValue] = useState("");
-  const [isFocused, setIsFocused] = useState(false);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [isFocused, setIsFocused] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
