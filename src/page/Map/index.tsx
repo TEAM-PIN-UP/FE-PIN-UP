@@ -13,9 +13,9 @@ import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useMapSetup from "@/hooks/useMapSetup";
 import PinMarker from "./_components/PinMarker";
 import Restaurant, { RestaurantProps } from "./_components/Restaurant";
-import ReviewHeader from "./_components/ReviewHeader";
-import SearchHeader from "./_components/SearchHeader";
 import UserPositionMarker from "./_components/UserPositionMarker";
+import ReviewHeader from "./_components/headers/ReviewHeader";
+import SearchHeader from "./_components/headers/SearchHeader";
 import Review from "./_components/review/Review";
 
 interface PinProps extends RestaurantProps {

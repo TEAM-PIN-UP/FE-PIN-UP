@@ -34,7 +34,7 @@ const StHeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 var(--spacing_20);
+  padding: var(--spacing_8) var(--spacing_20);
 `;
 
 const StBackButton = styled.button`
