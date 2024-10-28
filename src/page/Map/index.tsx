@@ -113,6 +113,7 @@ const MapPage: React.FC = () => {
           >
             <Sheet.Container>
               <Sheet.Header ref={sheetHeaderRef}>
+                <Sheet.Header />
                 {!isReviewView && <SearchHeader />}
                 {isReviewView && (
                   <ReviewHeader onBack={() => setIsReviewView(false)} />
