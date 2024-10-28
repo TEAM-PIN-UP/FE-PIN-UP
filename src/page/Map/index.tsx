@@ -14,6 +14,7 @@ import useMapSetup from "@/hooks/useMapSetup";
 import PinMarker from "./_components/PinMarker";
 import Restaurant, { RestaurantProps } from "./_components/Restaurant";
 import SearchHeader from "./_components/SearchHeader";
+import ReviewHeader from "./_components/ReviewHeader";
 import UserPositionMarker from "./_components/UserPositionMarker";
 import Review from "./_components/review/Review";
 
@@ -48,6 +49,9 @@ const MapPage: React.FC = () => {
     const newLeft = window.innerWidth > 440 ? (window.innerWidth - 440) / 2 : 0;
     setLeft(newLeft);
   };
+
+  // Header State
+  const [isReviewView, setIsReviewView] = useState<bool>(false);
 
   // Fetch data
   const { data, error, isLoading } = useQuery({
@@ -108,21 +112,39 @@ const MapPage: React.FC = () => {
           >
             <Sheet.Container>
               <Sheet.Header ref={sheetHeaderRef} />
-              <SearchHeader ref={searchHeaderRef} />
+              {!isReviewView && <SearchHeader ref={searchHeaderRef} />}
+              {isReviewView && (
+                <ReviewHeader onBack={() => setIsReviewView(false)} />
+              )}
               <StSheetContent disableDrag={true}>
                 {isLoading && <span>Loading...</span>}
                 {error && <span>Error</span>}
                 {data &&
+                  !isReviewView &&
                   activePinIndex === null &&
                   data.map((item, index) => (
-                    <Restaurant
-                      key={index}
-                      name={item.name}
-                      averageRating={item.averageRating}
-                      defaultImgUrl={item.defaultImgUrl}
-                    />
+                    <div key={index} onClick={() => setIsReviewView(true)}>
+                      <Restaurant
+                        name={item.name}
+                        averageRating={item.averageRating}
+                        defaultImgUrl={item.defaultImgUrl}
+                      />
+                    </div>
                   ))}
-                {activePinIndex !== null && <Review />}
+                {(isReviewView || activePinIndex !== null) && (
+                  <>
+                    <Restaurant
+                      name={data?.[activePinIndex ?? 0].name ?? ""}
+                      averageRating={
+                        data?.[activePinIndex ?? 0].averageRating ?? 0
+                      }
+                      defaultImgUrl={
+                        data?.[activePinIndex ?? 0].defaultImgUrl ?? ""
+                      }
+                    />
+                    <Review />
+                  </>
+                )}
               </StSheetContent>
               <StGap attach={attachRef.current?.offsetHeight ?? 85} />
             </Sheet.Container>
