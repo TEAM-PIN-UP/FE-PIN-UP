@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { Sheet } from "react-modal-sheet";
+import { useEffect, useRef, useState } from "react";
+import { Sheet, SheetRef } from "react-modal-sheet";
 import {
   Container as MapDiv,
   NaverMap,
@@ -13,9 +13,9 @@ import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useMapSetup from "@/hooks/useMapSetup";
 import PinMarker from "./_components/PinMarker";
 import Restaurant, { RestaurantProps } from "./_components/Restaurant";
-import SearchHeader from "./_components/SearchHeader";
-import ReviewHeader from "./_components/ReviewHeader";
 import UserPositionMarker from "./_components/UserPositionMarker";
+import ReviewHeader from "./_components/headers/ReviewHeader";
+import SearchHeader from "./_components/headers/SearchHeader";
 import Review from "./_components/review/Review";
 
 interface PinProps extends RestaurantProps {
@@ -42,8 +42,8 @@ const MapPage: React.FC = () => {
   useMapSetup(map, user, defaultZoom, setActivePinIndex);
 
   // Bottom sheet logic
-  const { snapPoints, attachRef, sheetHeaderRef, searchHeaderRef } =
-    useBottomSheetSnapPoints();
+  const sheetRef = useRef<SheetRef>();
+  const { snapPoints, attachRef, sheetHeaderRef } = useBottomSheetSnapPoints();
   const [left, setLeft] = useState(0);
   const updateLeftPosition = () => {
     const newLeft = window.innerWidth > 440 ? (window.innerWidth - 440) / 2 : 0;
@@ -51,7 +51,7 @@ const MapPage: React.FC = () => {
   };
 
   // Header State
-  const [isReviewView, setIsReviewView] = useState<bool>(false);
+  const [isReviewView, setIsReviewView] = useState(false);
 
   // Fetch data
   const { data, error, isLoading } = useQuery({
@@ -103,6 +103,7 @@ const MapPage: React.FC = () => {
           </NaverMap>
 
           <StSheet
+            ref={sheetRef}
             isOpen={true}
             onClose={() => {}}
             snapPoints={snapPoints}
@@ -111,42 +112,51 @@ const MapPage: React.FC = () => {
             left={left}
           >
             <Sheet.Container>
-              <Sheet.Header ref={sheetHeaderRef} />
-              {!isReviewView && <SearchHeader ref={searchHeaderRef} />}
-              {isReviewView && (
-                <ReviewHeader onBack={() => setIsReviewView(false)} />
-              )}
-              <StSheetContent disableDrag={true}>
+              <Sheet.Header ref={sheetHeaderRef}>
+                <Sheet.Header />
+                {!isReviewView && <SearchHeader />}
+                {isReviewView && (
+                  <ReviewHeader onBack={() => setIsReviewView(false)} />
+                )}
+              </Sheet.Header>
+              <Sheet.Content style={{ paddingBottom: sheetRef.current?.y }}>
                 {isLoading && <span>Loading...</span>}
                 {error && <span>Error</span>}
-                {data &&
-                  !isReviewView &&
-                  activePinIndex === null &&
-                  data.map((item, index) => (
-                    <div key={index} onClick={() => setIsReviewView(true)}>
+                <Sheet.Scroller>
+                  {data &&
+                    !isReviewView &&
+                    activePinIndex === null &&
+                    data.map((item, index) => (
+                      <div key={index} onClick={() => setIsReviewView(true)}>
+                        <Restaurant
+                          key={index}
+                          name={item.name}
+                          averageRating={item.averageRating}
+                          defaultImgUrl={item.defaultImgUrl}
+                        />
+                      </div>
+                    ))}
+                  {(isReviewView || activePinIndex !== null) && (
+                    <>
                       <Restaurant
-                        name={item.name}
-                        averageRating={item.averageRating}
-                        defaultImgUrl={item.defaultImgUrl}
+                        name={data?.[activePinIndex ?? 0].name ?? ""}
+                        averageRating={
+                          data?.[activePinIndex ?? 0].averageRating ?? 0
+                        }
+                        defaultImgUrl={
+                          data?.[activePinIndex ?? 0].defaultImgUrl ?? ""
+                        }
                       />
-                    </div>
-                  ))}
-                {(isReviewView || activePinIndex !== null) && (
-                  <>
-                    <Restaurant
-                      name={data?.[activePinIndex ?? 0].name ?? ""}
-                      averageRating={
-                        data?.[activePinIndex ?? 0].averageRating ?? 0
-                      }
-                      defaultImgUrl={
-                        data?.[activePinIndex ?? 0].defaultImgUrl ?? ""
-                      }
-                    />
-                    <Review />
-                  </>
-                )}
-              </StSheetContent>
-              <StGap attach={attachRef.current?.offsetHeight ?? 85} />
+                      <Review />
+                    </>
+                  )}
+                </Sheet.Scroller>
+              </Sheet.Content>
+              <StGap
+                $attachHeight={
+                  attachRef.current?.offsetHeight ?? window.innerHeight - 65
+                }
+              />
             </Sheet.Container>
           </StSheet>
         </StMapDiv>
@@ -173,15 +183,8 @@ const StSheet = styled(Sheet)<{ left: number }>`
   left: ${({ left }) => `${left}px !important`};
 `;
 
-const StSheetContent = styled(Sheet.Content)`
-  overflow-y: auto;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const StGap = styled.div<{ attach: number }>`
-  height: ${({ attach }) => `${window.innerHeight - attach + 20}px`};
+const StGap = styled.div<{ $attachHeight: number }>`
+  height: ${({ $attachHeight }) => `${window.innerHeight - $attachHeight}px`};
 `;
 
 export default MapPage;

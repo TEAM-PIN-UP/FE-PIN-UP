@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import arrowLeft from "@/image/icons/arrowLeft.svg";
+import edit from "@/image/icons/edit.svg";
 import scrapActive from "@/image/icons/scrapActive.svg";
 import scrapInactive from "@/image/icons/scrapInactive.svg";
-import edit from "@/image/icons/edit.svg";
 
 interface SearchHeaderProps {
   onBack: () => void;
 }
 
 const SearchHeader: React.FC<SearchHeaderProps> = ({ onBack }) => {
-  const [isScraped, setIsScraped] = useState<bool>(false);
+  const [isScraped, setIsScraped] = useState(false);
 
   return (
     <StHeaderContainer>
@@ -34,7 +34,7 @@ const StHeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 var(--spacing_20);
+  padding: var(--spacing_8) var(--spacing_20);
 `;
 
 const StBackButton = styled.button`

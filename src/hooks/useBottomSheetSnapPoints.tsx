@@ -1,43 +1,49 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const useBottomSheetSnapPoints = () => {
-  const [snapPoints, setSnapPoints] = useState([0.9, 0.5, 0.2]);
+  const [snapPoints, setSnapPoints] = useState([0.95, 0.5, 0.25]);
+
   const attachRef = useRef<HTMLDivElement>(null);
   const sheetHeaderRef = useRef<HTMLDivElement>(null);
-  const searchHeaderRef = useRef<HTMLDivElement>(null);
 
-  // Calculate bottom sheet minimum snap point at page load
-  useEffect(() => {
-    // Use delay to wait until ref elements are rendered
-    const timer = setTimeout(() => {
-      if (
-        attachRef.current &&
-        sheetHeaderRef.current &&
-        searchHeaderRef.current
-      ) {
-        // Get navbar height
-        const screenHeight = window.innerHeight;
-        const attachHeight = attachRef.current.offsetHeight; // Height of the component the modal sheet is attached to
-        const navbarHeight = screenHeight - attachHeight;
+  const calculateSnapPoints = useCallback(() => {
+    if (attachRef.current && sheetHeaderRef.current) {
+      const screenHeight = window.innerHeight;
+      const attachHeight = attachRef.current.offsetHeight;
+      const navbarHeight = screenHeight - attachHeight;
 
-        // Get sheet header & search header height
-        const sheetHeaderHeight = sheetHeaderRef.current.offsetHeight;
-        const searchHeaderHeight = searchHeaderRef.current.offsetHeight;
+      const sheetHeaderHeight = sheetHeaderRef.current.offsetHeight;
 
-        // Calculate bottom snap position
-        const topSnap = (screenHeight - 28) / screenHeight;
-        const bottomSnap =
-          (sheetHeaderHeight + searchHeaderHeight + navbarHeight) /
-          screenHeight;
+      const topSnap = -28 / screenHeight;
+      const bottomSnap = (sheetHeaderHeight + navbarHeight) / screenHeight;
 
-        setSnapPoints((prev) => [topSnap, prev[1], bottomSnap]);
-      }
-    }, 0);
-
-    return () => clearTimeout(timer);
+      setSnapPoints([topSnap, 0.5, bottomSnap]);
+    }
   }, []);
 
-  return { snapPoints, attachRef, sheetHeaderRef, searchHeaderRef };
+  // ResizeObserver tracks component size changes
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(() => {
+      calculateSnapPoints();
+    });
+
+    if (attachRef.current) resizeObserver.observe(attachRef.current);
+    if (sheetHeaderRef.current) resizeObserver.observe(sheetHeaderRef.current);
+
+    return () => resizeObserver.disconnect();
+  }, [calculateSnapPoints]);
+
+  // Update snap points on window resize
+  useEffect(() => {
+    const handleResize = () => calculateSnapPoints();
+    window.addEventListener("resize", handleResize);
+
+    calculateSnapPoints();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, [calculateSnapPoints]);
+
+  return { snapPoints, attachRef, sheetHeaderRef };
 };
 
 export default useBottomSheetSnapPoints;

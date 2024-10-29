@@ -13,7 +13,7 @@ import uploadActive from "@/image/icons/uploadActive.svg";
 import uploadInactive from "@/image/icons/uploadInactive.svg";
 
 interface styleProps {
-  path: string;
+  $path: string;
 }
 
 const NavBar: React.FC = () => {
@@ -26,7 +26,7 @@ const NavBar: React.FC = () => {
   }, [location]);
 
   return (
-    <StNavBar path={path}>
+    <StNavBar $path={path}>
       {path === "map" ? (
         <img src={mapPinActive} />
       ) : (
@@ -86,9 +86,9 @@ const StNavBar = styled.div<styleProps>`
     height: 26px;
     border-radius: 50%;
     border: ${(props) =>
-      props.path === "profile" ? "1.6px solid var(--black)" : "none"};
+      props.$path === "profile" ? "1.6px solid var(--black)" : "none"};
     box-sizing: border-box;
-    cursor: ${(props) => (props.path === "profile" ? "default" : "pointer")};
+    cursor: ${(props) => (props.$path === "profile" ? "default" : "pointer")};
   }
   .inactive {
     cursor: pointer;

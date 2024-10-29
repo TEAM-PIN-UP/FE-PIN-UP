@@ -40,7 +40,6 @@ const Restaurant: React.FC<RestaurantProps> = ({
 const StRestaurant = styled.div`
   width: 100%;
   .container {
-    width: 375px;
     padding: var(--spacing_20);
     margin: 0 auto;
     .infoContainer {
