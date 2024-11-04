@@ -32,7 +32,7 @@ const StImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: var(--radius_12);
+  border-radius: var(--radius_8);
   opacity: 1;
 `;
 
