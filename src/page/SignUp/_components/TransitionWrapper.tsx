@@ -1,16 +1,20 @@
 import { motion } from "framer-motion";
-import React from "react";
+import React, { CSSProperties } from "react";
 
 export type TransitionDirection = "forward" | "backward";
 
 interface TransitionWrapperProps {
   direction: TransitionDirection;
   children: React.ReactNode;
+  className?: string;
+  style?: CSSProperties;
 }
 
 const TransitionWrapper: React.FC<TransitionWrapperProps> = ({
   direction,
   children,
+  className,
+  style,
 }) => {
   const transitionVariants = {
     initial:
@@ -31,6 +35,8 @@ const TransitionWrapper: React.FC<TransitionWrapperProps> = ({
       animate="animate"
       variants={transitionVariants}
       transition={{ duration: 0.5 }}
+      className={className}
+      style={style}
     >
       {children}
     </motion.div>
