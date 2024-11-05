@@ -30,13 +30,20 @@ const SearchBar: React.FC<SearchBarProps> = ({ onChange, ...rest }) => {
   const handleClear = () => {
     setInputValue("");
     setIsFocused(false);
-    if (onChange) onChange({ target: { value: "" } } as React.ChangeEvent<HTMLInputElement>);
+    if (onChange)
+      onChange({
+        target: { value: "" },
+      } as React.ChangeEvent<HTMLInputElement>);
     if (inputRef.current) inputRef.current.blur();
   };
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (inputRef.current && !inputRef.current.contains(e.target as Node) && !inputValue) {
+      if (
+        inputRef.current &&
+        !inputRef.current.contains(e.target as Node) &&
+        !inputValue
+      ) {
         setIsFocused(false);
       }
     };
@@ -47,7 +54,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onChange, ...rest }) => {
     };
   }, [inputValue]);
 
-  const icon = (!isFocused && !inputValue) ? search : chevronLeft;
+  const icon = !isFocused && !inputValue ? search : chevronLeft;
   const showClearIcon = inputValue.length > 0;
 
   return (
@@ -78,6 +85,7 @@ const StSearchBarContainer = styled.div`
   background-color: var(--neutral_50);
   border-radius: var(--radius_circle);
   padding: 0 var(--spacing_12);
+  box-sizing: border-box;
   width: 100%;
 `;
 
