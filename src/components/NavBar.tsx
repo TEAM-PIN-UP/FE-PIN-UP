@@ -51,7 +51,7 @@ const NavBar: React.FC = () => {
         <img
           src={uploadInactive}
           className="inactive"
-          onClick={() => navigate("/upload")}
+          onClick={() => navigate("/review")}
         />
       )}
       {path === "contents" ? (

@@ -6,7 +6,7 @@ import ContentsPage from "@/page/Contents";
 import LandingPage from "@/page/Landing";
 import MapPage from "@/page/Map";
 import ProfilePage from "@/page/Profile";
-import UploadPage from "@/page/Upload";
+import ReviewPage from "@/page/Review";
 
 const router = createBrowserRouter([
   {
@@ -22,8 +22,8 @@ const router = createBrowserRouter([
         element: <MapPage />,
       },
       {
-        path: "/upload",
-        element: <UploadPage />,
+        path: "/review",
+        element: <ReviewPage />,
       },
       {
         path: "/bookmark",
