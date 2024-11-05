@@ -26,6 +26,7 @@ const StSearchResult = styled.div`
   }
   .results {
     display: grid;
+    gap: var(--spacing_24);
   }
 `;
 
