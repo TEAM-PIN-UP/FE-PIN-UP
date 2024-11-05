@@ -124,14 +124,14 @@ export const D1 = css`
   font-family: "SansVariable";
   font-size: 14px;
   font-weight: 400;
-  line-height: 140%;
+  line-height: 160%;
   letter-spacing: -0.28px;
 `;
 
 export const D2 = css`
   font-family: "SansVariable";
   font-size: 12px;
-  font-weight: 400;
-  line-height: 140%;
+  font-weight: 500;
+  line-height: 160%;
   letter-spacing: -0.24px;
 `;
