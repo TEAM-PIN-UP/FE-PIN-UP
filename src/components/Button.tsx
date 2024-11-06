@@ -4,7 +4,7 @@ import styled, { CSSProp } from "styled-components";
 import { H3, H4, H5 } from "@/style/font";
 
 interface buttonProps {
-  size: "large" | "medium" | "small";
+  size: "large" | "medium" | "small" | "xlarge";
   active: boolean;
   onClick: () => void;
   children: React.ReactNode;
@@ -40,7 +40,7 @@ const Button: React.FC<buttonProps> = ({ size, active, onClick, children }) => {
       setPadding("13.5px 40px");
       setTypo(H4);
     } else if (size === "xlarge") {
-      setWidth("335px");
+      setWidth("calc( 100% - 40px )");
       setHeight(51);
       setPadding("16px 0px");
       setTypo(H3);
