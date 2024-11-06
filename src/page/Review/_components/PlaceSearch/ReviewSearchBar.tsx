@@ -2,17 +2,22 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 
 import search from "@/image/icons/search.svg";
-import chevronLeft from "@/image/icons/chevronLeft.svg";
 import xCircle from "@/image/icons/xCircle.svg";
 import { B2 } from "@/style/font";
 
 interface SearchBarProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void;
+  infoHideFunc: () => void;
+  infoShowFunc: () => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onChange, ...rest }) => {
+const ReviewSearchBar: React.FC<SearchBarProps> = ({
+  onChange,
+  infoShowFunc,
+  infoHideFunc,
+  ...rest
+}) => {
   const [inputValue, setInputValue] = useState<string>("");
-  const [isFocused, setIsFocused] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,16 +25,18 @@ const SearchBar: React.FC<SearchBarProps> = ({ onChange, ...rest }) => {
     if (onChange) onChange(e);
   };
 
-  const handleFocus = () => setIsFocused(true);
+  const handleFocus = () => {
+    infoHideFunc();
+  };
+
   const handleBlur = () => {
     if (!inputValue) {
-      setIsFocused(false);
+      infoShowFunc();
     }
   };
 
   const handleClear = () => {
     setInputValue("");
-    setIsFocused(false);
     if (onChange)
       onChange({
         target: { value: "" },
@@ -44,7 +51,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onChange, ...rest }) => {
         !inputRef.current.contains(e.target as Node) &&
         !inputValue
       ) {
-        setIsFocused(false);
+        infoShowFunc();
       }
     };
 
@@ -54,13 +61,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ onChange, ...rest }) => {
     };
   }, [inputValue]);
 
-  const icon = !isFocused && !inputValue ? search : chevronLeft;
   const showClearIcon = inputValue.length > 0;
 
   return (
     <StSearchBarContainer>
       <StIconWrapper>
-        <img src={icon} alt="Search icon" />
+        <img src={search} alt="Search icon" />
       </StIconWrapper>
       <StInput
         ref={inputRef}
@@ -85,6 +91,7 @@ const StSearchBarContainer = styled.div`
   background-color: var(--neutral_50);
   border-radius: var(--radius_circle);
   padding: 0 var(--spacing_12);
+  margin-top: 28px;
   box-sizing: border-box;
   width: 100%;
 `;
@@ -115,4 +122,4 @@ const StClear = styled.div`
   padding: var(--spacing_10) var(--spacing_12);
 `;
 
-export default SearchBar;
+export default ReviewSearchBar;
