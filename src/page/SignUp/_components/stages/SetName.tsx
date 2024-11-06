@@ -1,12 +1,37 @@
+import { useState } from "react";
+import styled, { css, keyframes } from "styled-components";
+
 import Button from "@/components/Button";
 import TextInput from "@/components/TextInput";
 import { B3, B5, H1 } from "@/style/font";
-import styled from "styled-components";
 import { StageProps } from "./StageProps";
 
 const charLimit = 12;
+const shake = keyframes`
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+  `;
 
 const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
+  const [isInputValid, setIsInputValid] = useState(true);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length <= charLimit) {
+      updateData({ name: value });
+
+      // English and Korean letters + jamo
+      const regex =
+        /^[a-zA-Z\u1100-\u1112\u1161-\u1175\u3130-\u318F\uAC00-\uD7A3]*$/;
+      setIsInputValid(regex.test(value));
+    } else {
+      setIsInputValid(false);
+    }
+  };
+
   return (
     <>
       <StTextContainer>
@@ -21,13 +46,14 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
       <StInputContainer>
         <TextInput
           placeholder="닉네임 입력"
+          maxLength={charLimit}
           value={data.name}
-          onChange={(e) => updateData({ name: e.target.value })}
+          onChange={handleInputChange}
           style={{ width: "100%" }}
         />
-        <StGap height="4px" />
+        <StGap height="6px" />
         <StCharLimit>
-          <StB5>한글, 영문만 입력 가능</StB5>
+          <StB5 $isInvalid={!isInputValid}>한글, 영문만 입력 가능</StB5>
           <StB5>
             {data.name.length} / {charLimit}
           </StB5>
@@ -80,9 +106,15 @@ const StB3 = styled.div`
   color: var(--neutral_500);
 `;
 
-const StB5 = styled.div`
+const StB5 = styled.div<{ $isInvalid?: boolean }>`
   ${B5}
-  color: var(--neutral_500);
+  color: ${({ $isInvalid }) => ($isInvalid ? "red" : "var(--neutral_500)")};
+  animation: ${({ $isInvalid }) =>
+    $isInvalid
+      ? css`
+          ${shake} 0.25s
+        `
+      : "none"};
 `;
 
 const StGap = styled.div<{ height: string }>`
