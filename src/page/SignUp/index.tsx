@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import styled from "styled-components";
 import Header from "./_components/Header";
-import ChooseLogin from "./_components/stages/SelectLogin";
+import SelectLogin from "./_components/stages/SelectLogin";
 import SetName from "./_components/stages/SetName";
 import SetProfile from "./_components/stages/SetProfile";
 import Tos from "./_components/stages/Tos";
@@ -37,14 +37,27 @@ const SignUpPage: React.FC = () => {
     setSignUpData((prev) => ({ ...prev, ...newData }));
   };
 
+  useEffect(() => {
+    // Use system back button for prev stage
+    const handlePopState = () => {
+      goPrev();
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
   return (
-    <StDiv>
+    <StDiv $stage={stage}>
       {stage !== 1 && <Header title="회원가입" onPrev={goPrev} />}
 
       <StContent>
         <StTransitionWrapper key={stage} direction={direction}>
           {stage === 1 && (
-            <ChooseLogin
+            <SelectLogin
               data={signUpData}
               updateData={(newData) =>
                 updateSignUpData({ loginMethod: newData.loginMethod })
@@ -83,11 +96,15 @@ const SignUpPage: React.FC = () => {
   );
 };
 
-const StDiv = styled.div`
+const StDiv = styled.div<{ $stage: number }>`
   display: flex;
   flex: 1;
   flex-direction: column;
   align-items: center;
+  color: ${({ $stage }) => ($stage === 1 ? "var(--white)" : "var(--black)")};
+  background-color: ${({ $stage }) =>
+    $stage === 1 ? "var(--black)" : "var(--white)"};
+  transition: background-color 0.5s ease, color 0.5s ease-in-out;
 `;
 
 const StContent = styled.div`
