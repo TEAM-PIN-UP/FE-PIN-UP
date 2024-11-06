@@ -3,7 +3,10 @@ import styled, { css, keyframes } from "styled-components";
 
 import Button from "@/components/Button";
 import TextInput from "@/components/TextInput";
-import { B3, B5, H1 } from "@/style/font";
+import { B5 } from "@/style/font";
+import StGap from "../typography/StGap";
+import { StB3, StH1 } from "../typography/StText";
+import StTextContainer from "../typography/StTextContainer";
 import { StageProps } from "./StageProps";
 
 const charLimit = 12;
@@ -75,13 +78,6 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
   );
 };
 
-const StTextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  width: 100%;
-`;
-
 const StInputContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -96,16 +92,6 @@ const StCharLimit = styled.div`
   padding: 0 var(--spacing_8);
 `;
 
-const StH1 = styled.h1`
-  ${H1}
-  margin: 0px;
-`;
-
-const StB3 = styled.div`
-  ${B3}
-  color: var(--neutral_500);
-`;
-
 const StB5 = styled.div<{ $isInvalid?: boolean }>`
   ${B5}
   color: ${({ $isInvalid }) => ($isInvalid ? "red" : "var(--neutral_500)")};
@@ -115,10 +101,6 @@ const StB5 = styled.div<{ $isInvalid?: boolean }>`
           ${shake} 0.25s
         `
       : "none"};
-`;
-
-const StGap = styled.div<{ height: string }>`
-  height: ${(props) => props.height};
 `;
 
 export default SetName;
