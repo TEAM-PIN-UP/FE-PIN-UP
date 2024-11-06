@@ -1,10 +1,11 @@
 import { B3, B5, C3 } from "@/style/font";
 import styled from "styled-components";
 import sample from "@/image/icons/profile.jpg";
+import { StepUp } from "./SearchResult";
 
-const SearchedPlace = () => {
+const SearchedPlace: React.FC<StepUp> = ({ stepUp }) => {
   return (
-    <StSearchedPlace>
+    <StSearchedPlace onClick={stepUp}>
       <img src={sample} />
       <div className="totalInfo">
         <div className="placeInfo">
@@ -20,6 +21,7 @@ const SearchedPlace = () => {
 const StSearchedPlace = styled.div`
   display: flex;
   width: 100%;
+  cursor: pointer;
   img {
     width: 36px;
     height: 36px;
