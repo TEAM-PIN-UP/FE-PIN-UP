@@ -7,6 +7,7 @@ import LandingPage from "@/page/Landing";
 import MapPage from "@/page/Map";
 import ProfilePage from "@/page/Profile";
 import ReviewPage from "@/page/Review";
+import SignUpPage from "@/page/SignUp";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <ProfilePage />,
+      },
+      {
+        path: "/signup",
+        element: <SignUpPage />,
       },
     ],
   },

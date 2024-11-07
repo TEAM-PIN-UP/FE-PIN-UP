@@ -3,22 +3,26 @@ import styled, { CSSProp } from "styled-components";
 
 import { H3, H4, H5 } from "@/style/font";
 
-interface buttonProps {
-  size: "large" | "medium" | "small" | "xlarge";
-  active: boolean;
+interface buttonProps extends React.HTMLAttributes<HTMLButtonElement> {
+  size: "full" | "xlarge" | "large" | "medium" | "small";
+  active?: boolean;
   onClick: () => void;
-  children: React.ReactNode;
 }
 
 interface styleProps {
   width: string;
   height: number;
-  padding: string;
-  active: boolean;
-  typo: CSSProp;
+  $padding: string;
+  $active: boolean;
+  $typo: CSSProp;
 }
 
-const Button: React.FC<buttonProps> = ({ size, active, onClick, children }) => {
+const Button: React.FC<buttonProps> = ({
+  size,
+  active = true,
+  onClick,
+  children,
+}) => {
   const [width, setWidth] = useState<string>("max-content");
   const [height, setHeight] = useState<number>(40);
   const [padding, setPadding] = useState<string>("12px 16px");
@@ -44,6 +48,11 @@ const Button: React.FC<buttonProps> = ({ size, active, onClick, children }) => {
       setHeight(51);
       setPadding("16px 0px");
       setTypo(H3);
+    } else if (size === "full") {
+      setWidth("100%");
+      setHeight(51);
+      setPadding("16px 0px");
+      setTypo(H3);
     }
   }, [size, setWidth, setHeight, setPadding, setTypo]);
 
@@ -55,9 +64,9 @@ const Button: React.FC<buttonProps> = ({ size, active, onClick, children }) => {
     <StButton
       width={width}
       height={height}
-      padding={padding}
-      active={active}
-      typo={typo}
+      $padding={padding}
+      $active={active}
+      $typo={typo}
       onClick={onClick}
       disabled={!active}
     >
@@ -73,13 +82,13 @@ const StButton = styled.button<styleProps>`
   color: var(--white);
   width: ${(props) => props.width};
   height: ${(props) => props.height}px;
-  padding: ${(props) => props.padding};
+  padding: ${(props) => props.$padding};
   background-color: ${(props) =>
-    props.active ? `var(--neutral_800)` : "var(--neutral_300)"};
+    props.$active ? `var(--neutral_800)` : "var(--neutral_300)"};
   border-radius: var(--radius_circle);
   border: none;
-  cursor: ${(props) => (props.active ? "pointer" : "default")};
-  ${(props) => props.typo}
+  cursor: ${(props) => (props.$active ? "pointer" : "default")};
+  ${(props) => props.$typo}
 `;
 
 export default Button;
