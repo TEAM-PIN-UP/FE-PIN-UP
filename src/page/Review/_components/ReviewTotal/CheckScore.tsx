@@ -6,9 +6,13 @@ import fullStar from "@/image/icons/blackStar.svg";
 import halfStar from "@/image/icons/halfBlackStar.svg";
 import ScoreModal from "./ScoreModal";
 
-const CheckScore: React.FC = () => {
+interface CheckScoreProp {
+  starScore: number;
+  setStarScore: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const CheckScore: React.FC<CheckScoreProp> = ({ starScore, setStarScore }) => {
   const [starModal, setStarModal] = useState<boolean>(false);
-  const [starScore, setStarScore] = useState<number>(0);
 
   const starShow = (score: number) => {
     const stars = [];
