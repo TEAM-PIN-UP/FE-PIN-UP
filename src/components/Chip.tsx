@@ -27,6 +27,7 @@ const StButton = styled.button<{ selected: boolean }>`
   align-items: center;
   background-color: ${({ selected }) =>
     selected ? "var(--neutral_800)" : "var(--neutral_50)"};
+  border: none;
   border-radius: var(--radius_circle);
   color: ${({ selected }) =>
     selected ? "var(--white)" : "var(--neutral_800)"};
@@ -35,6 +36,7 @@ const StButton = styled.button<{ selected: boolean }>`
   height: 36;
   justify-content: center;
   padding: var(--spacing_10) var(--spacing_12);
+  cursor: pointer;
 `;
 
 export default Chip;

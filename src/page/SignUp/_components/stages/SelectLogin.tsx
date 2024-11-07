@@ -3,15 +3,16 @@ import { styled } from "styled-components";
 import googleIcon from "../../_icons/googleIcon.png";
 import kakaoIcon from "../../_icons/kakaoIcon.png";
 import naverIcon from "../../_icons/naverIcon.svg";
-import pinupLogo from "../../_icons/pinup.svg";
+import pinupLogo from "../../_icons/pinupLogo.svg";
 import SocialSignUpButton from "../SocialSignUpButton";
+import { StB1 } from "../typography/StText";
 import { StageProps } from "./StageProps";
 
 const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
   return (
     <StDiv>
       <StLogoContainer>
-        <span>서비스 보조 설명 문구</span>
+        <StB1>서비스 보조 설명 문구</StB1>
         <img src={pinupLogo} />
       </StLogoContainer>
 

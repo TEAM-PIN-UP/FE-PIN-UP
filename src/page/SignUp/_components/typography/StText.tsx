@@ -30,8 +30,7 @@ export const StC1: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   return <_StC1 {...props}>{children}</_StC1>;
 };
 
-const _StH1 = styled.h1`
-  margin: 0px;
+const _StH1 = styled.div`
   ${H1}
 `;
 

@@ -8,7 +8,6 @@ import MapPage from "@/page/Map";
 import ProfilePage from "@/page/Profile";
 import ReviewPage from "@/page/Review";
 import SignUpPage from "@/page/SignUp";
-import UploadPage from "@/page/Upload";
 
 const router = createBrowserRouter([
   {
