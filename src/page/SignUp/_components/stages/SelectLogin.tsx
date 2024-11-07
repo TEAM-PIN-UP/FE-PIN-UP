@@ -20,7 +20,7 @@ const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
           icon={kakaoIcon}
           backgroundColor="#FAE300"
           onClick={() => {
-            updateData({ loginMethod: "kakao" });
+            updateData({ authMethod: "kakao" });
             console.log(data);
             onNext();
           }}
@@ -32,7 +32,7 @@ const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
           color="var(--white)"
           backgroundColor="#00C73C"
           onClick={() => {
-            updateData({ loginMethod: "naver" });
+            updateData({ authMethod: "naver" });
             console.log(data);
             onNext();
           }}
@@ -43,7 +43,7 @@ const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
           icon={googleIcon}
           backgroundColor="var(--white)"
           onClick={() => {
-            updateData({ loginMethod: "google" });
+            updateData({ authMethod: "google" });
             console.log(data);
             onNext();
           }}

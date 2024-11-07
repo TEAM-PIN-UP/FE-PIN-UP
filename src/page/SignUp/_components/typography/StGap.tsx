@@ -1,10 +1,6 @@
 import { styled } from "styled-components";
 
-interface StGapProps {
-  height: string;
-}
-
-const StGap: React.FC<StGapProps> = ({ height }) => {
+const StGap: React.FC<{ height: string }> = ({ height }) => {
   return <_StGap $height={height} />;
 };
 

@@ -6,6 +6,7 @@ import SelectLogin from "./_components/stages/SelectLogin";
 import SetName from "./_components/stages/SetName";
 import SetProfile from "./_components/stages/SetProfile";
 import Tos from "./_components/stages/Tos";
+import Welcome from "./_components/stages/Welcome";
 import TransitionWrapper, {
   TransitionDirection,
 } from "./_components/TransitionWrapper";
@@ -13,24 +14,32 @@ import { SignUpForm } from "./SignUpInterface";
 
 const SignUpPage: React.FC = () => {
   const [stage, setStage] = useState(1);
-  const lastStage = 4;
+  const lastStage = 5;
   const [direction, setDirection] = useState<TransitionDirection>("forward");
 
   const [signUpData, setSignUpData] = useState<SignUpForm>({
-    loginMethod: "",
+    authMethod: "",
     name: "",
     profileImage: "",
-    agreedToTerms: false,
+    agreedToTerms: { tos: false, personalInfo: false, marketing: false },
   });
 
   const goNext = () => {
     setDirection("forward");
-    setStage((s) => (s !== lastStage ? s + 1 : s));
+    setStage((s) => {
+      const nextStage = s !== lastStage ? s + 1 : s;
+      window.history.pushState({}, "", `?stage=${nextStage}`);
+      return nextStage;
+    });
   };
 
   const goPrev = () => {
     setDirection("backward");
-    setStage((s) => (s > 1 ? s - 1 : s));
+    setStage((s) => {
+      const prevStage = s > 1 ? s - 1 : s;
+      window.history.pushState({}, "", `?stage=${prevStage}`);
+      return prevStage;
+    });
   };
 
   const updateSignUpData = (newData: Partial<SignUpForm>) => {
@@ -39,7 +48,8 @@ const SignUpPage: React.FC = () => {
 
   useEffect(() => {
     // Use system back button for prev stage
-    const handlePopState = () => {
+    const handlePopState = (e: PopStateEvent) => {
+      e.preventDefault();
       goPrev();
     };
 
@@ -59,37 +69,32 @@ const SignUpPage: React.FC = () => {
           {stage === 1 && (
             <SelectLogin
               data={signUpData}
-              updateData={(newData) =>
-                updateSignUpData({ loginMethod: newData.loginMethod })
-              }
+              updateData={(newData) => updateSignUpData(newData)}
               onNext={goNext}
             />
           )}
           {stage === 2 && (
             <SetName
               data={signUpData}
-              updateData={(newData) => updateSignUpData({ name: newData.name })}
+              updateData={(newData) => updateSignUpData(newData)}
               onNext={goNext}
             />
           )}
           {stage === 3 && (
             <SetProfile
               data={signUpData}
-              updateData={(newData) =>
-                updateSignUpData({ profileImage: newData.profileImage })
-              }
+              updateData={(newData) => updateSignUpData(newData)}
               onNext={goNext}
             />
           )}
           {stage === 4 && (
             <Tos
               data={signUpData}
-              updateData={(newData) =>
-                updateSignUpData({ agreedToTerms: newData.agreedToTerms })
-              }
+              updateData={(newData) => updateSignUpData(newData)}
               onNext={goNext}
             />
           )}
+          {stage === lastStage && <Welcome />}
         </StTransitionWrapper>
       </StContent>
     </StDiv>

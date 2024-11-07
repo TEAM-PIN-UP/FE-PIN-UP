@@ -3,11 +3,10 @@ import styled, { CSSProp } from "styled-components";
 
 import { H3, H4, H5 } from "@/style/font";
 
-interface buttonProps {
-  size: "large" | "medium" | "small";
-  active: boolean;
+interface buttonProps extends React.HTMLAttributes<HTMLButtonElement> {
+  size: "full" | "large" | "medium" | "small";
+  active?: boolean;
   onClick: () => void;
-  children: React.ReactNode;
 }
 
 interface styleProps {
@@ -18,7 +17,12 @@ interface styleProps {
   $typo: CSSProp;
 }
 
-const Button: React.FC<buttonProps> = ({ size, active, onClick, children }) => {
+const Button: React.FC<buttonProps> = ({
+  size,
+  active = true,
+  onClick,
+  children,
+}) => {
   const [width, setWidth] = useState<string>("max-content");
   const [height, setHeight] = useState<number>(40);
   const [padding, setPadding] = useState<string>("12px 16px");
@@ -37,6 +41,11 @@ const Button: React.FC<buttonProps> = ({ size, active, onClick, children }) => {
       setTypo(H4);
     } else if (size === "large") {
       setWidth("335px");
+      setHeight(51);
+      setPadding("16px 0px");
+      setTypo(H3);
+    } else if (size === "full") {
+      setWidth("100%");
       setHeight(51);
       setPadding("16px 0px");
       setTypo(H3);

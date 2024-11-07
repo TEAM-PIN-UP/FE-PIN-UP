@@ -39,10 +39,12 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
     <>
       <StTextContainer>
         <StH1>반가워요!</StH1>
-        <StGap height="7px" />
+        <StGap height="8px" />
         <StH1>닉네임을 만들어볼까요?</StH1>
         <StGap height="12px" />
-        <StB3>닉네임은 나중에 언제든지 변경가능해요.</StB3>
+        <StB3 style={{ color: "var(--neutral_500)" }}>
+          닉네임은 나중에 언제든지 변경가능해요.
+        </StB3>
       </StTextContainer>
       <StGap height="24px" />
 
@@ -65,8 +67,12 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
       <StGap height="20px" />
 
       <Button
-        size="large"
-        active={data.name.length !== 0 && data.name.length <= charLimit}
+        size="full"
+        active={
+          data.name.length !== 0 &&
+          data.name.length <= charLimit &&
+          isInputValid
+        }
         onClick={() => {
           console.log(data);
           onNext();
