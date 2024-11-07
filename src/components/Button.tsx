@@ -4,7 +4,7 @@ import styled, { CSSProp } from "styled-components";
 import { H3, H4, H5 } from "@/style/font";
 
 interface buttonProps extends React.HTMLAttributes<HTMLButtonElement> {
-  size: "full" | "large" | "medium" | "small";
+  size: "full" | "xlarge" | "large" | "medium" | "small";
   active?: boolean;
   onClick: () => void;
 }
@@ -31,16 +31,20 @@ const Button: React.FC<buttonProps> = ({
   const buttonSizeCheckFunc = useCallback(() => {
     if (size === "small") {
       setWidth("max-content");
-      setHeight(40);
-      setPadding("12px 16px");
+      setHeight(36);
+      setPadding("10px 16px");
       setTypo(H5);
     } else if (size === "medium") {
       setWidth("max-content");
-      setHeight(49);
-      setPadding("16px 48px");
-      setTypo(H4);
+      setHeight(44);
+      setPadding("14px 24px");
+      setTypo(H5);
     } else if (size === "large") {
-      setWidth("335px");
+      setHeight(44);
+      setPadding("13.5px 40px");
+      setTypo(H4);
+    } else if (size === "xlarge") {
+      setWidth("calc( 100% - 40px )");
       setHeight(51);
       setPadding("16px 0px");
       setTypo(H3);
@@ -82,6 +86,7 @@ const StButton = styled.button<styleProps>`
   background-color: ${(props) =>
     props.$active ? `var(--neutral_800)` : "var(--neutral_300)"};
   border-radius: var(--radius_circle);
+  border: none;
   cursor: ${(props) => (props.$active ? "pointer" : "default")};
   ${(props) => props.$typo}
 `;
