@@ -44,6 +44,7 @@ const StButton = styled.button<{ $backgroundColor?: string }>`
   color: ${({ color }) => (color ? color : "var(--neutral_800)")};
   background-color: ${({ $backgroundColor }) =>
     $backgroundColor ? $backgroundColor : "var(--neutral_800)"};
+  border: none;
   border-radius: var(--radius_circle);
   cursor: pointer;
 `;

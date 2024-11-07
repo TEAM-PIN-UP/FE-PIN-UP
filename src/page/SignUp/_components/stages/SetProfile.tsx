@@ -54,12 +54,15 @@ const StImagePicker = styled.button`
   width: 100px;
   height: 100px;
   background-color: var(--neutral_100);
+  border: none;
   border-radius: var(--radius_circle);
 `;
 
 const StButton = styled.button`
+  border: none;
   background-color: transparent;
   padding: 0px 4px;
+  cursor: pointer;
 `;
 
 export default SetProfile;

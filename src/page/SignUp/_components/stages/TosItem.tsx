@@ -46,6 +46,7 @@ const StAgreeOne = styled.button`
   margin: 0px;
   padding: 0px;
   border: none;
+  cursor: pointer;
 `;
 
 const StIcon = styled.img`
@@ -64,6 +65,7 @@ const StReadTos = styled.button`
   margin: 0px;
   padding: 2px;
   border: none;
+  cursor: pointer;
 `;
 
 export default TosItem;

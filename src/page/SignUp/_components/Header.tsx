@@ -1,4 +1,5 @@
 import chevronLeft from "@/image/icons/chevronLeft.svg";
+import { H3 } from "@/style/font";
 import React from "react";
 import styled from "styled-components";
 
@@ -43,11 +44,8 @@ const BackButton = styled.button`
   padding: var(--spacing_12);
 `;
 
-const Title = styled.h1`
-  color: var(--neutral_800);
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0;
+const Title = styled.div`
+  ${H3}
 `;
 
 export default Header;
