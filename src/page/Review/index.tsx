@@ -3,7 +3,7 @@ import PlaceSearch from "./_components/PlaceSearch/PlaceSearch";
 import ReviewHeader from "./_components/ReviewHeader";
 import { useState } from "react";
 import DatePick from "./_components/DatePick/DatePick";
-import WriteReview from "./_components/WriteReview/WriteReview";
+import ReviewTotal from "./_components/ReviewTotal/ReviewTotal";
 
 type stepType = 1 | 2 | 3 | 4 | 5;
 
@@ -38,7 +38,7 @@ const ReviewPage = () => {
       ) : (
         <></>
       )}
-      {step === 3 ? <WriteReview /> : <></>}
+      {step === 3 ? <ReviewTotal /> : <></>}
     </StReview>
   );
 };
