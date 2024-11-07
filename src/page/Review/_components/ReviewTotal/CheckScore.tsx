@@ -7,36 +7,41 @@ import halfStar from "@/image/icons/halfBlackStar.svg";
 import ScoreModal from "./ScoreModal";
 
 const CheckScore: React.FC = () => {
-  const [starModal, setStarModal] = useState<boolean>(true);
-  const [starCount, setStarCount] = useState<number[]>(
-    Array.from({ length: 5 }, () => 0)
-  );
+  const [starModal, setStarModal] = useState<boolean>(false);
+  const [starScore, setStarScore] = useState<number>(0);
+
+  const starShow = (score: number) => {
+    const stars = [];
+    let count = score;
+    for (let i = 0; i < 5; i++) {
+      if (count <= 0) {
+        stars.push(<img src={emptyStar} alt="empty star" key={i} />);
+      } else if (count >= 1) {
+        stars.push(<img src={fullStar} alt="full star" key={i} />);
+      } else if (count < 1 && count > 0) {
+        stars.push(<img src={halfStar} alt="half star" key={i} />);
+      }
+      count--;
+    }
+    return stars;
+  };
 
   return (
     <>
       {starModal ? (
         <ScoreModal
-          starCount={starCount}
-          setStarCount={setStarCount}
+          starScore={starScore}
+          setStarScore={setStarScore}
           setStarModal={setStarModal}
+          starShow={starShow}
         />
       ) : (
         <></>
       )}
       <StCheckScore>
         <p className="title">별점</p>
-        <div className="starBox">
-          {starCount.map((value, index) => {
-            return (
-              <div key={index} onClick={() => setStarModal(true)}>
-                {value === 0 ? (
-                  <img src={emptyStar} />
-                ) : (
-                  <img src={value === 1 ? fullStar : halfStar} />
-                )}
-              </div>
-            );
-          })}
+        <div className="starBox" onClick={() => setStarModal(true)}>
+          {starShow(starScore)}
         </div>
       </StCheckScore>
     </>
@@ -52,10 +57,11 @@ const StCheckScore = styled.div`
   .starBox {
     display: flex;
     gap: 8px;
+    width: min-content;
+    cursor: pointer;
     img {
       width: 24px;
       height: 24px;
-      cursor: pointer;
     }
   }
 `;

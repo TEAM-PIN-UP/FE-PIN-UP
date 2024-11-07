@@ -7,33 +7,73 @@ import Button from "@/components/Button";
 import { useState } from "react";
 
 interface ScoreModalProps {
-  starCount: number[];
-  setStarCount: React.Dispatch<React.SetStateAction<number[]>>;
+  starScore: number;
+  setStarScore: React.Dispatch<React.SetStateAction<number>>;
   setStarModal: React.Dispatch<React.SetStateAction<boolean>>;
+  starShow: (score: number) => JSX.Element[];
 }
 
 const ScoreModal: React.FC<ScoreModalProps> = ({
-  starCount,
-  setStarCount,
+  starScore,
+  setStarScore,
   setStarModal,
+  //   starShow,
 }) => {
-  const [starCountTemp, setStarCountTemp] = useState<number[]>(starCount);
+  //   const [starCountTemp, setStarCountTemp] = useState<number[]>(starCount);
+  const [starScoreTemp, setStarScoreTemp] = useState<number>(starScore);
 
-  const starCountFunc = (index: number, half: boolean) => {
-    const arr = [];
-    for (let i = 0; i <= index; i++) {
-      if (i === index && half) {
-        arr[i] = 0.5;
-      } else {
-        arr[i] = 1;
+  const starShow = (score: number) => {
+    const stars = [];
+    let count = score;
+    for (let i = 0; i < 5; i++) {
+      if (count <= 0) {
+        stars.push(
+          <StarContainer>
+            <img src={emptyStar} alt="empty star" key={i} />
+            <div
+              className="leftStar"
+              onClick={() => setStarScoreTemp(i + 0.5)}
+            />
+            <div
+              className="rightStar"
+              onClick={() => setStarScoreTemp(i + 1)}
+            />
+          </StarContainer>
+        );
+      } else if (count >= 1) {
+        stars.push(
+          <StarContainer>
+            <img src={fullStar} alt="full star" key={i} />
+            <div
+              className="leftStar"
+              onClick={() => setStarScoreTemp(i + 0.5)}
+            />
+            <div
+              className="rightStar"
+              onClick={() => setStarScoreTemp(i + 1)}
+            />
+          </StarContainer>
+        );
+      } else if (count < 1 && count > 0) {
+        stars.push(
+          <StarContainer>
+            <img src={halfStar} alt="half star" key={i} />
+            <div
+              className="leftStar"
+              onClick={() => setStarScoreTemp(i + 0.5)}
+            />
+            <div
+              className="rightStar"
+              onClick={() => setStarScoreTemp(i + 1)}
+            />
+          </StarContainer>
+        );
       }
+      count--;
     }
-    for (let i = 0; i < 4 - index; i++) {
-      arr.push(0);
-    }
-    setStarCountTemp(arr);
+    return stars;
   };
-  //   console.log(setStarModal);
+
   return (
     <>
       <StScoreModal>
@@ -49,39 +89,7 @@ const ScoreModal: React.FC<ScoreModalProps> = ({
             <p className="title">별점 남기기</p>
             <p className="question">식당 이용 경험은 어떠셨나요?</p>
           </div>
-          <div className="starCheck">
-            {starCountTemp.map((value, index) => {
-              return (
-                <div key={index}>
-                  {value === 0 ? (
-                    <StarContainer>
-                      <img src={emptyStar} />
-                      <div
-                        className="leftStar"
-                        onClick={() => starCountFunc(index, true)}
-                      />
-                      <div
-                        className="rightStar"
-                        onClick={() => starCountFunc(index, false)}
-                      />
-                    </StarContainer>
-                  ) : (
-                    <StarContainer>
-                      <img src={value === 1 ? fullStar : halfStar} />
-                      <div
-                        className="leftStar"
-                        onClick={() => starCountFunc(index, true)}
-                      />
-                      <div
-                        className="rightStar"
-                        onClick={() => starCountFunc(index, false)}
-                      />
-                    </StarContainer>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+          <div className="starCheck">{starShow(starScoreTemp)}</div>
           <div className="buttonBox">
             <div
               className="cancelButton"
@@ -94,10 +102,10 @@ const ScoreModal: React.FC<ScoreModalProps> = ({
             <Button
               size="large"
               onClick={() => {
-                setStarCount(starCountTemp);
+                setStarScore(starScoreTemp);
                 setStarModal(false);
               }}
-              active={starCountTemp[0] > 0 ? true : false}
+              active={starScoreTemp > 0 ? true : false}
             >
               완료
             </Button>
