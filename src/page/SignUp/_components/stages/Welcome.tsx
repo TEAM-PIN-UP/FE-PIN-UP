@@ -1,10 +1,12 @@
 import Button from "@/components/Button";
+import { useNavigate } from "react-router-dom";
 import StGap from "../typography/StGap";
 import StGlue from "../typography/StGlue";
 import { StH1 } from "../typography/StText";
 import StTextContainer from "../typography/StTextContainer";
 
 const Welcome = () => {
+  const navigate = useNavigate();
   return (
     <>
       <StTextContainer>
@@ -15,7 +17,12 @@ const Welcome = () => {
         <StH1>핀업을 시작하세요</StH1>
       </StTextContainer>
       <StGlue />
-      <Button size="full" onClick={() => {}}>
+      <Button
+        size="full"
+        onClick={() => {
+          navigate("/map");
+        }}
+      >
         핀업 시작하기
       </Button>
     </>
