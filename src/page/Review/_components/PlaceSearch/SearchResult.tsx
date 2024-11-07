@@ -2,14 +2,16 @@ import { H4 } from "@/style/font";
 import styled from "styled-components";
 import SearchedPlace from "./SearchedPlace";
 
-const SearchResult = () => {
+export interface StepUp {
+  stepUp: () => void;
+}
+
+const SearchResult: React.FC<StepUp> = ({ stepUp }) => {
   return (
     <StSearchResult>
       <div className="title">검색 결과</div>
       <div className="results">
-        <SearchedPlace />
-        <SearchedPlace />
-        <SearchedPlace />
+        <SearchedPlace stepUp={stepUp} />
       </div>
     </StSearchResult>
   );

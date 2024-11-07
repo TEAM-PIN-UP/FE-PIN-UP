@@ -2,9 +2,9 @@ import SearchInfo from "./SearchInfo";
 import { useState } from "react";
 import ReviewSearchBar from "./ReviewSearchBar";
 import styled from "styled-components";
-import SearchResult from "./SearchResult";
+import SearchResult, { StepUp } from "./SearchResult";
 
-const PlaceSearch = () => {
+const PlaceSearch: React.FC<StepUp> = ({ stepUp }) => {
   const [infoShow, setInfoShow] = useState<boolean>(true);
 
   const infoHideFunc = () => {
@@ -23,7 +23,7 @@ const PlaceSearch = () => {
         infoHideFunc={infoHideFunc}
         infoShowFunc={infoShowFunc}
       />
-      <SearchResult />
+      <SearchResult stepUp={stepUp} />
     </StPlaceSearch>
   );
 };
