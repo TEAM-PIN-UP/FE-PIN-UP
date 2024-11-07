@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const baseURL = process.env.REACT_APP_SERVER_ADDRESS;
+export const baseURL = process.env.VITE_SERVER_ADDRESS;
 
 const customAxios = axios.create({
   baseURL: baseURL,
