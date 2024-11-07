@@ -4,4 +4,6 @@
   max-width: 440px;
   min-width: 320px;
   width: 100%;
+  border-left: 1px solid var(--neutral_200);
+  border-right: 1px solid var(--neutral_200);
 }
