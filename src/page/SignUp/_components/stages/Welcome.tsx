@@ -1,8 +1,6 @@
 import Button from "@/components/Button";
 import { useNavigate } from "react-router-dom";
-import StGap from "../typography/StGap";
 import StGlue from "../typography/StGlue";
-import { StH1 } from "../typography/StText";
 import StTextContainer from "../typography/StTextContainer";
 
 const Welcome = () => {
@@ -10,11 +8,9 @@ const Welcome = () => {
   return (
     <>
       <StTextContainer>
-        <StH1>환영합니다!</StH1>
-        <StGap height="8px" />
-        <StH1>아래 버튼을 눌러</StH1>
-        <StGap height="8px" />
-        <StH1>핀업을 시작하세요</StH1>
+        <div className="h1">환영합니다!</div>
+        <div className="h1">아래 버튼을 눌러</div>
+        <div className="h1">핀업을 시작해봐요</div>
       </StTextContainer>
       <StGlue />
       <Button

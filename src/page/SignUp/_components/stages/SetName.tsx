@@ -5,7 +5,6 @@ import Button from "@/components/Button";
 import TextInput from "@/components/TextInput";
 import { B5 } from "@/style/font";
 import StGap from "../typography/StGap";
-import { StB3, StH1 } from "../typography/StText";
 import StTextContainer from "../typography/StTextContainer";
 import { StageProps } from "./StageProps";
 
@@ -36,19 +35,14 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
   };
 
   return (
-    <>
+    <StDiv>
       <StTextContainer>
-        <StH1>반가워요!</StH1>
-        <StGap height="8px" />
-        <StH1>닉네임을 만들어볼까요?</StH1>
-        <StGap height="12px" />
-        <StB3 style={{ color: "var(--neutral_500)" }}>
-          닉네임은 나중에 언제든지 변경가능해요.
-        </StB3>
+        <div className="h1">반가워요!</div>
+        <div className="h1">닉네임을 만들어볼까요?</div>
+        <div className="b3 b3-gray">닉네임은 나중에 언제든지 변경가능해요.</div>
       </StTextContainer>
-      <StGap height="24px" />
 
-      <StInputContainer>
+      <div className="input-container">
         <TextInput
           placeholder="닉네임 입력"
           maxLength={charLimit}
@@ -57,13 +51,13 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
           style={{ width: "100%" }}
         />
         <StGap height="6px" />
-        <StCharLimit>
+        <div className="char-limit">
           <StB5 $isInvalid={!isInputValid}>한글, 영문만 입력 가능</StB5>
           <StB5>
             {data.name.length} / {charLimit}
           </StB5>
-        </StCharLimit>
-      </StInputContainer>
+        </div>
+      </div>
       <StGap height="20px" />
 
       <Button
@@ -80,22 +74,35 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
       >
         다음
       </Button>
-    </>
+    </StDiv>
   );
 };
 
-const StInputContainer = styled.div`
+const StDiv = styled.div`
   display: flex;
   flex-direction: column;
-  text-align: start;
+  align-items: center;
   width: 100%;
-`;
+  height: 100%;
 
-const StCharLimit = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 0 var(--spacing_8);
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    width: 100%;
+    margin-top: 24px;
+
+    .char-limit {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 0 var(--spacing_8);
+    }
+  }
+
+  .b3-gray {
+    color: var(--neutral_500);
+  }
 `;
 
 const StB5 = styled.div<{ $isInvalid?: boolean }>`
