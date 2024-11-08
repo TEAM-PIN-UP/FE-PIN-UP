@@ -11,10 +11,10 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onPrev, title }) => {
   return (
     <HeaderContainer>
-      <BackButton onClick={onPrev}>
+      <button className="back-button" onClick={onPrev}>
         <img src={chevronLeft} />
-      </BackButton>
-      <Title>{title}</Title>
+      </button>
+      <div className="title">{title}</div>
     </HeaderContainer>
   );
 };
@@ -30,22 +30,22 @@ const HeaderContainer = styled.div`
   padding: var(--spacing_16) var(--spacing_12);
   border-bottom: 1px solid var(--neutral_100);
   background-color: var(--white);
-`;
 
-const BackButton = styled.button`
-  display: flex;
-  position: absolute;
-  left: 0px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing_12);
-`;
+  .back-button {
+    display: flex;
+    position: absolute;
+    left: 0px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing_12);
+  }
 
-const Title = styled.div`
-  ${H3}
+  .title {
+    ${H3}
+  }
 `;
 
 export default Header;

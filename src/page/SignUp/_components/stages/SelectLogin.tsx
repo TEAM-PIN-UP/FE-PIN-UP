@@ -5,18 +5,20 @@ import kakaoIcon from "../../_icons/kakaoIcon.png";
 import naverIcon from "../../_icons/naverIcon.svg";
 import pinupLogo from "../../_icons/pinupLogo.svg";
 import SocialSignUpButton from "../SocialSignUpButton";
-import { StB1 } from "../typography/StText";
+import StTextContainer from "../typography/StTextContainer";
 import { StageProps } from "./StageProps";
 
 const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
   return (
     <StDiv>
-      <StLogoContainer>
-        <StB1>서비스 보조 설명 문구</StB1>
-        <img src={pinupLogo} />
-      </StLogoContainer>
+      <div className="logo-container">
+        <StTextContainer style={{ alignItems: "center" }}>
+          <div className="b1">서비스 보조 설명 문구</div>
+          <img src={pinupLogo} />
+        </StTextContainer>
+      </div>
 
-      <StButtonContainer>
+      <div className="button-container">
         <SocialSignUpButton
           icon={kakaoIcon}
           backgroundColor="#FAE300"
@@ -51,7 +53,7 @@ const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
         >
           구글로 계속하기
         </SocialSignUpButton>
-      </StButtonContainer>
+      </div>
     </StDiv>
   );
 };
@@ -62,24 +64,24 @@ const StDiv = styled.div`
   width: 100%;
   height: 100%;
   align-items: center;
-`;
 
-const StLogoContainer = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  gap: 17px;
-`;
+  .logo-container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 17px;
+  }
 
-const StButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: var(--spacing_16);
-  margin-bottom: 50px;
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: var(--spacing_16);
+    margin-bottom: 50px;
+  }
 `;
 
 export default SelectLogin;

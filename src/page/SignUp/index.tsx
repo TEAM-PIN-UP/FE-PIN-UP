@@ -21,7 +21,7 @@ const SignUpPage: React.FC = () => {
     authMethod: "",
     name: "",
     profileImage: "",
-    agreedToTerms: { tos: false, personalInfo: false, marketing: false },
+    agreedToTerms: [],
   });
 
   const goNext = () => {
