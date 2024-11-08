@@ -22,7 +22,7 @@ const StPlaceInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 12px 0px;
+  padding: 12px 20px;
   .name {
     ${H2}
   }

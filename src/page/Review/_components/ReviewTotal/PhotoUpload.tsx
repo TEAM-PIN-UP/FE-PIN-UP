@@ -141,6 +141,7 @@ const StCard = css`
 const StPhotoUpload = styled.div`
   display: grid;
   gap: 12px;
+  padding: 0 20px;
   .swiper {
     margin: 0;
   }

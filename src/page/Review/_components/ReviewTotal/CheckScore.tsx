@@ -55,6 +55,7 @@ const CheckScore: React.FC<CheckScoreProp> = ({ starScore, setStarScore }) => {
 const StCheckScore = styled.div`
   display: grid;
   gap: 12px;
+  padding: 0 20px;
   .title {
     ${H4}
   }
