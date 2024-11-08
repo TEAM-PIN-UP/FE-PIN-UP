@@ -8,7 +8,7 @@ import ReviewTotal from "./_components/ReviewTotal/ReviewTotal";
 type stepType = 1 | 2 | 3 | 4 | 5;
 
 const ReviewPage = () => {
-  const [step, setStep] = useState<stepType>(2);
+  const [step, setStep] = useState<stepType>(1);
   const [visitDate, setVisitDate] = useState<Date | null>(null);
 
   const stepDown = () => {

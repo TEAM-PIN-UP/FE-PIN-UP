@@ -4,10 +4,12 @@ import PhotoUpload from "./PhotoUpload";
 import CheckScore from "./CheckScore";
 import WriteReview from "./WriteReview";
 import { useState } from "react";
+import Button from "@/components/Button";
 
 const ReviewTotal = () => {
   const [starScore, setStarScore] = useState<number>(0);
   const [imageData, setImageData] = useState<string[]>([]);
+  const [reviewContent, setReviewContent] = useState<string>("");
 
   return (
     <StWriteReview>
@@ -17,7 +19,15 @@ const ReviewTotal = () => {
       <div className="devideLine" />
       <CheckScore starScore={starScore} setStarScore={setStarScore} />
       <div className="devideLine" />
-      <WriteReview />
+      <WriteReview
+        reviewContent={reviewContent}
+        setReviewContent={setReviewContent}
+      />
+      <div className="buttonBucket">
+        <Button size="full" onClick={() => console.log("")}>
+          리뷰 등록하기
+        </Button>
+      </div>
     </StWriteReview>
   );
 };
@@ -25,13 +35,19 @@ const ReviewTotal = () => {
 const StWriteReview = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100%;
   margin-top: 16px;
-  padding: 0 20px;
+  .buttonBucket {
+    padding: 8px 20px 14px;
+    margin-top: auto;
+    border-top: 1px solid var(--neutral_100);
+    /* padding: 0 20px; */
+  }
   .devideLine {
-    width: 100%;
+    width: calc(100% - 40px);
     height: 1px;
     background-color: var(--neutral_100);
-    margin: 20px 0;
+    margin: 20px auto;
   }
 `;
 
