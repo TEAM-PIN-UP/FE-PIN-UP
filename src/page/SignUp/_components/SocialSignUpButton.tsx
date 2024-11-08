@@ -25,7 +25,7 @@ const SocialSignUpButton: React.FC<SocialSignupButtonProps> = ({
       style={style}
       {...rest}
     >
-      <StIcon src={icon} />
+      <img className="icon" src={icon} />
       {children}
     </StButton>
   );
@@ -47,13 +47,13 @@ const StButton = styled.button<{ $backgroundColor?: string }>`
   border: none;
   border-radius: var(--radius_circle);
   cursor: pointer;
-`;
 
-const StIcon = styled.img`
-  position: absolute;
-  left: 24px;
-  width: 16px;
-  height: 16px;
+  .icon {
+    position: absolute;
+    left: 24px;
+    width: 16px;
+    height: 16px;
+  }
 `;
 
 export default SocialSignUpButton;
