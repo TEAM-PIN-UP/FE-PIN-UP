@@ -66,8 +66,8 @@ const StDiv = styled.div`
     cursor: pointer;
 
     .camera {
-      width: "24px";
-      height: "24px";
+      width: 24px;
+      height: 24px;
     }
   }
 
