@@ -49,6 +49,7 @@ const StToast = styled.div<ToastStyle>`
   span {
     max-width: 255px;
   }
+  z-index: 50;
 `;
 
 export default Toast;

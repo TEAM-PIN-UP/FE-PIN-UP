@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Button from "@/components/Button";
 import { B3 } from "@/style/font";
 import { cropImage } from "@/utils/cropImage";
+import useToastPopup from "@/utils/toastPopup";
 import camera from "../../_icons/camera.svg";
 import StGap from "../typography/StGap";
 import StGlue from "../typography/StGlue";
@@ -11,24 +12,48 @@ import StTextContainer from "../typography/StTextContainer";
 import { StageProps } from "./StageProps";
 
 const SetProfile: React.FC<StageProps> = ({ data, updateData, onNext }) => {
-  const isValidProfileImage = data.profileImage && data.profileImage !== "";
+  const toast = useToastPopup();
+
+  const isValidProfileImage =
+    data.profileImage &&
+    /^data:image\/(png|jpg|jpeg);base64,/.test(data.profileImage);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
+
     if (file) {
+      // Check file type
+      const allowedTypes = ["image/jpeg", "image/png"];
+      if (!allowedTypes.includes(file.type)) {
+        toast("jpeg 또는 png 형식의 이미지를 올려주세요.");
+        return;
+      }
+
       const reader = new FileReader();
       reader.onloadend = async () => {
         const imageUrl = reader.result;
         if (typeof imageUrl === "string") {
-          try {
-            const croppedImageUrl = await cropImage(imageUrl);
-            updateData({ profileImage: croppedImageUrl });
-          } catch (error) {
-            console.error("Error cropping image: ", error);
-          }
+          const image = new Image();
+
+          // Load success = valid image
+          image.onload = async () => {
+            try {
+              const croppedImageUrl = await cropImage(imageUrl);
+              updateData({ profileImage: croppedImageUrl });
+            } catch (error) {
+              console.error("Error cropping image: ", error);
+            }
+          };
+          image.onerror = () => {
+            toast("jpeg 또는 png 형식의 올바른 이미지 파일을 선택해주세요.");
+          };
+
+          // Begin loading image
+          image.src = imageUrl;
         }
       };
+
       reader.readAsDataURL(file);
     }
   };
@@ -62,7 +87,7 @@ const SetProfile: React.FC<StageProps> = ({ data, updateData, onNext }) => {
         {!isValidProfileImage && <img className="camera-icon" src={camera} />}
         <input
           type="file"
-          accept="image/*"
+          accept="image/jpeg, image/png"
           ref={fileInputRef}
           className="image-input"
           onChange={handleImageChange}
