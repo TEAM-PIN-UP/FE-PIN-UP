@@ -27,6 +27,9 @@ const StDiv = styled.div`
     ${B3}
     margin-top: 4px;
   }
+  .b3-body {
+    ${B3}
+  }
   .c1 {
     ${C1}
     color: var(--neutral_500);
