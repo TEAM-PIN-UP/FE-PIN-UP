@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-
 import styled from "styled-components";
+
 import Header from "./_components/Header";
 import SelectLogin from "./_components/stages/SelectLogin";
 import SetName from "./_components/stages/SetName";
@@ -64,8 +64,12 @@ const SignUpPage: React.FC = () => {
     <StDiv $stage={stage}>
       {stage !== 1 && <Header title="회원가입" onPrev={goPrev} />}
 
-      <StContent>
-        <StTransitionWrapper key={stage} direction={direction}>
+      <div className="content">
+        <TransitionWrapper
+          className="transition"
+          key={stage}
+          direction={direction}
+        >
           {stage === 1 && (
             <SelectLogin
               data={signUpData}
@@ -95,8 +99,8 @@ const SignUpPage: React.FC = () => {
             />
           )}
           {stage === lastStage && <Welcome />}
-        </StTransitionWrapper>
-      </StContent>
+        </TransitionWrapper>
+      </div>
     </StDiv>
   );
 };
@@ -110,22 +114,22 @@ const StDiv = styled.div<{ $stage: number }>`
   background-color: ${({ $stage }) =>
     $stage === 1 ? "var(--black)" : "var(--white)"};
   transition: background-color 0.5s ease, color 0.5s ease-in-out;
-`;
 
-const StContent = styled.div`
-  display: flex;
-  flex: 1;
-  padding: var(--spacing_40) var(--spacing_20) var(--spacing_24)
-    var(--spacing_20);
-  box-sizing: border-box;
-  width: 100%;
-`;
+  .content {
+    display: flex;
+    flex: 1;
+    padding: var(--spacing_40) var(--spacing_20) var(--spacing_24)
+      var(--spacing_20);
+    box-sizing: border-box;
+    width: 100%;
+  }
 
-const StTransitionWrapper = styled(TransitionWrapper)`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  align-items: center;
+  .transition {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
 `;
 
 export default SignUpPage;

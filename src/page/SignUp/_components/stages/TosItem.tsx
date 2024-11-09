@@ -22,7 +22,7 @@ const TosItem: React.FC<TosItemProps> = ({ agreed, onClick, itemName }) => {
             src={agreed ? checkActive : checkInactive}
             alt={agreed ? "동의 철회" : "동의"}
           />
-          <div className="b3">{itemName}</div>
+          <div className="b3-body">{itemName}</div>
         </button>
       </StTextContainer>
       <button className="read-tos">

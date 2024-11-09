@@ -41,6 +41,9 @@ const HeaderContainer = styled.div`
     align-items: center;
     justify-content: center;
     padding: var(--spacing_12);
+    box-sizing: content-box;
+    width: 24px;
+    height: 24px;
   }
 
   .title {
