@@ -34,6 +34,10 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") onNext();
+  };
+
   return (
     <StDiv>
       <StTextContainer>
@@ -50,6 +54,7 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
           maxLength={charLimit}
           value={data.name}
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
           style={{ width: "100%" }}
         />
         <StGap height="6px" />
