@@ -20,7 +20,6 @@ const TosItem: React.FC<TosItemProps> = ({ agreed, onClick, itemName }) => {
           <img
             className="check-mark"
             src={agreed ? checkActive : checkInactive}
-            alt={agreed ? "동의 철회" : "동의"}
           />
           <div className="b3-body">{itemName}</div>
         </button>
