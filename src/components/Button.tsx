@@ -11,7 +11,6 @@ interface buttonProps extends React.HTMLAttributes<HTMLButtonElement> {
 
 interface styleProps {
   width: string;
-  height: number;
   $padding: string;
   $active: boolean;
   $typo: CSSProp;
@@ -24,37 +23,31 @@ const Button: React.FC<buttonProps> = ({
   children,
 }) => {
   const [width, setWidth] = useState<string>("max-content");
-  const [height, setHeight] = useState<number>(40);
   const [padding, setPadding] = useState<string>("12px 16px");
   const [typo, setTypo] = useState<CSSProp>(H3);
 
   const buttonSizeCheckFunc = useCallback(() => {
     if (size === "small") {
       setWidth("max-content");
-      setHeight(36);
       setPadding("10px 16px");
       setTypo(H5);
     } else if (size === "medium") {
       setWidth("max-content");
-      setHeight(44);
       setPadding("14px 24px");
       setTypo(H5);
     } else if (size === "large") {
-      setHeight(44);
       setPadding("13.5px 40px");
       setTypo(H4);
     } else if (size === "xlarge") {
       setWidth("calc( 100% - 40px )");
-      setHeight(51);
-      setPadding("16px 0px");
+      setPadding("15px 0px");
       setTypo(H3);
     } else if (size === "full") {
       setWidth("100%");
-      setHeight(51);
-      setPadding("16px 0px");
+      setPadding("15px 0px");
       setTypo(H3);
     }
-  }, [size, setWidth, setHeight, setPadding, setTypo]);
+  }, [size, setWidth, setPadding, setTypo]);
 
   useEffect(() => {
     buttonSizeCheckFunc();
@@ -63,7 +56,6 @@ const Button: React.FC<buttonProps> = ({
   return (
     <StButton
       width={width}
-      height={height}
       $padding={padding}
       $active={active}
       $typo={typo}
@@ -81,7 +73,6 @@ const StButton = styled.button<styleProps>`
   align-items: center;
   color: var(--white);
   width: ${(props) => props.width};
-  height: ${(props) => props.height}px;
   padding: ${(props) => props.$padding};
   background-color: ${(props) =>
     props.$active ? `var(--neutral_800)` : "var(--neutral_300)"};
