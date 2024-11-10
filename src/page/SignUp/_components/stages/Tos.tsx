@@ -46,7 +46,7 @@ const Tos: React.FC<StageProps> = ({ data, updateData, onNext }) => {
             className="check-mark"
             src={isAllAgreed ? checkActive : checkInactive}
           />
-          <div className="b3">전체 동의</div>
+          <div className="b3-body">전체 동의</div>
         </button>
       </StTextContainer>
       <StGap height="24px" />

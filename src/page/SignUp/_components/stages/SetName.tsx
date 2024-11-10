@@ -34,12 +34,18 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") onNext();
+  };
+
   return (
     <StDiv>
       <StTextContainer>
         <div className="h1">반가워요!</div>
         <div className="h1">닉네임을 만들어볼까요?</div>
-        <div className="b3 b3-gray">닉네임은 나중에 언제든지 변경가능해요.</div>
+        <div className="b3 color-gray">
+          닉네임은 나중에 언제든지 변경가능해요.
+        </div>
       </StTextContainer>
 
       <div className="input-container">
@@ -48,6 +54,7 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
           maxLength={charLimit}
           value={data.name}
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
           style={{ width: "100%" }}
         />
         <StGap height="6px" />
@@ -100,7 +107,7 @@ const StDiv = styled.div`
     }
   }
 
-  .b3-gray {
+  .color-gray {
     color: var(--neutral_500);
   }
 `;

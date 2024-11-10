@@ -46,9 +46,13 @@ const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
           icon={googleIcon}
           backgroundColor="var(--white)"
           onClick={() => {
-            updateData({ authMethod: "google" });
-            console.log(data);
-            onNext();
+            window.open(
+              `${import.meta.env.VITE_SERVER_ADDRESS}/api/auth/login/google`,
+              "_blank"
+            );
+            // updateData({ authMethod: "google" });
+            // console.log(data);
+            // onNext();
           }}
         >
           구글로 계속하기
