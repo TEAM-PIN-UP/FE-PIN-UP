@@ -54,7 +54,7 @@ const GlobalStyle = createGlobalStyle`
         --neutral_500 : #7C7D7E;
         --neutral_600 : #5F5F60;
         --neutral_700 : #424242;
-        --neutral_800 : #222222;
+        --neutral_800 : #1f1f1f;
         --white : #FFFFFF;
         --black : #000000;
         --transparent_15 : rgba(0, 0, 0, 0.15);
