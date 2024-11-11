@@ -4,7 +4,7 @@ import styled from "styled-components";
 import search from "@/image/icons/search.svg";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import xCircle from "@/image/icons/xCircle.svg";
-import { B2 } from "@/style/font";
+import { B3 } from "@/style/font";
 
 interface SearchBarProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void;
@@ -95,12 +95,11 @@ const StIconWrapper = styled.div`
 `;
 
 const StInput = styled.input`
-  ${B2}
+  ${B3}
   background-color: transparent;
   border: none;
   color: var(--black);
   flex: 1;
-  font-size: 16px;
   outline: none;
   padding: var(--spacing_12) 0;
   width: 100%;
