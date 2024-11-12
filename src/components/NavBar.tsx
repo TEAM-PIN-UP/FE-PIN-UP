@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -11,6 +10,7 @@ import mapPinInactive from "@/image/icons/mapPinInactive26.svg";
 import profile from "@/image/icons/profile.jpg";
 import uploadActive from "@/image/icons/uploadActive.svg";
 import uploadInactive from "@/image/icons/uploadInactive.svg";
+import NavBarIcon from "./NavBarIcon";
 
 interface styleProps {
   $path: string;
@@ -19,57 +19,34 @@ interface styleProps {
 const NavBar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [path, setPath] = useState<string>("/");
-
-  useEffect(() => {
-    setPath(location.pathname.split("/")[1]);
-  }, [location]);
 
   return (
-    <StNavBar $path={path}>
-      {path === "map" ? (
-        <img src={mapPinActive} />
-      ) : (
-        <img
-          src={mapPinInactive}
-          className="inactive"
-          onClick={() => navigate("/map")}
-        />
-      )}
-      {path === "bookmark" ? (
-        <img src={bookMarkActive} />
-      ) : (
-        <img
-          src={bookMarkInactive}
-          className="inactive"
-          onClick={() => navigate("/bookmark")}
-        />
-      )}
-      {path === "upload" ? (
-        <img src={uploadActive} />
-      ) : (
-        <img
-          src={uploadInactive}
-          className="inactive"
-          onClick={() => navigate("/review")}
-        />
-      )}
-      {path === "contents" ? (
-        <img src={contentsActive} />
-      ) : (
-        <img
-          src={contentsInactive}
-          className="inactive"
-          onClick={() => navigate("/contents")}
-        />
-      )}
-      <img
-        src={profile}
-        className="profile"
-        onClick={() => {
-          if (path !== "profile") navigate("/profile");
-        }}
+    <StNavBar $path={location.pathname.split("/")[1]}>
+      <NavBarIcon path="map" active={mapPinActive} inActive={mapPinInactive} />
+      <NavBarIcon
+        path="bookmark"
+        active={bookMarkActive}
+        inActive={bookMarkInactive}
       />
+      <NavBarIcon
+        path="review"
+        active={uploadActive}
+        inActive={uploadInactive}
+      />
+      <NavBarIcon
+        path="contents"
+        active={contentsActive}
+        inActive={contentsInactive}
+      />
+      <div
+        className="profileArea"
+        onClick={() => {
+          if (location.pathname.split("/")[1] !== "profile")
+            navigate("/profile");
+        }}
+      >
+        <img src={profile} className="profile" />
+      </div>
     </StNavBar>
   );
 };
@@ -79,16 +56,23 @@ const StNavBar = styled.div<styleProps>`
   border-top: 1px solid var(--neutral_100);
   display: flex;
   justify-content: space-between;
-  padding: var(--spacing_12) var(--spacing_20) var(--spacing_24);
+  padding: var(--spacing_4) var(--spacing_20) var(--spacing_24);
   width: 100%;
-  .profile {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    border: ${(props) =>
-      props.$path === "profile" ? "1.6px solid var(--black)" : "none"};
-    box-sizing: border-box;
-    cursor: ${(props) => (props.$path === "profile" ? "default" : "pointer")};
+  .profileArea {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 44px;
+    .profile {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: ${(props) =>
+        props.$path === "profile" ? "1.6px solid var(--black)" : "none"};
+      box-sizing: border-box;
+      cursor: ${(props) => (props.$path === "profile" ? "default" : "pointer")};
+    }
   }
   .inactive {
     cursor: pointer;
