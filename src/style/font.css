@@ -1,13 +1,4 @@
 @font-face {
-  font-family: "SansVariable";
-  src: url(../font/WantedSansVariable.woff2);
-}
-
-@font-face {
-  font-family: "PretendardVariable";
-  src: url(../font/PretendardVariable.woff2);
-}
-@font-face {
   font-family: "PretendardBlack";
   src: url(../font/Pretendard-Black.subset.woff2);
 }
