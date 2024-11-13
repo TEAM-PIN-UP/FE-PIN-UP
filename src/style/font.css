@@ -1,4 +1,36 @@
 @font-face {
-  font-family: "SansVariable";
-  src: url(../font/WantedSansVariable.woff2);
+  font-family: "PretendardBlack";
+  src: url(../font/Pretendard-Black.subset.woff2);
+}
+@font-face {
+  font-family: "PretendardBold";
+  src: url(../font/Pretendard-Bold.subset.woff2);
+}
+@font-face {
+  font-family: "PretendardExtraBold";
+  src: url(../font/Pretendard-ExtraBold.subset.woff2);
+}
+@font-face {
+  font-family: "PretendardExtraLight";
+  src: url(../font/Pretendard-ExtraLight.subset.woff2);
+}
+@font-face {
+  font-family: "PretendardLight";
+  src: url(../font/Pretendard-Light.subset.woff2);
+}
+@font-face {
+  font-family: "PretendardMedium";
+  src: url(../font/Pretendard-Medium.subset.woff2);
+}
+@font-face {
+  font-family: "PretendardRegular";
+  src: url(../font/Pretendard-Regular.subset.woff2);
+}
+@font-face {
+  font-family: "PretendardSemiBold";
+  src: url(../font/Pretendard-SemiBold.subset.woff2);
+}
+@font-face {
+  font-family: "PretendardThin";
+  src: url(../font/Pretendard-Thin.subset.woff2);
 }
