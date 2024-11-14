@@ -55,9 +55,10 @@ const HeaderContainer = styled.div`
 
   .header-left {
     left: 0px;
-    justify-content: start;
   }
-
+  .header-right {
+    right: 0px;
+  }
   .header-center {
     display: flex;
     position: absolute;
@@ -66,11 +67,6 @@ const HeaderContainer = styled.div`
     transform: translateX(-50%);
     align-items: center;
     flex: 0;
-  }
-
-  .header-right {
-    right: 0px;
-    justify-content: end;
   }
 `;
 
