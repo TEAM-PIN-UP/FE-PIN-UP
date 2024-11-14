@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import Header from "./_components/Header";
+import Header from "@/components/Header";
+import chevronLeft from "@/image/icons/chevronLeft.svg";
+import { H3 } from "@/style/font";
 import SelectLogin from "./_components/stages/SelectLogin";
 import SetName from "./_components/stages/SetName";
 import SetProfile from "./_components/stages/SetProfile";
@@ -62,7 +64,18 @@ const SignUpPage: React.FC = () => {
 
   return (
     <StDiv $stage={stage}>
-      {stage !== 1 && <Header title="회원가입" onPrev={goPrev} />}
+      {stage !== 1 && (
+        <Header>
+          <Header.Left>
+            <button className="back-button" onClick={goPrev}>
+              <img src={chevronLeft} />
+            </button>
+          </Header.Left>
+          <Header.Center>
+            <span className="h3">회원가입</span>
+          </Header.Center>
+        </Header>
+      )}
 
       <div className="content">
         <TransitionWrapper
@@ -114,6 +127,26 @@ const StDiv = styled.div<{ $stage: number }>`
   background-color: ${({ $stage }) =>
     $stage === 1 ? "var(--black)" : "var(--white)"};
   transition: background-color 0.5s ease, color 0.5s ease-in-out;
+  padding-top: 48px;
+
+  .h3 {
+    ${H3}
+  }
+
+  .back-button {
+    display: flex;
+    position: absolute;
+    left: 0px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing_12);
+    box-sizing: content-box;
+    width: 24px;
+    height: 24px;
+  }
 
   .content {
     display: flex;
