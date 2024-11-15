@@ -5,8 +5,8 @@ const Header: React.FC<React.HTMLAttributes<HTMLDivElement>> & {
   Left: React.FC<React.HTMLAttributes<HTMLDivElement>>;
   Center: React.FC<React.HTMLAttributes<HTMLDivElement>>;
   Right: React.FC<React.HTMLAttributes<HTMLDivElement>>;
-} = ({ children }) => {
-  return <HeaderContainer>{children}</HeaderContainer>;
+} = ({ children, ...props }) => {
+  return <HeaderContainer {...props}>{children}</HeaderContainer>;
 };
 
 Header.Left = ({ children, ...props }) => {
@@ -39,8 +39,9 @@ const HeaderContainer = styled.div`
   max-width: 440px;
   height: 48px;
   top: 0px;
-  left: 0px;
-  right: 0px;
+  left: 0;
+  right: 0;
+  margin: auto;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -59,7 +60,6 @@ const HeaderContainer = styled.div`
     height: 24px;
     gap: var(--spacing_16);
   }
-
   .header-left {
     left: 0px;
   }
