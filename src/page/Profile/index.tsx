@@ -4,6 +4,7 @@ import Button from "@/components/Button";
 import Header from "@/components/Header";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import { H2, H3, H4 } from "@/style/font";
+import useToastPopup from "@/utils/toastPopup";
 import { useEffect, useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 import ProfileButton from "./_components/ProfileButton";
@@ -26,6 +27,8 @@ const ProfilePage: React.FC = () => {
     const newLeft = window.innerWidth > 440 ? (window.innerWidth - 440) / 2 : 0;
     setLeft(newLeft);
   };
+
+  const toast = useToastPopup();
 
   useEffect(() => {
     // Update bottom sheet alignment on window resize
@@ -88,6 +91,7 @@ const ProfilePage: React.FC = () => {
                   try {
                     await navigator.clipboard.writeText("profile");
                     setIsSheetOpen(false);
+                    toast("링크를 클립보드에 복사했어요.");
                   } catch (err) {
                     console.error("Failed to copy: ", err);
                   }
