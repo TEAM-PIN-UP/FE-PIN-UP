@@ -2,14 +2,18 @@ import { B4 } from "@/style/font";
 import React from "react";
 import styled from "styled-components";
 
-interface ProfileButtonProps {
+interface ProfileButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   icon: string;
   text: string;
 }
 
-const ProfileButton: React.FC<ProfileButtonProps> = ({ icon, text }) => {
+const ProfileButton: React.FC<ProfileButtonProps> = ({
+  icon,
+  text,
+  ...props
+}) => {
   return (
-    <StButton>
+    <StButton {...props}>
       <img src={icon} />
       <span>{text}</span>
     </StButton>

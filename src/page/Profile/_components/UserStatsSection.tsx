@@ -44,6 +44,8 @@ const StDiv = styled.div`
     .stat-item {
       display: flex;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
       width: 48px;
       gap: var(--spacing_4);
       margin: 0px var(--spacing_24);

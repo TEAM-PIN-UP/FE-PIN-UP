@@ -109,7 +109,7 @@ const MapPage: React.FC = () => {
             snapPoints={snapPoints}
             initialSnap={1}
             mountPoint={attachRef.current!}
-            left={left}
+            $left={left}
           >
             <Sheet.Container>
               <Sheet.Header ref={sheetHeaderRef}>
@@ -175,12 +175,12 @@ const StMapDiv = styled(MapDiv)`
   height: 100%;
 `;
 
-const StSheet = styled(Sheet)<{ left: number }>`
+const StSheet = styled(Sheet)<{ $left: number }>`
   display: flex;
   justify-content: center;
   max-width: 440px;
   min-width: 320px;
-  left: ${({ left }) => `${left}px !important`};
+  left: ${({ $left }) => `${$left}px !important`};
 `;
 
 const StGap = styled.div<{ $attachHeight: number }>`

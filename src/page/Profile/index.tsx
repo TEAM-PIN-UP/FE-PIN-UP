@@ -1,7 +1,11 @@
 import styled from "styled-components";
 
+import Button from "@/components/Button";
 import Header from "@/components/Header";
-import { H2, H4 } from "@/style/font";
+import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
+import { H2, H3, H4 } from "@/style/font";
+import { useEffect, useRef, useState } from "react";
+import { Sheet, SheetRef } from "react-modal-sheet";
 import ProfileButton from "./_components/ProfileButton";
 import UserIntroInput from "./_components/UserIntroInput";
 import UserStatsSection, { Stat } from "./_components/UserStatsSection";
@@ -13,8 +17,28 @@ const userStats: Stat[] = [
 ];
 
 const ProfilePage: React.FC = () => {
+  // Bottom sheet logic
+  const sheetRef = useRef<SheetRef>();
+  const { attachRef } = useBottomSheetSnapPoints();
+  const [left, setLeft] = useState(0);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const updateLeftPosition = () => {
+    const newLeft = window.innerWidth > 440 ? (window.innerWidth - 440) / 2 : 0;
+    setLeft(newLeft);
+  };
+
+  useEffect(() => {
+    // Update bottom sheet alignment on window resize
+    updateLeftPosition();
+    window.addEventListener("resize", updateLeftPosition);
+
+    return () => {
+      window.removeEventListener("resize", updateLeftPosition);
+    };
+  }, []);
+
   return (
-    <StDiv>
+    <StDiv ref={attachRef}>
       <Header>
         <Header.Left>
           <span className="h2">My</span>
@@ -32,8 +56,54 @@ const ProfilePage: React.FC = () => {
       <UserIntroInput />
       <div className="profile-buttons">
         <ProfileButton icon="" text="핀버디 추가" />
-        <ProfileButton icon="" text="프로필 공유" />
+        <ProfileButton
+          icon=""
+          text="프로필 공유"
+          onClick={() => setIsSheetOpen(true)}
+        />
       </div>
+
+      <StSheet
+        ref={sheetRef}
+        isOpen={isSheetOpen}
+        onClose={() => {
+          setIsSheetOpen(false);
+        }}
+        snapPoints={[0.5]}
+        $left={left}
+      >
+        <Sheet.Container>
+          <Sheet.Header />
+          <Sheet.Content className="content">
+            <div className="profile-share">
+              <img
+                src={"https://picsum.photos/200"}
+                className="profile-image"
+              />
+              <span className="username">레벨조이</span>
+              <UserStatsSection stats={userStats} />
+              <Button
+                size="xlarge"
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText("profile");
+                    setIsSheetOpen(false);
+                  } catch (err) {
+                    console.error("Failed to copy: ", err);
+                  }
+                }}
+                className="share-button"
+              >
+                프로필 공유
+              </Button>
+            </div>
+          </Sheet.Content>
+        </Sheet.Container>
+        <Sheet.Backdrop
+          onTap={() => setIsSheetOpen(false)}
+          style={{ backgroundColor: `var(--transparent_50)` }}
+        />
+      </StSheet>
     </StDiv>
   );
 };
@@ -76,6 +146,48 @@ const StDiv = styled.div`
 
   .h2 {
     ${H2}
+  }
+`;
+
+const StSheet = styled(Sheet)<{ $left: number }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 440px;
+  min-width: 320px;
+  left: ${({ $left }) => `${$left}px !important`};
+
+  .content {
+    flex: 1;
+
+    .profile-share {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: var(--spacing_24);
+      align-items: center;
+      justify-content: center;
+
+      .profile-image {
+        width: 56px;
+        height: 56px;
+        background-size: cover;
+        background-position: center;
+        border-radius: var(--radius_circle);
+        margin-bottom: var(--spacing_12);
+      }
+
+      .username {
+        ${H3}
+        margin-bottom: var(--spacing_32);
+      }
+
+      .share-button {
+        position: fixed;
+        bottom: var(--spacing_24);
+        margin: 0px var(--spacing_20);
+      }
+    }
   }
 `;
 
