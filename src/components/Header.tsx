@@ -1,32 +1,36 @@
 import React from "react";
 import styled from "styled-components";
 
-interface HeaderProps {
-  children: React.ReactNode;
-}
-
-interface HeaderSectionProps {
-  children: React.ReactNode;
-}
-
-const Header: React.FC<HeaderProps> & {
-  Left: React.FC<HeaderSectionProps>;
-  Center: React.FC<HeaderSectionProps>;
-  Right: React.FC<HeaderSectionProps>;
+const Header: React.FC<React.HTMLAttributes<HTMLDivElement>> & {
+  Left: React.FC<React.HTMLAttributes<HTMLDivElement>>;
+  Center: React.FC<React.HTMLAttributes<HTMLDivElement>>;
+  Right: React.FC<React.HTMLAttributes<HTMLDivElement>>;
 } = ({ children }) => {
   return <HeaderContainer>{children}</HeaderContainer>;
 };
 
-Header.Left = ({ children }) => {
-  return <div className="header-left">{children}</div>;
+Header.Left = ({ children, ...props }) => {
+  return (
+    <div className="header-left" {...props}>
+      {children}
+    </div>
+  );
 };
 
-Header.Center = ({ children }) => {
-  return <div className="header-center">{children}</div>;
+Header.Center = ({ children, ...props }) => {
+  return (
+    <div className="header-center" {...props}>
+      {children}
+    </div>
+  );
 };
 
-Header.Right = ({ children }) => {
-  return <div className="header-right">{children}</div>;
+Header.Right = ({ children, ...props }) => {
+  return (
+    <div className="header-right" {...props}>
+      {children}
+    </div>
+  );
 };
 
 const HeaderContainer = styled.div`
@@ -35,6 +39,8 @@ const HeaderContainer = styled.div`
   max-width: 440px;
   height: 48px;
   top: 0px;
+  left: 0px;
+  right: 0px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -42,6 +48,7 @@ const HeaderContainer = styled.div`
   padding: var(--spacing_16) var(--spacing_12);
   border-bottom: 1px solid var(--neutral_100);
   box-sizing: border-box;
+  z-index: 20;
 
   .header-left,
   .header-right {
