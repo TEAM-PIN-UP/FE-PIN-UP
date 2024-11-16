@@ -29,8 +29,6 @@ const ProfilePage: React.FC = () => {
     setLeft(newLeft);
   };
 
-  const toast = useToastPopup();
-
   useEffect(() => {
     // Update bottom sheet alignment on window resize
     updateLeftPosition();
@@ -40,6 +38,8 @@ const ProfilePage: React.FC = () => {
       window.removeEventListener("resize", updateLeftPosition);
     };
   }, []);
+
+  const toast = useToastPopup();
 
   return (
     <StDiv ref={attachRef}>
@@ -52,21 +52,25 @@ const ProfilePage: React.FC = () => {
           <span className="h2">설정</span>
         </Header.Right>
       </Header>
-      <div className="profile">
-        <img src={"https://picsum.photos/200"} className="profile-image" />
-        <UserStatsSection stats={userStats} />
+      <div className="user-section">
+        <div className="profile">
+          <img src={"https://picsum.photos/200"} className="profile-image" />
+          <UserStatsSection stats={userStats} />
+        </div>
+        <div className="username">레벨조이</div>
+        <UserIntroInput />
+        <div className="profile-buttons">
+          <ProfileButton icon="" text="핀버디 추가" />
+          <ProfileButton
+            icon=""
+            text="프로필 공유"
+            onClick={() => setIsSheetOpen(true)}
+          />
+        </div>
       </div>
-      <div className="username">레벨조이</div>
-      <UserIntroInput />
-      <div className="profile-buttons">
-        <ProfileButton icon="" text="핀버디 추가" />
-        <ProfileButton
-          icon=""
-          text="프로필 공유"
-          onClick={() => setIsSheetOpen(true)}
-        />
+      <div className="review-section">
+        <ReviewHistory />
       </div>
-      <ReviewHistory />
 
       <StSheet
         ref={sheetRef}
@@ -146,9 +150,13 @@ const StDiv = styled.div`
   .profile-buttons {
     display: flex;
     flex-direction: row;
-    margin-top: var(--spacing_20);
-    padding: 0px var(--spacing_20);
+    padding: var(--spacing_20);
     gap: var(--spacing_12);
+  }
+
+  .review-section {
+    flex-grow: 1;
+    overflow-y: auto;
   }
 
   .h2 {
