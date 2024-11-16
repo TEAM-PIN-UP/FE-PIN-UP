@@ -8,6 +8,7 @@ import useToastPopup from "@/utils/toastPopup";
 import { useEffect, useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 import ProfileButton from "./_components/ProfileButton";
+import ReviewHistory from "./_components/ReviewHistory";
 import UserIntroInput from "./_components/UserIntroInput";
 import UserStatsSection, { Stat } from "./_components/UserStatsSection";
 
@@ -65,6 +66,7 @@ const ProfilePage: React.FC = () => {
           onClick={() => setIsSheetOpen(true)}
         />
       </div>
+      <ReviewHistory />
 
       <StSheet
         ref={sheetRef}
@@ -113,13 +115,14 @@ const ProfilePage: React.FC = () => {
 };
 
 const StDiv = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 100%;
   padding-top: 48px;
 
   .profile {
     display: flex;
     flex-direction: row;
-    flex-grow: 1;
     padding: var(--spacing_20);
     align-items: center;
   }

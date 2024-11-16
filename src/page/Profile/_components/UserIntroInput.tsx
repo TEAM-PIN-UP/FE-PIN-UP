@@ -25,7 +25,6 @@ const UserIntroInput: React.FC = () => {
 const StDiv = styled.div`
   position: relative;
   display: flex;
-  flex-grow: 1;
   flex-direction: row;
   align-items: center;
   gap: 10px;

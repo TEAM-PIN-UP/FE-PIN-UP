@@ -17,13 +17,13 @@ const UserStatsSection: React.FC<StatsSectionProps> = ({ stats }) => {
     <StDiv>
       <div className="stats-row">
         {stats.map((stat, index) => (
-          <>
+          <React.Fragment key={stat.label}>
             {index !== 0 && <div className="stat-divider" />}
-            <div key={index} className="stat-item">
+            <div className="stat-item">
               <div className="stat-value">{stat.value}</div>
               <div className="stat-label">{stat.label}</div>
             </div>
-          </>
+          </React.Fragment>
         ))}
       </div>
     </StDiv>
