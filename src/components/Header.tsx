@@ -49,6 +49,7 @@ const HeaderContainer = styled.div`
   padding: var(--spacing_16) var(--spacing_12);
   border-bottom: 1px solid var(--neutral_100);
   box-sizing: border-box;
+  background-color: var(--white);
   z-index: 20;
 
   .header-left,
