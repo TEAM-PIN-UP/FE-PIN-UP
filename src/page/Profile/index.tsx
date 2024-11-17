@@ -183,11 +183,13 @@ const StDiv = styled.div`
       ${H4}
       background-color: var(--white);
       border: none;
-      padding: var(--spacing_12) 0px var(--spacing_8) 0px;
       cursor: pointer;
+      color: var(--neutral_300);
+      padding: var(--spacing_12) 0px var(--spacing_8) 0px;
 
       &.active {
         border-bottom: 3px solid var(--black);
+        color: var(--neutral_800);
       }
     }
   }
