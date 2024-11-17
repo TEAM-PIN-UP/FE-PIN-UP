@@ -41,6 +41,9 @@ const ProfilePage: React.FC = () => {
 
   const toast = useToastPopup();
 
+  // Review history swiper view state
+  const [index, setIndex] = useState(0);
+
   return (
     <StDiv ref={attachRef}>
       <Header>
@@ -67,9 +70,24 @@ const ProfilePage: React.FC = () => {
             onClick={() => setIsSheetOpen(true)}
           />
         </div>
+
+        <div className="review-heading">
+          <button
+            className={`review-filter ${index === 0 ? "active" : ""}`}
+            onClick={() => setIndex(0)}
+          >
+            포토 리뷰
+          </button>
+          <button
+            className={`review-filter ${index === 1 ? "active" : ""}`}
+            onClick={() => setIndex(1)}
+          >
+            텍스트 리뷰
+          </button>
+        </div>
       </div>
       <div className="review-section">
-        <ReviewHistory />
+        <ReviewHistory index={index} onChangeIndex={(i) => setIndex(i)} />
       </div>
 
       <StSheet
@@ -150,8 +168,28 @@ const StDiv = styled.div`
   .profile-buttons {
     display: flex;
     flex-direction: row;
-    padding: var(--spacing_20);
+    padding: var(--spacing_12) var(--spacing_20);
     gap: var(--spacing_12);
+  }
+
+  .review-heading {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    padding: 0px var(--spacing_20);
+    gap: var(--spacing_16);
+
+    .review-filter {
+      ${H4}
+      background-color: var(--white);
+      border: none;
+      padding: var(--spacing_12) 0px var(--spacing_8) 0px;
+      cursor: pointer;
+
+      &.active {
+        border-bottom: 3px solid var(--black);
+      }
+    }
   }
 
   .review-section {

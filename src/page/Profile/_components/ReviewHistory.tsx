@@ -4,13 +4,23 @@ import styled from "styled-components";
 
 import { H4 } from "@/style/font";
 
-const ReviewHistory: React.FC = () => {
+interface ReviewHistoryProps {
+  index: number;
+  onChangeIndex: (arg0: number) => void;
+}
+
+const ReviewHistory: React.FC<ReviewHistoryProps> = ({
+  index,
+  onChangeIndex,
+}) => {
   return (
     <StDiv>
       <SwipeableViews
         className="reviews-container"
         enableMouseEvents
         onMouseDown={(e) => e.preventDefault()}
+        index={index}
+        onChangeIndex={(i) => onChangeIndex(i)}
       >
         <div className="image-reviews">
           {[...Array(15)].map((_, index) => (
