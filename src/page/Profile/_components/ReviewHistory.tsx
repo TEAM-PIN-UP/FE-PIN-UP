@@ -2,6 +2,7 @@ import React from "react";
 import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
 
+import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
 import { H4 } from "@/style/font";
 
 interface ReviewHistoryProps {
@@ -24,7 +25,7 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
       >
         <div className="image-reviews">
           {[...Array(15)].map((_, index) => (
-            <img
+            <ImgWithPlaceholder
               key={index}
               src={`https://picsum.photos/200?random=${index}`}
               className="image"
