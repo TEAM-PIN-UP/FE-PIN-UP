@@ -40,6 +40,7 @@ const StDiv = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    margin: 0px var(--spacing_24);
 
     .stat-item {
       display: flex;
@@ -48,7 +49,6 @@ const StDiv = styled.div`
       justify-content: center;
       width: 48px;
       gap: var(--spacing_4);
-      margin: 0px var(--spacing_24);
     }
     .stat-value {
       ${H4}
