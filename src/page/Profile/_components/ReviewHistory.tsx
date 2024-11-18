@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
 
@@ -15,14 +15,34 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
   index,
   onChangeIndex,
 }) => {
+  const [isSwiping, setIsSwiping] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Distinguish between swipe & click
+  const handleSwitch = () => {
+    setIsSwiping(true);
+
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+    timeoutRef.current = setTimeout(() => {
+      setIsSwiping(false);
+    }, 50);
+  };
+
+  const handleClick = (index: number) => {
+    if (isSwiping) return;
+    console.log(index);
+  };
+
   return (
     <StDiv>
       <SwipeableViews
         slideClassName="reviews-container"
         enableMouseEvents
-        onMouseDown={(e) => e.preventDefault()}
         index={index}
-        onChangeIndex={(i) => onChangeIndex(i)}
+        onChangeIndex={onChangeIndex}
+        onMouseDown={(e) => e.preventDefault()}
+        onSwitching={handleSwitch}
       >
         <div className={`image-reviews ${index === 0 ? "active" : ""}`}>
           {[...Array(24)].map((_, index) => (
@@ -30,7 +50,7 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
               key={index}
               src={`https://picsum.photos/200?random=${index}`}
               className="image"
-              onClick={() => console.log(index)}
+              onClick={() => handleClick(index)}
             />
           ))}
         </div>
