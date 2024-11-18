@@ -4,15 +4,17 @@ import React, { CSSProperties } from "react";
 export type TransitionDirection = "forward" | "backward";
 
 interface TransitionWrapperProps {
-  direction: TransitionDirection;
   children: React.ReactNode;
+  direction: TransitionDirection;
+  duration?: number;
   className?: string;
   style?: CSSProperties;
 }
 
 const TransitionWrapper: React.FC<TransitionWrapperProps> = ({
-  direction,
   children,
+  direction,
+  duration = 0.5,
   className,
   style,
 }) => {
@@ -34,7 +36,7 @@ const TransitionWrapper: React.FC<TransitionWrapperProps> = ({
       exit="exit"
       animate="animate"
       variants={transitionVariants}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: duration }}
       className={className}
       style={style}
     >
