@@ -50,10 +50,12 @@ const StDiv = styled.div`
     width: 100%;
     height: 100%;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease-in-out, z-index 0.6s ease-in-out;
+    z-index: -10;
 
     &.active {
       opacity: 1;
+      z-index: 10;
     }
   }
 
@@ -61,6 +63,7 @@ const StDiv = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
+    z-index: 0;
   }
 `;
 
