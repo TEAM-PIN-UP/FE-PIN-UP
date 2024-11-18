@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
 import { H4 } from "@/style/font";
+import ReviewEmpty from "./ReviewEmpty";
 
 interface ReviewHistoryProps {
   index: number;
@@ -17,14 +18,14 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
   return (
     <StDiv>
       <SwipeableViews
-        className="reviews-container"
+        slideClassName="reviews-container"
         enableMouseEvents
         onMouseDown={(e) => e.preventDefault()}
         index={index}
         onChangeIndex={(i) => onChangeIndex(i)}
       >
-        <div className="image-reviews">
-          {[...Array(15)].map((_, index) => (
+        <div className={`image-reviews ${index === 0 ? "active" : ""}`}>
+          {[...Array(24)].map((_, index) => (
             <ImgWithPlaceholder
               key={index}
               src={`https://picsum.photos/200?random=${index}`}
@@ -33,8 +34,8 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
             />
           ))}
         </div>
-        <div className="text-reviews">
-          <span>아직 작성한 리뷰가 없어요!</span>
+        <div className={`text-reviews ${index === 1 ? "active" : ""}`}>
+          <ReviewEmpty />
         </div>
       </SwipeableViews>
     </StDiv>
@@ -45,22 +46,28 @@ const StDiv = styled.div`
   ${H4}
   display: flex;
   flex: 1 0 auto;
+  width: 100%;
+  height: 100%;
+
+  .react-swipeable-view-container {
+    height: 100%;
+  }
 
   .reviews-container {
-    width: 100%;
     display: flex;
-    flex: 1 0 auto;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    overflow-y: auto;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
 
     .image-reviews {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1.5px;
       width: 100%;
-      flex-grow: 1;
+      height: 0px;
+      overflow: hidden;
 
       .image {
         width: 100%;
@@ -69,9 +76,26 @@ const StDiv = styled.div`
         display: block;
         object-fit: cover;
       }
+
+      &.active {
+        flex: 1 0 auto;
+        height: 100%;
+        overflow-y: auto;
+      }
     }
 
     .text-reviews {
+      display: flex;
+      flex-direction: column;
+      flex: 1 0 auto;
+      width: 100%;
+      height: 0px;
+      overflow: hidden;
+
+      &.active {
+        height: 100%;
+        overflow-y: auto;
+      }
     }
   }
 `;

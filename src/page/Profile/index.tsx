@@ -57,7 +57,7 @@ const ProfilePage: React.FC = () => {
       </Header>
       <div className="user-section">
         <div className="profile">
-          <img src={"https://picsum.photos/200"} className="profile-image" />
+          <img src="https://picsum.photos/200" className="profile-image" />
           <UserStatsSection stats={userStats} />
         </div>
         <div className="username">레벨조이</div>
@@ -76,13 +76,13 @@ const ProfilePage: React.FC = () => {
             className={`review-filter ${index === 0 ? "active" : ""}`}
             onClick={() => setIndex(0)}
           >
-            포토 리뷰
+            포토 리뷰 24
           </button>
           <button
             className={`review-filter ${index === 1 ? "active" : ""}`}
             onClick={() => setIndex(1)}
           >
-            텍스트 리뷰
+            텍스트 리뷰 3
           </button>
         </div>
       </div>
