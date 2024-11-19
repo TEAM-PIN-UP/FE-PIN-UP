@@ -1,6 +1,8 @@
-import { B4 } from "@/style/font";
 import React, { useState } from "react";
 import styled from "styled-components";
+
+import edit from "@/image/icons/editInactive.svg";
+import { B4 } from "@/style/font";
 
 const UserIntroInput: React.FC = () => {
   const [isActive, setIsActive] = useState(false);
@@ -9,6 +11,7 @@ const UserIntroInput: React.FC = () => {
     <StDiv>
       {!isActive && (
         <div className="placeholder">
+          <img src={edit} />
           <span className="b4">나를 한 줄로 소개해 보세요</span>
         </div>
       )}
@@ -37,6 +40,7 @@ const StDiv = styled.div`
     align-items: center;
     color: var(--neutral_400);
     left: var(--spacing_16);
+    gap: 10px;
   }
 
   .input {

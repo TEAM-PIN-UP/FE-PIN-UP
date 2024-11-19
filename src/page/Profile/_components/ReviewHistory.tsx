@@ -30,14 +30,18 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
     }, 50);
   };
 
-  const { setCurrentView, setTransitionDirection, setReviewId } =
-    useViewStore();
+  const { setCurrentView, setReviewId } = useViewStore();
 
   const handleClick = (index: number) => {
     if (isSwiping) return;
     setReviewId(index);
-    setTransitionDirection("forward");
     setCurrentView(view.reviewDetailView);
+
+    window.history.pushState(
+      { view: "reviewDetail" },
+      "",
+      `/profile?photo-review=${index}`
+    );
   };
 
   return (
