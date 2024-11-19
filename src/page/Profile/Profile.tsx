@@ -5,6 +5,11 @@ import styled from "styled-components";
 import Button from "@/components/Button";
 import Header from "@/components/Header";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
+import addUser from "@/image/icons/addUser.svg";
+import notificationActive from "@/image/icons/notificationActive.svg";
+import notificationInactive from "@/image/icons/notificationInactive.svg";
+import settings from "@/image/icons/settings.svg";
+import share from "@/image/icons/share.svg";
 import { H2, H3, H4 } from "@/style/font";
 import useToastPopup from "@/utils/toastPopup";
 import ProfileButton from "./_components/ProfileButton";
@@ -44,6 +49,8 @@ const Profile: React.FC = () => {
   // Review history swiper view state
   const [index, setIndex] = useState(0);
 
+  const [newNotifications, setNewNotifications] = useState(false);
+
   return (
     <StDiv ref={attachRef}>
       <Header>
@@ -51,8 +58,12 @@ const Profile: React.FC = () => {
           <span className="h2">My</span>
         </Header.Left>
         <Header.Right>
-          <span className="h2">알림</span>
-          <span className="h2">설정</span>
+          <img
+            src={newNotifications ? notificationActive : notificationInactive}
+            onClick={() => setNewNotifications((prev) => !prev)}
+            className="button"
+          />
+          <img src={settings} className="button" />
         </Header.Right>
       </Header>
       <div className="user-section">
@@ -62,10 +73,11 @@ const Profile: React.FC = () => {
         </div>
         <div className="username">레벨조이</div>
         <UserIntroInput />
+
         <div className="profile-buttons">
-          <ProfileButton icon="" text="핀버디 추가" />
+          <ProfileButton icon={addUser} text="핀버디 추가" />
           <ProfileButton
-            icon=""
+            icon={share}
             text="프로필 공유"
             onClick={() => setIsSheetOpen(true)}
           />
@@ -142,6 +154,10 @@ const StDiv = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
+
+  .button {
+    cursor: pointer;
+  }
 
   .profile {
     display: flex;
