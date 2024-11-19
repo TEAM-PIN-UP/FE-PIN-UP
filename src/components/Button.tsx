@@ -21,6 +21,7 @@ const Button: React.FC<buttonProps> = ({
   active = true,
   onClick,
   children,
+  ...props
 }) => {
   const [width, setWidth] = useState<string>("max-content");
   const [padding, setPadding] = useState<string>("12px 16px");
@@ -61,6 +62,7 @@ const Button: React.FC<buttonProps> = ({
       $typo={typo}
       onClick={onClick}
       disabled={!active}
+      {...props}
     >
       {children}
     </StButton>
