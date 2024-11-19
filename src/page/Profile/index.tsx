@@ -1,11 +1,30 @@
 import styled from "styled-components";
 
+import { useEffect } from "react";
 import Profile from "./Profile";
 import { useViewStore, view } from "./ProfileViewStore";
 import { ReviewDetails } from "./ReviewDetails";
 
 const ProfilePage: React.FC = () => {
-  const { currentView } = useViewStore();
+  const { currentView, setCurrentView } = useViewStore();
+
+  useEffect(() => {
+    // Use popstate event for back navigation
+    const handlePopState = (event: PopStateEvent) => {
+      if (event.state?.view === "reviewDetail") {
+        setCurrentView(view.reviewDetailView);
+      } else {
+        setCurrentView(view.profileView);
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    window.history.replaceState({}, "", "/profile"); // Scrub params
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [setCurrentView]);
 
   return (
     <StDiv>

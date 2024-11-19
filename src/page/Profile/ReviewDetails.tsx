@@ -4,13 +4,13 @@ import Header from "@/components/Header";
 import TransitionWrapper from "@/components/TransitionWrapper";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import { B6, H3, H4 } from "@/style/font";
-import { useViewStore, view } from "./ProfileViewStore";
+import { useViewStore } from "./ProfileViewStore";
 
 export const ReviewDetails: React.FC = () => {
-  const { currentView, setCurrentView, reviewId } = useViewStore();
+  const { currentView, reviewId } = useViewStore();
 
   const handleClick = () => {
-    setCurrentView(view.profileView);
+    window.history.back();
   };
 
   return (

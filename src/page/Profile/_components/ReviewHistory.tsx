@@ -36,6 +36,12 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
     if (isSwiping) return;
     setReviewId(index);
     setCurrentView(view.reviewDetailView);
+
+    window.history.pushState(
+      { view: "reviewDetail" },
+      "",
+      `/profile?photo-review=${index}`
+    );
   };
 
   return (
