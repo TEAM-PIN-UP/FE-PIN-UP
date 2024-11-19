@@ -9,25 +9,25 @@ const Header: React.FC<React.HTMLAttributes<HTMLDivElement>> & {
   return <HeaderContainer {...props}>{children}</HeaderContainer>;
 };
 
-Header.Left = ({ children, ...props }) => {
+Header.Left = ({ children, className, ...props }) => {
   return (
-    <div className="header-left" {...props}>
+    <div className={`header-left ${className}`} {...props}>
       {children}
     </div>
   );
 };
 
-Header.Center = ({ children, ...props }) => {
+Header.Center = ({ children, className, ...props }) => {
   return (
-    <div className="header-center" {...props}>
+    <div className={`header-center ${className}`} {...props}>
       {children}
     </div>
   );
 };
 
-Header.Right = ({ children, ...props }) => {
+Header.Right = ({ children, className, ...props }) => {
   return (
-    <div className="header-right" {...props}>
+    <div className={`header-right ${className}`} {...props}>
       {children}
     </div>
   );
