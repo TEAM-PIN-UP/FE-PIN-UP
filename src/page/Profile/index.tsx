@@ -1,34 +1,47 @@
-import { useEffect } from "react";
 import styled from "styled-components";
 
-import TransitionWrapper from "@/components/TransitionWrapper";
 import Profile from "./Profile";
 import { useViewStore, view } from "./ProfileViewStore";
 import { ReviewDetails } from "./ReviewDetails";
 
 const ProfilePage: React.FC = () => {
-  const { currentView, direction, setTransitionDirection } = useViewStore();
-
-  // Reset transition direction on page load & unload
-  useEffect(() => {
-    setTransitionDirection("forward");
-    return () => {
-      setTransitionDirection("forward");
-    };
-  }, [setTransitionDirection]);
+  const { currentView } = useViewStore();
 
   return (
-    <StTransitionWrapper key={currentView} direction={direction}>
-      {currentView === view.profileView && <Profile />}
-      {currentView === view.reviewDetailView && <ReviewDetails />}
-    </StTransitionWrapper>
+    <StDiv>
+      <div
+        className={`view-container ${
+          currentView === view.profileView ? "active" : ""
+        }`}
+      >
+        <Profile />
+      </div>
+      <div
+        className={`view-container ${
+          currentView === view.reviewDetailView ? "active" : ""
+        }`}
+      >
+        <ReviewDetails />
+      </div>
+    </StDiv>
   );
 };
 
-const StTransitionWrapper = styled(TransitionWrapper)`
+const StDiv = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
+
+  .view-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: none;
+
+    &.active {
+      display: block;
+    }
+  }
 `;
 
 export default ProfilePage;

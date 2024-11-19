@@ -18,7 +18,7 @@ const userStats: Stat[] = [
   { label: "핀버디", value: 552 },
 ];
 
-const Profile = () => {
+const Profile: React.FC = () => {
   // Bottom sheet logic
   const sheetRef = useRef<SheetRef>();
   const { attachRef } = useBottomSheetSnapPoints();
