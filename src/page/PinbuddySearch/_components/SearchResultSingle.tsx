@@ -1,8 +1,11 @@
 import styled from "styled-components";
 import profileImg from "@/image/icons/profile.jpg";
 import { B3, B5, H6 } from "@/style/font";
+import { useNavigate } from "react-router-dom";
 
 const SearchResultSingle = () => {
+  const navigate = useNavigate();
+
   return (
     <StSearchResultSingle>
       <img src={profileImg} />
@@ -19,7 +22,9 @@ const SearchResultSingle = () => {
           </div>
         </div>
       </div>
-      <div className="profileButton">프로필</div>
+      <div className="profileButton" onClick={() => navigate(`/profile/1`)}>
+        프로필
+      </div>
     </StSearchResultSingle>
   );
 };
