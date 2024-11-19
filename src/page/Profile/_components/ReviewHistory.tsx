@@ -31,7 +31,7 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
 
   const handleClick = (index: number) => {
     if (isSwiping) return;
-    console.log(index);
+    window.open(`/profile/${index}`, "_blank");
   };
 
   return (
@@ -85,7 +85,8 @@ const StDiv = styled.div`
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1.5px;
-      width: 100%;
+      width: 100vw;
+      max-width: 440px;
       height: 0px;
       overflow: hidden;
 

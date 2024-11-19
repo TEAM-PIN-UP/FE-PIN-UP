@@ -1,11 +1,11 @@
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import React, { CSSProperties } from "react";
 
 export type TransitionDirection = "forward" | "backward";
 
 interface TransitionWrapperProps {
   children: React.ReactNode;
-  direction: TransitionDirection;
+  direction?: TransitionDirection;
   duration?: number;
   className?: string;
   style?: CSSProperties;
@@ -13,12 +13,12 @@ interface TransitionWrapperProps {
 
 const TransitionWrapper: React.FC<TransitionWrapperProps> = ({
   children,
-  direction,
+  direction = "forward",
   duration = 0.5,
   className,
   style,
 }) => {
-  const transitionVariants = {
+  const transitionVariants: Variants = {
     initial:
       direction === "forward"
         ? { opacity: 0, x: 100 }

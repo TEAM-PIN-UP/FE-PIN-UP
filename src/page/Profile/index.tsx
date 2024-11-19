@@ -90,6 +90,7 @@ const ProfilePage: React.FC = () => {
         <ReviewHistory index={index} onChangeIndex={(i) => setIndex(i)} />
       </div>
 
+      {/* Share Profile */}
       <StSheet
         ref={sheetRef}
         isOpen={isSheetOpen}
