@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
 import { H4 } from "@/style/font";
-import { useViewStore, view } from "../ViewStore";
+import { useViewStore, view } from "../ProfileViewStore";
 import ReviewEmpty from "./ReviewEmpty";
 
 interface ReviewHistoryProps {
@@ -30,10 +30,13 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
     }, 50);
   };
 
-  const { currentView, setCurrentView } = useViewStore();
+  const { setCurrentView, setTransitionDirection, setReviewId } =
+    useViewStore();
 
   const handleClick = (index: number) => {
     if (isSwiping) return;
+    setReviewId(index);
+    setTransitionDirection("forward");
     setCurrentView(view.reviewDetailView);
   };
 

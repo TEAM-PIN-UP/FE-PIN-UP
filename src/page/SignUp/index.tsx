@@ -4,14 +4,14 @@ import styled from "styled-components";
 import Header from "@/components/Header";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import { H3 } from "@/style/font";
+import TransitionWrapper, {
+  TransitionDirection,
+} from "../../components/TransitionWrapper";
 import SelectLogin from "./_components/stages/SelectLogin";
 import SetName from "./_components/stages/SetName";
 import SetProfile from "./_components/stages/SetProfile";
 import Tos from "./_components/stages/Tos";
 import Welcome from "./_components/stages/Welcome";
-import TransitionWrapper, {
-  TransitionDirection,
-} from "./_components/TransitionWrapper";
 import { SignUpForm } from "./SignUpInterface";
 
 const SignUpPage: React.FC = () => {

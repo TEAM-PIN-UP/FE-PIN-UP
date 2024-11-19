@@ -179,6 +179,7 @@ const StDiv = styled.div`
     flex-direction: row;
     align-items: start;
     padding: 0px var(--spacing_20);
+    margin-top: var(--spacing_8);
     gap: var(--spacing_16);
 
     .review-filter {

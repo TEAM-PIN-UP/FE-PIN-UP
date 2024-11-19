@@ -1,14 +1,14 @@
 import styled from "styled-components";
-import TransitionWrapper from "../SignUp/_components/TransitionWrapper";
+import TransitionWrapper from "../../components/TransitionWrapper";
 import Profile from "./Profile";
+import { useViewStore, view } from "./ProfileViewStore";
 import { ReviewDetails } from "./ReviewDetails";
-import { useViewStore, view } from "./ViewStore";
 
 const ProfilePage: React.FC = () => {
-  const { currentView } = useViewStore();
+  const { currentView, direction } = useViewStore();
 
   return (
-    <StTransitionWrapper key={currentView} direction="forward">
+    <StTransitionWrapper key={currentView} direction={direction}>
       {currentView === view.profileView && <Profile />}
       {currentView === view.reviewDetailView && <ReviewDetails />}
     </StTransitionWrapper>

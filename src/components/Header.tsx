@@ -70,7 +70,7 @@ const HeaderContainer = styled.div`
   .header-center {
     display: flex;
     position: absolute;
-    top: var(--spacing_12);
+    top: var(--spacing_16);
     left: 50%;
     transform: translateX(-50%);
     align-items: center;
