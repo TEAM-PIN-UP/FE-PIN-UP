@@ -15,25 +15,55 @@ export const cropImage = (
         return;
       }
 
-      const cropX = (image.width - cropSize) / 2;
-      const cropY = (image.height - cropSize) / 2;
+      // Find largest square possible
+      const squareSize = Math.min(image.width, image.height);
 
-      canvas.width = cropSize;
-      canvas.height = cropSize;
+      // Set canvas to square size
+      canvas.width = squareSize;
+      canvas.height = squareSize;
+
+      // Calculate center start position
+      const cropX = (image.width - squareSize) / 2;
+      const cropY = (image.height - squareSize) / 2;
 
       ctx.drawImage(
         image,
         cropX,
         cropY,
-        cropSize,
-        cropSize,
+        squareSize,
+        squareSize,
+        0,
+        0,
+        squareSize,
+        squareSize
+      );
+
+      // Downscale square to desired cropSize
+      const resizedCanvas = document.createElement("canvas");
+      const resizedCtx = resizedCanvas.getContext("2d");
+
+      if (!resizedCtx) {
+        reject("Canvas context unavailable.");
+        return;
+      }
+
+      resizedCanvas.width = cropSize;
+      resizedCanvas.height = cropSize;
+
+      // Draw resized square image
+      resizedCtx.drawImage(
+        canvas,
+        0,
+        0,
+        squareSize,
+        squareSize,
         0,
         0,
         cropSize,
         cropSize
       );
 
-      const croppedDataUrl = canvas.toDataURL();
+      const croppedDataUrl = resizedCanvas.toDataURL();
       resolve(croppedDataUrl);
     };
 
