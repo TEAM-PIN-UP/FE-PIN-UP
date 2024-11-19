@@ -1,34 +1,66 @@
-import { useEffect } from "react";
 import styled from "styled-components";
 
-import TransitionWrapper from "@/components/TransitionWrapper";
+import { useEffect } from "react";
 import Profile from "./Profile";
 import { useViewStore, view } from "./ProfileViewStore";
 import { ReviewDetails } from "./ReviewDetails";
 
 const ProfilePage: React.FC = () => {
-  const { currentView, direction, setTransitionDirection } = useViewStore();
+  const { currentView, setCurrentView } = useViewStore();
 
-  // Reset transition direction on page load & unload
   useEffect(() => {
-    setTransitionDirection("forward");
-    return () => {
-      setTransitionDirection("forward");
+    // Use popstate event for back navigation
+    const handlePopState = (event: PopStateEvent) => {
+      if (event.state?.view === "reviewDetail") {
+        setCurrentView(view.reviewDetailView);
+      } else {
+        setCurrentView(view.profileView);
+      }
     };
-  }, [setTransitionDirection]);
+
+    window.addEventListener("popstate", handlePopState);
+    window.history.replaceState({}, "", "/profile"); // Scrub params
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [setCurrentView]);
 
   return (
-    <StTransitionWrapper key={currentView} direction={direction}>
-      {currentView === view.profileView && <Profile />}
-      {currentView === view.reviewDetailView && <ReviewDetails />}
-    </StTransitionWrapper>
+    <StDiv>
+      <div
+        className={`view-container ${
+          currentView === view.profileView ? "active" : ""
+        }`}
+      >
+        <Profile />
+      </div>
+      <div
+        className={`view-container ${
+          currentView === view.reviewDetailView ? "active" : ""
+        }`}
+      >
+        <ReviewDetails />
+      </div>
+    </StDiv>
   );
 };
 
-const StTransitionWrapper = styled(TransitionWrapper)`
+const StDiv = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
+
+  .view-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: none;
+
+    &.active {
+      display: block;
+    }
+  }
 `;
 
 export default ProfilePage;

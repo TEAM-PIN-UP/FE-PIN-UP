@@ -35,6 +35,11 @@ const StButton = styled.button`
   box-sizing: content-box;
   height: 16px;
   cursor: pointer;
+
+  &:active {
+    background-color: var(--neutral_200);
+    transform: scale(0.95);
+  }
 `;
 
 export default ProfileButton;
