@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
 import { H4 } from "@/style/font";
+import { useViewStore, view } from "../ViewStore";
 import ReviewEmpty from "./ReviewEmpty";
 
 interface ReviewHistoryProps {
@@ -29,9 +30,11 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
     }, 50);
   };
 
+  const { currentView, setCurrentView } = useViewStore();
+
   const handleClick = (index: number) => {
     if (isSwiping) return;
-    window.open(`/profile/${index}`, "_blank");
+    setCurrentView(view.reviewDetailView);
   };
 
   return (
@@ -78,15 +81,13 @@ const StDiv = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    width: 100%;
+    width: calc(100vw - 3px);
     height: 100%;
 
     .image-reviews {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1.5px;
-      width: 100vw;
-      max-width: 440px;
       height: 0px;
       overflow: hidden;
 
@@ -96,6 +97,7 @@ const StDiv = styled.div`
         aspect-ratio: 1;
         display: block;
         object-fit: cover;
+        cursor: pointer;
       }
 
       &.active {
@@ -109,7 +111,6 @@ const StDiv = styled.div`
       display: flex;
       flex-direction: column;
       flex: 1 0 auto;
-      width: 100%;
       height: 0px;
       overflow: hidden;
 
