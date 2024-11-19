@@ -10,6 +10,7 @@ import ReviewPage from "@/page/Review";
 import SignUpPage from "@/page/SignUp";
 import PinbuddySearch from "@/page/PinbuddySearch";
 import PinBuddyLayout from "@/page/PinbuddySearch/Layout";
+import OtherProfile from "@/page/OtherProfile";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
             element: <PinbuddySearch />,
           },
         ],
+      },
+      {
+        path: "/profile/:nickname",
+        element: <OtherProfile />,
       },
       {
         path: "/signup",
