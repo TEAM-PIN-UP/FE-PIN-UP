@@ -1,11 +1,21 @@
+import { useEffect } from "react";
 import styled from "styled-components";
-import TransitionWrapper from "../../components/TransitionWrapper";
+
+import TransitionWrapper from "@/components/TransitionWrapper";
 import Profile from "./Profile";
 import { useViewStore, view } from "./ProfileViewStore";
 import { ReviewDetails } from "./ReviewDetails";
 
 const ProfilePage: React.FC = () => {
-  const { currentView, direction } = useViewStore();
+  const { currentView, direction, setTransitionDirection } = useViewStore();
+
+  // Reset transition direction on page load & unload
+  useEffect(() => {
+    setTransitionDirection("forward");
+    return () => {
+      setTransitionDirection("forward");
+    };
+  }, [setTransitionDirection]);
 
   return (
     <StTransitionWrapper key={currentView} direction={direction}>
