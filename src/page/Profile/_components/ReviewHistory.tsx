@@ -5,7 +5,7 @@ import styled from "styled-components";
 import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
 import { H4 } from "@/style/font";
 import { useViewStore, view } from "../ProfileViewStore";
-import ReviewEmpty from "./ReviewEmpty";
+import ReviewText from "./ReviewText";
 
 interface ReviewHistoryProps {
   index: number;
@@ -65,7 +65,9 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
           ))}
         </div>
         <div className={`text-reviews ${index === 1 ? "active" : ""}`}>
-          <ReviewEmpty />
+          <ReviewText />
+          <ReviewText />
+          <ReviewText />
         </div>
       </SwipeableViews>
     </StDiv>
@@ -118,8 +120,11 @@ const StDiv = styled.div`
       display: flex;
       flex-direction: column;
       flex: 1 0 auto;
+      width: 100%;
       height: 0px;
       overflow: hidden;
+      background-color: var(--neutral_100);
+      gap: var(--spacing_8);
 
       &.active {
         height: 100%;

@@ -37,7 +37,7 @@ const HeaderContainer = styled.div`
   position: absolute;
   width: 100%;
   max-width: 440px;
-  height: 48px;
+  height: 44px;
   top: 0px;
   left: 0;
   right: 0;
@@ -46,7 +46,7 @@ const HeaderContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: var(--spacing_16) var(--spacing_12);
+  padding: var(--spacing_12) var(--spacing_20);
   border-bottom: 1px solid var(--neutral_100);
   box-sizing: border-box;
   background-color: var(--white);
@@ -70,7 +70,7 @@ const HeaderContainer = styled.div`
   .header-center {
     display: flex;
     position: absolute;
-    top: var(--spacing_16);
+    top: var(--spacing_12);
     left: 50%;
     transform: translateX(-50%);
     align-items: center;
