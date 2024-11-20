@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import { useEffect } from "react";
+import Notifications from "./Notifications";
 import Profile from "./Profile";
 import { useViewStore, view } from "./ProfileViewStore";
 import { ReviewDetails } from "./ReviewDetails";
@@ -41,6 +42,13 @@ const ProfilePage: React.FC = () => {
         }`}
       >
         <ReviewDetails />
+      </div>
+      <div
+        className={`view-container ${
+          currentView === view.notificationsView ? "active" : ""
+        }`}
+      >
+        <Notifications />
       </div>
     </StDiv>
   );

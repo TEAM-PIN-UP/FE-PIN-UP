@@ -6,7 +6,7 @@ import chevronLeft from "@/image/icons/chevronLeft.svg";
 import moreDotsGray from "@/image/icons/moreDotsGray.svg";
 import { B6, H3, H4 } from "@/style/font";
 import { useViewStore } from "./ProfileViewStore";
-import ReviewText from "./_components/ReviewText";
+import ReviewText from "./_components/reviews/ReviewText";
 
 export const ReviewDetails: React.FC = () => {
   const { currentView, reviewId } = useViewStore();

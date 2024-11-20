@@ -4,6 +4,7 @@ import { create } from "zustand";
 export enum view {
   profileView,
   reviewDetailView,
+  notificationsView,
 }
 
 export interface ViewStore {

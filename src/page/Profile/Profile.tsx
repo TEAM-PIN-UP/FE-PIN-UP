@@ -13,9 +13,10 @@ import share from "@/image/icons/share.svg";
 import { H2, H3, H4 } from "@/style/font";
 import useToastPopup from "@/utils/toastPopup";
 import ProfileButton from "./_components/ProfileButton";
-import ReviewHistory from "./_components/ReviewHistory";
+import ReviewHistory from "./_components/reviews/ReviewHistory";
 import UserIntroInput from "./_components/UserIntroInput";
 import UserStatsSection, { Stat } from "./_components/UserStatsSection";
+import { useViewStore, view } from "./ProfileViewStore";
 
 const userStats: Stat[] = [
   { label: "리뷰", value: 8 },
@@ -49,7 +50,18 @@ const Profile: React.FC = () => {
   // Review history swiper view state
   const [index, setIndex] = useState(0);
 
+  const { setCurrentView } = useViewStore();
+
   const [newNotifications, setNewNotifications] = useState(false);
+  const handleNotifications = () => {
+    setNewNotifications((prev) => !prev);
+    setCurrentView(view.notificationsView);
+    window.history.pushState(
+      { view: "notifications" },
+      "",
+      `/profile/notifications`
+    );
+  };
 
   return (
     <StDiv ref={attachRef}>
@@ -60,7 +72,7 @@ const Profile: React.FC = () => {
         <Header.Right>
           <img
             src={newNotifications ? notificationActive : notificationInactive}
-            onClick={() => setNewNotifications((prev) => !prev)}
+            onClick={handleNotifications}
             className="button"
           />
           <img src={settings} className="button" />
