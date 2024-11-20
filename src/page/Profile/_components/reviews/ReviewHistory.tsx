@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
 import { H4 } from "@/style/font";
-import { useViewStore, view } from "../ProfileViewStore";
+import { useViewStore, view } from "../../ProfileViewStore";
 import ReviewEmpty from "./ReviewEmpty";
 
 interface ReviewHistoryProps {
