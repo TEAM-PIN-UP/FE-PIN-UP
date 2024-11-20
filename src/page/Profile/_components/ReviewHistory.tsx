@@ -5,7 +5,7 @@ import styled from "styled-components";
 import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
 import { H4 } from "@/style/font";
 import { useViewStore, view } from "../ProfileViewStore";
-import ReviewText from "./ReviewText";
+import ReviewEmpty from "./ReviewEmpty";
 
 interface ReviewHistoryProps {
   index: number;
@@ -54,7 +54,7 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
         onMouseDown={(e) => e.preventDefault()}
         onSwitching={handleSwitch}
       >
-        <div className={`image-reviews ${index === 0 ? "active" : ""}`}>
+        <div className="image-reviews">
           {[...Array(24)].map((_, index) => (
             <ImgWithPlaceholder
               key={index}
@@ -64,10 +64,11 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
             />
           ))}
         </div>
-        <div className={`text-reviews ${index === 1 ? "active" : ""}`}>
+        <div className="text-reviews">
+          {/* <ReviewText />
           <ReviewText />
-          <ReviewText />
-          <ReviewText />
+          <ReviewText /> */}
+          <ReviewEmpty />
         </div>
       </SwipeableViews>
     </StDiv>
@@ -99,6 +100,9 @@ const StDiv = styled.div`
       gap: 1.5px;
       height: 0px;
       overflow: hidden;
+      flex: 1 0 auto;
+      height: 100%;
+      overflow-y: auto;
 
       .image {
         width: 100%;
@@ -107,12 +111,6 @@ const StDiv = styled.div`
         display: block;
         object-fit: cover;
         cursor: pointer;
-      }
-
-      &.active {
-        flex: 1 0 auto;
-        height: 100%;
-        overflow-y: auto;
       }
     }
 
@@ -125,11 +123,8 @@ const StDiv = styled.div`
       overflow: hidden;
       background-color: var(--neutral_100);
       gap: var(--spacing_8);
-
-      &.active {
-        height: 100%;
-        overflow-y: auto;
-      }
+      height: 100%;
+      overflow-y: auto;
     }
   }
 `;

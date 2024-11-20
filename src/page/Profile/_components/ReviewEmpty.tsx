@@ -25,6 +25,7 @@ const StDiv = styled.div`
   width: calc(100vw - 3px);
   height: 100%;
   text-align: center;
+  background-color: var(--white);
 `;
 
 export default ReviewEmpty;
