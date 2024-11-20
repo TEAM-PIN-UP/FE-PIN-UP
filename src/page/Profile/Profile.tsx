@@ -16,6 +16,7 @@ import ProfileButton from "./_components/ProfileButton";
 import ReviewHistory from "./_components/ReviewHistory";
 import UserIntroInput from "./_components/UserIntroInput";
 import UserStatsSection, { Stat } from "./_components/UserStatsSection";
+import { useNavigate } from "react-router-dom";
 
 const userStats: Stat[] = [
   { label: "리뷰", value: 8 },
@@ -24,6 +25,7 @@ const userStats: Stat[] = [
 ];
 
 const Profile: React.FC = () => {
+  const navigate = useNavigate();
   // Bottom sheet logic
   const sheetRef = useRef<SheetRef>();
   const { attachRef } = useBottomSheetSnapPoints();
@@ -52,100 +54,106 @@ const Profile: React.FC = () => {
   const [newNotifications, setNewNotifications] = useState(false);
 
   return (
-    <StDiv ref={attachRef}>
-      <Header>
-        <Header.Left>
-          <span className="h2">My</span>
-        </Header.Left>
-        <Header.Right>
-          <img
-            src={newNotifications ? notificationActive : notificationInactive}
-            onClick={() => setNewNotifications((prev) => !prev)}
-            className="button"
+    <>
+      <StDiv ref={attachRef}>
+        <Header>
+          <Header.Left>
+            <span className="h2">My</span>
+          </Header.Left>
+          <Header.Right>
+            <img
+              src={newNotifications ? notificationActive : notificationInactive}
+              onClick={() => setNewNotifications((prev) => !prev)}
+              className="button"
+            />
+            <img src={settings} className="button" />
+          </Header.Right>
+        </Header>
+        <div className="user-section">
+          <div className="profile">
+            <img src="https://picsum.photos/200" className="profile-image" />
+            <UserStatsSection stats={userStats} />
+          </div>
+          <div className="username">레벨조이</div>
+          <UserIntroInput />
+
+          <div className="profile-buttons">
+            <ProfileButton
+              icon={addUser}
+              text="핀버디 추가"
+              onClick={() => navigate(`pinbuddySearch`)}
+            />
+            <ProfileButton
+              icon={share}
+              text="프로필 공유"
+              onClick={() => setIsSheetOpen(true)}
+            />
+          </div>
+
+          <div className="review-heading">
+            <button
+              className={`review-filter ${index === 0 ? "active" : ""}`}
+              onClick={() => setIndex(0)}
+            >
+              포토 리뷰 24
+            </button>
+            <button
+              className={`review-filter ${index === 1 ? "active" : ""}`}
+              onClick={() => setIndex(1)}
+            >
+              텍스트 리뷰 3
+            </button>
+          </div>
+        </div>
+        <div className="review-section">
+          <ReviewHistory index={index} onChangeIndex={(i) => setIndex(i)} />
+        </div>
+
+        {/* Share Profile */}
+        <StSheet
+          ref={sheetRef}
+          isOpen={isSheetOpen}
+          onClose={() => {
+            setIsSheetOpen(false);
+          }}
+          snapPoints={[0.5]}
+          $left={left}
+        >
+          <Sheet.Container>
+            <Sheet.Header />
+            <Sheet.Content className="content">
+              <div className="profile-share">
+                <img
+                  src={"https://picsum.photos/200"}
+                  className="profile-image"
+                />
+                <span className="username">레벨조이</span>
+                <UserStatsSection stats={userStats} />
+                <Button
+                  size="xlarge"
+                  onClick={async () => {
+                    try {
+                      await navigator.clipboard.writeText("profile");
+                      setIsSheetOpen(false);
+                      toast("링크를 클립보드에 복사했어요.");
+                    } catch (err) {
+                      console.error("Failed to copy: ", err);
+                    }
+                  }}
+                  className="share-button"
+                >
+                  프로필 공유
+                </Button>
+              </div>
+            </Sheet.Content>
+          </Sheet.Container>
+          <Sheet.Backdrop
+            onTap={() => setIsSheetOpen(false)}
+            style={{ backgroundColor: `var(--transparent_50)` }}
           />
-          <img src={settings} className="button" />
-        </Header.Right>
-      </Header>
-      <div className="user-section">
-        <div className="profile">
-          <img src="https://picsum.photos/200" className="profile-image" />
-          <UserStatsSection stats={userStats} />
-        </div>
-        <div className="username">레벨조이</div>
-        <UserIntroInput />
-
-        <div className="profile-buttons">
-          <ProfileButton icon={addUser} text="핀버디 추가" />
-          <ProfileButton
-            icon={share}
-            text="프로필 공유"
-            onClick={() => setIsSheetOpen(true)}
-          />
-        </div>
-
-        <div className="review-heading">
-          <button
-            className={`review-filter ${index === 0 ? "active" : ""}`}
-            onClick={() => setIndex(0)}
-          >
-            포토 리뷰 24
-          </button>
-          <button
-            className={`review-filter ${index === 1 ? "active" : ""}`}
-            onClick={() => setIndex(1)}
-          >
-            텍스트 리뷰 3
-          </button>
-        </div>
-      </div>
-      <div className="review-section">
-        <ReviewHistory index={index} onChangeIndex={(i) => setIndex(i)} />
-      </div>
-
-      {/* Share Profile */}
-      <StSheet
-        ref={sheetRef}
-        isOpen={isSheetOpen}
-        onClose={() => {
-          setIsSheetOpen(false);
-        }}
-        snapPoints={[0.5]}
-        $left={left}
-      >
-        <Sheet.Container>
-          <Sheet.Header />
-          <Sheet.Content className="content">
-            <div className="profile-share">
-              <img
-                src={"https://picsum.photos/200"}
-                className="profile-image"
-              />
-              <span className="username">레벨조이</span>
-              <UserStatsSection stats={userStats} />
-              <Button
-                size="xlarge"
-                onClick={async () => {
-                  try {
-                    await navigator.clipboard.writeText("profile");
-                    setIsSheetOpen(false);
-                    toast("링크를 클립보드에 복사했어요.");
-                  } catch (err) {
-                    console.error("Failed to copy: ", err);
-                  }
-                }}
-                className="share-button"
-              >
-                프로필 공유
-              </Button>
-            </div>
-          </Sheet.Content>
-        </Sheet.Container>
-        <Sheet.Backdrop
-          onTap={() => setIsSheetOpen(false)}
-          style={{ backgroundColor: `var(--transparent_50)` }}
-        />
-      </StSheet>
-    </StDiv>
+        </StSheet>
+      </StDiv>
+    </>
   );
 };
 
