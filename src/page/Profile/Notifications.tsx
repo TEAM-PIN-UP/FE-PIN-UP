@@ -4,15 +4,15 @@ import Header from "@/components/Header";
 import TransitionWrapper from "@/components/TransitionWrapper";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import { H3 } from "@/style/font";
-import { useViewStore } from "./ProfileViewStore";
+import { useNavigate } from "react-router-dom";
 import NotificationDateGroup from "./_components/notifications/NotificationDateGroup";
 import NotificationItem from "./_components/notifications/NotificationItem";
 
 const Notifications: React.FC = () => {
-  const { currentView } = useViewStore();
+  const navigate = useNavigate();
 
   const handleClick = () => {
-    window.history.back();
+    navigate(-1);
   };
 
   return (
@@ -30,7 +30,7 @@ const Notifications: React.FC = () => {
         </Header.Center>
       </Header>
 
-      <StTransitionWrapper key={currentView} duration={0.25}>
+      <StTransitionWrapper duration={0.25}>
         <div className="notifications-groups">
           <NotificationDateGroup date="오늘">
             <NotificationItem

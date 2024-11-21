@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
 import { H4 } from "@/style/font";
-import { useViewStore, view } from "../../ProfileViewStore";
+import { useNavigate } from "react-router-dom";
 import ReviewText from "./ReviewText";
 
 interface ReviewHistoryProps {
@@ -16,6 +16,8 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
   index,
   onChangeIndex,
 }) => {
+  const navigate = useNavigate();
+
   const [isSwiping, setIsSwiping] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -30,18 +32,10 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
     }, 50);
   };
 
-  const { setCurrentView, setReviewId } = useViewStore();
-
   const handleClick = (index: number) => {
     if (isSwiping) return;
-    setReviewId(index);
-    setCurrentView(view.reviewDetailView);
 
-    window.history.pushState(
-      { view: "reviewDetail" },
-      "",
-      `/profile?photo-review=${index}`
-    );
+    navigate(`photo-review/${index}`);
   };
 
   return (

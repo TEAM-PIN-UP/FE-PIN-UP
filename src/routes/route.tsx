@@ -6,6 +6,8 @@ import ContentsPage from "@/page/Contents";
 import LandingPage from "@/page/Landing";
 import MapPage from "@/page/Map";
 import ProfilePage from "@/page/Profile";
+import Notifications from "@/page/Profile/Notifications";
+import { ReviewDetails } from "@/page/Profile/ReviewDetails";
 import ReviewPage from "@/page/Review";
 import SignUpPage from "@/page/SignUp";
 
@@ -37,6 +39,14 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <ProfilePage />,
+      },
+      {
+        path: "/profile/notifications",
+        element: <Notifications />,
+      },
+      {
+        path: "/profile/photo-review/:id",
+        element: <ReviewDetails />,
       },
       {
         path: "/signup",

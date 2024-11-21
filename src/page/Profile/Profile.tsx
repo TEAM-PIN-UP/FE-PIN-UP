@@ -12,11 +12,11 @@ import settings from "@/image/icons/settings.svg";
 import share from "@/image/icons/share.svg";
 import { H2, H3, H4 } from "@/style/font";
 import useToastPopup from "@/utils/toastPopup";
+import { useNavigate } from "react-router-dom";
 import ProfileButton from "./_components/ProfileButton";
 import ReviewHistory from "./_components/reviews/ReviewHistory";
 import UserIntroInput from "./_components/UserIntroInput";
 import UserStatsSection, { Stat } from "./_components/UserStatsSection";
-import { useViewStore, view } from "./ProfileViewStore";
 
 const userStats: Stat[] = [
   { label: "리뷰", value: 8 },
@@ -25,6 +25,8 @@ const userStats: Stat[] = [
 ];
 
 const Profile: React.FC = () => {
+  const navigate = useNavigate();
+
   // Bottom sheet logic
   const sheetRef = useRef<SheetRef>();
   const { attachRef } = useBottomSheetSnapPoints();
@@ -50,17 +52,10 @@ const Profile: React.FC = () => {
   // Review history swiper view state
   const [index, setIndex] = useState(0);
 
-  const { setCurrentView } = useViewStore();
-
   const [newNotifications, setNewNotifications] = useState(false);
   const handleNotifications = () => {
     setNewNotifications((prev) => !prev);
-    setCurrentView(view.notificationsView);
-    window.history.pushState(
-      { view: "notifications" },
-      "",
-      `/profile?notifications`
-    );
+    navigate("notifications");
   };
 
   return (

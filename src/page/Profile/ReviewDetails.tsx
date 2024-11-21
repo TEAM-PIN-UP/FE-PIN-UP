@@ -5,15 +5,12 @@ import TransitionWrapper from "@/components/TransitionWrapper";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import moreDotsGray from "@/image/icons/moreDotsGray.svg";
 import { B6, H3, H4 } from "@/style/font";
-import { useViewStore } from "./ProfileViewStore";
+import { useNavigate, useParams } from "react-router-dom";
 import ReviewText from "./_components/reviews/ReviewText";
 
 export const ReviewDetails: React.FC = () => {
-  const { currentView, reviewId } = useViewStore();
-
-  const handleClick = () => {
-    window.history.back();
-  };
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   return (
     <StDiv>
@@ -22,7 +19,7 @@ export const ReviewDetails: React.FC = () => {
           <img
             src={chevronLeft}
             className="back-button"
-            onClick={handleClick}
+            onClick={() => navigate(-1)}
           />
         </Header.Left>
         <Header.Center>
@@ -30,7 +27,7 @@ export const ReviewDetails: React.FC = () => {
         </Header.Center>
       </Header>
 
-      <StTransitionWrapper key={currentView} duration={0.25}>
+      <StTransitionWrapper duration={0.25}>
         <div className="user-header">
           <div className="profile">
             <img src="https://picsum.photos/200" className="profile-image" />
@@ -46,7 +43,7 @@ export const ReviewDetails: React.FC = () => {
         </div>
         <div className="review-images">
           <img
-            src={`https://picsum.photos/200?random=${reviewId}`}
+            src={`https://picsum.photos/200?random=${id}`}
             className="image"
           />
         </div>
