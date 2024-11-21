@@ -11,10 +11,6 @@ import NotificationItem from "./_components/notifications/NotificationItem";
 const Notifications: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate(-1);
-  };
-
   return (
     <StDiv>
       <Header>
@@ -22,7 +18,7 @@ const Notifications: React.FC = () => {
           <img
             src={chevronLeft}
             className="back-button"
-            onClick={handleClick}
+            onClick={() => navigate(-1)}
           />
         </Header.Left>
         <Header.Center>

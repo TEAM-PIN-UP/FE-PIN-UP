@@ -50,6 +50,9 @@ const StDiv = styled.div`
     height: 17px;
 
     .see-map-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: transparent;
       background-color: transparent;
       border: none;
