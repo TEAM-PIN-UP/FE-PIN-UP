@@ -59,7 +59,7 @@ const Profile: React.FC = () => {
     window.history.pushState(
       { view: "notifications" },
       "",
-      `/profile/notifications`
+      `/profile?notifications`
     );
   };
 

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
 import { H4 } from "@/style/font";
 import { useViewStore, view } from "../../ProfileViewStore";
-import ReviewEmpty from "./ReviewEmpty";
+import ReviewText from "./ReviewText";
 
 interface ReviewHistoryProps {
   index: number;
@@ -65,10 +65,9 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
           ))}
         </div>
         <div className="text-reviews">
-          {/* <ReviewText />
           <ReviewText />
-          <ReviewText /> */}
-          <ReviewEmpty />
+          <ReviewText />
+          <ReviewText />
         </div>
       </SwipeableViews>
     </StDiv>

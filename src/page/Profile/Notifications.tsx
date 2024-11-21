@@ -31,7 +31,7 @@ const Notifications: React.FC = () => {
       </Header>
 
       <StTransitionWrapper key={currentView} duration={0.25}>
-        <div className="notifications">
+        <div className="notifications-groups">
           <NotificationDateGroup date="오늘">
             <NotificationItem
               profileImage="https://picsum.photos/200"
@@ -46,6 +46,46 @@ const Notifications: React.FC = () => {
               isRead={true}
             />
           </NotificationDateGroup>
+          <NotificationDateGroup date="10월 21일">
+            <NotificationItem
+              profileImage="https://picsum.photos/200"
+              username="은채vv"
+              type="receivedRequestFromUser"
+              isRead={false}
+            />
+            <NotificationItem
+              profileImage="https://picsum.photos/200"
+              username="은채vv"
+              type="receivedRequestFromUser"
+              isRead={false}
+            />{" "}
+            <NotificationItem
+              profileImage="https://picsum.photos/200"
+              username="은채vv"
+              type="receivedRequestFromUser"
+              isRead={false}
+            />
+          </NotificationDateGroup>
+          <NotificationDateGroup date="10월 20일">
+            <NotificationItem
+              profileImage="https://picsum.photos/200"
+              username="은채vv"
+              type="receivedRequestFromUser"
+              isRead={false}
+            />{" "}
+            <NotificationItem
+              profileImage="https://picsum.photos/200"
+              username="은채vv"
+              type="receivedRequestFromUser"
+              isRead={false}
+            />
+            <NotificationItem
+              profileImage="https://picsum.photos/200"
+              username="은채vv"
+              type="receivedRequestFromUser"
+              isRead={false}
+            />
+          </NotificationDateGroup>
         </div>
       </StTransitionWrapper>
     </StDiv>
@@ -58,6 +98,7 @@ const StDiv = styled.div`
   padding: 0px var(--spacing_20);
   padding-top: 48px;
   box-sizing: border-box;
+  overflow-y: auto;
 
   .back-button {
     cursor: pointer;
@@ -71,7 +112,12 @@ const StTransitionWrapper = styled(TransitionWrapper)`
   width: 100%;
   height: 100%;
   padding-top: var(--spacing_20);
-  gap: var(--spacing_32);
+
+  .notifications-groups {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing_32);
+  }
 `;
 
 export default Notifications;
