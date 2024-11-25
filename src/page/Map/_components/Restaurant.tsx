@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import profileImg from "@/image/icons/profile.jpg";
+import blackStar from "@/image/icons/blackStar.svg";
 import { B4, H3, H4 } from "@/style/font";
 import ImageSwiper from "./ImageSwiper";
 
@@ -22,7 +23,10 @@ const Restaurant: React.FC<RestaurantProps> = ({
         <div className="infoContainer">
           <div className="textContainer">
             <div className="title">{name}</div>
-            <div className="rating">⭐ {averageRating.toFixed(1)}</div>
+            <div className="rating">
+              <img className="star" src={blackStar} />
+              <span className="rate">{averageRating.toFixed(1)}</span>
+            </div>
             <div className="detail">
               <span className="distance">2.4km</span>
               <span className="reviewNum">리뷰 4</span>
@@ -46,7 +50,6 @@ const StRestaurant = styled.div`
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      align-self: stretch;
       padding-bottom: var(--spacing_16);
       .textContainer {
         display: flex;
@@ -58,14 +61,22 @@ const StRestaurant = styled.div`
           color: var(--neutral_800);
         }
         .rating {
-          ${H4};
-          color: var(--neutral_800);
-          text-align: center;
+          display: flex; 
+          align-items: center;
+          gap: 2px;
+          .star {
+            width: 18px;
+            height: 18px;
+          }
+          .rate {
+            ${H4};
+            color: var(--neutral_800);
+          }
         }
         .detail {
           display: flex;
           align-items: flex-start;
-          gap: 0.5rem;
+          gap: 6px;
           .distance {
             ${B4};
             color: var(--neutral_500);

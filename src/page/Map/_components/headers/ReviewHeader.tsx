@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import arrowLeft from "@/image/icons/arrowLeft.svg";
-import edit from "@/image/icons/edit.svg";
 import scrapActive from "@/image/icons/scrapActive.svg";
 import scrapInactive from "@/image/icons/scrapInactive.svg";
 
@@ -18,14 +17,9 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({ onBack }) => {
       <StBackButton onClick={onBack}>
         <img src={arrowLeft} alt="back" />
       </StBackButton>
-      <StActionButtons>
-        <button onClick={() => setIsScraped(!isScraped)}>
-          <img src={isScraped ? scrapActive : scrapInactive} alt="scrap" />
-        </button>
-        <button>
-          <img src={edit} alt="edit" />
-        </button>
-      </StActionButtons>
+      <StScrapButton onClick={() => setIsScraped(!isScraped)}>
+        <img src={isScraped ? scrapActive : scrapInactive} alt="scrap" />
+      </StScrapButton>
     </StHeaderContainer>
   );
 };
@@ -34,12 +28,13 @@ const StHeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing_8) var(--spacing_20);
+  padding: 0 var(--spacing_20) var(--spacing_8);
 `;
 
 const StBackButton = styled.button`
   width: 36px;
   height: 36px;
+  border: none;
   border-radius: var(--radius_circle);
   flex-shrink: 0;
   background: var(--neutral_50);
@@ -52,23 +47,19 @@ const StBackButton = styled.button`
   }
 `;
 
-const StActionButtons = styled.div`
-  display: flex;
-  gap: var(--spacing_12);
+const StScrapButton = styled.button`
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: var(--radius_circle);
+  flex-shrink: 0;
+  background: var(--neutral_50);
+  padding: 0;
+  cursor: pointer;
 
-  button {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius_circle);
-    flex-shrink: 0;
-    background: var(--neutral_50);
-    padding: 0;
-    cursor: pointer;
-
-    img {
-      width: 20px;
-      height: 20px;
-    }
+  img {
+    width: 20px;
+    height: 20px;
   }
 `;
 
