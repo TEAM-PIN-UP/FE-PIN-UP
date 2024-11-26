@@ -7,7 +7,7 @@ type modalType = "ok" | "cancel-ok";
 
 interface ModalPropsBase {
   title: string;
-  body: string;
+  body: string[];
   type: modalType;
 }
 
@@ -35,10 +35,9 @@ const Modal: React.FC<ModalProps> = (props) => {
       <div className="modal-box">
         <span className="title">{title}</span>
         <div className="body-container">
-          {body.split("\n").map((line, index) => (
+          {body.map((line, index) => (
             <span key={index} className="body-line">
               {line}
-              <br />
             </span>
           ))}
         </div>
