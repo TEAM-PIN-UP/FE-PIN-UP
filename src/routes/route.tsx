@@ -10,6 +10,9 @@ import Notifications from "@/page/Profile/Notifications";
 import { ReviewDetails } from "@/page/Profile/ReviewDetails";
 import ReviewPage from "@/page/Review";
 import SignUpPage from "@/page/SignUp";
+import PinbuddySearch from "@/page/PinbuddySearch";
+import PinBuddyLayout from "@/page/PinbuddySearch/Layout";
+import OtherProfile from "@/page/OtherProfile";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +50,19 @@ const router = createBrowserRouter([
       {
         path: "/profile/photo-review/:id",
         element: <ReviewDetails />,
+      },
+      {
+        element: <PinBuddyLayout />,
+        children: [
+          {
+            path: "/profile/pinbuddySearch",
+            element: <PinbuddySearch />,
+          },
+        ],
+      },
+      {
+        path: "/profile/:nickname",
+        element: <OtherProfile />,
       },
       {
         path: "/signup",
