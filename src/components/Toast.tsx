@@ -36,6 +36,7 @@ const StToast = styled.div<ToastStyle>`
   transform: translate(-50%, 0);
   display: flex;
   opacity: ${(props) => (props.$toastOn ? 1 : 0)};
+  pointer-events: ${(props) => (props.$toastOn ? "auto" : "none")};
   transition: opacity 1s;
   align-items: center;
   width: max-content;
