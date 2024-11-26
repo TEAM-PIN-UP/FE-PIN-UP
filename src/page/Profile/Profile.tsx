@@ -12,8 +12,9 @@ import settings from "@/image/icons/settings.svg";
 import share from "@/image/icons/share.svg";
 import { H2, H3, H4 } from "@/style/font";
 import useToastPopup from "@/utils/toastPopup";
+import { useNavigate } from "react-router-dom";
 import ProfileButton from "./_components/ProfileButton";
-import ReviewHistory from "./_components/ReviewHistory";
+import ReviewHistory from "./_components/reviews/ReviewHistory";
 import UserIntroInput from "./_components/UserIntroInput";
 import UserStatsSection, { Stat } from "./_components/UserStatsSection";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +27,7 @@ const userStats: Stat[] = [
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
+
   // Bottom sheet logic
   const sheetRef = useRef<SheetRef>();
   const { attachRef } = useBottomSheetSnapPoints();
@@ -52,6 +54,10 @@ const Profile: React.FC = () => {
   const [index, setIndex] = useState(0);
 
   const [newNotifications, setNewNotifications] = useState(false);
+  const handleNotifications = () => {
+    setNewNotifications((prev) => !prev);
+    navigate("notifications");
+  };
 
   return (
     <>

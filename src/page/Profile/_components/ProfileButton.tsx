@@ -35,10 +35,11 @@ const StButton = styled.button`
   box-sizing: content-box;
   height: 16px;
   cursor: pointer;
+  transition: transform 0.02s ease-in-out, background-color 0.02s ease-in-out;
 
   &:active {
     background-color: var(--neutral_200);
-    transform: scale(0.95);
+    transform: scale(0.97);
   }
 `;
 

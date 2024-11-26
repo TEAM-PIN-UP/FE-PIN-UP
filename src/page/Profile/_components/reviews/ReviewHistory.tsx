@@ -4,8 +4,8 @@ import styled from "styled-components";
 
 import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
 import { H4 } from "@/style/font";
-import { useViewStore, view } from "../ProfileViewStore";
-import ReviewEmpty from "./ReviewEmpty";
+import { useNavigate } from "react-router-dom";
+import ReviewText from "./ReviewText";
 
 interface ReviewHistoryProps {
   index: number;
@@ -16,6 +16,8 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
   index,
   onChangeIndex,
 }) => {
+  const navigate = useNavigate();
+
   const [isSwiping, setIsSwiping] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -30,18 +32,10 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
     }, 50);
   };
 
-  const { setCurrentView, setReviewId } = useViewStore();
-
   const handleClick = (index: number) => {
     if (isSwiping) return;
-    setReviewId(index);
-    setCurrentView(view.reviewDetailView);
 
-    window.history.pushState(
-      { view: "reviewDetail" },
-      "",
-      `/profile?photo-review=${index}`
-    );
+    navigate(`photo-review/${index}`);
   };
 
   return (
@@ -54,7 +48,7 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
         onMouseDown={(e) => e.preventDefault()}
         onSwitching={handleSwitch}
       >
-        <div className={`image-reviews ${index === 0 ? "active" : ""}`}>
+        <div className="image-reviews">
           {[...Array(24)].map((_, index) => (
             <ImgWithPlaceholder
               key={index}
@@ -64,8 +58,10 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
             />
           ))}
         </div>
-        <div className={`text-reviews ${index === 1 ? "active" : ""}`}>
-          <ReviewEmpty />
+        <div className="text-reviews">
+          <ReviewText />
+          <ReviewText />
+          <ReviewText />
         </div>
       </SwipeableViews>
     </StDiv>
@@ -97,6 +93,9 @@ const StDiv = styled.div`
       gap: 1.5px;
       height: 0px;
       overflow: hidden;
+      flex: 1 0 auto;
+      height: 100%;
+      overflow-y: auto;
 
       .image {
         width: 100%;
@@ -106,25 +105,19 @@ const StDiv = styled.div`
         object-fit: cover;
         cursor: pointer;
       }
-
-      &.active {
-        flex: 1 0 auto;
-        height: 100%;
-        overflow-y: auto;
-      }
     }
 
     .text-reviews {
       display: flex;
       flex-direction: column;
       flex: 1 0 auto;
+      width: 100%;
       height: 0px;
       overflow: hidden;
-
-      &.active {
-        height: 100%;
-        overflow-y: auto;
-      }
+      background-color: var(--neutral_100);
+      gap: var(--spacing_8);
+      height: 100%;
+      overflow-y: auto;
     }
   }
 `;
