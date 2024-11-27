@@ -17,7 +17,6 @@ import ProfileButton from "./_components/ProfileButton";
 import ReviewHistory from "./_components/reviews/ReviewHistory";
 import UserIntroInput from "./_components/UserIntroInput";
 import UserStatsSection, { Stat } from "./_components/UserStatsSection";
-import { useNavigate } from "react-router-dom";
 
 const userStats: Stat[] = [
   { label: "리뷰", value: 8 },
@@ -69,7 +68,7 @@ const Profile: React.FC = () => {
           <Header.Right>
             <img
               src={newNotifications ? notificationActive : notificationInactive}
-              onClick={() => setNewNotifications((prev) => !prev)}
+              onClick={handleNotifications}
               className="button"
             />
             <img src={settings} className="button" />
