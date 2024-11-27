@@ -45,7 +45,7 @@ const HeaderDiv = styled.div`
   display: flex;
   flex-direction: column;
   gap: var(--spacing_16);
-  padding: var(--spacing_12);
+  padding: 0 var(--spacing_20) var(--spacing_12);
 `;
 
 const SearchContainer = styled.div`
