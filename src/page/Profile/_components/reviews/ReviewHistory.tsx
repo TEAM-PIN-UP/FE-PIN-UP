@@ -59,9 +59,36 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
           ))}
         </div>
         <div className="text-reviews">
-          <ReviewText />
-          <ReviewText />
-          <ReviewText />
+          <ReviewText
+            placeName="잠실새내 딤딤섬"
+            longitude={126.909915}
+            latitude={35.174822}
+            userName="나"
+            score="4.0"
+            reviewDate="24.10.17"
+            body="새우 들어간 딤섬이 젤 마싯음 !! 매장도 깔끔"
+            visitDate="2024년 10월 31일"
+          />
+          <ReviewText
+            placeName="잠실새내 딤딤섬"
+            longitude={126.909915}
+            latitude={35.174822}
+            userName="나"
+            score="4.0"
+            reviewDate="24.10.17"
+            body="새우 들어간 딤섬이 젤 마싯음 !! 매장도 깔끔"
+            visitDate="2024년 10월 31일"
+          />
+          <ReviewText
+            placeName="잠실새내 딤딤섬"
+            longitude={126.909915}
+            latitude={35.174822}
+            userName="나"
+            score="4.0"
+            reviewDate="24.10.17"
+            body="새우 들어간 딤섬이 젤 마싯음 !! 매장도 깔끔"
+            visitDate="2024년 10월 31일"
+          />
         </div>
       </SwipeableViews>
     </StDiv>

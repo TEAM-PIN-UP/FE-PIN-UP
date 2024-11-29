@@ -3,32 +3,66 @@ import styled from "styled-components";
 import blackStar from "@/image/icons/blackStar.svg";
 import chevronRight from "@/image/icons/chevronRightBlack.svg";
 import { B3, B4, B5, B6, H3, H4 } from "@/style/font";
+import { useNavigate } from "react-router-dom";
 
-const ReviewText: React.FC = () => {
+interface ReviewTextProps {
+  placeName: string;
+  longitude: number;
+  latitude: number;
+  userName: string;
+  score: string;
+  reviewDate: string;
+  body: string;
+  visitDate: string;
+}
+
+const ReviewText: React.FC<ReviewTextProps> = ({
+  placeName,
+  longitude,
+  latitude,
+  userName,
+  score,
+  reviewDate,
+  body,
+  visitDate,
+}) => {
+  const navigate = useNavigate();
+
   return (
     <StDiv>
       <div className="header">
-        <span>잠실새내 딤딤섬</span>
+        <span>{placeName}</span>
         <button className="see-map-button">
-          <img src={chevronRight} />
+          <img
+            src={chevronRight}
+            onClick={() => {
+              const params = new URLSearchParams({
+                query: placeName,
+                longitude: longitude.toString(),
+                latitude: latitude.toString(),
+              });
+
+              navigate(`/map?${params.toString()}`);
+            }}
+          />
         </button>
       </div>
       <div className="divider" />
 
       <div className="review">
         <div className="review-title">
-          <span className="h3">나</span>
+          <span className="h3">{userName}</span>
           <img src={blackStar} className="star" />
-          <span className="score b3">4.0</span>
-          <span className="review-date b5 gray">24.10.07</span>
+          <span className="score b3">{score}</span>
+          <span className="review-date b5 gray">{reviewDate}</span>
         </div>
         <div className="review-body">
-          <span>새우 들어간 딤섬이 젤 마싯음 !! 매장도 깔끔</span>
+          <span>{body}</span>
         </div>
       </div>
 
       <div className="visit-date">
-        <span>방문 날짜 2024년 10월 31일</span>
+        <span>방문 날짜 {visitDate}</span>
       </div>
     </StDiv>
   );

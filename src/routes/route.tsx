@@ -11,7 +11,7 @@ import PinBuddyLayout from "@/page/PinbuddySearch/Layout";
 import ProfilePage from "@/page/Profile";
 import EditProfile from "@/page/Profile/EditProfile";
 import Notifications from "@/page/Profile/Notifications";
-import { ReviewDetails } from "@/page/Profile/ReviewDetails";
+import { ReviewDetails } from "@/page/Profile/_components/reviews/ReviewDetails";
 import ReviewPage from "@/page/Review";
 import SignUpPage from "@/page/SignUp";
 
