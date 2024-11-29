@@ -11,6 +11,7 @@ import styled from "styled-components";
 
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useMapSetup from "@/hooks/useMapSetup";
+import { useLocation } from "react-router-dom";
 import PinMarker from "./_components/PinMarker";
 import Restaurant, { RestaurantProps } from "./_components/Restaurant";
 import UserPositionMarker from "./_components/UserPositionMarker";
@@ -58,6 +59,19 @@ const MapPage: React.FC = () => {
     queryKey: ["places"],
     queryFn: fetchPlaces,
   });
+
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  const hasParams = !!search;
+  const query = params.get("query");
+  const longitude = params.get("longitude");
+  const latitude = params.get("latitude");
+
+  if (hasParams && query && longitude && latitude) {
+    console.log("Params:", { query, longitude, latitude });
+  } else {
+    console.log("No params");
+  }
 
   useEffect(() => {
     // Update bottom sheet alignment on window resize
