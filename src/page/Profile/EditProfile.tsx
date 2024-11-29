@@ -17,6 +17,7 @@ const EditProfile: React.FC = () => {
   const [profileImage, setProfileImage] = useState("");
   const [name, setName] = useState("");
   const [intro, setIntro] = useState("");
+  const [isInputFocused, setIsInputFocused] = useState(false);
 
   useEffect(() => {
     // Read values from backend on page load
@@ -109,6 +110,8 @@ const EditProfile: React.FC = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="input-field"
+              onFocus={() => setIsInputFocused(true)}
+              onBlur={() => setIsInputFocused(false)}
             />
           </div>
           <div className="input">
@@ -119,10 +122,21 @@ const EditProfile: React.FC = () => {
               onChange={(e) => setIntro(e.target.value)}
               className="input-field"
               placeholder="소개 입력하기"
+              onFocus={() => setIsInputFocused(true)}
+              onBlur={() => setIsInputFocused(false)}
             />
           </div>
         </div>
-        <div className="info">*닉네임은 30일 마다 변경 가능해요.</div>
+        <div className="bottom-row">
+          <span className={`info ${isInputFocused ? "" : "active"}`}>
+            *닉네임은 30일 마다 변경 가능해요.
+          </span>
+          <button
+            className={`delete-account ${isInputFocused ? "active" : ""}`}
+          >
+            회원탈퇴
+          </button>
+        </div>
       </div>
     </StDiv>
   );
@@ -225,12 +239,32 @@ const StDiv = styled.div`
       }
     }
 
-    .info {
-      ${B5}
-      color: var(--neutral_400);
-      margin-top: var(--spacing_16);
-      text-align: start;
+    .bottom-row {
       width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: var(--spacing_16);
+
+      .info {
+        ${B5}
+        color: var(--neutral_400);
+        text-align: start;
+        transition: opacity 0.2s ease;
+      }
+      .delete-account {
+        ${B5}
+        background-color: transparent;
+        border: none;
+        border-bottom: 1px solid var(--neutral_400);
+        color: var(--neutral_400);
+        cursor: pointer;
+        transition: opacity 0.5s ease;
+      }
+      .active {
+        opacity: 0;
+      }
     }
   }
 `;
