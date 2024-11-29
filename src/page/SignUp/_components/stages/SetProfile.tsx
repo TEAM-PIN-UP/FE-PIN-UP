@@ -2,10 +2,12 @@ import { useRef } from "react";
 import styled from "styled-components";
 
 import Button from "@/components/Button";
+import ProfileImagePicker from "@/components/ProfileImagePicker";
+import camera from "@/image/icons/camera.svg";
 import { B3 } from "@/style/font";
+import checkImageValidity from "@/utils/checkImageValidity";
 import { cropImage } from "@/utils/cropImage";
 import useToastPopup from "@/utils/toastPopup";
-import camera from "../../_icons/camera.svg";
 import StGap from "../typography/StGap";
 import StGlue from "../typography/StGlue";
 import StTextContainer from "../typography/StTextContainer";
@@ -14,18 +16,12 @@ import { StageProps } from "./StageProps";
 const SetProfile: React.FC<StageProps> = ({ data, updateData, onNext }) => {
   const toast = useToastPopup();
 
-  const isValidProfileImage =
-    data.profileImage &&
-    /^data:image\/(png|jpg|jpeg);base64,/.test(data.profileImage);
+  const isValidProfileImage = checkImageValidity(data.profileImage);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-
+  const handleImageChange = (file: File) => {
     if (file) {
-      // Check file type
-      const allowedTypes = ["image/jpeg", "image/png"];
-      if (!allowedTypes.includes(file.type)) {
+      if (!checkImageValidity(file)) {
         toast("jpeg 또는 png 형식의 이미지를 올려주세요.");
         return;
       }
@@ -76,23 +72,12 @@ const SetProfile: React.FC<StageProps> = ({ data, updateData, onNext }) => {
       </StTextContainer>
       <StGap height="64px" />
 
-      <button
-        className="image-picker"
-        style={{
-          backgroundImage: isValidProfileImage
-            ? `url(${data.profileImage})`
-            : "none",
-        }}
-      >
-        {!isValidProfileImage && <img className="camera-icon" src={camera} />}
-        <input
-          type="file"
-          accept="image/jpeg, image/png"
-          ref={fileInputRef}
-          className="image-input"
-          onChange={handleImageChange}
-        />
-      </button>
+      <ProfileImagePicker
+        imageUrl={data.profileImage}
+        onImageChange={handleImageChange}
+        size="100px"
+        placeholderIcon={camera}
+      />
       {isValidProfileImage && <span className="username">{data.name}</span>}
       <StGlue />
 

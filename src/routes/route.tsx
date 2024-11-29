@@ -5,14 +5,15 @@ import BookmarkPage from "@/page/Bookmark";
 import ContentsPage from "@/page/Contents";
 import LandingPage from "@/page/Landing";
 import MapPage from "@/page/Map";
+import OtherProfile from "@/page/OtherProfile";
+import PinbuddySearch from "@/page/PinbuddySearch";
+import PinBuddyLayout from "@/page/PinbuddySearch/Layout";
 import ProfilePage from "@/page/Profile";
+import EditProfile from "@/page/Profile/EditProfile";
 import Notifications from "@/page/Profile/Notifications";
 import { ReviewDetails } from "@/page/Profile/ReviewDetails";
 import ReviewPage from "@/page/Review";
 import SignUpPage from "@/page/SignUp";
-import PinbuddySearch from "@/page/PinbuddySearch";
-import PinBuddyLayout from "@/page/PinbuddySearch/Layout";
-import OtherProfile from "@/page/OtherProfile";
 
 const router = createBrowserRouter([
   {
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
       {
         path: "/profile/:nickname",
         element: <OtherProfile />,
+      },
+      {
+        path: "/profile/settings/edit-profile",
+        element: <EditProfile />,
       },
       {
         path: "/signup",
