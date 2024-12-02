@@ -61,8 +61,8 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
         <div className="text-reviews">
           <ReviewText
             placeName="잠실새내 딤딤섬"
-            longitude={126.909915}
-            latitude={35.174822}
+            longitude={127.104809}
+            latitude={37.5144}
             userName="나"
             score="4.0"
             reviewDate="24.10.17"
@@ -71,8 +71,8 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
           />
           <ReviewText
             placeName="잠실새내 딤딤섬"
-            longitude={126.909915}
-            latitude={35.174822}
+            longitude={127.104809}
+            latitude={37.5144}
             userName="나"
             score="4.0"
             reviewDate="24.10.17"
@@ -81,8 +81,8 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
           />
           <ReviewText
             placeName="잠실새내 딤딤섬"
-            longitude={126.909915}
-            latitude={35.174822}
+            longitude={127.104809}
+            latitude={37.5144}
             userName="나"
             score="4.0"
             reviewDate="24.10.17"

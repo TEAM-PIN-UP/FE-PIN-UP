@@ -1,7 +1,9 @@
+import useToastPopup from "@/utils/toastPopup";
 import { useCallback, useEffect, useRef } from "react";
 import { useNavermaps } from "react-naver-maps";
 
 const useMapSetup = (
+  useGeolocation: boolean,
   map: naver.maps.Map | null,
   user: naver.maps.Marker | null,
   defaultZoom: number,
@@ -9,8 +11,9 @@ const useMapSetup = (
 ) => {
   const naverMaps = useNavermaps();
   const isDragging = useRef(false);
+  const toast = useToastPopup();
 
-  const onSuccessGeolocation = useCallback(
+  const onGeolocationSuccess = useCallback(
     (position: GeolocationPosition) => {
       if (!map || !user) return;
 
@@ -22,22 +25,21 @@ const useMapSetup = (
       map.setCenter(location);
       map.setZoom(defaultZoom);
       user.setPosition(location);
-      console.log("Coordinates: " + location.toString());
     },
     [map, user, naverMaps, defaultZoom]
   );
 
-  const onErrorGeolocation = useCallback(() => {
+  const onGeolocationError = useCallback(() => {
     if (!map || !user) return;
-    console.error("Geolocation error.");
-  }, [map, user]);
+    toast("위치정보를 확인하지 못했어요.");
+  }, [map, user, toast]);
 
   useEffect(() => {
     if (!map) return;
-    if (navigator.geolocation) {
+    if (useGeolocation && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        onSuccessGeolocation,
-        onErrorGeolocation
+        onGeolocationSuccess,
+        onGeolocationError
       );
     }
 
@@ -87,7 +89,13 @@ const useMapSetup = (
       naver.maps.Event.removeListener(mouseMoveListener);
       naver.maps.Event.removeListener(mouseUpListener);
     };
-  }, [map, onSuccessGeolocation, onErrorGeolocation, setActivePinIndex]);
+  }, [
+    useGeolocation,
+    map,
+    onGeolocationSuccess,
+    onGeolocationError,
+    setActivePinIndex,
+  ]);
 };
 
 export default useMapSetup;
