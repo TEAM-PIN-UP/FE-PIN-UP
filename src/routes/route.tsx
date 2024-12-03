@@ -61,7 +61,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/profile/:nickname",
+        path: "/profile/:uid",
         element: <OtherProfile />,
       },
       {
