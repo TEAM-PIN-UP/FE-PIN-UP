@@ -10,12 +10,11 @@ import notificationActive from "@/image/icons/notificationActive.svg";
 import notificationInactive from "@/image/icons/notificationInactive.svg";
 import settings from "@/image/icons/settings.svg";
 import share from "@/image/icons/share.svg";
-import { H2, H3, H4 } from "@/style/font";
+import { B4, H2, H3, H4 } from "@/style/font";
 import useToastPopup from "@/utils/toastPopup";
 import { useNavigate } from "react-router-dom";
 import ProfileButton from "./_components/ProfileButton";
 import ReviewHistory from "./_components/reviews/ReviewHistory";
-import UserIntroInput from "./_components/UserIntroInput";
 import UserStatsSection, { Stat } from "./_components/UserStatsSection";
 
 const userStats: Stat[] = [
@@ -74,24 +73,25 @@ const Profile: React.FC = () => {
             <img src={settings} className="button" />
           </Header.Right>
         </Header>
+
         <div className="user-section">
           <div className="profile">
             <img src="https://picsum.photos/200" className="profile-image" />
             <UserStatsSection stats={userStats} />
           </div>
           <div className="username">레벨조이</div>
-          <UserIntroInput />
+          <div className="intro">카친자 ☕ 하루 3카페 가는 사람</div>
 
           <div className="profile-buttons">
-            <ProfileButton
-              icon={addUser}
-              text="핀버디 추가"
-              onClick={() => navigate(`pinbuddySearch`)}
-            />
             <ProfileButton
               icon={share}
               text="프로필 공유"
               onClick={() => setIsSheetOpen(true)}
+            />
+            <ProfileButton
+              icon={addUser}
+              text="핀버디 추가"
+              onClick={() => navigate(`pinbuddySearch`)}
             />
           </div>
 
@@ -193,13 +193,21 @@ const StDiv = styled.div`
     display: flex;
     justify-content: start;
     padding: 0px var(--spacing_20);
-    margin-bottom: var(--spacing_16);
+  }
+
+  .intro {
+    ${B4}
+    color: var(--neutral_600);
+    text-align: start;
+    padding: 0px var(--spacing_20);
+    padding-top: var(--spacing_12);
   }
 
   .profile-buttons {
     display: flex;
     flex-direction: row;
-    padding: var(--spacing_12) var(--spacing_20);
+    padding: var(--spacing_20);
+    padding-bottom: var(--spacing_16);
     gap: var(--spacing_12);
   }
 
@@ -208,7 +216,7 @@ const StDiv = styled.div`
     flex-direction: row;
     align-items: start;
     padding: 0px var(--spacing_20);
-    margin-top: var(--spacing_8);
+    padding-top: var(--spacing_8);
     gap: var(--spacing_16);
 
     .review-filter {
@@ -270,6 +278,7 @@ const StSheet = styled(Sheet)<{ $left: number }>`
       }
 
       .share-button {
+        max-width: 400px;
         position: fixed;
         bottom: var(--spacing_24);
         margin: 0px var(--spacing_20);

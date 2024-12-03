@@ -260,10 +260,11 @@ const StDiv = styled.div`
         border-bottom: 1px solid var(--neutral_400);
         color: var(--neutral_400);
         cursor: pointer;
-        transition: opacity 0.5s ease;
+        transition: opacity 0.8s ease;
       }
       .active {
         opacity: 0;
+        pointer-events: none;
       }
     }
   }
