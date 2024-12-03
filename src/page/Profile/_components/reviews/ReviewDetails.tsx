@@ -6,7 +6,7 @@ import chevronLeft from "@/image/icons/chevronLeft.svg";
 import moreDotsGray from "@/image/icons/moreDotsGray.svg";
 import { B6, H3, H4 } from "@/style/font";
 import { useNavigate, useParams } from "react-router-dom";
-import ReviewText from "./_components/reviews/ReviewText";
+import ReviewText from "./ReviewText";
 
 export const ReviewDetails: React.FC = () => {
   const navigate = useNavigate();
@@ -48,7 +48,16 @@ export const ReviewDetails: React.FC = () => {
           />
         </div>
 
-        <ReviewText />
+        <ReviewText
+          placeName="잠실새내 딤딤섬"
+          longitude={127.104809}
+          latitude={37.5144}
+          userName="나"
+          score="4.0"
+          reviewDate="24.10.17"
+          body="새우 들어간 딤섬이 젤 마싯음 !! 매장도 깔끔"
+          visitDate="2024년 10월 31일"
+        />
       </StTransitionWrapper>
     </StDiv>
   );

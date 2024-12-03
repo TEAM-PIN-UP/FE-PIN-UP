@@ -11,6 +11,7 @@ import styled from "styled-components";
 
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useMapSetup from "@/hooks/useMapSetup";
+import { useLocation } from "react-router-dom";
 import PinMarker from "./_components/PinMarker";
 import Restaurant, { RestaurantProps } from "./_components/Restaurant";
 import UserPositionMarker from "./_components/UserPositionMarker";
@@ -37,9 +38,24 @@ const MapPage: React.FC = () => {
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [user, setUser] = useState<naver.maps.Marker | null>(null);
   const [activePinIndex, setActivePinIndex] = useState<number | null>(null);
-  const defaultCenter = new naverMaps.LatLng(37.6077842, 127.0270642);
-  const defaultZoom = 18;
-  useMapSetup(map, user, defaultZoom, setActivePinIndex);
+  const defaultZoom = 20;
+
+  // URL params
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  const hasParams = !!search;
+  const query = params.get("query");
+  const longitude = params.get("longitude");
+  const latitude = params.get("latitude");
+  if (hasParams && query && longitude && latitude) {
+    map?.setCenter(
+      new naverMaps.LatLng(
+        Number.parseFloat(latitude) - 0.0001, // Offset for bottom sheet
+        Number.parseFloat(longitude)
+      )
+    );
+  }
+  useMapSetup(!hasParams, map, user, defaultZoom, setActivePinIndex);
 
   // Bottom sheet logic
   const sheetRef = useRef<SheetRef>();
@@ -73,11 +89,7 @@ const MapPage: React.FC = () => {
     <StDiv ref={attachRef}>
       <NavermapsProvider ncpClientId={import.meta.env.VITE_NAVER_MAPS}>
         <StMapDiv>
-          <NaverMap
-            defaultCenter={defaultCenter}
-            zoom={defaultZoom}
-            ref={setMap}
-          >
+          <NaverMap zoom={defaultZoom} ref={setMap}>
             <UserPositionMarker ref={setUser} />
             {data &&
               data.map((item, index) => (
