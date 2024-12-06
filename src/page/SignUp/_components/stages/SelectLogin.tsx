@@ -12,9 +12,7 @@ import { StageProps } from "./StageProps";
 const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
   const googleLogin = useGoogleLogin({
     flow: "auth-code",
-    redirect_uri: "postmessage",
     onSuccess: async (codeResponse) => {
-      console.log(codeResponse);
       const tokens = await axios.get(
         `${import.meta.env.VITE_SERVER_ADDRESS}/api/auth/login/google/callback`,
         {
@@ -24,19 +22,14 @@ const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
         }
       );
 
-      console.log(tokens);
+      updateData({ authMethod: "google" });
+      localStorage.setItem("accessToken", tokens.data.data.accessToken);
+      localStorage.setItem("refreshToken", tokens.data.data.refreshToken);
+
       onNext();
     },
     onError: (errorResponse) => console.log(errorResponse),
   });
-
-  const handleGoogle = () => {
-    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?
-		client_id=${import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID}
-		&redirect_uri=${import.meta.env.VITE_GOOGLE_AUTH_REDIRECT_URI}
-		&response_type=code
-		&scope=email profile`;
-  };
 
   return (
     <StDiv>

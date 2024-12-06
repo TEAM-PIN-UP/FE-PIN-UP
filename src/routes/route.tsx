@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import App from "@/App";
-import AuthSuccessPage from "@/page/Auth";
 import BookmarkPage from "@/page/Bookmark";
 import ContentsPage from "@/page/Contents";
 import EditorArticlePage from "@/page/EditorArticle";
@@ -34,10 +33,6 @@ const router = createBrowserRouter([
       {
         path: "/articles/post",
         element: <EditorPostPage />,
-      },
-      {
-        path: "/auth/success",
-        element: <AuthSuccessPage />,
       },
       {
         path: "/map",
