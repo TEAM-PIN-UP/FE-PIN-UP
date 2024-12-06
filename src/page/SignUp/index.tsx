@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Header from "@/components/Header";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import { H3 } from "@/style/font";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import TransitionWrapper, {
   TransitionDirection,
 } from "../../components/TransitionWrapper";
@@ -84,11 +85,15 @@ const SignUpPage: React.FC = () => {
           direction={direction}
         >
           {stage === 1 && (
-            <SelectLogin
-              data={signUpData}
-              updateData={(newData) => updateSignUpData(newData)}
-              onNext={goNext}
-            />
+            <GoogleOAuthProvider
+              clientId={import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID}
+            >
+              <SelectLogin
+                data={signUpData}
+                updateData={(newData) => updateSignUpData(newData)}
+                onNext={goNext}
+              />
+            </GoogleOAuthProvider>
           )}
           {stage === 2 && (
             <SetName
