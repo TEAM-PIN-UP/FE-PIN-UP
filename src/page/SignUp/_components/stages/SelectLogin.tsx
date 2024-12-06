@@ -1,5 +1,6 @@
+import { useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 import { styled } from "styled-components";
-
 import googleIcon from "../../_icons/googleIcon.png";
 import kakaoIcon from "../../_icons/kakaoIcon.png";
 import naverIcon from "../../_icons/naverIcon.svg";
@@ -9,6 +10,23 @@ import StTextContainer from "../typography/StTextContainer";
 import { StageProps } from "./StageProps";
 
 const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
+  const googleLogin = useGoogleLogin({
+    flow: "auth-code",
+    onSuccess: async (codeResponse) => {
+      console.log(codeResponse);
+      const tokens = await axios.post(
+        `${import.meta.env.VITE_SERVER_ADDRESS}/api/auth/login/google/callback`,
+        {
+          code: codeResponse.code,
+        }
+      );
+
+      console.log(tokens);
+      onNext();
+    },
+    onError: (errorResponse) => console.log(errorResponse),
+  });
+
   return (
     <StDiv>
       <div className="logo-container">
@@ -45,15 +63,7 @@ const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
         <SocialSignUpButton
           icon={googleIcon}
           backgroundColor="var(--white)"
-          onClick={() => {
-            window.open(
-              `${import.meta.env.VITE_SERVER_ADDRESS}/api/auth/login/google`,
-              "_blank"
-            );
-            // updateData({ authMethod: "google" });
-            // console.log(data);
-            // onNext();
-          }}
+          onClick={googleLogin}
         >
           구글로 계속하기
         </SocialSignUpButton>

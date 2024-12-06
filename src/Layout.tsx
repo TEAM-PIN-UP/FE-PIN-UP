@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import NavBar from "@/components/NavBar";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import Modal from "./components/Modal";
 import Toast from "./components/Toast";
 
@@ -13,7 +14,13 @@ const Layout: React.FC<layoutProps> = ({ children }) => {
     <StLayout>
       <Toast />
       <Modal />
-      <StContentContainer>{children}</StContentContainer>
+      <StContentContainer>
+        <GoogleOAuthProvider
+          clientId={import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID}
+        >
+          {children}
+        </GoogleOAuthProvider>
+      </StContentContainer>
       <StNavBarContainer>
         <NavBar />
       </StNavBarContainer>
