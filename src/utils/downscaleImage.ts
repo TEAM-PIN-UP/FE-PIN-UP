@@ -29,6 +29,15 @@ export const downscaleImage = async ({
 
       const aspectRatio = img.width / img.height;
 
+      // Check if image is smaller than target
+      if (
+        (targetWidth && img.width <= targetWidth) ||
+        (targetHeight && img.height <= targetHeight)
+      ) {
+        resolve(image instanceof File ? img.src : image);
+        return;
+      }
+
       // Use target width if given
       if (targetWidth) {
         newWidth = targetWidth;
