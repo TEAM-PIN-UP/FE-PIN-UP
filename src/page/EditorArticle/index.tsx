@@ -1,10 +1,13 @@
 import Header from "@/components/Header";
 import edit from "@/image/icons/edit.svg";
 import { H2 } from "@/style/font";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Card from "./_components/Card";
 
 const EditorArticlePage = () => {
+  const navigate = useNavigate();
+
   return (
     <StDiv>
       <Header>
@@ -12,7 +15,7 @@ const EditorArticlePage = () => {
           <span className="header-title">에디터 아티클</span>
         </Header.Left>
         <Header.Right>
-          <img src={edit} />
+          <img className="post" src={edit} onClick={() => navigate("post")} />
         </Header.Right>
       </Header>
       <div className="cards">
@@ -35,6 +38,10 @@ const StDiv = styled.div`
 
   .header-title {
     ${H2}
+  }
+
+  .post {
+    cursor: pointer;
   }
 
   .cards {

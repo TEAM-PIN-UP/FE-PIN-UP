@@ -1,12 +1,19 @@
+import checkImageValidity from "./checkImageValidity";
+
 export const cropImage = (
-  imageUrl: string,
+  image: string | File,
   cropSize: number = 256
 ): Promise<string> => {
   return new Promise((resolve, reject) => {
-    const image = new Image();
-    image.src = imageUrl;
+    cropSize = Math.floor(cropSize);
+    if (cropSize <= 0) {
+      reject(new Error("Crop size must be a positive number."));
+      return;
+    }
 
-    image.onload = () => {
+    const img = new Image();
+
+    img.onload = () => {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
 
@@ -16,18 +23,18 @@ export const cropImage = (
       }
 
       // Find largest square possible
-      const squareSize = Math.min(image.width, image.height);
+      const squareSize = Math.min(img.width, img.height);
 
       // Set canvas to square size
       canvas.width = squareSize;
       canvas.height = squareSize;
 
       // Calculate center start position
-      const cropX = (image.width - squareSize) / 2;
-      const cropY = (image.height - squareSize) / 2;
+      const cropX = Math.floor((img.width - squareSize) / 2);
+      const cropY = Math.floor((img.height - squareSize) / 2);
 
       ctx.drawImage(
-        image,
+        img,
         cropX,
         cropY,
         squareSize,
@@ -43,7 +50,7 @@ export const cropImage = (
       const resizedCtx = resizedCanvas.getContext("2d");
 
       if (!resizedCtx) {
-        reject("Canvas context unavailable.");
+        reject("Resized canvas context unavailable.");
         return;
       }
 
@@ -67,8 +74,23 @@ export const cropImage = (
       resolve(croppedDataUrl);
     };
 
-    image.onerror = () => {
+    img.onerror = () => {
       reject("Failed to load image.");
     };
+
+    // Read image
+    if (image instanceof File && checkImageValidity(image)) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          img.src = e.target.result as string;
+        }
+      };
+      reader.readAsDataURL(image);
+    } else if (typeof image === "string" && checkImageValidity(image)) {
+      img.src = image;
+    } else {
+      reject(new Error("Invalid image input"));
+    }
   });
 };

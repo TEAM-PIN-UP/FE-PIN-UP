@@ -5,6 +5,7 @@ import AuthSuccessPage from "@/page/Auth";
 import BookmarkPage from "@/page/Bookmark";
 import ContentsPage from "@/page/Contents";
 import EditorArticlePage from "@/page/EditorArticle";
+import EditorPostPage from "@/page/EditorArticle/EditorPost";
 import LandingPage from "@/page/Landing";
 import MapPage from "@/page/Map";
 import OtherProfile from "@/page/OtherProfile";
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/articles",
         element: <EditorArticlePage />,
+      },
+      {
+        path: "/articles/post",
+        element: <EditorPostPage />,
       },
       {
         path: "/auth/success",
