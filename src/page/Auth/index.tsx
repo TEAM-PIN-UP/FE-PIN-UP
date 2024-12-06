@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { URLSearchParams } from "url";
 
 const AuthSuccessPage: React.FC = () => {
   const { search } = useLocation();
@@ -23,6 +22,7 @@ const AuthSuccessPage: React.FC = () => {
     };
 
     if (code) getTokens();
+    else console.log("No google oauth code detected.");
   }, [code]);
 
   return <div>Success</div>;
