@@ -65,9 +65,15 @@ const EditorPostPage = () => {
           </div>
         </div>
       )}
+      {image && <img className="image-preview" src={image} />}
 
       <div className="post">
-        <Button className="post-button" size="full" onClick={() => {}}>
+        <Button
+          className="post-button"
+          size="full"
+          onClick={() => {}}
+          active={!!image}
+        >
           등록하기
         </Button>
       </div>
@@ -83,7 +89,6 @@ const StDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
 
   .back-button {
     cursor: pointer;
@@ -96,6 +101,9 @@ const StDiv = styled.div`
     width: 100%;
     box-sizing: border-box;
     padding: var(--spacing_20);
+    display: flex;
+    flex-grow: 1;
+    align-items: start;
 
     .upload {
       position: relative;
@@ -124,6 +132,13 @@ const StDiv = styled.div`
         z-index: 10;
       }
     }
+  }
+
+  .image-preview {
+    width: 100%;
+    object-fit: contain;
+    display: flex;
+    flex-grow: 1;
   }
 
   .post {
