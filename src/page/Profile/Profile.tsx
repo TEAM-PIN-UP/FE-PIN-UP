@@ -10,7 +10,7 @@ import notificationActive from "@/image/icons/notificationActive.svg";
 import notificationInactive from "@/image/icons/notificationInactive.svg";
 import settings from "@/image/icons/settings.svg";
 import share from "@/image/icons/share.svg";
-import { B4, H2, H3, H4 } from "@/style/font";
+import { B3, B4, H1, H2, H3, H4 } from "@/style/font";
 import useToastPopup from "@/utils/toastPopup";
 import { useNavigate } from "react-router-dom";
 import ProfileButton from "./_components/ProfileButton";
@@ -55,6 +55,22 @@ const Profile: React.FC = () => {
   const handleNotifications = () => {
     setNewNotifications((prev) => !prev);
     navigate("notifications");
+  };
+
+  const [isLoggedIn] = useState(!!localStorage.getItem("accessToken"));
+  const [showLogin, setShowLogin] = useState(false);
+  const handleShare = async () => {
+    if (isLoggedIn) {
+      try {
+        await navigator.clipboard.writeText("profile");
+        setIsSheetOpen(false);
+        toast("링크를 클립보드에 복사했어요.");
+      } catch (err) {
+        console.error("Failed to copy: ", err);
+      }
+    } else {
+      setShowLogin(true);
+    }
   };
 
   return (
@@ -127,29 +143,51 @@ const Profile: React.FC = () => {
           <Sheet.Container>
             <Sheet.Header />
             <Sheet.Content className="content">
-              <div className="profile-share">
-                <img
-                  src={"https://picsum.photos/200"}
-                  className="profile-image"
-                />
-                <span className="username">레벨조이</span>
-                <UserStatsSection stats={userStats} />
-                <Button
-                  size="xlarge"
-                  onClick={async () => {
-                    try {
-                      await navigator.clipboard.writeText("profile");
-                      setIsSheetOpen(false);
-                      toast("링크를 클립보드에 복사했어요.");
-                    } catch (err) {
-                      console.error("Failed to copy: ", err);
-                    }
-                  }}
-                  className="share-button"
-                >
-                  프로필 공유
-                </Button>
-              </div>
+              {!showLogin && (
+                <div className="profile-share">
+                  <img
+                    src={"https://picsum.photos/200"}
+                    className="profile-image"
+                  />
+                  <span className="username">레벨조이</span>
+                  <UserStatsSection stats={userStats} />
+                  <Button
+                    size="xlarge"
+                    onClick={handleShare}
+                    className="share-button"
+                  >
+                    프로필 공유
+                  </Button>
+                </div>
+              )}
+              {showLogin && (
+                <div className="suggest-login">
+                  <div className="content-group">
+                    <p className="title">로그인이 필요해요!</p>
+                    <div className="body-group">
+                      <p className="body">로그인 후 핀업의</p>
+                      <p className="body">
+                        다양한 서비스를 편리하게 이용해 보세요.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="button-group">
+                    <Button
+                      className="signup-button"
+                      size="full"
+                      onClick={() => navigate("/signup")}
+                    >
+                      로그인/회원가입
+                    </Button>
+                    <button
+                      className="close-button"
+                      onClick={() => setIsSheetOpen(false)}
+                    >
+                      괜찮아요
+                    </button>
+                  </div>
+                </div>
+              )}
             </Sheet.Content>
           </Sheet.Container>
           <Sheet.Backdrop
@@ -282,6 +320,43 @@ const StSheet = styled(Sheet)<{ $left: number }>`
         position: fixed;
         bottom: var(--spacing_24);
         margin: 0px var(--spacing_20);
+      }
+    }
+
+    .suggest-login {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      padding: 28px 24px;
+      text-align: center;
+
+      .content-group {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        gap: var(--spacing_32);
+
+        .title {
+          ${H1}
+        }
+        .body-group {
+          gap: 6px;
+          .body {
+            ${B3}
+          }
+        }
+      }
+      .button-group {
+        .signup-button {
+          margin-top: var(--spacing_48);
+        }
+        .close-button {
+          background-color: transparent;
+          border: none;
+          color: var(--neutral_800);
+          cursor: pointer;
+          margin-top: var(--spacing_16);
+        }
       }
     }
   }
