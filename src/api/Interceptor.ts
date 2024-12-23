@@ -1,35 +1,25 @@
-import axios from "axios";
+import { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import { handleGlobalError } from './errorHandler';
 
-export const baseURL = process.env.VITE_SERVER_ADDRESS;
-
-const customAxios = axios.create({
-  baseURL: baseURL,
-});
-
-// 요청 인터셉터 추가하기
-customAxios.interceptors.request.use(
-  function (config) {
-    // 요청이 전달되기 전에 작업 수행
+export const requestInterceptor = {
+  success: (config: AxiosRequestConfig) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers = {
+        ...config.headers,
+        Authorization: `Bearer ${token}`
+      };
+    }
     return config;
   },
-  function (error) {
-    // 요청 오류가 있는 작업 수행
+  error: (error: AxiosError) => {
     return Promise.reject(error);
   }
-);
+};
 
-// 응답 인터셉터 추가하기
-customAxios.interceptors.response.use(
-  function (response) {
-    // 2xx 범위에 있는 상태 코드는 이 함수를 트리거 합니다.
-    // 응답 데이터가 있는 작업 수행
-    return response;
+export const responseInterceptor = {
+  success: (response: AxiosResponse) => {
+    return response.data;
   },
-  function (error) {
-    // 2xx 외의 범위에 있는 상태 코드는 이 함수를 트리거 합니다.
-    // 응답 오류가 있는 작업 수행
-    return Promise.reject(error);
-  }
-);
-
-export default customAxios;
+  error: handleGlobalError
+};
