@@ -8,12 +8,14 @@ interface DatePickProp {
   stepUp: () => void;
   setVisitDate: React.Dispatch<React.SetStateAction<Date | null>>;
   visitDate: Date | null;
+  name?: string;
 }
 
 const DatePick: React.FC<DatePickProp> = ({
   stepUp,
   visitDate,
   setVisitDate,
+  name
 }) => {
   const [calendarOpen, setCalendarOpen] = useState<boolean>(false);
 
@@ -22,7 +24,7 @@ const DatePick: React.FC<DatePickProp> = ({
       <img className="calendarImg" src={calendar} />
       <div className="dateInfo">
         <p>
-          <span>'잠실새내 딤딤섬'</span> 은/는
+          <span>'{name}'</span> 은/는
         </p>
         <p>언제 방문하셨나요?</p>
       </div>
