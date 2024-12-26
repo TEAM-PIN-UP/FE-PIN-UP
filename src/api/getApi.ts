@@ -1,4 +1,4 @@
-import { GetPlaceParams } from "@/interface/apiInterface";
+import { GetPlaceParams, getSearchPlacesRequest } from "@/interface/apiInterface";
 import customAxios from "./Interceptor";
 
 const getApi = {
@@ -7,6 +7,7 @@ const getApi = {
     customAxios.get(
       `/api/places/search?query=${query}&longitude=${longitude}&latitude=${latitude}`
     ),
+  getSearchPlaces: ({ keyword }: getSearchPlacesRequest) => customAxios.get(`/api/places/list/keyword?keyword=${keyword}`)
 };
 
 export default getApi;

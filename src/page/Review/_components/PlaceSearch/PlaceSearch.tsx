@@ -1,11 +1,19 @@
 import SearchInfo from "./SearchInfo";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReviewSearchBar from "./ReviewSearchBar";
 import styled from "styled-components";
-import SearchResult, { StepUp } from "./SearchResult";
+import SearchResult from "./SearchResult";
+import useGetSearchPlaces from "@/hooks/api/review/useGetSearchPlaces";
+import { getSearchPlacesResponse } from "@/interface/apiInterface";
 
-const PlaceSearch: React.FC<StepUp> = ({ stepUp }) => {
+export interface PlaceSearchProp {
+  stepUp: () => void;
+  setPickedInfo: React.Dispatch<React.SetStateAction<getSearchPlacesResponse | null>>
+}
+
+const PlaceSearch: React.FC<PlaceSearchProp> = ({ stepUp, setPickedInfo }) => {
   const [infoShow, setInfoShow] = useState<boolean>(true);
+  const [reviewSearch, setReviewSearch] = useState<string>('');
 
   const infoHideFunc = () => {
     setInfoShow(false);
@@ -15,6 +23,8 @@ const PlaceSearch: React.FC<StepUp> = ({ stepUp }) => {
     setInfoShow(true);
   };
 
+  const { data } = useGetSearchPlaces({ keyword: reviewSearch });
+
   return (
     <StPlaceSearch>
       {infoShow ? <SearchInfo /> : <></>}
@@ -22,8 +32,10 @@ const PlaceSearch: React.FC<StepUp> = ({ stepUp }) => {
         placeholder="리뷰 쓸 장소를 검색해주세요."
         infoHideFunc={infoHideFunc}
         infoShowFunc={infoShowFunc}
+        reviewSearch={reviewSearch}
+        setReviewSearch={setReviewSearch}
       />
-      <SearchResult stepUp={stepUp} />
+      <SearchResult stepUp={stepUp} results={data} setPickedInfo={setPickedInfo} />
     </StPlaceSearch>
   );
 };

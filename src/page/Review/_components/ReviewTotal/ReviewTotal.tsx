@@ -5,15 +5,44 @@ import CheckScore from "./CheckScore";
 import WriteReview from "./WriteReview";
 import { useState } from "react";
 import Button from "@/components/Button";
+import { getSearchPlacesResponse } from "@/interface/apiInterface";
+import useCreateReview from "@/hooks/api/review/usePostCreateReview";
 
-const ReviewTotal = () => {
+interface ReviewTotalProps {
+  pickedInfo: getSearchPlacesResponse;
+  visitDate: Date;
+}
+
+const ReviewTotal = ({ pickedInfo, visitDate }: ReviewTotalProps) => {
   const [starScore, setStarScore] = useState<number>(0);
   const [imageData, setImageData] = useState<string[]>([]);
   const [reviewContent, setReviewContent] = useState<string>("");
+  const reviewCreate = useCreateReview();
+
+  const handleReviewSubmit = () => {
+    reviewCreate.mutate({
+      reviewRequest: {
+        content: reviewContent,
+        starRating: starScore,
+        visitedDate: visitDate.toLocaleDateString().split('. ').join('').slice(0, 8),
+      },
+      placeRequest: {
+        kakaoPlaceId: pickedInfo.kakaoMapId,
+        name: pickedInfo.name,
+        category: pickedInfo.category ? pickedInfo.category : '음식점',
+        address: pickedInfo.address,
+        roadAddress: pickedInfo.roadAddress,
+        latitude: pickedInfo.latitude,
+        longitude: pickedInfo.longitude
+      },
+      multipartFiles: imageData
+    })
+  }
+
 
   return (
     <StWriteReview>
-      <PlaceInfo />
+      <PlaceInfo pickedInfo={pickedInfo} />
       <div className="devideLine" />
       <PhotoUpload imageData={imageData} setImageData={setImageData} />
       <div className="devideLine" />
@@ -24,7 +53,7 @@ const ReviewTotal = () => {
         setReviewContent={setReviewContent}
       />
       <div className="buttonBucket">
-        <Button size="full" onClick={() => console.log("")}>
+        <Button size="full" onClick={handleReviewSubmit}>
           리뷰 등록하기
         </Button>
       </div>

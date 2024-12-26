@@ -1,18 +1,24 @@
 import { B3, B5, C3 } from "@/style/font";
 import styled from "styled-components";
 import sample from "@/image/icons/profile.jpg";
-import { StepUp } from "./SearchResult";
+import { getSearchPlacesResponse } from "@/interface/apiInterface";
 
-const SearchedPlace: React.FC<StepUp> = ({ stepUp }) => {
+export interface SearchResultProp {
+  stepUp: () => void;
+  result: getSearchPlacesResponse;
+  setPickedInfo: React.Dispatch<React.SetStateAction<getSearchPlacesResponse | null>>;
+}
+
+const SearchedPlace: React.FC<SearchResultProp> = ({ stepUp, result, setPickedInfo }) => {
   return (
-    <StSearchedPlace onClick={stepUp}>
+    <StSearchedPlace onClick={() => { stepUp(); setPickedInfo(result) }}>
       <img src={sample} />
       <div className="totalInfo">
         <div className="placeInfo">
-          <p className="placeName">잠실새내 딤딤섬</p>
-          <p className="location">서울 송파구 백제고분로7길 28-7 1층</p>
+          <p className="placeName">{result?.name}</p>
+          <p className="location">{result?.roadAddress}</p>
         </div>
-        <div className="reviewCount">리뷰 35</div>
+        <div className="reviewCount">리뷰 {result?.reviewCount}</div>
       </div>
     </StSearchedPlace>
   );
