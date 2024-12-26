@@ -1,7 +1,8 @@
+import { postCreateReviewRequest } from "@/interface/apiInterface";
 import customAxios from "./Interceptor";
 
 const postApi = {
-  postReview: () => customAxios.post(`/api/places/reviews`),
+  postCreateReview: (data: postCreateReviewRequest) => customAxios.post(`/api/places/reviews`, data),
   postFriendRequest: () => customAxios.post(`/api/friend-request/send`),
 };
 
