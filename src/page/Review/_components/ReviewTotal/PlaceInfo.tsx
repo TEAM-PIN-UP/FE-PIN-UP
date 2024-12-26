@@ -1,17 +1,18 @@
 import { B4, H2, H4 } from "@/style/font";
 import styled from "styled-components";
 import star from "@/image/icons/star.svg";
+import { getSearchPlacesResponse } from "@/interface/apiInterface";
 
-const PlaceInfo = () => {
+const PlaceInfo = ({ pickedInfo }: { pickedInfo: getSearchPlacesResponse | null }) => {
   return (
     <StPlaceInfo>
-      <p className="name">하우스서울 잠실새내</p>
-      <p className="address">서울 송파구 백제고분로7길 28-7 1층</p>
+      <p className="name">{pickedInfo?.name}</p>
+      <p className="address">{pickedInfo?.roadAddress}</p>
       <div className="score">
         <img src={star} />
         <p>
           <span className="point">4.5</span>{" "}
-          <span className="reviewCount">리뷰 35</span>
+          <span className="reviewCount">리뷰 {pickedInfo?.reviewCount}</span>
         </p>
       </div>
     </StPlaceInfo>
