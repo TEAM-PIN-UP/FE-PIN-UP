@@ -9,19 +9,22 @@ interface SearchBarProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void;
   infoHideFunc: () => void;
   infoShowFunc: () => void;
+  reviewSearch: string;
+  setReviewSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const ReviewSearchBar: React.FC<SearchBarProps> = ({
   onChange,
   infoShowFunc,
   infoHideFunc,
+  reviewSearch,
+  setReviewSearch,
   ...rest
 }) => {
-  const [inputValue, setInputValue] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+    setReviewSearch(e.target.value);
     if (onChange) onChange(e);
   };
 
@@ -30,13 +33,13 @@ const ReviewSearchBar: React.FC<SearchBarProps> = ({
   };
 
   const handleBlur = () => {
-    if (!inputValue) {
+    if (!reviewSearch) {
       infoShowFunc();
     }
   };
 
   const handleClear = () => {
-    setInputValue("");
+    setReviewSearch("");
     if (onChange)
       onChange({
         target: { value: "" },
@@ -49,7 +52,7 @@ const ReviewSearchBar: React.FC<SearchBarProps> = ({
       if (
         inputRef.current &&
         !inputRef.current.contains(e.target as Node) &&
-        !inputValue
+        !reviewSearch
       ) {
         infoShowFunc();
       }
@@ -59,9 +62,9 @@ const ReviewSearchBar: React.FC<SearchBarProps> = ({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [inputValue]);
+  }, [reviewSearch]);
 
-  const showClearIcon = inputValue.length > 0;
+  const showClearIcon = reviewSearch.length > 0;
 
   return (
     <StSearchBarContainer>
@@ -70,7 +73,7 @@ const ReviewSearchBar: React.FC<SearchBarProps> = ({
       </StIconWrapper>
       <StInput
         ref={inputRef}
-        value={inputValue}
+        value={reviewSearch}
         onChange={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
