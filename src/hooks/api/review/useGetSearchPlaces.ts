@@ -5,7 +5,7 @@ import { useQuery, UseQueryResult } from "@tanstack/react-query"
 const useGetSearchPlaces = ({ keyword }: getSearchPlacesRequest): UseQueryResult<getSearchPlacesResponse[]> => {
     const queryFn = async () => {
         const response = await getApi.getSearchPlaces({ keyword })
-        return response.data.content;
+        return response.data;
     }
     return useQuery({
         queryFn,
