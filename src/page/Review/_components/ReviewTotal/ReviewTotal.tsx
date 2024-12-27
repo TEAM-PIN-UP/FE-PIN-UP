@@ -5,7 +5,7 @@ import CheckScore from "./CheckScore";
 import WriteReview from "./WriteReview";
 import { useState } from "react";
 import Button from "@/components/Button";
-import { getSearchPlacesResponse } from "@/interface/apiInterface";
+import { getSearchPlacesResponse, PlaceRequestType, ReviewRequestType } from "@/interface/apiInterface";
 import useCreateReview from "@/hooks/api/review/usePostCreateReview";
 
 interface ReviewTotalProps {
@@ -15,28 +15,57 @@ interface ReviewTotalProps {
 
 const ReviewTotal = ({ pickedInfo, visitDate }: ReviewTotalProps) => {
   const [starScore, setStarScore] = useState<number>(0);
-  const [imageData, setImageData] = useState<string[]>([]);
+  const [imageData, setImageData] = useState<File[]>([]);
   const [reviewContent, setReviewContent] = useState<string>("");
   const reviewCreate = useCreateReview();
 
   const handleReviewSubmit = () => {
-    reviewCreate.mutate({
-      reviewRequest: {
-        content: reviewContent,
-        starRating: starScore,
-        visitedDate: visitDate.toLocaleDateString().split('. ').join('').slice(0, 8),
-      },
-      placeRequest: {
-        kakaoPlaceId: pickedInfo.kakaoMapId,
-        name: pickedInfo.name,
-        category: pickedInfo.category ? pickedInfo.category : '음식점',
-        address: pickedInfo.address,
-        roadAddress: pickedInfo.roadAddress,
-        latitude: pickedInfo.latitude,
-        longitude: pickedInfo.longitude
-      },
-      multipartFiles: imageData
+    const formData = new FormData();
+
+    const reviewRequest: ReviewRequestType = {
+      content: reviewContent,
+      starRating: starScore,
+      visitedDate: visitDate.toLocaleDateString().split('. ').join('').slice(0, 8),
+    };
+
+    const placeRequest: PlaceRequestType = {
+      kakaoPlaceId: pickedInfo.kakaoMapId,
+      name: pickedInfo.name,
+      category: pickedInfo.category === '' ? '음식점' : pickedInfo.category,
+      address: pickedInfo.address,
+      roadAddress: pickedInfo.roadAddress,
+      latitude: pickedInfo.latitude,
+      longitude: pickedInfo.longitude,
+    };
+
+    // 리뷰 데이터
+    formData.append(
+      "reviewRequest",
+      new Blob(
+        [
+          JSON.stringify(reviewRequest),
+        ],
+        { type: "application/json" }
+      )
+    );
+
+    // 장소 데이터
+    formData.append(
+      "placeRequest",
+      new Blob(
+        [
+          JSON.stringify(placeRequest),
+        ],
+        { type: "application/json" }
+      )
+    );
+
+    imageData.forEach((file) => {
+      formData.append(`multipartFiles`, file);
     })
+
+    reviewCreate.mutate(formData);
+
   }
 
 

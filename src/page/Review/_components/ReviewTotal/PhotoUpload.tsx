@@ -7,8 +7,8 @@ import cancelIcon from "@/image/icons/xCircle.svg";
 import BasicSwiper from "@/components/BasicSwiper";
 
 interface PhotoUploadProp {
-  imageData: string[];
-  setImageData: React.Dispatch<React.SetStateAction<string[]>>;
+  imageData: File[];
+  setImageData: React.Dispatch<React.SetStateAction<File[]>>
 }
 
 const PhotoUpload: React.FC<PhotoUploadProp> = ({
@@ -37,11 +37,11 @@ const PhotoUpload: React.FC<PhotoUploadProp> = ({
     e.preventDefault();
     e.stopPropagation();
     const files = e.dataTransfer.files;
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImageData((data: string[]) => [...data, reader.result as string]);
-    };
-    reader.readAsDataURL(files[0]);
+    if (files?.length + imageData.length >= 4) {
+      toast("사진 업로드는 3장까지만 가능합니다!");
+      return;
+    }
+    setImageData(prev => [...prev, files[0]]);
   };
 
   const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,29 +50,22 @@ const PhotoUpload: React.FC<PhotoUploadProp> = ({
       if (files?.length + imageData.length >= 4) {
         toast("사진 업로드는 3장까지만 가능합니다!");
       } else {
-        for (
-          let i = 0;
-          i < (files.length < 3 ? files.length : 3 - imageData.length);
-          i++
-        ) {
-          const reader = new FileReader();
-          reader.onload = () => {
-            setImageData((data: string[]) => [
-              ...data,
-              reader.result as string,
-            ]);
-          };
-          reader.readAsDataURL(files[i]);
-        }
+        const newFiles = Array.from(files).slice(0, 3 - imageData.length);
+        setImageData(prev => [...prev, ...newFiles]);
       }
     }
   };
 
   const removeImg = (index: number) => {
-    const tempImageData: string[] = imageData;
-    tempImageData.splice(index, 1);
-    const temp = Array.from(tempImageData);
-    setImageData(temp);
+    setImageData(prev => {
+      const newImageData = [...prev];
+      newImageData.splice(index, 1);
+      return newImageData;
+    });
+  };
+
+  const getPreviewURL = (file: File) => {
+    return URL.createObjectURL(file);
   };
 
   return (
@@ -115,7 +108,7 @@ const PhotoUpload: React.FC<PhotoUploadProp> = ({
                   src={cancelIcon}
                   onClick={() => removeImg(index)}
                 />
-                <img className="uploadedImg" src={value} key={index} />
+                <img className="uploadedImg" src={getPreviewURL(value)} key={index} />
               </SwiperSlide>
             );
           })}
