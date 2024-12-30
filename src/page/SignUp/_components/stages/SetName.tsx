@@ -20,9 +20,10 @@ const shake = keyframes`
 const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
   // User input validity, nickname duplicate check result
   const [isInputValid, setIsInputValid] = useState(true);
-  const [isNicknameValid, setIsNicknameValid] = useState(false);
+  const [isNicknameValid, setIsNicknameValid] = useState(true);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsNicknameValid(true);
     const value = e.target.value;
     if (value.length <= charLimit) {
       updateData({ nickname: value });
@@ -41,16 +42,26 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
   };
 
   const handleNext = async () => {
-    const response = await axios.get(
-      `${import.meta.env.VITE_SERVER_ADDRESS}/api/members/nickname/check`,
-      {
-        params: {
-          nickname: data.nickname,
-        },
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_SERVER_ADDRESS}/api/members/nickname/check`,
+        {
+          params: {
+            nickname: data.nickname,
+          },
+        }
+      );
+
+      const isAvailable = response.data.isValid;
+      setIsNicknameValid(isAvailable);
+
+      if (isAvailable) {
+        onNext();
       }
-    );
-    setIsNicknameValid(response.data);
-    if (isNicknameValid) onNext();
+    } catch (error) {
+      console.error("Error checking nickname:", error);
+      setIsNicknameValid(false);
+    }
   };
 
   return (
@@ -71,10 +82,24 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           style={{ width: "100%", marginBottom: "6px" }}
+          $onError={!isNicknameValid}
         />
         <div className="char-limit">
-          <StB5 $isInvalid={!isInputValid}>한글, 영문만 입력 가능</StB5>
-          <StB5>
+          {isNicknameValid && (
+            <StB5 $isInvalid={!isInputValid}>한글, 영문만 입력 가능</StB5>
+          )}
+          {!isNicknameValid && (
+            <StB5 style={{ color: "var(--system_error)" }}>
+              중복되는 닉네임이에요.
+            </StB5>
+          )}
+          <StB5
+            style={{
+              color: isNicknameValid
+                ? "var(--neutral_500)"
+                : "var(--system_error)",
+            }}
+          >
             {data.nickname.length} / {charLimit}
           </StB5>
         </div>
