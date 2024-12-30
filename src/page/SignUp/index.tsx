@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-
 import Header from "@/components/Header";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import { H3 } from "@/style/font";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import TransitionWrapper, {
   TransitionDirection,
 } from "../../components/TransitionWrapper";
@@ -16,6 +16,8 @@ import Welcome from "./_components/stages/Welcome";
 import { SignUpForm } from "./SignUpInterface";
 
 const SignUpPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const [stage, setStage] = useState(1);
   const lastStage = 5;
   const [direction, setDirection] = useState<TransitionDirection>("forward");
@@ -50,6 +52,14 @@ const SignUpPage: React.FC = () => {
   };
 
   useEffect(() => {
+    // Check if signed in
+    const accessToken = localStorage.getItem("accessToken");
+    const memberResponseJson = localStorage.getItem("memberResponse");
+    const memberResponse = memberResponseJson
+      ? JSON.parse(memberResponseJson)
+      : null;
+    if (accessToken && memberResponse.nickname) navigate("/map");
+
     // Use system back button for prev stage
     const handlePopState = (e: PopStateEvent) => {
       e.preventDefault();
@@ -61,7 +71,7 @@ const SignUpPage: React.FC = () => {
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, []);
+  }, [navigate]);
 
   return (
     <StDiv $stage={stage}>
@@ -77,7 +87,6 @@ const SignUpPage: React.FC = () => {
           </Header.Center>
         </Header>
       )}
-
       <div className="content">
         <TransitionWrapper
           className="transition"
