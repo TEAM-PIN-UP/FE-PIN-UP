@@ -78,7 +78,7 @@ const SetProfile: React.FC<StageProps> = ({ data, updateData, onNext }) => {
         size="100px"
         placeholderIcon={camera}
       />
-      {isValidProfileImage && <span className="username">{data.name}</span>}
+      {isValidProfileImage && <span className="username">{data.nickname}</span>}
       <StGlue />
 
       {!isValidProfileImage && (

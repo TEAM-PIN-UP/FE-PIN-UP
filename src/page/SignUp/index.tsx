@@ -24,7 +24,7 @@ const SignUpPage: React.FC = () => {
 
   const [signUpData, setSignUpData] = useState<SignUpForm>({
     authMethod: "",
-    name: "",
+    nickname: "",
     profileImage: "",
     agreedToTerms: [],
   });

@@ -4,7 +4,7 @@ import styled, { css, keyframes } from "styled-components";
 import Button from "@/components/Button";
 import TextInput from "@/components/TextInput";
 import { B5 } from "@/style/font";
-import StGap from "../typography/StGap";
+import axios from "axios";
 import StTextContainer from "../typography/StTextContainer";
 import { StageProps } from "./StageProps";
 
@@ -18,12 +18,14 @@ const shake = keyframes`
   `;
 
 const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
+  // User input validity, nickname duplicate check result
   const [isInputValid, setIsInputValid] = useState(true);
+  const [isNicknameValid, setIsNicknameValid] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (value.length <= charLimit) {
-      updateData({ name: value });
+      updateData({ nickname: value });
 
       // English and Korean letters + jamo
       const regex =
@@ -36,6 +38,19 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") onNext();
+  };
+
+  const handleNext = async () => {
+    const response = await axios.get(
+      `${import.meta.env.VITE_SERVER_ADDRESS}/api/members/nickname/check`,
+      {
+        params: {
+          nickname: data.nickname,
+        },
+      }
+    );
+    setIsNicknameValid(response.data);
+    if (isNicknameValid) onNext();
   };
 
   return (
@@ -52,32 +67,27 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
         <TextInput
           placeholder="닉네임 입력"
           maxLength={charLimit}
-          value={data.name}
+          value={data.nickname}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          style={{ width: "100%" }}
+          style={{ width: "100%", marginBottom: "6px" }}
         />
-        <StGap height="6px" />
         <div className="char-limit">
           <StB5 $isInvalid={!isInputValid}>한글, 영문만 입력 가능</StB5>
           <StB5>
-            {data.name.length} / {charLimit}
+            {data.nickname.length} / {charLimit}
           </StB5>
         </div>
       </div>
-      <StGap height="20px" />
 
       <Button
         size="full"
         active={
-          data.name.length !== 0 &&
-          data.name.length <= charLimit &&
+          data.nickname.length !== 0 &&
+          data.nickname.length <= charLimit &&
           isInputValid
         }
-        onClick={() => {
-          console.log(data);
-          onNext();
-        }}
+        onClick={handleNext}
       >
         다음
       </Button>
@@ -97,7 +107,8 @@ const StDiv = styled.div`
     flex-direction: column;
     text-align: start;
     width: 100%;
-    margin-top: 24px;
+    padding-top: 24px;
+    padding-bottom: 20px;
 
     .char-limit {
       display: flex;
