@@ -27,12 +27,12 @@ const Tos: React.FC<StageProps> = ({ data, updateData, onNext }) => {
   };
 
   const handleAgreeAll = () => {
-    setAgreements(new Set(["tos", "personalInfo", "marketing"]));
+    setAgreements(new Set(["TOA", "TOP", "TOG", "TOM"]));
   };
 
   const isRequiredAgreed =
-    agreements.has("tos") && agreements.has("personalInfo");
-  const isAllAgreed = isRequiredAgreed && agreements.has("marketing");
+    agreements.has("TOA") && agreements.has("TOG") && agreements.has("TOG");
+  const isAllAgreed = isRequiredAgreed && agreements.has("TOM");
 
   return (
     <StDiv>
@@ -50,24 +50,27 @@ const Tos: React.FC<StageProps> = ({ data, updateData, onNext }) => {
         </button>
       </StTextContainer>
       <StGap height="24px" />
-
       <TosItem
-        agreed={agreements.has("tos")}
-        onClick={() => handleToggleAgreement("tos")}
+        agreed={agreements.has("TOA")}
+        onClick={() => handleToggleAgreement("TOA")}
         itemName="핀업 이용약관 동의 (필수)"
       />
       <TosItem
-        agreed={agreements.has("personalInfo")}
-        onClick={() => handleToggleAgreement("personalInfo")}
+        agreed={agreements.has("TOP")}
+        onClick={() => handleToggleAgreement("TOP")}
         itemName="개인정보 수집 및 이용 동의 (필수)"
+      />{" "}
+      <TosItem
+        agreed={agreements.has("TOG")}
+        onClick={() => handleToggleAgreement("TOG")}
+        itemName="위치정보 수집 및 이용 동의 (필수)"
       />
       <TosItem
-        agreed={agreements.has("marketing")}
-        onClick={() => handleToggleAgreement("marketing")}
+        agreed={agreements.has("TOM")}
+        onClick={() => handleToggleAgreement("TOM")}
         itemName="마케팅 정보 수신 동의 (선택)"
       />
       <StGlue />
-
       <Button
         size="full"
         active={isRequiredAgreed}

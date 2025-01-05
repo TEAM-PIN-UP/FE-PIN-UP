@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef, RefObject } from "react";
 import styled from "styled-components";
 
 interface ProfileImagePickerProps
@@ -6,18 +6,14 @@ interface ProfileImagePickerProps
   imageUrl: string | null;
   onImageChange: (image: File) => void;
   placeholderIcon?: string;
-  ref?: React.MutableRefObject<HTMLInputElement>;
+  ref?: RefObject<HTMLInputElement>;
   size: string;
 }
 
-const ProfileImagePicker: React.FC<ProfileImagePickerProps> = ({
-  imageUrl,
-  onImageChange,
-  placeholderIcon,
-  ref,
-  size,
-  ...props
-}) => {
+const ProfileImagePicker = forwardRef<
+  HTMLInputElement,
+  ProfileImagePickerProps
+>(({ imageUrl, onImageChange, placeholderIcon, size, ...props }, ref) => {
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
     if (file) onImageChange(file);
@@ -43,7 +39,7 @@ const ProfileImagePicker: React.FC<ProfileImagePickerProps> = ({
       />
     </StImagePicker>
   );
-};
+});
 
 const StImagePicker = styled.button<{ $size: string }>`
   position: relative;
