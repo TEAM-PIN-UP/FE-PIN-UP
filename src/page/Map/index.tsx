@@ -1,7 +1,7 @@
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useMapSetup from "@/hooks/useMapSetup";
-import { PlaceParams, PlaceResponse } from "@/types/place";
-import { useQuery } from "@tanstack/react-query";
+import { PlaceParams, PlaceResponse } from "@/interface/place";
+import { H3 } from "@/style/font";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
@@ -11,62 +11,18 @@ import {
   NavermapsProvider,
   useNavermaps,
 } from "react-naver-maps";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import PinMarker from "./_components/PinMarker";
-import Restaurant, { RestaurantProps } from "./_components/Restaurant";
-import UserPositionMarker from "./_components/UserPositionMarker";
+import Review from "../Review";
 import ReviewHeader from "./_components/headers/ReviewHeader";
 import SearchHeader from "./_components/headers/SearchHeader";
-import Review from "./_components/review/Review";
-
-interface PinProps extends RestaurantProps {
-  latitude: number;
-  longitude: number;
-}
-
-const handleMapMove = async (
-  bounds: naver.maps.Bounds | undefined,
-  position: naver.maps.Coord | undefined
-) => {
-  if (!bounds || !position) return;
-
-  const swLatitude = bounds.getMin().y.toString();
-  const swLongitude = bounds.getMin().x.toString();
-  const neLatitude = bounds.getMax().y.toString();
-  const neLongitude = bounds.getMax().x.toString();
-  const currentLatitude = position.y.toString();
-  const currentLongitude = position.x.toString();
-
-  console.log(
-    `${swLatitude} ${swLongitude} ${neLatitude} ${neLongitude} ${currentLatitude} ${currentLongitude}`
-  );
-
-  const response = await axios.get<PlaceResponse>(
-    `${import.meta.env.VITE_SERVER_ADDRESS}/api/places`,
-    {
-      params: {
-        swLatitude,
-        swLongitude,
-        neLatitude,
-        neLongitude,
-        currentLatitude,
-        currentLongitude,
-      } as PlaceParams,
-    }
-  );
-
-  console.log(response);
-};
-const fetchPlaces = async (): Promise<PinProps[]> => {
-  const response = await fetch("http://localhost:8080/search");
-  if (!response.ok) {
-    throw new Error("Failed to fetch places");
-  }
-  return response.json();
-};
+import PinMarker from "./_components/PinMarker";
+import Restaurant from "./_components/Restaurant";
+import UserPositionMarker from "./_components/UserPositionMarker";
 
 const MapPage: React.FC = () => {
+  const navigate = useNavigate();
+
   // Geolocation and map setup
   const naverMaps = useNavermaps();
   const [map, setMap] = useState<naver.maps.Map | null>(null);
@@ -103,13 +59,52 @@ const MapPage: React.FC = () => {
   // Header State
   const [isReviewView, setIsReviewView] = useState(false);
 
-  // Fetch data
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["places"],
-    queryFn: fetchPlaces,
-  });
+  // Places list
+  const [places, setPlaces] = useState<PlaceResponse[]>();
+
+  const handleMapMove = async (
+    bounds: naver.maps.Bounds | undefined,
+    position: naver.maps.Coord | undefined
+  ) => {
+    try {
+      if (!bounds || !position) return;
+
+      const swLatitude = bounds.getMin().y.toString();
+      const swLongitude = bounds.getMin().x.toString();
+      const neLatitude = bounds.getMax().y.toString();
+      const neLongitude = bounds.getMax().x.toString();
+      const currentLatitude = position.y.toString();
+      const currentLongitude = position.x.toString();
+
+      const response = await axios.get(
+        `${import.meta.env.VITE_SERVER_ADDRESS}/api/places`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+          params: {
+            category: "카페",
+            sort: "가까운 순",
+            swLatitude,
+            swLongitude,
+            neLatitude,
+            neLongitude,
+            currentLatitude,
+            currentLongitude,
+          } as PlaceParams,
+        }
+      );
+
+      setPlaces(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
+    // Check signin
+    if (!localStorage.getItem("accessToken")) navigate("/signup");
+
     // Update bottom sheet alignment on window resize
     updateLeftPosition();
     window.addEventListener("resize", updateLeftPosition);
@@ -117,7 +112,7 @@ const MapPage: React.FC = () => {
     return () => {
       window.removeEventListener("resize", updateLeftPosition);
     };
-  }, [map]);
+  }, [navigate]);
 
   return (
     <StDiv ref={attachRef}>
@@ -131,25 +126,19 @@ const MapPage: React.FC = () => {
             }
           >
             <UserPositionMarker ref={setUser} />
-            {data &&
-              data.map((item, index) => (
+            {places &&
+              places.map((item, index) => (
                 <PinMarker
                   key={index}
                   active={activePinIndex === index}
                   type="cafe"
                   name={item.name}
-                  image={item.defaultImgUrl}
-                  count={Math.floor(Math.random() * 5 + 1).toString()}
+                  image={item.reviewerProfileImageUrls[0]}
+                  count={item.reviewCount.toString()}
                   onClick={() => {
                     setActivePinIndex(index);
-                    console.log(index);
                   }}
-                  defaultPosition={
-                    new naverMaps.LatLng(
-                      item.longitude / 1e7,
-                      item.latitude / 1e7
-                    )
-                  }
+                  defaultPosition={new naverMaps.LatLng({ lat: 127, lng: 35 })}
                 />
               ))}
           </NaverMap>
@@ -172,31 +161,35 @@ const MapPage: React.FC = () => {
                 )}
               </Sheet.Header>
               <Sheet.Content style={{ paddingBottom: sheetRef.current?.y }}>
-                {isLoading && <span>Loading...</span>}
-                {error && <span>Error</span>}
                 <Sheet.Scroller>
-                  {data &&
+                  {(!places || places.length === 0) && (
+                    <div className="no-reviews">
+                      <p>근처에 리뷰 있는</p>
+                      <p>가게가 없어요!</p>
+                    </div>
+                  )}
+                  {places &&
                     !isReviewView &&
                     activePinIndex === null &&
-                    data.map((item, index) => (
+                    places.map((item, index) => (
                       <div key={index} onClick={() => setIsReviewView(true)}>
                         <Restaurant
                           key={index}
                           name={item.name}
-                          averageRating={item.averageRating}
-                          defaultImgUrl={item.defaultImgUrl}
+                          averageRating={item.averageStarRating}
+                          defaultImgUrl={item.reviewImageUrls[0]}
                         />
                       </div>
                     ))}
                   {(isReviewView || activePinIndex !== null) && (
                     <>
                       <Restaurant
-                        name={data?.[activePinIndex ?? 0].name ?? ""}
+                        name={places?.[activePinIndex ?? 0].name ?? ""}
                         averageRating={
-                          data?.[activePinIndex ?? 0].averageRating ?? 0
+                          places?.[activePinIndex ?? 0].averageStarRating ?? 0
                         }
                         defaultImgUrl={
-                          data?.[activePinIndex ?? 0].defaultImgUrl ?? ""
+                          places?.[activePinIndex ?? 0].reviewImageUrls[0] ?? ""
                         }
                       />
                       <Review />
@@ -233,6 +226,15 @@ const StSheet = styled(Sheet)<{ $left: number }>`
   max-width: 440px;
   min-width: 320px;
   left: ${({ $left }) => `${$left}px !important`};
+
+  .no-reviews {
+    ${H3}
+    display:flex;
+    flex-direction: column;
+    color: var(--neutral_500);
+    gap: var(--spacing_8);
+    margin-top: var(--spacing_12);
+  }
 `;
 
 const StGap = styled.div<{ $attachHeight: number }>`

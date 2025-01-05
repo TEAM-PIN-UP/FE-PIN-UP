@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import { MemberPatchBody, MemberPatchResponse } from "@/types/memberPatch";
+import { MemberPatchBody, MemberPatchResponse } from "@/interface/memberPatch";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { SignUpForm } from "../../SignUpInterface";
@@ -11,6 +11,9 @@ const Welcome = ({ data }: { data: SignUpForm }) => {
 
   const handleClick = async () => {
     try {
+      const accessToken = localStorage.getItem("accessToken");
+      if (!accessToken) throw new Error("No access token found.");
+
       const request: MemberPatchBody["request"] = {
         nickname: data.nickname,
         termsOfMarketing: data.agreedToTerms.includes("TOM") ? "Y" : "N",
@@ -27,21 +30,18 @@ const Welcome = ({ data }: { data: SignUpForm }) => {
         `profile.${fileExtension}`
       );
 
-      console.log(formData);
-
-      const response = await axios.patch<MemberPatchResponse>(
+      await axios.patch<MemberPatchResponse>(
         `${import.meta.env.VITE_SERVER_ADDRESS}/api/members`,
         formData,
         {
           headers: {
+            Authorization: `Bearer ${accessToken}`,
             "Content-Type": "multipart/form-data",
           },
         }
       );
 
-      console.log("Response:", response.data);
-
-      // navigate("/map");
+      navigate("/map");
     } catch (error) {
       console.error("Error:", error);
     }
