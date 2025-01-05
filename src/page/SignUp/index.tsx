@@ -22,7 +22,7 @@ const SignUpPage: React.FC = () => {
 
   const [signUpData, setSignUpData] = useState<SignUpForm>({
     authMethod: "",
-    name: "",
+    nickname: "",
     profileImage: "",
     agreedToTerms: [],
   });
@@ -116,7 +116,7 @@ const SignUpPage: React.FC = () => {
               onNext={goNext}
             />
           )}
-          {stage === lastStage && <Welcome />}
+          {stage === lastStage && <Welcome data={signUpData} />}
         </TransitionWrapper>
       </div>
     </StDiv>

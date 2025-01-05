@@ -23,7 +23,7 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (value.length <= charLimit) {
-      updateData({ name: value });
+      updateData({ nickname: value });
 
       // English and Korean letters + jamo
       const regex =
@@ -52,7 +52,7 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
         <TextInput
           placeholder="닉네임 입력"
           maxLength={charLimit}
-          value={data.name}
+          value={data.nickname}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           style={{ width: "100%" }}
@@ -61,7 +61,7 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
         <div className="char-limit">
           <StB5 $isInvalid={!isInputValid}>한글, 영문만 입력 가능</StB5>
           <StB5>
-            {data.name.length} / {charLimit}
+            {data.nickname.length} / {charLimit}
           </StB5>
         </div>
       </div>
@@ -70,8 +70,8 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
       <Button
         size="full"
         active={
-          data.name.length !== 0 &&
-          data.name.length <= charLimit &&
+          data.nickname.length !== 0 &&
+          data.nickname.length <= charLimit &&
           isInputValid
         }
         onClick={() => {

@@ -1,9 +1,9 @@
 export type AuthProvider = "kakao" | "naver" | "google";
-export type AgreementKey = "tos" | "personalInfo" | "marketing";
+export type AgreementKey = "TOA" | "TOP" | "TOG" | "TOM";
 
 export interface SignUpForm {
   authMethod: AuthProvider | "";
-  name: string;
+  nickname: string;
   profileImage: string;
   agreedToTerms: AgreementKey[];
 }

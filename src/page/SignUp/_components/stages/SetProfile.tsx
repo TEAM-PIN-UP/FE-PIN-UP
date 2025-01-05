@@ -17,7 +17,7 @@ const SetProfile: React.FC<StageProps> = ({ data, updateData, onNext }) => {
   const toast = useToastPopup();
 
   const isValidProfileImage = checkImageValidity(data.profileImage);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageChange = (file: File) => {
     if (file) {
@@ -77,8 +77,9 @@ const SetProfile: React.FC<StageProps> = ({ data, updateData, onNext }) => {
         onImageChange={handleImageChange}
         size="100px"
         placeholderIcon={camera}
+        ref={fileInputRef}
       />
-      {isValidProfileImage && <span className="username">{data.name}</span>}
+      {isValidProfileImage && <span className="username">{data.nickname}</span>}
       <StGlue />
 
       {!isValidProfileImage && (
