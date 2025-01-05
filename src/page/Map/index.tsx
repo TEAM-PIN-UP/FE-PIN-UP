@@ -1,4 +1,8 @@
+import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
+import useMapSetup from "@/hooks/useMapSetup";
+import { Place, PlaceParams } from "@/types/place";
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 import {
@@ -7,11 +11,8 @@ import {
   NavermapsProvider,
   useNavermaps,
 } from "react-naver-maps";
-import styled from "styled-components";
-
-import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
-import useMapSetup from "@/hooks/useMapSetup";
 import { useLocation } from "react-router-dom";
+import styled from "styled-components";
 import PinMarker from "./_components/PinMarker";
 import Restaurant, { RestaurantProps } from "./_components/Restaurant";
 import UserPositionMarker from "./_components/UserPositionMarker";
@@ -24,6 +25,39 @@ interface PinProps extends RestaurantProps {
   longitude: number;
 }
 
+const handleMapMove = async (
+  bounds: naver.maps.Bounds | undefined,
+  position: naver.maps.Coord | undefined
+) => {
+  if (!bounds || !position) return;
+
+  const swLatitude = bounds.getMin().y.toString();
+  const swLongitude = bounds.getMin().x.toString();
+  const neLatitude = bounds.getMax().y.toString();
+  const neLongitude = bounds.getMax().x.toString();
+  const currentLatitude = position.y.toString();
+  const currentLongitude = position.x.toString();
+
+  console.log(
+    `${swLatitude} ${swLongitude} ${neLatitude} ${neLongitude} ${currentLatitude} ${currentLongitude}`
+  );
+
+  const response = await axios.get<Place>(
+    `${import.meta.env.VITE_SERVER_ADDRESS}/api/places`,
+    {
+      params: {
+        swLatitude,
+        swLongitude,
+        neLatitude,
+        neLongitude,
+        currentLatitude,
+        currentLongitude,
+      } as PlaceParams,
+    }
+  );
+
+  console.log(response);
+};
 const fetchPlaces = async (): Promise<PinProps[]> => {
   const response = await fetch("http://localhost:8080/search");
   if (!response.ok) {
@@ -89,7 +123,13 @@ const MapPage: React.FC = () => {
     <StDiv ref={attachRef}>
       <NavermapsProvider ncpClientId={import.meta.env.VITE_NAVER_MAPS}>
         <StMapDiv>
-          <NaverMap zoom={defaultZoom} ref={setMap}>
+          <NaverMap
+            zoom={defaultZoom}
+            ref={setMap}
+            onBoundsChanged={() =>
+              handleMapMove(map?.getBounds(), user?.getPosition())
+            }
+          >
             <UserPositionMarker ref={setUser} />
             {data &&
               data.map((item, index) => (
