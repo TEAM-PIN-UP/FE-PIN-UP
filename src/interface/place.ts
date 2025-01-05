@@ -2,8 +2,8 @@
 // 리뷰가 있는 장소 목록만 조회 / 카테고리(음식점, 카페), 정렬조건(가까운 순, 최신 순, 별점 높은 순, 별점 낮은 순)
 
 export interface PlaceParams {
-  category?: string;
-  sort?: string;
+  category?: "음식점" | "카페";
+  sort?: "가까운 순" | "최신 순" | "별점 높은 순" | "별점 낮은 순";
   swLatitude: string;
   swLongitude: string;
   neLatitude: string;
