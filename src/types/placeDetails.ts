@@ -20,7 +20,7 @@ interface Review {
   reviewImageUrls: string[];
 }
 
-export interface PlaceDetails {
+export interface PlaceDetailsResponse {
   placeName: string;
   reviewCount: number;
   averageStarRating: number;

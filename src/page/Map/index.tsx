@@ -1,6 +1,6 @@
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useMapSetup from "@/hooks/useMapSetup";
-import { Place, PlaceParams } from "@/types/place";
+import { PlaceParams, PlaceResponse } from "@/types/place";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
@@ -42,7 +42,7 @@ const handleMapMove = async (
     `${swLatitude} ${swLongitude} ${neLatitude} ${neLongitude} ${currentLatitude} ${currentLongitude}`
   );
 
-  const response = await axios.get<Place>(
+  const response = await axios.get<PlaceResponse>(
     `${import.meta.env.VITE_SERVER_ADDRESS}/api/places`,
     {
       params: {

@@ -12,7 +12,7 @@ export interface PlaceParams {
   currentLongitude: string;
 }
 
-export interface Place {
+export interface PlaceResponse {
   placeId: number;
   kakaoPlaceId: string;
   name: string;

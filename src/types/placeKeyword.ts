@@ -5,7 +5,7 @@ export interface PlaceKeywordParams {
   query: string;
 }
 
-export interface PlaceKeyword {
+export interface PlaceKeywordResponse {
   kakaoMapId: string;
   name: string;
   category: string;
