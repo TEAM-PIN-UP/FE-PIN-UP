@@ -2,8 +2,7 @@ import Button from "@/components/Button";
 import { MemberPatchBody, MemberPatchResponse } from "@/interface/memberPatch";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { SignUpForm } from "../../SignUpInterface";
-import StGlue from "../typography/StGlue";
+import { MemberResponse, SignUpForm } from "../../SignUpInterface";
 import StTextContainer from "../typography/StTextContainer";
 
 const Welcome = ({ data }: { data: SignUpForm }) => {
@@ -49,12 +48,17 @@ const Welcome = ({ data }: { data: SignUpForm }) => {
 
   return (
     <>
-      <StTextContainer>
-        <div className="h1">환영합니다!</div>
-        <div className="h1">아래 버튼을 눌러</div>
-        <div className="h1">핀업을 시작해봐요</div>
+      <StTextContainer
+        style={{
+          display: "flex",
+          flexGrow: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div className="h1">반가워요!</div>
+        <div className="h1">이제 ‘찐’ 맛집 리뷰를 탐색해볼까요?</div>
       </StTextContainer>
-      <StGlue />
       <Button size="full" onClick={handleClick}>
         핀업 시작하기
       </Button>
