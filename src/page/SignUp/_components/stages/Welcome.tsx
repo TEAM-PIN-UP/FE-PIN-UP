@@ -40,6 +40,17 @@ const Welcome = ({ data }: { data: SignUpForm }) => {
         }
       );
 
+      // Update local storage member response
+      const memberResponseJson = localStorage.getItem("memberResponse");
+      const memberResponse: MemberResponse | null = memberResponseJson
+        ? (JSON.parse(memberResponseJson) as MemberResponse)
+        : null;
+      if (memberResponse) {
+        memberResponse.nickname = data.nickname;
+        localStorage.setItem("memberResponse", JSON.stringify(memberResponse));
+      } else {
+        navigate("/signup");
+      }
       navigate("/map");
     } catch (error) {
       console.error("Error:", error);

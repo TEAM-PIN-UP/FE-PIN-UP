@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import { H3 } from "@/style/font";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
 import TransitionWrapper, {
   TransitionDirection,
 } from "../../components/TransitionWrapper";
@@ -13,9 +14,11 @@ import SetName from "./_components/stages/SetName";
 import SetProfile from "./_components/stages/SetProfile";
 import Tos from "./_components/stages/Tos";
 import Welcome from "./_components/stages/Welcome";
-import { SignUpForm } from "./SignUpInterface";
+import { MemberResponse, SignUpForm } from "./SignUpInterface";
 
 const SignUpPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const [stage, setStage] = useState(1);
   const lastStage = 5;
   const [direction, setDirection] = useState<TransitionDirection>("forward");
@@ -50,6 +53,15 @@ const SignUpPage: React.FC = () => {
   };
 
   useEffect(() => {
+    // Check if signed in
+    const accessToken = localStorage.getItem("accessToken");
+    const memberResponseJson = localStorage.getItem("memberResponse");
+    const memberResponse: MemberResponse | null = memberResponseJson
+      ? (JSON.parse(memberResponseJson) as MemberResponse)
+      : null;
+    if (accessToken && memberResponse && memberResponse.nickname)
+      navigate("/map");
+
     // Use system back button for prev stage
     const handlePopState = (e: PopStateEvent) => {
       e.preventDefault();
@@ -61,7 +73,7 @@ const SignUpPage: React.FC = () => {
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, []);
+  }, [navigate]);
 
   return (
     <StDiv $stage={stage}>
