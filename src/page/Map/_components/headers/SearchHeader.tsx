@@ -8,10 +8,11 @@ import coffee from "@/image/icons/coffee.svg";
 import coffeeWhite from "@/image/icons/coffeeWhite.svg";
 import food from "@/image/icons/food.svg";
 import foodWhite from "@/image/icons/foodWhite.svg";
+import { PlaceCategory } from "@/interface/place";
 import { H6 } from "@/style/font";
 
 const SearchHeader = React.forwardRef<HTMLDivElement, object>((_, ref) => {
-  const [filter, setFilter] = useState<"all" | "food" | "cafe">("all");
+  const [filter, setFilter] = useState<PlaceCategory>("ALL");
 
   return (
     <HeaderDiv ref={ref}>
@@ -20,15 +21,18 @@ const SearchHeader = React.forwardRef<HTMLDivElement, object>((_, ref) => {
       </SearchContainer>
 
       <ChipContainer>
-        <Chip selected={filter === "all"} onClick={() => setFilter("all")}>
+        <Chip selected={filter === "ALL"} onClick={() => setFilter("ALL")}>
           전체
         </Chip>
-        <Chip selected={filter === "food"} onClick={() => setFilter("food")}>
-          {filter === "food" ? <img src={foodWhite} /> : <img src={food} />}
+        <Chip
+          selected={filter === "RESTAURANT"}
+          onClick={() => setFilter("RESTAURANT")}
+        >
+          <img src={filter === "RESTAURANT" ? foodWhite : food} />
           <span>음식점</span>
         </Chip>
-        <Chip selected={filter === "cafe"} onClick={() => setFilter("cafe")}>
-          {filter === "cafe" ? <img src={coffeeWhite} /> : <img src={coffee} />}
+        <Chip selected={filter === "CAFE"} onClick={() => setFilter("CAFE")}>
+          <img src={filter === "CAFE" ? coffeeWhite : coffee} />
           <span>카페</span>
         </Chip>
 
@@ -40,7 +44,6 @@ const SearchHeader = React.forwardRef<HTMLDivElement, object>((_, ref) => {
   );
 });
 
-// Styled components for layout and styling
 const HeaderDiv = styled.div`
   display: flex;
   flex-direction: column;

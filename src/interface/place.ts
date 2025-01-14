@@ -12,6 +12,8 @@ export interface PlaceParams {
   currentLongitude: string;
 }
 
+export type PlaceCategory = "ALL" | "CAFE" | "RESTAURANT";
+
 export interface PlaceResponse {
   placeId: number;
   kakaoPlaceId: string;
@@ -19,6 +21,9 @@ export interface PlaceResponse {
   averageStarRating: number;
   reviewCount: number;
   distance: string;
+  latitude: number;
+  longitude: number;
+  placeCategory: PlaceCategory;
   reviewImageUrls: string[];
   reviewerProfileImageUrls: string[];
 }

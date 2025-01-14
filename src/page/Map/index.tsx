@@ -131,14 +131,19 @@ const MapPage: React.FC = () => {
                 <PinMarker
                   key={index}
                   active={activePinIndex === index}
-                  type="cafe"
+                  type={item.placeCategory}
                   name={item.name}
                   image={item.reviewerProfileImageUrls[0]}
                   count={item.reviewCount.toString()}
                   onClick={() => {
                     setActivePinIndex(index);
                   }}
-                  defaultPosition={new naverMaps.LatLng({ lat: 127, lng: 35 })}
+                  defaultPosition={
+                    new naverMaps.LatLng({
+                      lat: item.latitude,
+                      lng: item.longitude,
+                    })
+                  }
                 />
               ))}
           </NaverMap>
