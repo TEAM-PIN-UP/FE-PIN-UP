@@ -10,18 +10,15 @@ import notificationActive from "@/image/icons/notificationActive.svg";
 import notificationInactive from "@/image/icons/notificationInactive.svg";
 import settings from "@/image/icons/settings.svg";
 import share from "@/image/icons/share.svg";
+import { MemberMyProfileResponse } from "@/interface/memberMyProfile";
+import { TextReview } from "@/interface/review";
 import { B3, B4, H1, H2, H3, H4 } from "@/style/font";
 import useToastPopup from "@/utils/toastPopup";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ProfileButton from "./_components/ProfileButton";
 import ReviewHistory from "./_components/reviews/ReviewHistory";
 import UserStatsSection, { Stat } from "./_components/UserStatsSection";
-
-const userStats: Stat[] = [
-  { label: "리뷰", value: 8 },
-  { label: "평균 평점", value: 4.5 },
-  { label: "핀버디", value: 552 },
-];
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
@@ -36,6 +33,73 @@ const Profile: React.FC = () => {
     setLeft(newLeft);
   };
 
+  const [isLoggedIn] = useState(
+    !!localStorage.getItem("accessToken") &&
+      !!localStorage.getItem("memberResponse")
+  );
+
+  const [myDetails, setMyDetails] = useState<MemberMyProfileResponse>();
+  const [myPhotos, setMyPhotos] = useState<string[]>();
+  const [myTexts, setMyTexts] = useState<TextReview[]>();
+
+  useEffect(() => {
+    // Redirect to signup if not logged in
+    if (!isLoggedIn) navigate("/signup");
+    return () => {};
+  }, [isLoggedIn, navigate]);
+
+  useEffect(() => {
+    try {
+      // Fetch current user profile
+      const getMemberDetails = async () => {
+        try {
+          const [userData, photoReviews, textReviews] = await Promise.all([
+            axios.get(
+              `${import.meta.env.VITE_SERVER_ADDRESS}/api/members/me/profile`,
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem(
+                    "accessToken"
+                  )}`,
+                },
+              }
+            ),
+            axios.get(
+              `${import.meta.env.VITE_SERVER_ADDRESS}/api/reviews/my/photo`,
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem(
+                    "accessToken"
+                  )}`,
+                },
+              }
+            ),
+            axios.get(
+              `${import.meta.env.VITE_SERVER_ADDRESS}/api/reviews/my/text`,
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem(
+                    "accessToken"
+                  )}`,
+                },
+              }
+            ),
+          ]);
+
+          setMyDetails(userData.data.data);
+          setMyPhotos(photoReviews.data.data);
+          setMyTexts(textReviews.data.data);
+        } catch (error) {
+          console.error("Error fetching member details:", error);
+        }
+      };
+      getMemberDetails();
+    } catch (error) {
+      console.error(error);
+    }
+    return () => {};
+  }, []);
+
   useEffect(() => {
     // Update bottom sheet alignment on window resize
     updateLeftPosition();
@@ -44,7 +108,7 @@ const Profile: React.FC = () => {
     return () => {
       window.removeEventListener("resize", updateLeftPosition);
     };
-  }, []);
+  }, [isLoggedIn, navigate]);
 
   const toast = useToastPopup();
 
@@ -57,7 +121,6 @@ const Profile: React.FC = () => {
     navigate("notifications");
   };
 
-  const [isLoggedIn] = useState(!!localStorage.getItem("accessToken"));
   const [showLogin, setShowLogin] = useState(false);
   const handleShare = async () => {
     if (isLoggedIn) {
@@ -92,11 +155,28 @@ const Profile: React.FC = () => {
 
         <div className="user-section">
           <div className="profile">
-            <img src="https://picsum.photos/200" className="profile-image" />
-            <UserStatsSection stats={userStats} />
+            <img
+              src={myDetails?.member.profilePictureUrl}
+              className="profile-image"
+            />
+            <UserStatsSection
+              stats={
+                [
+                  { label: "리뷰", value: myDetails?.reviewCount },
+                  {
+                    label: "평균 평점",
+                    value: myDetails?.averageRating,
+                  },
+                  {
+                    label: "핀버디",
+                    value: myDetails?.friendCount,
+                  },
+                ] as Stat[]
+              }
+            />
           </div>
-          <div className="username">레벨조이</div>
-          <div className="intro">카친자 ☕ 하루 3카페 가는 사람</div>
+          <div className="username">{myDetails?.member.nickname}</div>
+          <div className="intro">{myDetails?.member.bio}</div>
 
           <div className="profile-buttons">
             <ProfileButton
@@ -116,18 +196,23 @@ const Profile: React.FC = () => {
               className={`review-filter ${index === 0 ? "active" : ""}`}
               onClick={() => setIndex(0)}
             >
-              포토 리뷰 24
+              포토 리뷰 {myPhotos?.length}
             </button>
             <button
               className={`review-filter ${index === 1 ? "active" : ""}`}
               onClick={() => setIndex(1)}
             >
-              텍스트 리뷰 3
+              텍스트 리뷰 {myTexts?.length}
             </button>
           </div>
         </div>
         <div className="review-section">
-          <ReviewHistory index={index} onChangeIndex={(i) => setIndex(i)} />
+          <ReviewHistory
+            index={index}
+            onChangeIndex={(i) => setIndex(i)}
+            photos={myPhotos ? myPhotos : []}
+            texts={myTexts ? myTexts : []}
+          />
         </div>
 
         {/* Share Profile */}
@@ -146,11 +231,25 @@ const Profile: React.FC = () => {
               {!showLogin && (
                 <div className="profile-share">
                   <img
-                    src={"https://picsum.photos/200"}
+                    src={myDetails?.member.profilePictureUrl}
                     className="profile-image"
                   />
-                  <span className="username">레벨조이</span>
-                  <UserStatsSection stats={userStats} />
+                  <span className="username">{myDetails?.member.nickname}</span>
+                  <UserStatsSection
+                    stats={
+                      [
+                        { label: "리뷰", value: myDetails?.reviewCount },
+                        {
+                          label: "평균 평점",
+                          value: myDetails?.averageRating,
+                        },
+                        {
+                          label: "핀버디",
+                          value: myDetails?.friendCount,
+                        },
+                      ] as Stat[]
+                    }
+                  />
                   <Button
                     size="xlarge"
                     onClick={handleShare}
