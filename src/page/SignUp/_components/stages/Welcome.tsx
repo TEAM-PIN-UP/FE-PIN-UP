@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import { MemberPatchBody, MemberPatchResponse } from "@/interface/memberPatch";
+import { MemberPatchBody } from "@/interface/memberPatch";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { MemberResponse, SignUpForm } from "../../SignUpInterface";
@@ -29,7 +29,7 @@ const Welcome = ({ data }: { data: SignUpForm }) => {
         `profile.${fileExtension}`
       );
 
-      await axios.patch<MemberPatchResponse>(
+      await axios.patch(
         `${import.meta.env.VITE_SERVER_ADDRESS}/api/members`,
         formData,
         {

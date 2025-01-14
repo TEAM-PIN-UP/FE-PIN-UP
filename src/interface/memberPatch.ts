@@ -8,13 +8,3 @@ export interface MemberPatchBody {
   };
   multipartFile: Blob; // !! Convert base64 jpeg/png image to blob
 }
-
-export interface MemberPatchResponse {
-  memberId: number;
-  email: string;
-  name: string;
-  nickname: string;
-  profilePictureUrl: string;
-  bio: string;
-  termsOfMarketing: string;
-}
