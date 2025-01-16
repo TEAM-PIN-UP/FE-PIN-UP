@@ -14,7 +14,7 @@ import { MemberMyProfileResponse } from "@/interface/memberMyProfile";
 import { TextReview } from "@/interface/review";
 import { B3, B4, H1, H2, H3, H4 } from "@/style/font";
 import useToastPopup from "@/utils/toastPopup";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { useNavigate } from "react-router-dom";
 import ProfileButton from "./_components/ProfileButton";
 import ReviewHistory from "./_components/reviews/ReviewHistory";
@@ -49,6 +49,11 @@ const Profile: React.FC = () => {
   }, [isLoggedIn, navigate]);
 
   useEffect(() => {
+    const authHeader: AxiosRequestConfig = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    };
     try {
       // Fetch current user profile
       const getMemberDetails = async () => {
@@ -56,33 +61,15 @@ const Profile: React.FC = () => {
           const [userData, photoReviews, textReviews] = await Promise.all([
             axios.get(
               `${import.meta.env.VITE_SERVER_ADDRESS}/api/members/me/profile`,
-              {
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem(
-                    "accessToken"
-                  )}`,
-                },
-              }
+              authHeader
             ),
             axios.get(
               `${import.meta.env.VITE_SERVER_ADDRESS}/api/reviews/my/photo`,
-              {
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem(
-                    "accessToken"
-                  )}`,
-                },
-              }
+              authHeader
             ),
             axios.get(
               `${import.meta.env.VITE_SERVER_ADDRESS}/api/reviews/my/text`,
-              {
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem(
-                    "accessToken"
-                  )}`,
-                },
-              }
+              authHeader
             ),
           ]);
 
