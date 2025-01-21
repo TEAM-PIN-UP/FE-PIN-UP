@@ -10,7 +10,7 @@ import notificationActive from "@/image/icons/notificationActive.svg";
 import notificationInactive from "@/image/icons/notificationInactive.svg";
 import settings from "@/image/icons/settings.svg";
 import share from "@/image/icons/share.svg";
-import { MemberMyProfileResponse } from "@/interface/memberMyProfile";
+import { MemberMyProfileResponse } from "@/interface/member";
 import { TextReview } from "@/interface/review";
 import { B3, B4, H1, H2, H3, H4 } from "@/style/font";
 import useToastPopup from "@/utils/toastPopup";

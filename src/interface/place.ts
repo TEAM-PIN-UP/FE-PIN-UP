@@ -1,5 +1,3 @@
-// 키워드 없이 장소 목록 조회 인터페이스
-// 리뷰가 있는 장소 목록만 조회 / 카테고리(음식점, 카페), 정렬조건(가까운 순, 최신 순, 별점 높은 순, 별점 낮은 순)
 export interface PlaceParams {
   category?: "음식점" | "카페";
   sort?: "가까운 순" | "최신 순" | "별점 높은 순" | "별점 낮은 순";
@@ -25,4 +23,51 @@ export interface PlaceResponse {
   placeCategory: PlaceCategory;
   reviewImageUrls: string[];
   reviewerProfileImageUrls: string[];
+}
+
+// Place details
+
+export interface PlaceDetailsParams {
+  kakaoPlaceId: string;
+}
+
+interface RatingGraph {
+  [key: string]: number;
+}
+
+interface Review {
+  reviewId: number;
+  writerName: string;
+  writerTotalReviewCount: number;
+  starRating: number;
+  visitedDate: string;
+  content: string;
+  writerProfileImageUrl: string;
+  reviewImageUrls: string[];
+}
+
+export interface PlaceDetailsResponse {
+  placeName: string;
+  reviewCount: number;
+  averageStarRating: number;
+  ratingGraph: RatingGraph;
+  reviews: Review[];
+}
+
+// Place keyword
+
+export interface PlaceKeywordParams {
+  query: string;
+}
+
+export interface PlaceKeywordResponse {
+  kakaoMapId: string;
+  name: string;
+  category: string;
+  address: string;
+  roadAddress: string;
+  latitude: string;
+  longitude: string;
+  reviewCount: number;
+  averageStarRating: number;
 }
