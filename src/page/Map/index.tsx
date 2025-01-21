@@ -138,7 +138,7 @@ const MapPage: React.FC = () => {
                   onClick={() => {
                     setActivePinIndex(index);
                   }}
-                  defaultPosition={
+                  position={
                     new naverMaps.LatLng({
                       lat: item.latitude,
                       lng: item.longitude,
@@ -196,7 +196,8 @@ const MapPage: React.FC = () => {
                           places?.[activePinIndex ?? 0].averageStarRating ?? 0
                         }
                         defaultImgUrl={
-                          places?.[activePinIndex ?? 0].reviewImageUrls[0] ?? ""
+                          // places?.[activePinIndex ?? 0].reviewImageUrls[0] ?? ""
+                          `https://picsum.photos/200`
                         }
                       />
                       <Review />
