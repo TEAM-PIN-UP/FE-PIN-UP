@@ -133,7 +133,7 @@ const MapPage: React.FC = () => {
                   active={activePinIndex === index}
                   type={item.placeCategory}
                   name={item.name}
-                  image={item.reviewerProfileImageUrls[0]}
+                  image={`https://picsum.photos/200`}
                   count={item.reviewCount.toString()}
                   onClick={() => {
                     setActivePinIndex(index);
@@ -160,7 +160,9 @@ const MapPage: React.FC = () => {
             <Sheet.Container>
               <Sheet.Header ref={sheetHeaderRef}>
                 <Sheet.Header />
-                {!isReviewView && <SearchHeader />}
+                {!isReviewView && (
+                  <SearchHeader places={places} setPlaces={setPlaces} />
+                )}
                 {isReviewView && (
                   <ReviewHeader onBack={() => setIsReviewView(false)} />
                 )}
@@ -182,7 +184,7 @@ const MapPage: React.FC = () => {
                           key={index}
                           name={item.name}
                           averageRating={item.averageStarRating}
-                          defaultImgUrl={item.reviewImageUrls[0]}
+                          defaultImgUrl={`https://picsum.photos/200`}
                         />
                       </div>
                     ))}
