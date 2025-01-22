@@ -5,7 +5,6 @@ import styled from "styled-components";
 import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
 import { H4 } from "@/style/font";
 import { useNavigate } from "react-router-dom";
-import ReviewText from "@/page/Profile/_components/reviews/ReviewText";
 
 interface ProfileReviewProps {
   index: number;
@@ -71,9 +70,9 @@ const ProfileReview: React.FC<ProfileReviewProps> = ({
           </div>
         )}
         <div className="text-reviews">
+          {/* <ReviewText />
           <ReviewText />
-          <ReviewText />
-          <ReviewText />
+          <ReviewText /> */}
         </div>
       </SwipeableViews>
     </StDiv>

@@ -11,7 +11,7 @@ const PlaceInfo = ({ pickedInfo }: { pickedInfo: getSearchPlacesResponse | null 
       <div className="score">
         <img src={star} />
         <p>
-          <span className="point">4.5</span>{" "}
+          <span className="point">{pickedInfo?.averageStarRating}</span>{" "}
           <span className="reviewCount">리뷰 {pickedInfo?.reviewCount}</span>
         </p>
       </div>

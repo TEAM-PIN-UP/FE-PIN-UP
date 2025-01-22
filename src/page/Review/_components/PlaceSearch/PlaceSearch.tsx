@@ -1,5 +1,5 @@
 import SearchInfo from "./SearchInfo";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ReviewSearchBar from "./ReviewSearchBar";
 import styled from "styled-components";
 import SearchResult from "./SearchResult";
