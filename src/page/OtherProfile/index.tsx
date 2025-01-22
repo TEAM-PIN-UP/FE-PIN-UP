@@ -15,8 +15,8 @@ import ProfileButton from "../Profile/_components/ProfileButton";
 import UserStatsSection, {
   Stat,
 } from "../Profile/_components/UserStatsSection";
-import RequestButton from "./_components/requestButton";
 import ProfileReview from "./_components/ProfileReview";
+import RequestButton from "./_components/RequestButton";
 
 const userStats: Stat[] = [
   { label: "리뷰", value: 8 },
@@ -250,7 +250,7 @@ const StDiv = styled.div`
   }
 `;
 
-const StSheet = styled(Sheet)<{ $left: number }>`
+const StSheet = styled(Sheet) <{ $left: number }>`
   display: flex;
   align-items: center;
   justify-content: center;

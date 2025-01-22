@@ -34,8 +34,8 @@ const ReviewTotal = ({ pickedInfo, visitDate }: ReviewTotalProps) => {
       category: pickedInfo.category === '' ? '음식점' : pickedInfo.category,
       address: pickedInfo.address,
       roadAddress: pickedInfo.roadAddress,
-      latitude: pickedInfo.latitude,
-      longitude: pickedInfo.longitude,
+      latitude: Number(pickedInfo.latitude),
+      longitude: Number(pickedInfo.longitude),
     };
 
     // 리뷰 데이터
@@ -70,23 +70,25 @@ const ReviewTotal = ({ pickedInfo, visitDate }: ReviewTotalProps) => {
 
 
   return (
-    <StWriteReview>
-      <PlaceInfo pickedInfo={pickedInfo} />
-      <div className="devideLine" />
-      <PhotoUpload imageData={imageData} setImageData={setImageData} />
-      <div className="devideLine" />
-      <CheckScore starScore={starScore} setStarScore={setStarScore} />
-      <div className="devideLine" />
-      <WriteReview
-        reviewContent={reviewContent}
-        setReviewContent={setReviewContent}
-      />
-      <div className="buttonBucket">
-        <Button size="full" onClick={handleReviewSubmit}>
-          리뷰 등록하기
-        </Button>
-      </div>
-    </StWriteReview>
+    <>
+      <StWriteReview>
+        <PlaceInfo pickedInfo={pickedInfo} />
+        <div className="devideLine" />
+        <PhotoUpload imageData={imageData} setImageData={setImageData} />
+        <div className="devideLine" />
+        <CheckScore starScore={starScore} setStarScore={setStarScore} />
+        <div className="devideLine" />
+        <WriteReview
+          reviewContent={reviewContent}
+          setReviewContent={setReviewContent}
+        />
+        <div className="buttonBucket">
+          <Button size="full" onClick={handleReviewSubmit}>
+            리뷰 등록하기
+          </Button>
+        </div>
+      </StWriteReview>
+    </>
   );
 };
 

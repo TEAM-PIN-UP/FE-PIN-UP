@@ -26,8 +26,8 @@ export interface getSearchPlacesResponse {
   category: string,
   address: string,
   roadAddress: string,
-  latitude: string,
-  longitude: string,
+  latitude: number,
+  longitude: number,
   reviewCount: number,
   averageStarRating: number;
 }
@@ -44,8 +44,8 @@ export interface PlaceRequestType {
   category: string;
   address: string;
   roadAddress: string;
-  latitude: string,
-  longitude: string
+  latitude: number,
+  longitude: number
 }
 
 
@@ -55,6 +55,6 @@ export interface postCreateReviewResponse {
   category: string,
   address: string,
   roadAddress: string,
-  latitude: string,
-  longitude: string
+  latitude: number,
+  longitude: number
 }

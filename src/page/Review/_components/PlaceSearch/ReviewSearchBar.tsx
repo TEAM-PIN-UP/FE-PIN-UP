@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
 
 import search from "@/image/icons/search.svg";
