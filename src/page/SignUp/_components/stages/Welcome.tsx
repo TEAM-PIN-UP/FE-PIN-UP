@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import { MemberPatchBody } from "@/interface/memberPatch";
+import { MemberPatchBody } from "@/interface/member";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { MemberResponse, SignUpForm } from "../../SignUpInterface";

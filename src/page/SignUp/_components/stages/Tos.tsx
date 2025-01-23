@@ -31,7 +31,7 @@ const Tos: React.FC<StageProps> = ({ data, updateData, onNext }) => {
   };
 
   const isRequiredAgreed =
-    agreements.has("TOA") && agreements.has("TOG") && agreements.has("TOG");
+    agreements.has("TOA") && agreements.has("TOP") && agreements.has("TOG");
   const isAllAgreed = isRequiredAgreed && agreements.has("TOM");
 
   return (
@@ -59,7 +59,7 @@ const Tos: React.FC<StageProps> = ({ data, updateData, onNext }) => {
         agreed={agreements.has("TOP")}
         onClick={() => handleToggleAgreement("TOP")}
         itemName="개인정보 수집 및 이용 동의 (필수)"
-      />{" "}
+      />
       <TosItem
         agreed={agreements.has("TOG")}
         onClick={() => handleToggleAgreement("TOG")}
