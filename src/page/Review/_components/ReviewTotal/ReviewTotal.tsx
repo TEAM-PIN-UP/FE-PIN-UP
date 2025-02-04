@@ -5,30 +5,90 @@ import CheckScore from "./CheckScore";
 import WriteReview from "./WriteReview";
 import { useState } from "react";
 import Button from "@/components/Button";
+import { getSearchPlacesResponse, PlaceRequestType, ReviewRequestType } from "@/interface/apiInterface";
+import useCreateReview from "@/hooks/api/review/usePostCreateReview";
 
-const ReviewTotal = () => {
+interface ReviewTotalProps {
+  pickedInfo: getSearchPlacesResponse;
+  visitDate: Date;
+}
+
+const ReviewTotal = ({ pickedInfo, visitDate }: ReviewTotalProps) => {
   const [starScore, setStarScore] = useState<number>(0);
-  const [imageData, setImageData] = useState<string[]>([]);
+  const [imageData, setImageData] = useState<File[]>([]);
   const [reviewContent, setReviewContent] = useState<string>("");
+  const reviewCreate = useCreateReview();
+
+  const handleReviewSubmit = () => {
+    const formData = new FormData();
+
+    const reviewRequest: ReviewRequestType = {
+      content: reviewContent,
+      starRating: starScore,
+      visitedDate: visitDate.toLocaleDateString().split('. ').join('').slice(0, 8),
+    };
+
+    const placeRequest: PlaceRequestType = {
+      kakaoPlaceId: pickedInfo.kakaoMapId,
+      name: pickedInfo.name,
+      category: pickedInfo.category === '음식점' ? 'RESTAURANT' : 'CAFE',
+      address: pickedInfo.address,
+      roadAddress: pickedInfo.roadAddress,
+      latitude: Number(pickedInfo.latitude),
+      longitude: Number(pickedInfo.longitude),
+    };
+
+    // 리뷰 데이터
+    formData.append(
+      "reviewRequest",
+      new Blob(
+        [
+          JSON.stringify(reviewRequest),
+        ],
+        { type: "application/json" }
+      )
+    );
+
+    // 장소 데이터
+    formData.append(
+      "placeRequest",
+      new Blob(
+        [
+          JSON.stringify(placeRequest),
+        ],
+        { type: "application/json" }
+      )
+    );
+
+    imageData.forEach((file) => {
+      formData.append(`multipartFiles`, file);
+    })
+
+    reviewCreate.mutate(formData);
+
+  }
+
 
   return (
-    <StWriteReview>
-      <PlaceInfo />
-      <div className="devideLine" />
-      <PhotoUpload imageData={imageData} setImageData={setImageData} />
-      <div className="devideLine" />
-      <CheckScore starScore={starScore} setStarScore={setStarScore} />
-      <div className="devideLine" />
-      <WriteReview
-        reviewContent={reviewContent}
-        setReviewContent={setReviewContent}
-      />
-      <div className="buttonBucket">
-        <Button size="full" onClick={() => console.log("")}>
-          리뷰 등록하기
-        </Button>
-      </div>
-    </StWriteReview>
+    <>
+      <StWriteReview>
+        <PlaceInfo pickedInfo={pickedInfo} />
+        <div className="devideLine" />
+        <PhotoUpload imageData={imageData} setImageData={setImageData} />
+        <div className="devideLine" />
+        <CheckScore starScore={starScore} setStarScore={setStarScore} />
+        <div className="devideLine" />
+        <WriteReview
+          reviewContent={reviewContent}
+          setReviewContent={setReviewContent}
+        />
+        <div className="buttonBucket">
+          <Button size="full" onClick={handleReviewSubmit}>
+            리뷰 등록하기
+          </Button>
+        </div>
+      </StWriteReview>
+    </>
   );
 };
 

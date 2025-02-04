@@ -6,15 +6,22 @@ import { B4, H3, H4 } from "@/style/font";
 import ImageSwiper from "./ImageSwiper";
 
 export interface RestaurantProps {
+  placeId: number;
   name: string;
-  averageRating: number;
-  defaultImgUrl: string;
+  averageStarRating: number;
+  reviewCount: number;
+  distance: string;
+  reviewImageUrls: string[];
+  reviewerProfileImageUrls: string[];
 }
 
 const Restaurant: React.FC<RestaurantProps> = ({
   name,
-  averageRating,
-  defaultImgUrl,
+  averageStarRating,
+  reviewCount,
+  distance,
+  reviewImageUrls,
+  reviewerProfileImageUrls,
 }) => {
   return (
     <StRestaurant>
@@ -22,15 +29,15 @@ const Restaurant: React.FC<RestaurantProps> = ({
         <div className="infoContainer">
           <div className="textContainer">
             <div className="title">{name}</div>
-            <div className="rating">⭐ {averageRating.toFixed(1)}</div>
+            <div className="rating">⭐ {averageStarRating.toFixed(1)}</div>
             <div className="detail">
-              <span className="distance">2.4km</span>
-              <span className="reviewNum">리뷰 4</span>
+              <span className="distance">{distance}</span>
+              <span className="reviewNum">리뷰 {reviewCount}</span>
             </div>
           </div>
           <div className="profile" />
         </div>
-        <ImageSwiper defaultImgUrl={defaultImgUrl} />
+        <ImageSwiper imageUrls={reviewImageUrls} />
       </div>
       <div className="gap" />
     </StRestaurant>

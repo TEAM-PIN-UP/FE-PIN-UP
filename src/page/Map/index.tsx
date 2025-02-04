@@ -17,6 +17,7 @@ import UserPositionMarker from "./_components/UserPositionMarker";
 import ReviewHeader from "./_components/headers/ReviewHeader";
 import SearchHeader from "./_components/headers/SearchHeader";
 import Review from "./_components/review/Review";
+import useGetPlaces from "@/hooks/api/useGetPlaces";
 
 interface PinProps extends RestaurantProps {
   latitude: number;
@@ -53,12 +54,6 @@ const MapPage: React.FC = () => {
   // Header State
   const [isReviewView, setIsReviewView] = useState(false);
 
-  // Fetch data
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["places"],
-    queryFn: fetchPlaces,
-  });
-
   useEffect(() => {
     // Update bottom sheet alignment on window resize
     updateLeftPosition();
@@ -68,6 +63,12 @@ const MapPage: React.FC = () => {
       window.removeEventListener("resize", updateLeftPosition);
     };
   }, [map]);
+
+  const { data, isLoading, error } = useGetPlaces({
+    category: "ALL", // 또는 필요한 카테고리
+    sort: "NEAR", // 또는 필요한 정렬 기준
+    ...mapBounds,
+  });
 
   return (
     <StDiv ref={attachRef}>
@@ -105,7 +106,7 @@ const MapPage: React.FC = () => {
           <StSheet
             ref={sheetRef}
             isOpen={true}
-            onClose={() => {}}
+            onClose={() => { }}
             snapPoints={snapPoints}
             initialSnap={1}
             mountPoint={attachRef.current!}
@@ -175,7 +176,7 @@ const StMapDiv = styled(MapDiv)`
   height: 100%;
 `;
 
-const StSheet = styled(Sheet)<{ left: number }>`
+const StSheet = styled(Sheet) <{ left: number }>`
   display: flex;
   justify-content: center;
   max-width: 440px;
