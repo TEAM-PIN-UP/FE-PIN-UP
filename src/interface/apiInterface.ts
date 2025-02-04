@@ -1,19 +1,29 @@
+export type category = 'ALL' | 'RESTAURANT' | 'CAFE';
+export type sort = 'NEAR' | 'LATEST' | 'STAR_HIGH' | 'STAR_LOW';
+
 export interface GetPlaceParams {
-  query: string;
-  longitude: string;
-  latitude: string;
+  category: category,
+  sort: sort,
+  swLatitude: string,
+  swLongitude: string,
+  neLatitude: string,
+  neLongitude: string,
+  currentLatitude: string,
+  currentLongitude: string,
 }
 
 export interface GetPlaceResponse {
-  kakaoMapId: string;
+  placeId: number;
+  kakaoPlaceId: string;
   name: string;
-  category: string;
-  phone: string;
-  address: string;
-  roadAddress: string;
-  longitudeX: string;
-  latitudeY: string;
+  averageStarRating: number;
+  reviewCount: number;
   distance: string;
+  latitude: number,
+  longitude: number,
+  placeCategory: category,
+  reviewImageUrls: string[];
+  reviewerProfileImageUrls: string[];
 }
 
 export interface getSearchPlacesRequest {
@@ -41,7 +51,7 @@ export interface ReviewRequestType {
 export interface PlaceRequestType {
   kakaoPlaceId: string;
   name: string;
-  category: string;
+  category: category;
   address: string;
   roadAddress: string;
   latitude: number,

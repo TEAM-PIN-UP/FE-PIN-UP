@@ -1,8 +1,6 @@
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useMapSetup from "@/hooks/useMapSetup";
-import { PlaceParams, PlaceResponse } from "@/interface/place";
 import { H3 } from "@/style/font";
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 import {
@@ -19,9 +17,21 @@ import SearchHeader from "./_components/headers/SearchHeader";
 import PinMarker from "./_components/PinMarker";
 import Restaurant from "./_components/Restaurant";
 import UserPositionMarker from "./_components/UserPositionMarker";
+import { category, GetPlaceResponse, sort } from "@/interface/apiInterface";
+import useGetPlaces from "@/hooks/api/useGetPlaces";
+import useUpdatePlaces from "@/hooks/useUpdatePlaces";
 
 const MapPage: React.FC = () => {
   const navigate = useNavigate();
+  const [category, setCategory] = useState<category>('CAFE');
+  const [sort, setSort] = useState<sort>('NEAR');
+  const [places, setPlaces] = useState<GetPlaceResponse[]>();
+
+  const { handleMapMove } = useUpdatePlaces({
+    category,
+    sort,
+    setPlaces,
+  });
 
   // Geolocation and map setup
   const naverMaps = useNavermaps();
@@ -60,46 +70,68 @@ const MapPage: React.FC = () => {
   const [isReviewView, setIsReviewView] = useState(false);
 
   // Places list
-  const [places, setPlaces] = useState<PlaceResponse[]>();
 
-  const handleMapMove = async (
-    bounds: naver.maps.Bounds | undefined,
-    position: naver.maps.Coord | undefined
-  ) => {
-    try {
-      if (!bounds || !position) return;
+  // const handleMapMove = async (
+  //   bounds: naver.maps.Bounds | undefined,
+  //   position: naver.maps.Coord | undefined
+  // ) => {
+  //   // Geolocation and map setup
 
-      const swLatitude = bounds.getMin().y.toString();
-      const swLongitude = bounds.getMin().x.toString();
-      const neLatitude = bounds.getMax().y.toString();
-      const neLongitude = bounds.getMax().x.toString();
-      const currentLatitude = position.y.toString();
-      const currentLongitude = position.x.toString();
 
-      const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_ADDRESS}/api/places`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-          params: {
-            category: "카페",
-            sort: "가까운 순",
-            swLatitude,
-            swLongitude,
-            neLatitude,
-            neLongitude,
-            currentLatitude,
-            currentLongitude,
-          } as PlaceParams,
-        }
-      );
+  //   try {
+  //     if (!bounds || !position) return;
 
-      setPlaces(response.data.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //     const swLatitude = bounds.getMin().y.toString();
+  //     const swLongitude = bounds.getMin().x.toString();
+  //     const neLatitude = bounds.getMax().y.toString();
+  //     const neLongitude = bounds.getMax().x.toString();
+  //     const currentLatitude = position.y.toString();
+  //     const currentLongitude = position.x.toString();
+
+  //     const { data: places, isError } = useGetPlaces({
+  //       category,
+  //       sort,
+  //       swLatitude,
+  //       swLongitude,
+  //       neLatitude,
+  //       neLongitude,
+  //       currentLatitude,
+  //       currentLongitude,
+  //     })
+
+  //     if (isError) {
+  //       console.error('Failed to fetch places');
+  //       return;
+  //     }
+
+  //     if (places) {
+  //       setPlaces(places);
+  //     }
+
+  //     // const response = await axios.get(
+  //     //   `${import.meta.env.VITE_SERVER_ADDRESS}/api/places`,
+  //     //   {
+  //     //     headers: {
+  //     //       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+  //     //     },
+  //     //     params: {
+  //     //       category: category,
+  //     //       sort: sort,
+  //     //       swLatitude,
+  //     //       swLongitude,
+  //     //       neLatitude,
+  //     //       neLongitude,
+  //     //       currentLatitude,
+  //     //       currentLongitude,
+  //     //     } as PlaceParams,
+  //     //   }
+  //     // );
+
+  //     // setPlaces(response.data.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   useEffect(() => {
     // Check signin
@@ -151,7 +183,7 @@ const MapPage: React.FC = () => {
           <StSheet
             ref={sheetRef}
             isOpen={true}
-            onClose={() => {}}
+            onClose={() => { }}
             snapPoints={snapPoints}
             initialSnap={1}
             mountPoint={attachRef.current!}
@@ -161,7 +193,7 @@ const MapPage: React.FC = () => {
               <Sheet.Header ref={sheetHeaderRef}>
                 <Sheet.Header />
                 {!isReviewView && (
-                  <SearchHeader places={places} setPlaces={setPlaces} />
+                  <SearchHeader sort={sort} setSort={setSort} category={category} setCategory={setCategory} />
                 )}
                 {isReviewView && (
                   <ReviewHeader onBack={() => setIsReviewView(false)} />
@@ -228,7 +260,7 @@ const StMapDiv = styled(MapDiv)`
   height: 100%;
 `;
 
-const StSheet = styled(Sheet)<{ $left: number }>`
+const StSheet = styled(Sheet) <{ $left: number }>`
   display: flex;
   justify-content: center;
   max-width: 440px;

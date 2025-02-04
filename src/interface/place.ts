@@ -1,6 +1,9 @@
+import { category, sort } from "./apiInterface";
+
+
 export interface PlaceParams {
-  category?: "음식점" | "카페";
-  sort?: "가까운 순" | "최신 순" | "별점 높은 순" | "별점 낮은 순";
+  category?: category
+  sort?: sort
   swLatitude: string;
   swLongitude: string;
   neLatitude: string;
