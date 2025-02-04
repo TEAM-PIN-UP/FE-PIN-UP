@@ -10,18 +10,15 @@ import notificationActive from "@/image/icons/notificationActive.svg";
 import notificationInactive from "@/image/icons/notificationInactive.svg";
 import settings from "@/image/icons/settings.svg";
 import share from "@/image/icons/share.svg";
-import { B4, H2, H3, H4 } from "@/style/font";
+import { MemberMyProfileResponse } from "@/interface/member";
+import { TextReview } from "@/interface/review";
+import { B3, B4, H1, H2, H3, H4 } from "@/style/font";
 import useToastPopup from "@/utils/toastPopup";
+import axios, { AxiosRequestConfig } from "axios";
 import { useNavigate } from "react-router-dom";
 import ProfileButton from "./_components/ProfileButton";
 import ReviewHistory from "./_components/reviews/ReviewHistory";
 import UserStatsSection, { Stat } from "./_components/UserStatsSection";
-
-const userStats: Stat[] = [
-  { label: "리뷰", value: 8 },
-  { label: "평균 평점", value: 4.5 },
-  { label: "핀버디", value: 552 },
-];
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
@@ -36,6 +33,60 @@ const Profile: React.FC = () => {
     setLeft(newLeft);
   };
 
+  const [isLoggedIn] = useState(
+    !!localStorage.getItem("accessToken") &&
+      !!localStorage.getItem("memberResponse")
+  );
+
+  const [myDetails, setMyDetails] = useState<MemberMyProfileResponse>();
+  const [myPhotos, setMyPhotos] = useState<string[]>();
+  const [myTexts, setMyTexts] = useState<TextReview[]>();
+
+  useEffect(() => {
+    // Redirect to signup if not logged in
+    if (!isLoggedIn) navigate("/signup");
+    return () => {};
+  }, [isLoggedIn, navigate]);
+
+  useEffect(() => {
+    const authHeader: AxiosRequestConfig = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    };
+    try {
+      // Fetch current user profile
+      const getMemberDetails = async () => {
+        try {
+          const [userData, photoReviews, textReviews] = await Promise.all([
+            axios.get(
+              `${import.meta.env.VITE_SERVER_ADDRESS}/api/members/me/profile`,
+              authHeader
+            ),
+            axios.get(
+              `${import.meta.env.VITE_SERVER_ADDRESS}/api/reviews/my/photo`,
+              authHeader
+            ),
+            axios.get(
+              `${import.meta.env.VITE_SERVER_ADDRESS}/api/reviews/my/text`,
+              authHeader
+            ),
+          ]);
+
+          setMyDetails(userData.data.data);
+          setMyPhotos(photoReviews.data.data);
+          setMyTexts(textReviews.data.data);
+        } catch (error) {
+          console.error("Error fetching member details:", error);
+        }
+      };
+      getMemberDetails();
+    } catch (error) {
+      console.error(error);
+    }
+    return () => {};
+  }, []);
+
   useEffect(() => {
     // Update bottom sheet alignment on window resize
     updateLeftPosition();
@@ -44,7 +95,7 @@ const Profile: React.FC = () => {
     return () => {
       window.removeEventListener("resize", updateLeftPosition);
     };
-  }, []);
+  }, [isLoggedIn, navigate]);
 
   const toast = useToastPopup();
 
@@ -55,6 +106,21 @@ const Profile: React.FC = () => {
   const handleNotifications = () => {
     setNewNotifications((prev) => !prev);
     navigate("notifications");
+  };
+
+  const [showLogin, setShowLogin] = useState(false);
+  const handleShare = async () => {
+    if (isLoggedIn) {
+      try {
+        await navigator.clipboard.writeText("profile");
+        setIsSheetOpen(false);
+        toast("링크를 클립보드에 복사했어요.");
+      } catch (err) {
+        console.error("Failed to copy: ", err);
+      }
+    } else {
+      setShowLogin(true);
+    }
   };
 
   return (
@@ -76,11 +142,28 @@ const Profile: React.FC = () => {
 
         <div className="user-section">
           <div className="profile">
-            <img src="https://picsum.photos/200" className="profile-image" />
-            <UserStatsSection stats={userStats} />
+            <img
+              src={myDetails?.member.profilePictureUrl}
+              className="profile-image"
+            />
+            <UserStatsSection
+              stats={
+                [
+                  { label: "리뷰", value: myDetails?.reviewCount },
+                  {
+                    label: "평균 평점",
+                    value: myDetails?.averageRating,
+                  },
+                  {
+                    label: "핀버디",
+                    value: myDetails?.friendCount,
+                  },
+                ] as Stat[]
+              }
+            />
           </div>
-          <div className="username">레벨조이</div>
-          <div className="intro">카친자 ☕ 하루 3카페 가는 사람</div>
+          <div className="username">{myDetails?.member.nickname}</div>
+          <div className="intro">{myDetails?.member.bio}</div>
 
           <div className="profile-buttons">
             <ProfileButton
@@ -100,18 +183,23 @@ const Profile: React.FC = () => {
               className={`review-filter ${index === 0 ? "active" : ""}`}
               onClick={() => setIndex(0)}
             >
-              포토 리뷰 24
+              포토 리뷰 {myPhotos?.length}
             </button>
             <button
               className={`review-filter ${index === 1 ? "active" : ""}`}
               onClick={() => setIndex(1)}
             >
-              텍스트 리뷰 3
+              텍스트 리뷰 {myTexts?.length}
             </button>
           </div>
         </div>
         <div className="review-section">
-          <ReviewHistory index={index} onChangeIndex={(i) => setIndex(i)} />
+          <ReviewHistory
+            index={index}
+            onChangeIndex={(i) => setIndex(i)}
+            photos={myPhotos ? myPhotos : []}
+            texts={myTexts ? myTexts : []}
+          />
         </div>
 
         {/* Share Profile */}
@@ -127,29 +215,65 @@ const Profile: React.FC = () => {
           <Sheet.Container>
             <Sheet.Header />
             <Sheet.Content className="content">
-              <div className="profile-share">
-                <img
-                  src={"https://picsum.photos/200"}
-                  className="profile-image"
-                />
-                <span className="username">레벨조이</span>
-                <UserStatsSection stats={userStats} />
-                <Button
-                  size="xlarge"
-                  onClick={async () => {
-                    try {
-                      await navigator.clipboard.writeText("profile");
-                      setIsSheetOpen(false);
-                      toast("링크를 클립보드에 복사했어요.");
-                    } catch (err) {
-                      console.error("Failed to copy: ", err);
+              {!showLogin && (
+                <div className="profile-share">
+                  <img
+                    src={myDetails?.member.profilePictureUrl}
+                    className="profile-image"
+                  />
+                  <span className="username">{myDetails?.member.nickname}</span>
+                  <UserStatsSection
+                    stats={
+                      [
+                        { label: "리뷰", value: myDetails?.reviewCount },
+                        {
+                          label: "평균 평점",
+                          value: myDetails?.averageRating,
+                        },
+                        {
+                          label: "핀버디",
+                          value: myDetails?.friendCount,
+                        },
+                      ] as Stat[]
                     }
-                  }}
-                  className="share-button"
-                >
-                  프로필 공유
-                </Button>
-              </div>
+                  />
+                  <Button
+                    size="xlarge"
+                    onClick={handleShare}
+                    className="share-button"
+                  >
+                    프로필 공유
+                  </Button>
+                </div>
+              )}
+              {showLogin && (
+                <div className="suggest-login">
+                  <div className="content-group">
+                    <p className="title">로그인이 필요해요!</p>
+                    <div className="body-group">
+                      <p className="body">로그인 후 핀업의</p>
+                      <p className="body">
+                        다양한 서비스를 편리하게 이용해 보세요.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="button-group">
+                    <Button
+                      className="signup-button"
+                      size="full"
+                      onClick={() => navigate("/signup")}
+                    >
+                      로그인/회원가입
+                    </Button>
+                    <button
+                      className="close-button"
+                      onClick={() => setIsSheetOpen(false)}
+                    >
+                      괜찮아요
+                    </button>
+                  </div>
+                </div>
+              )}
             </Sheet.Content>
           </Sheet.Container>
           <Sheet.Backdrop
@@ -282,6 +406,43 @@ const StSheet = styled(Sheet)<{ $left: number }>`
         position: fixed;
         bottom: var(--spacing_24);
         margin: 0px var(--spacing_20);
+      }
+    }
+
+    .suggest-login {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      padding: 28px 24px;
+      text-align: center;
+
+      .content-group {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        gap: var(--spacing_32);
+
+        .title {
+          ${H1}
+        }
+        .body-group {
+          gap: 6px;
+          .body {
+            ${B3}
+          }
+        }
+      }
+      .button-group {
+        .signup-button {
+          margin-top: var(--spacing_48);
+        }
+        .close-button {
+          background-color: transparent;
+          border: none;
+          color: var(--neutral_800);
+          cursor: pointer;
+          margin-top: var(--spacing_16);
+        }
       }
     }
   }
