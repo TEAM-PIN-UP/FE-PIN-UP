@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import App from "@/App";
-import BookmarkPage from "@/page/Bookmark";
 import ContentsPage from "@/page/Contents";
 import EditorArticlePage from "@/page/EditorArticle";
 import EditorPostPage from "@/page/EditorArticle/EditorPost";
@@ -16,6 +15,7 @@ import Notifications from "@/page/Profile/Notifications";
 import { ReviewDetails } from "@/page/Profile/_components/reviews/ReviewDetails";
 import ReviewPage from "@/page/Review";
 import SignUpPage from "@/page/SignUp";
+import MyPlace from "@/page/MyPlace";
 
 const router = createBrowserRouter([
   {
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/bookmark",
-        element: <BookmarkPage />,
+        element: <MyPlace />,
       },
       {
         path: "/contents",

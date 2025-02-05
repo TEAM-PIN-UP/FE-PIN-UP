@@ -31,7 +31,7 @@ const ReviewTotal = ({ pickedInfo, visitDate }: ReviewTotalProps) => {
     const placeRequest: PlaceRequestType = {
       kakaoPlaceId: pickedInfo.kakaoMapId,
       name: pickedInfo.name,
-      category: pickedInfo.category === '' ? '음식점' : pickedInfo.category,
+      category: pickedInfo.category === '음식점' ? 'RESTAURANT' : 'CAFE',
       address: pickedInfo.address,
       roadAddress: pickedInfo.roadAddress,
       latitude: Number(pickedInfo.latitude),

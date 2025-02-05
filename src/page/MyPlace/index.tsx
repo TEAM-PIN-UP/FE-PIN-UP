@@ -1,5 +1,5 @@
-const BookmarkPage = () => {
+const MyPlace = () => {
   return <div>this is bookmark page</div>;
 };
 
-export default BookmarkPage;
+export default MyPlace;
