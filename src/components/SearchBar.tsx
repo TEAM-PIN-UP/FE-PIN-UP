@@ -7,6 +7,8 @@ import styled from "styled-components";
 
 interface SearchBarProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void;
+  dataQuery: string
+  setDataQuery: React.Dispatch<React.SetStateAction<string>>
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onChange, ...rest }) => {

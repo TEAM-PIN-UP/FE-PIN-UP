@@ -18,7 +18,6 @@ import PinMarker from "./_components/PinMarker";
 import Restaurant from "./_components/Restaurant";
 import UserPositionMarker from "./_components/UserPositionMarker";
 import { category, GetPlaceResponse, sort } from "@/interface/apiInterface";
-import useGetPlaces from "@/hooks/api/useGetPlaces";
 import useUpdatePlaces from "@/hooks/useUpdatePlaces";
 
 const MapPage: React.FC = () => {
@@ -26,8 +25,10 @@ const MapPage: React.FC = () => {
   const [category, setCategory] = useState<category>('CAFE');
   const [sort, setSort] = useState<sort>('NEAR');
   const [places, setPlaces] = useState<GetPlaceResponse[]>();
+  const [dataQuery, setDataQuery] = useState<string>('');
 
   const { handleMapMove } = useUpdatePlaces({
+    query: dataQuery,
     category,
     sort,
     setPlaces,
@@ -146,6 +147,7 @@ const MapPage: React.FC = () => {
     };
   }, [navigate]);
 
+
   return (
     <StDiv ref={attachRef}>
       <NavermapsProvider ncpClientId={import.meta.env.VITE_NAVER_MAPS}>
@@ -193,7 +195,7 @@ const MapPage: React.FC = () => {
               <Sheet.Header ref={sheetHeaderRef}>
                 <Sheet.Header />
                 {!isReviewView && (
-                  <SearchHeader sort={sort} setSort={setSort} category={category} setCategory={setCategory} />
+                  <SearchHeader dataQuery={dataQuery} setDataQuery={setDataQuery} setSort={setSort} category={category} setCategory={setCategory} />
                 )}
                 {isReviewView && (
                   <ReviewHeader onBack={() => setIsReviewView(false)} />
@@ -213,16 +215,20 @@ const MapPage: React.FC = () => {
                     places.map((item, index) => (
                       <div key={index} onClick={() => setIsReviewView(true)}>
                         <Restaurant
-                          key={index}
+                          key={item.placeId}
+                          placeId={item.placeId}
                           name={item.name}
-                          averageRating={item.averageStarRating}
-                          defaultImgUrl={`https://picsum.photos/200`}
+                          averageStarRating={item.averageStarRating}
+                          reviewImageUrls={item.reviewImageUrls}
+                          reviewerProfileImageUrls={item.reviewerProfileImageUrls}
+                          reviewCount={item.reviewCount}
+                          distance={item.distance}
                         />
                       </div>
                     ))}
                   {(isReviewView || activePinIndex !== null) && (
                     <>
-                      <Restaurant
+                      {/* <Restaurant
                         name={places?.[activePinIndex ?? 0].name ?? ""}
                         averageRating={
                           places?.[activePinIndex ?? 0].averageStarRating ?? 0
@@ -231,7 +237,7 @@ const MapPage: React.FC = () => {
                           // places?.[activePinIndex ?? 0].reviewImageUrls[0] ?? ""
                           `https://picsum.photos/200`
                         }
-                      />
+                      /> */}
                       <Review />
                     </>
                   )}

@@ -12,15 +12,15 @@ import { B4, H6 } from "@/style/font";
 import { category, sort } from "@/interface/apiInterface";
 
 interface SearchHeaderProps {
-  sort: sort
   setSort: React.Dispatch<React.SetStateAction<sort>>
   category: category
   setCategory: React.Dispatch<React.SetStateAction<category>>
+  dataQuery: string
+  setDataQuery: React.Dispatch<React.SetStateAction<string>>
 }
 
 const SearchHeader = React.forwardRef<HTMLDivElement, SearchHeaderProps>((props, ref) => {
-  const { sort, setSort, category, setCategory } = props;
-  const [filter, setFilter] = useState<"all" | "food" | "cafe">("all");
+  const { dataQuery, setDataQuery, setSort, category, setCategory } = props;
   const [showSortMenu, setShowSortMenu] = useState(false);
   const [sortType, setSortType] = useState<sort>("NEAR");
 
@@ -31,10 +31,14 @@ const SearchHeader = React.forwardRef<HTMLDivElement, SearchHeaderProps>((props,
     STAR_LOW: "별점 낮은 순"
   };
 
+  const searchFn = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDataQuery(e.target.value)
+  }
+
   return (
     <HeaderDiv ref={ref}>
       <SearchContainer>
-        <SearchBar placeholder="장소/가게 검색하기" />
+        <SearchBar placeholder="장소/가게 검색하기" onChange={searchFn} dataQuery={dataQuery} setDataQuery={setDataQuery} />
       </SearchContainer>
 
       <ChipContainer>

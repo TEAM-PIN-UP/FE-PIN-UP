@@ -2,6 +2,7 @@ export type category = 'ALL' | 'RESTAURANT' | 'CAFE';
 export type sort = 'NEAR' | 'LATEST' | 'STAR_HIGH' | 'STAR_LOW';
 
 export interface GetPlaceParams {
+  query?: string
   category: category,
   sort: sort,
   swLatitude: string,
