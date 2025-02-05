@@ -1,28 +1,28 @@
 import styled from "styled-components";
-import ReviewSearchBar from "../Review/_components/PlaceSearch/ReviewSearchBar";
-import SearchResultList from "./_components/SearchResultList";
-import { useState } from "react";
+// import ReviewSearchBar from "../Review/_components/PlaceSearch/ReviewSearchBar";
+// import SearchResultList from "./_components/SearchResultList";
+// import { useState } from "react";
 
 const PinbuddySearch: React.FC = () => {
-  const [searchList, setSearchList] = useState<boolean>(false);
+  // const [searchList, setSearchList] = useState<boolean>(false);
 
-  const ResultHide = () => {
-    setSearchList(false);
-  };
+  // const ResultHide = () => {
+  //   setSearchList(false);
+  // };
 
-  const ResultShow = () => {
-    setSearchList(true);
-  };
+  // const ResultShow = () => {
+  //   setSearchList(true);
+  // };
 
   return (
     <StPinBuddySearch>
       <div className="emptyBox" />
-      <ReviewSearchBar
+      {/* <ReviewSearchBar
         infoHideFunc={ResultShow}
         infoShowFunc={ResultHide}
         placeholder="친구 닉네임을 검색해보세요."
-      />
-      {searchList ? <SearchResultList /> : <></>}
+      /> */}
+      {/* {searchList ? <SearchResultList /> : <></>} */}
     </StPinBuddySearch>
   );
 };

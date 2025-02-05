@@ -1,7 +1,7 @@
 import customAxios from "./Interceptor";
 
 const postApi = {
-  postCreateReview: (formData: FormData) => customAxios.post(`/api/places/reviews`, formData, {
+  postCreateReview: (formData: FormData) => customAxios.post(`/api/reviews`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }

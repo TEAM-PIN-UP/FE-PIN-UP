@@ -13,7 +13,7 @@ import SetName from "./_components/stages/SetName";
 import SetProfile from "./_components/stages/SetProfile";
 import Tos from "./_components/stages/Tos";
 import Welcome from "./_components/stages/Welcome";
-import { SignUpForm } from "./SignUpInterface";
+import { MemberResponse, SignUpForm } from "./SignUpInterface";
 
 const SignUpPage: React.FC = () => {
   const navigate = useNavigate();
@@ -55,10 +55,11 @@ const SignUpPage: React.FC = () => {
     // Check if signed in
     const accessToken = localStorage.getItem("accessToken");
     const memberResponseJson = localStorage.getItem("memberResponse");
-    const memberResponse = memberResponseJson
-      ? JSON.parse(memberResponseJson)
+    const memberResponse: MemberResponse | null = memberResponseJson
+      ? (JSON.parse(memberResponseJson) as MemberResponse)
       : null;
-    if (accessToken && memberResponse.nickname) navigate("/map");
+    if (accessToken && memberResponse && memberResponse.nickname)
+      navigate("/map");
 
     // Use system back button for prev stage
     const handlePopState = (e: PopStateEvent) => {
@@ -125,7 +126,7 @@ const SignUpPage: React.FC = () => {
               onNext={goNext}
             />
           )}
-          {stage === lastStage && <Welcome />}
+          {stage === lastStage && <Welcome data={signUpData} />}
         </TransitionWrapper>
       </div>
     </StDiv>

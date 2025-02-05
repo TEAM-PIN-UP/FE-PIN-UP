@@ -5,6 +5,7 @@ import {
     ErrorCodeType,
     getErrorMessage
 } from './errorCodes';
+import { useToastStore } from '@/store';
 
 interface ApiErrorResponse {
     code: ErrorCodeType;
@@ -21,11 +22,17 @@ interface ErrorDetail {
     status: number;
 }
 
+const { textChange, pop } = useToastStore.getState();
+
 const handleServerError = (errorDetail: ErrorDetail): void => {
+    textChange(errorDetail.message);
+    pop(true);
     console.error('서버 에러:', errorDetail);
 };
 
 const handleClientError = (errorDetail: ErrorDetail): void => {
+    textChange(errorDetail.message);
+    pop(true);
     console.warn('클라이언트 에러:', errorDetail);
 };
 

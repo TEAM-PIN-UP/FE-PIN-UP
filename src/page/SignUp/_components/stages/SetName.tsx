@@ -46,18 +46,20 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
       const response = await axios.get(
         `${import.meta.env.VITE_SERVER_ADDRESS}/api/members/nickname/check`,
         {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
           params: {
             nickname: data.nickname,
           },
         }
       );
-
+      
       const isAvailable = response.data.isValid;
       setIsNicknameValid(isAvailable);
 
-      if (isAvailable) {
+      if (isAvailable)
         onNext();
-      }
     } catch (error) {
       console.error("Error checking nickname:", error);
       setIsNicknameValid(false);

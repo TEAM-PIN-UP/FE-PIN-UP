@@ -1,13 +1,13 @@
-import { forwardRef } from "react";
-import { Marker, MarkerProps } from "react-naver-maps";
-
 import Pin from "@/image/icons/pinSelected.svg";
 import RoundCafe from "@/image/icons/roundCafe.svg";
 import RoundFood from "@/image/icons/roundFood.svg";
+import { PlaceCategory } from "@/interface/place";
+import { forwardRef } from "react";
+import { Marker, MarkerProps } from "react-naver-maps";
 
 interface PinMarkerProps extends MarkerProps {
   active: boolean;
-  type: "cafe" | "restaurant";
+  type: PlaceCategory;
   name: string;
   image?: string;
   count?: string;
@@ -23,7 +23,7 @@ const PinMarker = forwardRef<naver.maps.Marker, PinMarkerProps>(
     const circleRadius = 28;
     const circleTopOffset = 18;
 
-    const roundIcon = type === "cafe" ? RoundCafe : RoundFood;
+    const roundIcon = type === "CAFE" ? RoundCafe : RoundFood;
 
     // Generate HTML content based on state (active/inactive)
     const htmlContent = active

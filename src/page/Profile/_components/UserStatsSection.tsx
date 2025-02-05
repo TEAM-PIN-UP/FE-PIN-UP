@@ -1,7 +1,6 @@
+import { B4, H4 } from "@/style/font";
 import React from "react";
 import styled from "styled-components";
-
-import { B4, H4 } from "@/style/font";
 
 export interface Stat {
   label: string;

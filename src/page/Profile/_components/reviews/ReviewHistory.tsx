@@ -3,6 +3,7 @@ import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
 
 import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
+import { DateTimeTuple, TextReview } from "@/interface/review";
 import { H4 } from "@/style/font";
 import { useNavigate } from "react-router-dom";
 import ReviewText from "./ReviewText";
@@ -10,11 +11,15 @@ import ReviewText from "./ReviewText";
 interface ReviewHistoryProps {
   index: number;
   onChangeIndex: (arg0: number) => void;
+  photos: string[];
+  texts: TextReview[];
 }
 
 const ReviewHistory: React.FC<ReviewHistoryProps> = ({
   index,
   onChangeIndex,
+  photos,
+  texts,
 }) => {
   const navigate = useNavigate();
 
@@ -38,6 +43,14 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
     navigate(`photo-review/${index}`);
   };
 
+  const formatDate = (dateArray: DateTimeTuple): string => {
+    const year = dateArray[0] % 100;
+    const month = dateArray[1].toString().padStart(2, "0");
+    const day = dateArray[2].toString().padStart(2, "0");
+
+    return `${year}.${month}.${day}`;
+  };
+
   return (
     <StDiv>
       <SwipeableViews
@@ -47,18 +60,32 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
         onChangeIndex={onChangeIndex}
         onMouseDown={(e) => e.preventDefault()}
         onSwitching={handleSwitch}
+        style={{ width: "100%" }}
       >
         <div className="image-reviews">
-          {[...Array(24)].map((_, index) => (
+          {photos.map((url, index) => (
             <ImgWithPlaceholder
               key={index}
-              src={`https://picsum.photos/200?random=${index}`}
+              src={url}
               className="image"
               onClick={() => handleClick(index)}
             />
           ))}
         </div>
         <div className="text-reviews">
+          {texts.map((review, index) => (
+            <ReviewText
+              key={index}
+              placeName={""}
+              longitude={0}
+              latitude={0}
+              userName="나"
+              score={review.starRating.toString()}
+              reviewDate={formatDate(review.createdAt)}
+              body={review.content}
+              visitDate={""}
+            />
+          ))}
           <ReviewText
             placeName="잠실새내 딤딤섬"
             longitude={127.104809}

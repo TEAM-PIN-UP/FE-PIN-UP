@@ -3,11 +3,11 @@ import customAxios from "./Interceptor";
 
 const getApi = {
   //   getReview: () => customAxios.get(`/api/places/reviews`),
-  getPlace: ({ query, latitude, longitude }: GetPlaceParams) =>
+  getPlace: ({ category, sort, swLatitude, swLongitude, neLatitude, neLongitude, currentLatitude, currentLongitude }: GetPlaceParams) =>
     customAxios.get(
-      `/api/places/search?query=${query}&longitude=${longitude}&latitude=${latitude}`
+      `/api/places?category=${category}&sort=${sort}&swLatitude=${swLatitude}&swLongitude=${swLongitude}&neLatitude=${neLatitude}&neLongitude=${neLongitude}&currentLatitude=${currentLatitude}&currentLongitude=${currentLongitude}`
     ),
-  getSearchPlaces: ({ keyword }: getSearchPlacesRequest) => customAxios.get(`/api/places/list/keyword?keyword=${keyword}`)
+  getSearchPlaces: ({ keyword }: getSearchPlacesRequest) => customAxios.get(`/api/places/keyword?query=${keyword}`)
 };
 
 export default getApi;

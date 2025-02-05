@@ -29,6 +29,7 @@ const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
         "memberResponse",
         JSON.stringify(tokens.data.data.memberResponse)
       );
+
       onNext();
     },
     onError: (errorResponse) => console.log(errorResponse),
