@@ -14,7 +14,6 @@ const StInput = styled.input<{ $onError?: boolean }>`
     props.$onError
       ? "1px solid var(--system_error)"
       : "1px solid var(--neutral_200)"};
-  border: 1px solid var(--neutral_200);
   border-radius: var(--radius_circle);
   box-sizing: border-box;
   height: 52px;
