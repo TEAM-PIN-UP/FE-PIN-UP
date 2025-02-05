@@ -8,18 +8,20 @@ interface MapBounds {
 }
 
 interface UseUpdatePlacesProps {
+    query?: string
     category: category;
     sort: sort;
     setPlaces: React.Dispatch<React.SetStateAction<GetPlaceResponse[] | undefined>>;
 }
 
-const useUpdatePlaces = ({ category, sort, setPlaces }: UseUpdatePlacesProps) => {
+const useUpdatePlaces = ({ query, category, sort, setPlaces }: UseUpdatePlacesProps) => {
     const [mapBounds, setMapBounds] = useState<MapBounds>({
         bounds: undefined,
         position: undefined,
     });
 
     const { data: placesData, isError } = useGetPlaces({
+        query,
         category,
         sort,
         swLatitude: mapBounds.bounds?.getMin().y.toString() ?? '',
@@ -29,6 +31,9 @@ const useUpdatePlaces = ({ category, sort, setPlaces }: UseUpdatePlacesProps) =>
         currentLatitude: mapBounds.position?.y.toString() ?? '',
         currentLongitude: mapBounds.position?.x.toString() ?? '',
     });
+
+    console.log(query)
+    console.log(placesData)
 
     useEffect(() => {
         if (isError) {

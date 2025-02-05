@@ -3,6 +3,7 @@ import { GetPlaceParams, GetPlaceResponse } from "@/interface/apiInterface";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 const useGetPlaces = ({
+  query,
   category,
   sort,
   swLatitude,
@@ -14,6 +15,7 @@ const useGetPlaces = ({
 }: GetPlaceParams): UseQueryResult<GetPlaceResponse[]> => {
   const queryFn = async () => {
     const response = await getApi.getPlace({
+      query,
       category,
       sort,
       swLatitude,
@@ -28,7 +30,7 @@ const useGetPlaces = ({
 
   return useQuery({
     queryFn,
-    queryKey: ["places", category, sort, swLatitude, swLongitude, neLatitude, neLongitude, currentLatitude, currentLongitude],
+    queryKey: ["places", query, category, sort, swLatitude, swLongitude, neLatitude, neLongitude, currentLatitude, currentLongitude],
     enabled: Boolean(category && sort && swLatitude && swLongitude && neLatitude && neLongitude && currentLatitude && currentLongitude),
     retry: 1,
     staleTime: 1000 * 60 * 5,
