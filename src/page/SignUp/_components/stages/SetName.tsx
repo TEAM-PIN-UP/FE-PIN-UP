@@ -38,7 +38,7 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") onNext();
+    if (e.key === "Enter") handleNext();
   };
 
   const handleNext = async () => {
@@ -54,12 +54,12 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
           },
         }
       );
-      
-      const isAvailable = response.data.isValid;
-      setIsNicknameValid(isAvailable);
+      console.log(response);
 
-      if (isAvailable)
-        onNext();
+      const isAvailable = response.data.data;
+      setIsNicknameValid(!isAvailable);
+
+      if (isNicknameValid) onNext();
     } catch (error) {
       console.error("Error checking nickname:", error);
       setIsNicknameValid(false);
