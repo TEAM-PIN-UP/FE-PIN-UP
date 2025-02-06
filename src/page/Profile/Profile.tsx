@@ -11,7 +11,7 @@ import notificationInactive from "@/image/icons/notificationInactive.svg";
 import settings from "@/image/icons/settings.svg";
 import share from "@/image/icons/share.svg";
 import { MemberMyProfileResponse } from "@/interface/member";
-import { TextReview } from "@/interface/review";
+import { PhotoReview, TextReview } from "@/interface/review";
 import { B3, B4, H1, H2, H3, H4 } from "@/style/font";
 import useToastPopup from "@/utils/toastPopup";
 import axios, { AxiosRequestConfig } from "axios";
@@ -40,7 +40,7 @@ const Profile: React.FC = () => {
   );
 
   const [myDetails, setMyDetails] = useState<MemberMyProfileResponse>();
-  const [myPhotos, setMyPhotos] = useState<string[]>();
+  const [myPhotos, setMyPhotos] = useState<PhotoReview[]>();
   const [myTexts, setMyTexts] = useState<TextReview[]>();
 
   useEffect(() => {
@@ -78,6 +78,9 @@ const Profile: React.FC = () => {
           setMyDetails(userData.data.data);
           setMyPhotos(photoReviews.data.data);
           setMyTexts(textReviews.data.data);
+          console.log(userData.data.data);
+          console.log(photoReviews.data.data);
+          console.log(textReviews.data.data);
         } catch (error) {
           console.error("Error fetching member details:", error);
         }

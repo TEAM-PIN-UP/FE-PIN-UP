@@ -3,7 +3,7 @@ import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
 
 import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
-import { DateTimeTuple, TextReview } from "@/interface/review";
+import { DateTimeTuple, PhotoReview, TextReview } from "@/interface/review";
 import { H4 } from "@/style/font";
 import { useNavigate } from "react-router-dom";
 import ReviewText from "./ReviewText";
@@ -11,7 +11,7 @@ import ReviewText from "./ReviewText";
 interface ReviewHistoryProps {
   index: number;
   onChangeIndex: (arg0: number) => void;
-  photos: string[];
+  photos: PhotoReview[];
   texts: TextReview[];
 }
 
@@ -63,14 +63,15 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
         style={{ width: "100%" }}
       >
         <div className="image-reviews">
-          {photos.map((url, index) => (
-            <ImgWithPlaceholder
-              key={index}
-              src={url}
-              className="image"
-              onClick={() => handleClick(index)}
-            />
-          ))}
+          {Array.isArray(photos) &&
+            photos.map((item, index) => (
+              <ImgWithPlaceholder
+                key={item.id}
+                src={item.previewImageUrl}
+                className="image"
+                onClick={() => handleClick(index + 1)}
+              />
+            ))}
         </div>
         <div className="text-reviews">
           {texts.map((review, index) => (
