@@ -1,5 +1,6 @@
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import googleIcon from "../../_icons/googleIcon.png";
 import kakaoIcon from "../../_icons/kakaoIcon.png";
@@ -10,6 +11,7 @@ import StTextContainer from "../typography/StTextContainer";
 import { StageProps } from "./StageProps";
 
 const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
+  const navigate = useNavigate();
   const googleLogin = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async (codeResponse) => {
@@ -30,7 +32,11 @@ const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
         JSON.stringify(tokens.data.data.memberResponse)
       );
 
-      onNext();
+      // Check memberResponse for nickname (if not empty then existing user)
+      const nickname = tokens.data.data.memberResponse.nickname;
+      if (nickname === null || nickname === "") onNext();
+
+      navigate("/map");
     },
     onError: (errorResponse) => console.log(errorResponse),
   });
