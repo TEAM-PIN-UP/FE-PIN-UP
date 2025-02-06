@@ -34,9 +34,11 @@ const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
 
       // Check memberResponse for nickname (if not empty then existing user)
       const nickname = tokens.data.data.memberResponse.nickname;
-      if (nickname === null || nickname === "") onNext();
 
-      navigate("/map");
+      if (nickname !== null && nickname !== undefined && nickname.length > 0)
+        navigate("/map");
+
+      onNext();
     },
     onError: (errorResponse) => console.log(errorResponse),
   });

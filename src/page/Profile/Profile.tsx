@@ -22,6 +22,7 @@ import UserStatsSection, { Stat } from "./_components/UserStatsSection";
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
+  const toast = useToastPopup();
 
   // Bottom sheet logic
   const sheetRef = useRef<SheetRef>();
@@ -44,11 +45,12 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     // Redirect to signup if not logged in
-    if (!isLoggedIn) navigate("/signup");
-    return () => {};
-  }, [isLoggedIn, navigate]);
+    if (!isLoggedIn) {
+      toast("로그인 후 이용해 주세요.");
+      navigate("/signup");
+      return;
+    }
 
-  useEffect(() => {
     const authHeader: AxiosRequestConfig = {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -85,7 +87,7 @@ const Profile: React.FC = () => {
       console.error(error);
     }
     return () => {};
-  }, []);
+  }, [isLoggedIn, navigate, toast]);
 
   useEffect(() => {
     // Update bottom sheet alignment on window resize
@@ -95,9 +97,7 @@ const Profile: React.FC = () => {
     return () => {
       window.removeEventListener("resize", updateLeftPosition);
     };
-  }, [isLoggedIn, navigate]);
-
-  const toast = useToastPopup();
+  }, []);
 
   // Review history swiper view state
   const [index, setIndex] = useState(0);
