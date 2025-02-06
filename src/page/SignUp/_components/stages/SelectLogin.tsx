@@ -25,7 +25,7 @@ const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
       );
 
       updateData({ authMethod: "google" });
-      localStorage.setItem("accessToken", tokens.data.data.accessToken);
+      localStorage.setItem("tempAccessToken", tokens.data.data.accessToken);
       localStorage.setItem("refreshToken", tokens.data.data.refreshToken);
       localStorage.setItem(
         "memberResponse",

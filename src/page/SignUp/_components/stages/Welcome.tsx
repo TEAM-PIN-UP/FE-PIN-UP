@@ -10,8 +10,9 @@ const Welcome = ({ data }: { data: SignUpForm }) => {
 
   const handleClick = async () => {
     try {
-      const accessToken = localStorage.getItem("accessToken");
+      const accessToken = localStorage.getItem("tempAccessToken");
       if (!accessToken) throw new Error("No access token found.");
+      localStorage.setItem("accessToken", accessToken);
 
       const request: MemberPatchBody["request"] = {
         nickname: data.nickname,
@@ -73,6 +74,7 @@ const Welcome = ({ data }: { data: SignUpForm }) => {
       <Button
         size="full"
         onClick={() => {
+          handleClick();
           navigate("/map");
         }}
       >

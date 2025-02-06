@@ -47,15 +47,13 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
         `${import.meta.env.VITE_SERVER_ADDRESS}/api/members/nickname/check`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${localStorage.getItem("tempAccessToken")}`,
           },
           params: {
             nickname: data.nickname,
           },
         }
       );
-      console.log(response);
-
       const isAvailable = response.data.data;
       setIsNicknameValid(!isAvailable);
 
