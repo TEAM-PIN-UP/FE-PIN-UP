@@ -23,3 +23,12 @@ export interface PhotoReview {
   createdAt: DateTimeTuple;
   previewImageUrl: string;
 }
+
+export interface ReviewDetail {
+  id: number;
+  content: string;
+  starRating: number;
+  type: string;
+  imageUrls: string[];
+  createdAt: DateTimeTuple;
+}

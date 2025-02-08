@@ -1,16 +1,39 @@
-import styled from "styled-components";
-
+import getApi from "@/api/getApi";
 import Header from "@/components/Header";
 import TransitionWrapper from "@/components/TransitionWrapper";
+import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import moreDotsGray from "@/image/icons/moreDotsGray.svg";
+import { ReviewDetail } from "@/interface/review";
 import { B6, H3, H4 } from "@/style/font";
+import useToastPopup from "@/utils/toastPopup";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
 import ReviewText from "./ReviewText";
 
 export const ReviewDetails: React.FC = () => {
+  useCheckLoginAndRoute();
   const navigate = useNavigate();
+  const toast = useToastPopup();
   const { id } = useParams();
+  const [detail, setDetail] = useState<ReviewDetail>();
+
+  useEffect(() => {
+    const fetchReviewDetail = async () => {
+      if (!id) return;
+      try {
+        const response = await getApi.getReviewId({ id });
+        setDetail(response.data);
+      } catch (error) {
+        toast("리뷰를 불러올 수 없어요.");
+        console.error("Error fetching review details:", error);
+        navigate(-1);
+      }
+    };
+
+    fetchReviewDetail();
+  }, [id, navigate, toast]);
 
   return (
     <StDiv>
@@ -42,10 +65,7 @@ export const ReviewDetails: React.FC = () => {
           <img src={moreDotsGray} className="more-dots" />
         </div>
         <div className="review-images">
-          <img
-            src={`https://picsum.photos/200?random=${id}`}
-            className="image"
-          />
+          <img src={detail?.imageUrls[0]} className="image" />
         </div>
 
         <ReviewText

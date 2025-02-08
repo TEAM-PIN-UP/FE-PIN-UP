@@ -2,6 +2,7 @@ import {
   GetPlaceParams,
   GetSearchPlacesRequest,
 } from "@/interface/apiInterface";
+import { ReviewDetail } from "@/interface/review";
 import customAxios from "./Interceptor";
 
 const getApi = {
@@ -24,6 +25,9 @@ const getApi = {
   getMyProfile: () => customAxios.get(`/api/members/me/profile`),
   getMyPhotos: () => customAxios.get(`/api/reviews/my/photo`),
   getMyTexts: () => customAxios.get(`/api/reviews/my/text`),
+
+  getReviewId: ({ id }: { id: string }) =>
+    customAxios.get<ReviewDetail>(`/api/reviews/${id}`),
 };
 
 export default getApi;
