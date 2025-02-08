@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Button from "@/components/Button";
 import Header from "@/components/Header";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
+import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import addUser from "@/image/icons/addUser.svg";
 import notificationActive from "@/image/icons/notificationActive.svg";
 import notificationInactive from "@/image/icons/notificationInactive.svg";
@@ -23,6 +24,7 @@ import UserStatsSection, { Stat } from "./_components/UserStatsSection";
 const Profile: React.FC = () => {
   const navigate = useNavigate();
   const toast = useToastPopup();
+  useCheckLoginAndRoute();
 
   // Bottom sheet logic
   const sheetRef = useRef<SheetRef>();
@@ -44,13 +46,6 @@ const Profile: React.FC = () => {
   const [myTexts, setMyTexts] = useState<TextReview[]>();
 
   useEffect(() => {
-    // Redirect to signup if not logged in
-    if (!isLoggedIn) {
-      toast("로그인 후 이용해 주세요.");
-      navigate("/signup");
-      return;
-    }
-
     const authHeader: AxiosRequestConfig = {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

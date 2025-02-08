@@ -1,4 +1,5 @@
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
+import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import useMapSetup from "@/hooks/useMapSetup";
 import useUpdatePlaces from "@/hooks/useUpdatePlaces";
 import {
@@ -26,6 +27,8 @@ import Restaurant from "./_components/Restaurant";
 import UserPositionMarker from "./_components/UserPositionMarker";
 
 const MapPage: React.FC = () => {
+  useCheckLoginAndRoute();
+
   const navigate = useNavigate();
   const toast = useToastPopup();
   const [category, setCategory] = useState<placeCategory>("CAFE");
@@ -140,12 +143,6 @@ const MapPage: React.FC = () => {
   // };
 
   useEffect(() => {
-    // Check signin
-    if (!localStorage.getItem("accessToken")) {
-      toast("로그인 후 이용해 주세요.");
-      navigate("/signup");
-    }
-
     // Update bottom sheet alignment on window resize
     updateLeftPosition();
     window.addEventListener("resize", updateLeftPosition);
