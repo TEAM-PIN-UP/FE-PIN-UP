@@ -42,7 +42,7 @@ const SetProfile: React.FC<StageProps> = ({ data, updateData, onNext }) => {
             }
           };
           image.onerror = () => {
-            toast("jpeg 또는 png 형식의 올바른 이미지 파일을 선택해주세요.");
+            toast("올바른 이미지 파일을 선택해주세요.");
           };
 
           // Begin loading image
@@ -96,7 +96,6 @@ const SetProfile: React.FC<StageProps> = ({ data, updateData, onNext }) => {
           <button
             className="skip-button"
             onClick={() => {
-              console.log(data);
               onNext();
             }}
           >
@@ -108,7 +107,6 @@ const SetProfile: React.FC<StageProps> = ({ data, updateData, onNext }) => {
         <Button
           size="full"
           onClick={() => {
-            console.log(data);
             onNext();
           }}
         >

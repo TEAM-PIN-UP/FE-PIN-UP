@@ -17,6 +17,9 @@ const getApi = {
 
   getSearchPlaces: ({ keyword }: GetSearchPlacesRequest) =>
     customAxios.get(`/api/places/keyword?query=${keyword}`),
+
+  getMemberNicknameCheck: ({ nickname }: { nickname: string }) =>
+    customAxios.get(`/api/members/nickname/check?${nickname}`),
 };
 
 export default getApi;

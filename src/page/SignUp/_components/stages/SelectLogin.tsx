@@ -25,19 +25,17 @@ const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
       );
 
       updateData({ authMethod: "google" });
-      localStorage.setItem("tempAccessToken", tokens.data.data.accessToken);
-      localStorage.setItem("refreshToken", tokens.data.data.refreshToken);
+      const data = tokens.data.data;
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
       localStorage.setItem(
         "memberResponse",
-        JSON.stringify(tokens.data.data.memberResponse)
+        JSON.stringify(data.memberResponse)
       );
 
       // Check memberResponse for nickname (if not empty then existing user)
-      const nickname = tokens.data.data.memberResponse.nickname;
-
-      if (nickname !== null && nickname !== undefined && nickname.length > 0)
-        navigate("/map");
-
+      const nickname = data.memberResponse.nickname;
+      if (typeof nickname === "string" && nickname.length > 0) navigate("/map");
       onNext();
     },
     onError: (errorResponse) => console.log(errorResponse),
