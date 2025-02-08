@@ -1,17 +1,18 @@
-import { MemberResponse } from "@/page/SignUp/SignUpInterface";
+import getMemberResponseObj from "./getMemberResponseObj";
 
 const checkLogin = (): boolean => {
-  // Check memberResponse nickname field
-  const memberResponseJson = localStorage.getItem("memberResponse");
-  const memberResponse: MemberResponse | null = memberResponseJson
-    ? (JSON.parse(memberResponseJson) as MemberResponse)
-    : null;
-
+  const memberResponse = getMemberResponseObj();
   const nickname = memberResponse?.nickname;
   const accessToken = localStorage.getItem("accessToken");
 
   // true if registered & signed in
-  if (nickname && nickname.length > 0 && accessToken) return true;
+  if (
+    typeof nickname === "string" &&
+    nickname.length > 0 &&
+    typeof accessToken === "string" &&
+    accessToken.length > 0
+  )
+    return true;
   return false;
 };
 
