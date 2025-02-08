@@ -1,17 +1,28 @@
+import sample from "@/image/icons/profile.jpg";
+import { GetSearchPlacesResponse } from "@/interface/apiInterface";
 import { B3, B5, C3 } from "@/style/font";
 import styled from "styled-components";
-import sample from "@/image/icons/profile.jpg";
-import { getSearchPlacesResponse } from "@/interface/apiInterface";
 
 export interface SearchResultProp {
   stepUp: () => void;
-  result: getSearchPlacesResponse;
-  setPickedInfo: React.Dispatch<React.SetStateAction<getSearchPlacesResponse | null>>;
+  result: GetSearchPlacesResponse;
+  setPickedInfo: React.Dispatch<
+    React.SetStateAction<GetSearchPlacesResponse | null>
+  >;
 }
 
-const SearchedPlace: React.FC<SearchResultProp> = ({ stepUp, result, setPickedInfo }) => {
+const SearchedPlace: React.FC<SearchResultProp> = ({
+  stepUp,
+  result,
+  setPickedInfo,
+}) => {
   return (
-    <StSearchedPlace onClick={() => { stepUp(); setPickedInfo(result) }}>
+    <StSearchedPlace
+      onClick={() => {
+        stepUp();
+        setPickedInfo(result);
+      }}
+    >
       <img src={sample} />
       <div className="totalInfo">
         <div className="placeInfo">

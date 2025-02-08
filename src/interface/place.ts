@@ -1,9 +1,8 @@
-import { category, sort } from "./apiInterface";
-
+import { placeCategory, placeSort } from "./apiInterface";
 
 export interface PlaceParams {
-  category?: category
-  sort?: sort
+  category?: placeCategory;
+  sort?: placeSort;
   swLatitude: string;
   swLongitude: string;
   neLatitude: string;

@@ -1,4 +1,4 @@
-import { getSearchPlacesResponse } from "@/interface/apiInterface";
+import { GetSearchPlacesResponse } from "@/interface/apiInterface";
 import useToastPopup from "@/utils/toastPopup";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ const ReviewPage = () => {
 
   const [step, setStep] = useState<stepType>(1);
   const [visitDate, setVisitDate] = useState<Date | null>(null);
-  const [pickedInfo, setPickedInfo] = useState<getSearchPlacesResponse | null>(
+  const [pickedInfo, setPickedInfo] = useState<GetSearchPlacesResponse | null>(
     null
   );
   const [modalOpen, setModalOpen] = useState<boolean>(true);

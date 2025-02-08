@@ -1,7 +1,11 @@
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useMapSetup from "@/hooks/useMapSetup";
 import useUpdatePlaces from "@/hooks/useUpdatePlaces";
-import { category, GetPlaceResponse, sort } from "@/interface/apiInterface";
+import {
+  GetPlaceResponse,
+  placeCategory,
+  placeSort,
+} from "@/interface/apiInterface";
 import { H3 } from "@/style/font";
 import useToastPopup from "@/utils/toastPopup";
 import { useEffect, useRef, useState } from "react";
@@ -24,8 +28,8 @@ import UserPositionMarker from "./_components/UserPositionMarker";
 const MapPage: React.FC = () => {
   const navigate = useNavigate();
   const toast = useToastPopup();
-  const [category, setCategory] = useState<category>("CAFE");
-  const [sort, setSort] = useState<sort>("NEAR");
+  const [category, setCategory] = useState<placeCategory>("CAFE");
+  const [sort, setSort] = useState<placeSort>("NEAR");
   const [places, setPlaces] = useState<GetPlaceResponse[]>();
   const [dataQuery, setDataQuery] = useState<string>("");
 

@@ -1,16 +1,16 @@
-export type category = 'ALL' | 'RESTAURANT' | 'CAFE';
-export type sort = 'NEAR' | 'LATEST' | 'STAR_HIGH' | 'STAR_LOW';
+export type placeCategory = "ALL" | "RESTAURANT" | "CAFE";
+export type placeSort = "NEAR" | "LATEST" | "STAR_HIGH" | "STAR_LOW";
 
 export interface GetPlaceParams {
-  query?: string
-  category: category,
-  sort: sort,
-  swLatitude: string,
-  swLongitude: string,
-  neLatitude: string,
-  neLongitude: string,
-  currentLatitude: string,
-  currentLongitude: string,
+  query?: string;
+  category: placeCategory;
+  sort: placeSort;
+  swLatitude: string;
+  swLongitude: string;
+  neLatitude: string;
+  neLongitude: string;
+  currentLatitude: string;
+  currentLongitude: string;
 }
 
 export interface GetPlaceResponse {
@@ -20,26 +20,26 @@ export interface GetPlaceResponse {
   averageStarRating: number;
   reviewCount: number;
   distance: string;
-  latitude: number,
-  longitude: number,
-  placeCategory: category,
+  latitude: number;
+  longitude: number;
+  placeCategory: placeCategory;
   reviewImageUrls: string[];
   reviewerProfileImageUrls: string[];
 }
 
-export interface getSearchPlacesRequest {
+export interface GetSearchPlacesRequest {
   keyword: string;
 }
 
-export interface getSearchPlacesResponse {
-  kakaoMapId: string,
-  name: string,
-  category: string,
-  address: string,
-  roadAddress: string,
-  latitude: number,
-  longitude: number,
-  reviewCount: number,
+export interface GetSearchPlacesResponse {
+  kakaoMapId: string;
+  name: string;
+  category: string;
+  address: string;
+  roadAddress: string;
+  latitude: number;
+  longitude: number;
+  reviewCount: number;
   averageStarRating: number;
 }
 
@@ -52,20 +52,19 @@ export interface ReviewRequestType {
 export interface PlaceRequestType {
   kakaoPlaceId: string;
   name: string;
-  category: category;
+  category: placeCategory;
   address: string;
   roadAddress: string;
-  latitude: number,
-  longitude: number
+  latitude: number;
+  longitude: number;
 }
 
-
-export interface postCreateReviewResponse {
-  kakaoPlaceId: number,
-  name: string,
-  category: string,
-  address: string,
-  roadAddress: string,
-  latitude: number,
-  longitude: number
+export interface PostCreateReviewResponse {
+  kakaoPlaceId: number;
+  name: string;
+  category: string;
+  address: string;
+  roadAddress: string;
+  latitude: number;
+  longitude: number;
 }
