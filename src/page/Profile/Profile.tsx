@@ -1,7 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { Sheet, SheetRef } from "react-modal-sheet";
-import styled from "styled-components";
-
+import getApi from "@/api/getApi";
 import Button from "@/components/Button";
 import Header from "@/components/Header";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
@@ -14,9 +11,12 @@ import share from "@/image/icons/share.svg";
 import { MemberMyProfileResponse } from "@/interface/member";
 import { PhotoReview, TextReview } from "@/interface/review";
 import { B3, B4, H1, H2, H3, H4 } from "@/style/font";
+import checkLogin from "@/utils/checkLogin";
 import useToastPopup from "@/utils/toastPopup";
-import axios, { AxiosRequestConfig } from "axios";
+import { useEffect, useRef, useState } from "react";
+import { Sheet, SheetRef } from "react-modal-sheet";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import ProfileButton from "./_components/ProfileButton";
 import ReviewHistory from "./_components/reviews/ReviewHistory";
 import UserStatsSection, { Stat } from "./_components/UserStatsSection";
@@ -36,46 +36,27 @@ const Profile: React.FC = () => {
     setLeft(newLeft);
   };
 
-  const [isLoggedIn] = useState(
-    !!localStorage.getItem("accessToken") &&
-      !!localStorage.getItem("memberResponse")
-  );
-
   const [myDetails, setMyDetails] = useState<MemberMyProfileResponse>();
   const [myPhotos, setMyPhotos] = useState<PhotoReview[]>();
   const [myTexts, setMyTexts] = useState<TextReview[]>();
 
   useEffect(() => {
-    const authHeader: AxiosRequestConfig = {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    };
     try {
       // Fetch current user profile
       const getMemberDetails = async () => {
         try {
           const [userData, photoReviews, textReviews] = await Promise.all([
-            axios.get(
-              `${import.meta.env.VITE_SERVER_ADDRESS}/api/members/me/profile`,
-              authHeader
-            ),
-            axios.get(
-              `${import.meta.env.VITE_SERVER_ADDRESS}/api/reviews/my/photo`,
-              authHeader
-            ),
-            axios.get(
-              `${import.meta.env.VITE_SERVER_ADDRESS}/api/reviews/my/text`,
-              authHeader
-            ),
+            getApi.getMyProfile(),
+            getApi.getMyPhotos(),
+            getApi.getMyTexts(),
           ]);
 
-          setMyDetails(userData.data.data);
-          setMyPhotos(photoReviews.data.data);
-          setMyTexts(textReviews.data.data);
-          console.log(userData.data.data);
-          console.log(photoReviews.data.data);
-          console.log(textReviews.data.data);
+          setMyDetails(userData.data);
+          setMyPhotos(photoReviews.data);
+          setMyTexts(textReviews.data);
+          console.log(userData.data);
+          console.log(photoReviews.data);
+          console.log(textReviews.data);
         } catch (error) {
           console.error("Error fetching member details:", error);
         }
@@ -85,7 +66,7 @@ const Profile: React.FC = () => {
       console.error(error);
     }
     return () => {};
-  }, [isLoggedIn, navigate, toast]);
+  }, [navigate, toast]);
 
   useEffect(() => {
     // Update bottom sheet alignment on window resize
@@ -108,7 +89,7 @@ const Profile: React.FC = () => {
 
   const [showLogin, setShowLogin] = useState(false);
   const handleShare = async () => {
-    if (isLoggedIn) {
+    if (checkLogin()) {
       try {
         await navigator.clipboard.writeText("profile");
         setIsSheetOpen(false);

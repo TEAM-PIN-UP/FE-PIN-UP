@@ -20,6 +20,10 @@ const getApi = {
 
   getMemberNicknameCheck: ({ nickname }: { nickname: string }) =>
     customAxios.get(`/api/members/nickname/check?${nickname}`),
+
+  getMyProfile: () => customAxios.get(`/api/members/me/profile`),
+  getMyPhotos: () => customAxios.get(`/api/reviews/my/photo`),
+  getMyTexts: () => customAxios.get(`/api/reviews/my/text`),
 };
 
 export default getApi;
