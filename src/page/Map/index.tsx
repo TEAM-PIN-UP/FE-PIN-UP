@@ -65,7 +65,7 @@ const MapPage: React.FC = () => {
       )
     );
   }
-  useMapSetup(!hasParams, map, user, defaultZoom, setActivePinIndex);
+  useMapSetup(!hasParams, map, user, setActivePinIndex);
 
   // Bottom sheet logic
   const sheetRef = useRef<SheetRef>();

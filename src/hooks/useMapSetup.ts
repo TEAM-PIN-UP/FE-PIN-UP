@@ -1,17 +1,19 @@
 import useToastPopup from "@/utils/toastPopup";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavermaps } from "react-naver-maps";
 
 const useMapSetup = (
   useGeolocation: boolean,
   map: naver.maps.Map | null,
   user: naver.maps.Marker | null,
-  defaultZoom: number,
   setActivePinIndex: React.Dispatch<React.SetStateAction<number | null>>
 ) => {
   const naverMaps = useNavermaps();
   const isDragging = useRef(false);
   const toast = useToastPopup();
+  const [userPosition, setUserPosition] = useState<naver.maps.LatLng | null>(
+    null
+  );
 
   const onGeolocationSuccess = useCallback(
     (position: GeolocationPosition) => {
@@ -21,12 +23,10 @@ const useMapSetup = (
         position.coords.latitude,
         position.coords.longitude
       );
-
       map.setCenter(location);
-      map.setZoom(defaultZoom);
-      user.setPosition(location);
+      setUserPosition(location);
     },
-    [map, user, naverMaps, defaultZoom]
+    [map, user, naverMaps]
   );
 
   const onGeolocationError = useCallback(() => {
@@ -34,9 +34,12 @@ const useMapSetup = (
     toast("위치정보를 확인하지 못했어요.");
   }, [map, user, toast]);
 
+  // Effect to watch position updates
   useEffect(() => {
     if (!map || !user) return;
+
     let watcherId: number | null = null;
+
     if (useGeolocation && navigator.geolocation) {
       watcherId = navigator.geolocation.watchPosition(
         onGeolocationSuccess,
@@ -45,7 +48,20 @@ const useMapSetup = (
       );
     }
 
-    // Detect drag vs click
+    return () => {
+      if (watcherId !== null) navigator.geolocation.clearWatch(watcherId);
+    };
+  }, [useGeolocation, map, onGeolocationSuccess, onGeolocationError, user]);
+
+  // Effect to update user marker when position changes
+  useEffect(() => {
+    if (user && userPosition) user.setPosition(userPosition);
+  }, [user, userPosition]);
+
+  // Detect drag vs click
+  useEffect(() => {
+    if (!map) return;
+
     let startX = 0;
     let startY = 0;
 
@@ -58,7 +74,6 @@ const useMapSetup = (
     const handleMouseMove = (e: naver.maps.PointerEvent) => {
       const dx = Math.abs(e.offset.x - startX);
       const dy = Math.abs(e.offset.y - startY);
-
       if (dx > 5 || dy > 5) {
         isDragging.current = true;
       }
@@ -87,19 +102,11 @@ const useMapSetup = (
     );
 
     return () => {
-      if (watcherId !== null) navigator.geolocation.clearWatch(watcherId);
       naver.maps.Event.removeListener(mouseDownListener);
       naver.maps.Event.removeListener(mouseMoveListener);
       naver.maps.Event.removeListener(mouseUpListener);
     };
-  }, [
-    useGeolocation,
-    map,
-    onGeolocationSuccess,
-    onGeolocationError,
-    setActivePinIndex,
-    user,
-  ]);
+  }, [map, setActivePinIndex]);
 };
 
 export default useMapSetup;
