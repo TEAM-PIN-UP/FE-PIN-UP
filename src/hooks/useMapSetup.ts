@@ -12,9 +12,7 @@ const useMapSetup = (
   const naverMaps = useNavermaps();
   const isDragging = useRef(false);
   const toast = useToastPopup();
-  const [userPosition, setUserPosition] = useState<naver.maps.LatLng | null>(
-    null
-  );
+  const [, setErrorCount] = useState(0);
 
   const onGeolocationSuccess = useCallback(
     (position: GeolocationPosition) => {
@@ -24,49 +22,28 @@ const useMapSetup = (
         position.coords.latitude,
         position.coords.longitude
       );
+
       if (followUser) map.setCenter(location);
-      setUserPosition(location);
+      user.setPosition(location);
+      setErrorCount(0);
     },
     [map, user, naverMaps, followUser]
   );
 
   const onGeolocationError = useCallback(() => {
-    if (!map || !user) return;
-    toast("위치정보를 확인하지 못했어요.");
-  }, [map, user, toast]);
-
-  // Effect to watch position updates
-  useEffect(() => {
-    if (!map || !user) return;
-
-    let watcherId: number | null = null;
-
-    if (useGeolocation && navigator.geolocation) {
-      watcherId = navigator.geolocation.watchPosition(
-        onGeolocationSuccess,
-        onGeolocationError,
-        { enableHighAccuracy: true, maximumAge: 1000, timeout: 5000 }
-      );
-    }
-
-    return () => {
-      if (watcherId !== null) navigator.geolocation.clearWatch(watcherId);
-    };
-  }, [useGeolocation, map, onGeolocationSuccess, onGeolocationError, user]);
+    setErrorCount((prev) => {
+      if (prev > 3) {
+        toast("위치정보를 확인하지 못했어요.");
+        return 0;
+      }
+      return prev + 1;
+    });
+  }, [toast]);
 
   // Get & watch user position
   useEffect(() => {
     if (!map) return;
-
     if (useGeolocation && navigator.geolocation) {
-      // First get position immediately
-      // navigator.geolocation.getCurrentPosition(
-      //   onGeolocationSuccess,
-      //   onGeolocationError,
-      //   { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
-      // );
-
-      // Start watching position
       const watcherId = navigator.geolocation.watchPosition(
         onGeolocationSuccess,
         onGeolocationError,
@@ -76,14 +53,7 @@ const useMapSetup = (
         navigator.geolocation.clearWatch(watcherId);
       };
     }
-  }, [
-    map,
-    onGeolocationError,
-    onGeolocationSuccess,
-    useGeolocation,
-    user,
-    userPosition,
-  ]);
+  }, [map, onGeolocationError, onGeolocationSuccess, useGeolocation, user]);
 
   // Detect drag vs click
   useEffect(() => {
