@@ -71,69 +71,7 @@ const MapPage: React.FC = () => {
 
   // Header State
   const [isReviewView, setIsReviewView] = useState(false);
-
-  // Places list
-
-  // const handleMapMove = async (
-  //   bounds: naver.maps.Bounds | undefined,
-  //   position: naver.maps.Coord | undefined
-  // ) => {
-  //   // Geolocation and map setup
-
-  //   try {
-  //     if (!bounds || !position) return;
-
-  //     const swLatitude = bounds.getMin().y.toString();
-  //     const swLongitude = bounds.getMin().x.toString();
-  //     const neLatitude = bounds.getMax().y.toString();
-  //     const neLongitude = bounds.getMax().x.toString();
-  //     const currentLatitude = position.y.toString();
-  //     const currentLongitude = position.x.toString();
-
-  //     const { data: places, isError } = useGetPlaces({
-  //       category,
-  //       sort,
-  //       swLatitude,
-  //       swLongitude,
-  //       neLatitude,
-  //       neLongitude,
-  //       currentLatitude,
-  //       currentLongitude,
-  //     })
-
-  //     if (isError) {
-  //       console.error('Failed to fetch places');
-  //       return;
-  //     }
-
-  //     if (places) {
-  //       setPlaces(places);
-  //     }
-
-  //     // const response = await axios.get(
-  //     //   `${import.meta.env.VITE_SERVER_ADDRESS}/api/places`,
-  //     //   {
-  //     //     headers: {
-  //     //       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-  //     //     },
-  //     //     params: {
-  //     //       category: category,
-  //     //       sort: sort,
-  //     //       swLatitude,
-  //     //       swLongitude,
-  //     //       neLatitude,
-  //     //       neLongitude,
-  //     //       currentLatitude,
-  //     //       currentLongitude,
-  //     //     } as PlaceParams,
-  //     //   }
-  //     // );
-
-  //     // setPlaces(response.data.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  // const [searchParams, setSearchParams] = useSearchParams()
 
   useEffect(() => {
     // Check signin
@@ -209,7 +147,7 @@ const MapPage: React.FC = () => {
                   />
                 )}
                 {isReviewView && (
-                  <ReviewHeader onBack={() => setIsReviewView(false)} />
+                  <ReviewHeader onBack={() => { setIsReviewView(false); searchParams.delete(); }} />
                 )}
               </Sheet.Header>
               <Sheet.Content style={{ paddingBottom: sheetRef.current?.y }}>
@@ -232,7 +170,7 @@ const MapPage: React.FC = () => {
                         }}>
                         <Restaurant
                           key={item.placeId}
-                          placeId={item.placeId}
+                          // placeId={item.placeId}
                           name={item.name}
                           averageStarRating={item.averageStarRating}
                           reviewImageUrls={item.reviewImageUrls}

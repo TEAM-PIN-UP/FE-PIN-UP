@@ -38,6 +38,7 @@ const StHeaderContainer = styled.div`
 `;
 
 const StBackButton = styled.button`
+  border: none;
   width: 36px;
   height: 36px;
   border-radius: var(--radius_circle);
@@ -57,7 +58,8 @@ const StActionButtons = styled.div`
   gap: var(--spacing_12);
 
   button {
-    width: 40px;
+  border: none;
+  width: 40px;
     height: 40px;
     border-radius: var(--radius_circle);
     flex-shrink: 0;

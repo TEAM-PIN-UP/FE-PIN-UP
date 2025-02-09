@@ -27,6 +27,28 @@ export interface GetPlaceResponse {
   reviewerProfileImageUrls: string[];
 }
 
+export interface GetSpecificPlaceResponse {
+  placeName: string,
+  reviewCount: number,
+  averageStarRating: number,
+  ratingGraph: {
+    additionalProp1: number,
+    additionalProp2: number,
+    additionalProp3: number
+  },
+  reviews: {
+    reviewId: number,
+    writerName: string,
+    writerTotalReviewCount: number,
+    starRating: number,
+    visitedDate: string,
+    content: string,
+    writerProfileImageUrl: string,
+    reviewImageUrls: string[]
+  }[]
+
+}
+
 export interface getSearchPlacesRequest {
   keyword: string;
 }
