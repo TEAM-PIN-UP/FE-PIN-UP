@@ -4,70 +4,86 @@ import { H3 } from "@/style/font";
 import ReviewDefault from "./ReviewDefault";
 import ReviewSingle from "./ReviewSingle";
 import Restaurant from "../Restaurant";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import useGetSpecificPlaces from "@/hooks/api/useGetSpecificPlace";
+import Button from "@/components/Button";
+import ReviewGraph from "./ReviewGraph";
 
-export interface reviewProps {
-  profileImg: string;
-  name: string;
-  score: number;
-  date: string;
-  comment: string;
+export interface ReviewProps {
+  currentLatitude: number | undefined;
+  currentLongitude: number | undefined;
 }
 
-const Review: React.FC = () => {
-
-
+const Review: React.FC<ReviewProps> = ({
+  currentLatitude,
+  currentLongitude,
+}) => {
   const [searchParams] = useSearchParams();
-  const placeId = searchParams.get('placeId');
+  const navigate = useNavigate();
+  const placeId = searchParams.get("placeId");
   if (!placeId) {
-    throw new Error('placeId is required');
+    throw new Error("placeId is required");
   }
 
   const { data } = useGetSpecificPlaces({
-    kakaoPlaceId: placeId
+    kakaoPlaceId: placeId,
+    currentLatitude,
+    currentLongitude,
   });
 
-  if (!data) return null
-
+  if (!data) return null;
 
   return (
     <StReview>
-      {data && <Restaurant
-        key={placeId}
-        name={data?.placeName}
-        averageStarRating={data.averageStarRating}
-        reviewImageUrls={['']}
-        reviewerProfileImageUrls={
-          ['']
-        }
-        reviewCount={data.reviewCount}
-        distance={'2.4'}
-      />}
+      {data && (
+        <Restaurant
+          key={placeId}
+          name={data?.placeName}
+          averageStarRating={data.averageStarRating}
+          reviewImageUrls={data.reviewImageUrls}
+          reviewerProfileImageUrls={data.reviewerProfileImageUrls}
+          reviewCount={data.reviewCount}
+          distance={data.distance}
+        />
+      )}
       <div className="reviewBucket">
         <div className="reviewTitle">
-          <span>리뷰</span>
-          <span>{data?.reviewCount}</span>
+          <span>핀버디 리뷰</span>
+          <Button size="small" onClick={() => navigate(`/review`)}>
+            리뷰 작성
+          </Button>
         </div>
-        {data?.reviewCount > 0 ? (
-          data.reviews.map((value, index) => {
-            return (
-              <>
-                <ReviewSingle
-                  key={index}
-                  name={value.writerName}
-                  score={value.starRating}
-                  profileImg={value.writerProfileImageUrl}
-                  date={value.visitedDate}
-                  comment={value.content}
-                />
-                {index + 1 !== data?.reviewCount && <div className="midLine" />}
-              </>
-            );
-          })
-        ) : (
-          <ReviewDefault />
-        )}
+        <ReviewGraph
+          reviewCount={data.reviewCount}
+          averageStarRating={data.averageStarRating}
+          ratingGraph={data.ratingGraph}
+        />
+        <div className="reviewList">
+          {data?.reviewCount > 0 ? (
+            data.reviews.map((value, index) => {
+              return (
+                <div key={value.reviewId}>
+                  <ReviewSingle
+                    key={index}
+                    writerName={value.writerName}
+                    starRating={value.starRating}
+                    writerProfileImageUrl={value.writerProfileImageUrl}
+                    visitedDate={value.visitedDate}
+                    content={value.content}
+                    reviewId={value.reviewId}
+                    writerTotalReviewCount={value.writerTotalReviewCount}
+                    reviewImageUrls={value.reviewImageUrls}
+                  />
+                  {index + 1 !== data?.reviewCount && (
+                    <div className="midLine" />
+                  )}
+                </div>
+              );
+            })
+          ) : (
+            <ReviewDefault />
+          )}
+        </div>
       </div>
     </StReview>
   );
@@ -78,19 +94,26 @@ const StReview = styled.div`
   min-width: 320px;
   max-width: 440px;
   padding: var(--spacing_8) 0;
-  .reviewBucket{
+  .reviewBucket {
     display: flex;
     flex-direction: column;
-    padding : 16px 0;
+    padding: 16px 0;
     box-sizing: border-box;
   }
   .reviewTitle {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     gap: 4px;
     padding: 0 var(--spacing_20);
     box-sizing: border-box;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     ${H3}
+  }
+  .reviewList {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
   }
   .midLine {
     width: 100%;

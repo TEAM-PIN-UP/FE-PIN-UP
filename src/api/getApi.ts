@@ -1,6 +1,7 @@
 import {
   GetPlaceParams,
   GetSearchPlacesRequest,
+  GetSpecificPlaceRequest,
 } from "@/interface/apiInterface";
 import { ReviewDetail } from "@/interface/review";
 import customAxios from "./Interceptor";
@@ -8,8 +9,14 @@ import customAxios from "./Interceptor";
 const getApi = {
   //   getReview: () => customAxios.get(`/api/places/reviews`),
 
-  getSpecificPlace: ({ kakaoPlaceId }: { kakaoPlaceId: string }) =>
-    customAxios.get(`/api/places/${kakaoPlaceId}`),
+  getSpecificPlace: ({
+    kakaoPlaceId,
+    currentLatitude,
+    currentLongitude,
+  }: GetSpecificPlaceRequest) =>
+    customAxios.get(
+      `/api/places/${kakaoPlaceId}?currentLatitude=${currentLatitude}&currentLongitude=${currentLongitude}`
+    ),
   getPlace: (params: GetPlaceParams) => {
     const queryParams = new URLSearchParams(
       Object.entries(params)
