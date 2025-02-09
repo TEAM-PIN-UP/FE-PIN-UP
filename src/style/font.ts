@@ -3,7 +3,6 @@ import { css } from "styled-components";
 export const H1 = css`
   font-family: "PretendardSemiBold";
   font-size: 20px;
-  /* font-weight: 600; */
   line-height: 120%;
   letter-spacing: -0.4px;
 `;
@@ -11,7 +10,6 @@ export const H1 = css`
 export const H2 = css`
   font-family: "PretendardSemiBold";
   font-size: 18px;
-  /* font-weight: 600; */
   line-height: 120%;
   letter-spacing: -0.36px;
 `;
@@ -19,7 +17,6 @@ export const H2 = css`
 export const H3 = css`
   font-family: "PretendardSemiBold";
   font-size: 16px;
-  /* font-weight: 600; */
   line-height: 120%;
   letter-spacing: -0.32px;
 `;
@@ -27,7 +24,6 @@ export const H3 = css`
 export const H4 = css`
   font-family: "PretendardSemiBold";
   font-size: 14px;
-  /* font-weight: 600; */
   line-height: 120%;
   letter-spacing: -0.28px;
 `;
@@ -35,7 +31,6 @@ export const H4 = css`
 export const H5 = css`
   font-family: "PretendardSemiBold";
   font-size: 13px;
-  /* font-weight: 600; */
   line-height: 120%;
   letter-spacing: -0.26px;
 `;
@@ -43,7 +38,6 @@ export const H5 = css`
 export const H6 = css`
   font-family: "PretendardSemiBold";
   font-size: 12px;
-  /* font-weight: 600; */
   line-height: 120%;
   letter-spacing: -0.24px;
 `;
@@ -51,7 +45,6 @@ export const H6 = css`
 export const B1 = css`
   font-family: "PretendardMedium";
   font-size: 18px;
-  /* font-weight: 500; */
   line-height: 120%;
   letter-spacing: -0.36px;
 `;
@@ -59,7 +52,6 @@ export const B1 = css`
 export const B2 = css`
   font-family: "PretendardMedium";
   font-size: 16px;
-  /* font-weight: 500; */
   line-height: 120%;
   letter-spacing: -0.32px;
 `;
@@ -67,7 +59,6 @@ export const B2 = css`
 export const B3 = css`
   font-family: "PretendardMedium";
   font-size: 14px;
-  /* font-weight: 500; */
   line-height: 120%;
   letter-spacing: -0.28px;
 `;
@@ -75,7 +66,6 @@ export const B3 = css`
 export const B4 = css`
   font-family: "PretendardMedium";
   font-size: 13px;
-  /* font-weight: 500; */
   line-height: 120%;
   letter-spacing: -0.26px;
 `;
@@ -83,7 +73,6 @@ export const B4 = css`
 export const B5 = css`
   font-family: "PretendardMedium";
   font-size: 12px;
-  /* font-weight: 500; */
   line-height: 120%;
   letter-spacing: -0.24px;
 `;
@@ -91,7 +80,6 @@ export const B5 = css`
 export const B6 = css`
   font-family: "PretendardMedium";
   font-size: 11px;
-  /* font-weight: 500; */
   line-height: 120%;
   letter-spacing: -0.22px;
 `;
@@ -99,7 +87,6 @@ export const B6 = css`
 export const C1 = css`
   font-family: "PretendardRegular";
   font-size: 14px;
-  /* font-weight: 400; */
   line-height: 120%;
   letter-spacing: -0.28px;
 `;
@@ -107,7 +94,6 @@ export const C1 = css`
 export const C2 = css`
   font-family: "PretendardRegular";
   font-size: 13px;
-  /* font-weight: 400; */
   line-height: 120%;
   letter-spacing: -0.26px;
 `;
@@ -115,7 +101,6 @@ export const C2 = css`
 export const C3 = css`
   font-family: "PretendardRegular";
   font-size: 12px;
-  /* font-weight: 400; */
   line-height: 120%;
   letter-spacing: -0.24px;
 `;
@@ -123,7 +108,6 @@ export const C3 = css`
 export const D1 = css`
   font-family: "PretendardMedium";
   font-size: 14px;
-  /* font-weight: 400; */
   line-height: 160%;
   letter-spacing: -0.28px;
 `;
@@ -131,7 +115,6 @@ export const D1 = css`
 export const D2 = css`
   font-family: "PretendardMedium";
   font-size: 12px;
-  /* font-weight: 500; */
   line-height: 160%;
   letter-spacing: -0.24px;
 `;

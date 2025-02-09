@@ -31,7 +31,7 @@ const MapPage: React.FC = () => {
 
   const navigate = useNavigate();
   const toast = useToastPopup();
-  const [category, setCategory] = useState<placeCategory>("CAFE");
+  const [category, setCategory] = useState<placeCategory>("ALL");
   const [sort, setSort] = useState<placeSort>("NEAR");
   const [places, setPlaces] = useState<GetPlaceResponse[]>();
   const [dataQuery, setDataQuery] = useState<string>("");
@@ -201,7 +201,10 @@ const MapPage: React.FC = () => {
                   {isReviewView && (
                     // || activePinIndex !== null
                     <>
-                      <Review />
+                      <Review
+                        currentLatitude={user?.getPosition()?.y}
+                        currentLongitude={user?.getPosition()?.x}
+                      />
                     </>
                   )}
                 </Sheet.Scroller>
@@ -235,6 +238,24 @@ const StSheet = styled(Sheet)<{ $left: number }>`
   max-width: 440px;
   min-width: 320px;
   left: ${({ $left }) => `${$left}px !important`};
+
+  .react-modal-sheet-content::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .react-modal-sheet-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  .react-modal-sheet-content::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+
+  .react-modal-sheet-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 
   .no-reviews {
     ${H3}

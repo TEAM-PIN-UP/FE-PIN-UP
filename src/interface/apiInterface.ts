@@ -13,6 +13,12 @@ export interface GetPlaceParams {
   currentLongitude: string;
 }
 
+export interface GetSpecificPlaceRequest {
+  kakaoPlaceId: string;
+  currentLatitude: number | undefined;
+  currentLongitude: number | undefined;
+}
+
 export interface GetPlaceResponse {
   placeId: number;
   kakaoPlaceId: string;
@@ -31,21 +37,25 @@ export interface GetSpecificPlaceResponse {
   placeName: string;
   reviewCount: number;
   averageStarRating: number;
-  ratingGraph: {
-    additionalProp1: number;
-    additionalProp2: number;
-    additionalProp3: number;
-  };
-  reviews: {
-    reviewId: number;
-    writerName: string;
-    writerTotalReviewCount: number;
-    starRating: number;
-    visitedDate: string;
-    content: string;
-    writerProfileImageUrl: string;
-    reviewImageUrls: string[];
-  }[];
+  distance: string;
+  latitude: number;
+  longitude: number;
+  placeCategory: placeCategory;
+  reviewImageUrls: string[];
+  reviewerProfileImageUrls: string[];
+  ratingGraph: Map<string, number>;
+  reviews: ReviewSingleType[];
+}
+
+export interface ReviewSingleType {
+  reviewId: number;
+  writerName: string;
+  writerTotalReviewCount: number;
+  starRating: number;
+  visitedDate: string;
+  content: string;
+  writerProfileImageUrl: string;
+  reviewImageUrls: string[];
 }
 
 export interface GetSearchPlacesRequest {
