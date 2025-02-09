@@ -1,5 +1,12 @@
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
+import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import useMapSetup from "@/hooks/useMapSetup";
+import useUpdatePlaces from "@/hooks/useUpdatePlaces";
+import {
+  GetPlaceResponse,
+  placeCategory,
+  placeSort,
+} from "@/interface/apiInterface";
 import { H3 } from "@/style/font";
 import useToastPopup from "@/utils/toastPopup";
 import { useEffect, useRef, useState } from "react";
@@ -16,16 +23,16 @@ import ReviewHeader from "./_components/headers/ReviewHeader";
 import SearchHeader from "./_components/headers/SearchHeader";
 import PinMarker from "./_components/PinMarker";
 import Restaurant from "./_components/Restaurant";
-import UserPositionMarker from "./_components/UserPositionMarker";
-import { category, GetPlaceResponse, sort } from "@/interface/apiInterface";
-import useUpdatePlaces from "@/hooks/useUpdatePlaces";
 import Review from "./_components/review/Review";
+import UserPositionMarker from "./_components/UserPositionMarker";
 
 const MapPage: React.FC = () => {
+  useCheckLoginAndRoute();
+
   const navigate = useNavigate();
   const toast = useToastPopup();
-  const [category, setCategory] = useState<category>("CAFE");
-  const [sort, setSort] = useState<sort>("NEAR");
+  const [category, setCategory] = useState<placeCategory>("CAFE");
+  const [sort, setSort] = useState<placeSort>("NEAR");
   const [places, setPlaces] = useState<GetPlaceResponse[]>();
   const [dataQuery, setDataQuery] = useState<string>("");
 
@@ -136,12 +143,6 @@ const MapPage: React.FC = () => {
   // };
 
   useEffect(() => {
-    // Check signin
-    if (!localStorage.getItem("accessToken")) {
-      toast("로그인 후 이용해 주세요.");
-      navigate("/signup");
-    }
-
     // Update bottom sheet alignment on window resize
     updateLeftPosition();
     window.addEventListener("resize", updateLeftPosition);
@@ -149,7 +150,6 @@ const MapPage: React.FC = () => {
     return () => {
       window.removeEventListener("resize", updateLeftPosition);
     };
-
   }, [navigate, toast]);
 
   return (
@@ -175,7 +175,7 @@ const MapPage: React.FC = () => {
                   count={item.reviewCount.toString()}
                   onClick={() => {
                     setActivePinIndex(index);
-                    setIsReviewView(true)
+                    setIsReviewView(true);
                   }}
                   position={
                     new naverMaps.LatLng({
@@ -190,7 +190,7 @@ const MapPage: React.FC = () => {
           <StSheet
             ref={sheetRef}
             isOpen={true}
-            onClose={() => { }}
+            onClose={() => {}}
             snapPoints={snapPoints}
             initialSnap={1}
             mountPoint={attachRef.current!}
@@ -228,8 +228,11 @@ const MapPage: React.FC = () => {
                         key={index}
                         onClick={() => {
                           setIsReviewView(true);
-                          navigate(`${window.location.pathname}?placeId=${item.kakaoPlaceId}`);
-                        }}>
+                          navigate(
+                            `${window.location.pathname}?placeId=${item.kakaoPlaceId}`
+                          );
+                        }}
+                      >
                         <Restaurant
                           key={item.placeId}
                           placeId={item.placeId}
@@ -244,13 +247,12 @@ const MapPage: React.FC = () => {
                         />
                       </div>
                     ))}
-                  {(isReviewView
+                  {isReviewView && (
                     // || activePinIndex !== null
-                  ) && (
-                      <>
-                        <Review />
-                      </>
-                    )}
+                    <>
+                      <Review />
+                    </>
+                  )}
                 </Sheet.Scroller>
               </Sheet.Content>
               <StGap
@@ -276,7 +278,7 @@ const StMapDiv = styled(MapDiv)`
   height: 100%;
 `;
 
-const StSheet = styled(Sheet) <{ $left: number }>`
+const StSheet = styled(Sheet)<{ $left: number }>`
   display: flex;
   justify-content: center;
   max-width: 440px;

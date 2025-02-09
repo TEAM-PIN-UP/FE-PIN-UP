@@ -1,11 +1,10 @@
-import React, { useRef, useState } from "react";
-import SwipeableViews from "react-swipeable-views";
-import styled from "styled-components";
-
 import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
 import { DateTimeTuple, PhotoReview, TextReview } from "@/interface/review";
 import { H4 } from "@/style/font";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SwipeableViews from "react-swipeable-views";
+import styled from "styled-components";
 import ReviewText from "./ReviewText";
 
 interface ReviewHistoryProps {
@@ -64,26 +63,26 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
       >
         <div className="image-reviews">
           {Array.isArray(photos) &&
-            photos.map((item, index) => (
+            photos.map((item) => (
               <ImgWithPlaceholder
                 key={item.id}
                 src={item.previewImageUrl}
                 className="image"
-                onClick={() => handleClick(index + 1)}
+                onClick={() => handleClick(item.id)}
               />
             ))}
         </div>
         <div className="text-reviews">
-          {texts.map((review, index) => (
+          {texts.map((item) => (
             <ReviewText
-              key={index}
+              key={item.id}
               placeName={""}
               longitude={0}
               latitude={0}
               userName="나"
-              score={review.starRating.toString()}
-              reviewDate={formatDate(review.createdAt)}
-              body={review.content}
+              score={item.starRating.toString()}
+              reviewDate={formatDate(item.createdAt)}
+              body={item.content}
               visitDate={""}
             />
           ))}

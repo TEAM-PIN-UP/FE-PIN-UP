@@ -1,10 +1,10 @@
 import { useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 
+import getApi from "@/api/getApi";
 import Button from "@/components/Button";
 import TextInput from "@/components/TextInput";
 import { B5 } from "@/style/font";
-import axios from "axios";
 import StTextContainer from "../typography/StTextContainer";
 import { StageProps } from "./StageProps";
 
@@ -43,18 +43,10 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
 
   const handleNext = async () => {
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_ADDRESS}/api/members/nickname/check`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("tempAccessToken")}`,
-          },
-          params: {
-            nickname: data.nickname,
-          },
-        }
-      );
-      const isAvailable = response.data.data;
+      const response = await getApi.getMemberNicknameCheck({
+        nickname: data.nickname,
+      });
+      const isAvailable = response.data;
       setIsNicknameValid(!isAvailable);
 
       if (isNicknameValid) onNext();

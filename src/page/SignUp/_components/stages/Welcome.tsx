@@ -1,8 +1,9 @@
+import patchApi from "@/api/patchApi";
 import Button from "@/components/Button";
 import { MemberPatchBody } from "@/interface/member";
-import axios from "axios";
+import getMemberResponseObj from "@/utils/getMemberResponseObj";
 import { useNavigate } from "react-router-dom";
-import { MemberResponse, SignUpForm } from "../../SignUpInterface";
+import { SignUpForm } from "../../SignUpInterface";
 import StTextContainer from "../typography/StTextContainer";
 
 const Welcome = ({ data }: { data: SignUpForm }) => {
@@ -10,9 +11,8 @@ const Welcome = ({ data }: { data: SignUpForm }) => {
 
   const handleClick = async () => {
     try {
-      const accessToken = localStorage.getItem("tempAccessToken");
+      const accessToken = localStorage.getItem("accessToken");
       if (!accessToken) throw new Error("No access token found.");
-      localStorage.setItem("accessToken", accessToken);
 
       const request: MemberPatchBody["request"] = {
         nickname: data.nickname,
@@ -30,22 +30,10 @@ const Welcome = ({ data }: { data: SignUpForm }) => {
         `profile.${fileExtension}`
       );
 
-      await axios.patch(
-        `${import.meta.env.VITE_SERVER_ADDRESS}/api/members`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      await patchApi.patchMembers(formData);
 
       // Update local storage member response
-      const memberResponseJson = localStorage.getItem("memberResponse");
-      const memberResponse: MemberResponse | null = memberResponseJson
-        ? (JSON.parse(memberResponseJson) as MemberResponse)
-        : null;
+      const memberResponse = getMemberResponseObj();
       if (memberResponse) {
         memberResponse.nickname = data.nickname;
         localStorage.setItem("memberResponse", JSON.stringify(memberResponse));
