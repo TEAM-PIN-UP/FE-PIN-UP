@@ -23,6 +23,7 @@ const Restaurant: React.FC<RestaurantProps> = ({
   reviewImageUrls,
   reviewerProfileImageUrls,
 }) => {
+
   return (
     <StRestaurant>
       <div className="container">
@@ -34,6 +35,13 @@ const Restaurant: React.FC<RestaurantProps> = ({
               <span className="distance">{distance}</span>
               <span className="reviewNum">리뷰 {reviewCount}</span>
             </div>
+          </div>
+          <div className="profileBox">
+            {
+              reviewerProfileImageUrls ? reviewerProfileImageUrls.map((val, index) => (
+                <img className="profileImg" src={val} key={index} />
+              )) : <img src={profileImg} />
+            }
           </div>
           <div className="profile" />
         </div>
@@ -49,7 +57,8 @@ const StRestaurant = styled.div`
   .container {
     padding: var(--spacing_20);
     margin: 0 auto;
-    .infoContainer {
+    cursor: pointer;
+  .infoContainer {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -83,13 +92,17 @@ const StRestaurant = styled.div`
           }
         }
       }
-      .profile {
-        width: 26px;
-        height: 26px;
-        border-radius: var(--radius_circle);
-        border: 1px solid var(--white);
-        background: url(${profileImg}) lightgray 50% / cover no-repeat;
+      .profileBox{
+        display: flex;
+        margin-left: auto;
+        .profileImg{
+          width: 26px;
+          height: 26px;
+          border-radius: var(--radius_circle);
+          border: 1px solid var(--white);
+        }
       }
+      
     }
   }
   .gap {

@@ -11,7 +11,6 @@ import {
 } from "react-naver-maps";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Review from "../Review";
 import ReviewHeader from "./_components/headers/ReviewHeader";
 import SearchHeader from "./_components/headers/SearchHeader";
 import PinMarker from "./_components/PinMarker";
@@ -19,6 +18,7 @@ import Restaurant from "./_components/Restaurant";
 import UserPositionMarker from "./_components/UserPositionMarker";
 import { category, GetPlaceResponse, sort } from "@/interface/apiInterface";
 import useUpdatePlaces from "@/hooks/useUpdatePlaces";
+import Review from "./_components/review/Review";
 
 const MapPage: React.FC = () => {
   const navigate = useNavigate();
@@ -147,6 +147,7 @@ const MapPage: React.FC = () => {
     };
   }, [navigate]);
 
+  console.log(isReviewView)
 
   return (
     <StDiv ref={attachRef}>
@@ -171,6 +172,7 @@ const MapPage: React.FC = () => {
                   count={item.reviewCount.toString()}
                   onClick={() => {
                     setActivePinIndex(index);
+                    setIsReviewView(true)
                   }}
                   position={
                     new naverMaps.LatLng({
@@ -211,9 +213,14 @@ const MapPage: React.FC = () => {
                   )}
                   {places &&
                     !isReviewView &&
-                    activePinIndex === null &&
+                    // activePinIndex === null &&
                     places.map((item, index) => (
-                      <div key={index} onClick={() => setIsReviewView(true)}>
+                      <div
+                        key={index}
+                        onClick={() => {
+                          setIsReviewView(true);
+                          navigate(`${window.location.pathname}?placeId=${item.kakaoPlaceId}`);
+                        }}>
                         <Restaurant
                           key={item.placeId}
                           placeId={item.placeId}
@@ -226,21 +233,13 @@ const MapPage: React.FC = () => {
                         />
                       </div>
                     ))}
-                  {(isReviewView || activePinIndex !== null) && (
-                    <>
-                      {/* <Restaurant
-                        name={places?.[activePinIndex ?? 0].name ?? ""}
-                        averageRating={
-                          places?.[activePinIndex ?? 0].averageStarRating ?? 0
-                        }
-                        defaultImgUrl={
-                          // places?.[activePinIndex ?? 0].reviewImageUrls[0] ?? ""
-                          `https://picsum.photos/200`
-                        }
-                      /> */}
-                      <Review />
-                    </>
-                  )}
+                  {(isReviewView
+                    // || activePinIndex !== null
+                  ) && (
+                      <>
+                        <Review />
+                      </>
+                    )}
                 </Sheet.Scroller>
               </Sheet.Content>
               <StGap

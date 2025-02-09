@@ -32,8 +32,6 @@ const useUpdatePlaces = ({ query, category, sort, setPlaces }: UseUpdatePlacesPr
         currentLongitude: mapBounds.position?.x.toString() ?? '',
     });
 
-    console.log(query)
-    console.log(placesData)
 
     useEffect(() => {
         if (isError) {
