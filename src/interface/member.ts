@@ -1,10 +1,12 @@
+import { Review } from "./review";
+
 export interface MemberDetails {
-  memberId: number;
+  bio: string;
   email: string;
+  memberId: number;
   name: string;
   nickname: string;
   profilePictureUrl: string;
-  bio: string;
   termsOfMarketing: "Y" | "N";
 }
 
@@ -22,4 +24,12 @@ export interface MemberPatchBody {
     termsOfMarketing: "Y" | "N";
   };
   multipartFile: Blob; // Convert base64 jpeg/png image to blob
+}
+
+export interface MyFeed {
+  averageStarRating: number;
+  memberResponse: MemberDetails;
+  memberReviews: Review[];
+  pinBuddyCount: number;
+  reviewCount: number;
 }
