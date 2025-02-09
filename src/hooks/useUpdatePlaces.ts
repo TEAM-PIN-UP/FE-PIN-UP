@@ -43,9 +43,6 @@ const useUpdatePlaces = ({
     currentLongitude: mapBounds.position?.x.toString() ?? "",
   });
 
-  console.log(query);
-  console.log(placesData);
-
   useEffect(() => {
     if (isError) {
       console.error("Failed to fetch places");

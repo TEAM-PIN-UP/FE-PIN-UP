@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { H3 } from "@/style/font";
 import ReviewDefault from "./ReviewDefault";
 import ReviewSingle from "./ReviewSingle";
+import Restaurant from "../Restaurant";
 
 export interface reviewProps {
   profileImg: string;
@@ -47,6 +48,7 @@ const Review: React.FC = () => {
 
   return (
     <StReview>
+      {/* <Restaurant /> */}
       <div className="reviewTitle">
         <span>리뷰</span>
         <span>{dummy.length}</span>
