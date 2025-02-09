@@ -7,6 +7,9 @@ import customAxios from "./Interceptor";
 
 const getApi = {
   //   getReview: () => customAxios.get(`/api/places/reviews`),
+
+  getSpecificPlace: ({ kakaoPlaceId }: { kakaoPlaceId: string }) =>
+    customAxios.get(`/api/places/${kakaoPlaceId}`),
   getPlace: (params: GetPlaceParams) => {
     const queryParams = new URLSearchParams(
       Object.entries(params)

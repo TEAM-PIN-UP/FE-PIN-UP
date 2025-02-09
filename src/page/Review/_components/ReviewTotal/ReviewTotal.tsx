@@ -79,7 +79,11 @@ const ReviewTotal = ({ pickedInfo, visitDate }: ReviewTotalProps) => {
           setReviewContent={setReviewContent}
         />
         <div className="buttonBucket">
-          <Button size="full" onClick={handleReviewSubmit}>
+          <Button
+            size="full"
+            active={starScore > 0 && reviewContent.length >= 10}
+            onClick={handleReviewSubmit}
+          >
             리뷰 등록하기
           </Button>
         </div>

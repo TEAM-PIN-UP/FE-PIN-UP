@@ -6,7 +6,7 @@ import { B4, H3, H4 } from "@/style/font";
 import ImageSwiper from "./ImageSwiper";
 
 export interface RestaurantProps {
-  placeId: number;
+  // placeId: string;
   name: string;
   averageStarRating: number;
   reviewCount: number;
