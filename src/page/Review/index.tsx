@@ -20,7 +20,8 @@ const ReviewPage = () => {
   const [pickedInfo, setPickedInfo] = useState<GetSearchPlacesResponse | null>(
     null
   );
-  const [modalOpen, setModalOpen] = useState<boolean>(true);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [placeId, setPlaceId] = useState<string>("");
 
   const stepDown = () => {
     setStep((prevStep) => {
@@ -50,7 +51,9 @@ const ReviewPage = () => {
 
   return (
     <>
-      {modalOpen && <CompleteModal setModalOpen={setModalOpen} />}
+      {modalOpen && (
+        <CompleteModal setModalOpen={setModalOpen} placeId={placeId} />
+      )}
 
       <StReview>
         <ReviewHeader stepDown={stepDown} />
@@ -71,7 +74,12 @@ const ReviewPage = () => {
         )}
         {step === 3 ? (
           pickedInfo && visitDate ? (
-            <ReviewTotal pickedInfo={pickedInfo} visitDate={visitDate} />
+            <ReviewTotal
+              pickedInfo={pickedInfo}
+              visitDate={visitDate}
+              setModalOpen={setModalOpen}
+              setPlaceId={setPlaceId}
+            />
           ) : null
         ) : null}
       </StReview>
