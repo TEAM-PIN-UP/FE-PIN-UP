@@ -1,19 +1,21 @@
-import SearchInfo from "./SearchInfo";
-import { useState } from "react";
-import ReviewSearchBar from "./ReviewSearchBar";
-import styled from "styled-components";
-import SearchResult from "./SearchResult";
 import useGetSearchPlaces from "@/hooks/api/review/useGetSearchPlaces";
-import { getSearchPlacesResponse } from "@/interface/apiInterface";
+import { GetSearchPlacesResponse } from "@/interface/apiInterface";
+import { useState } from "react";
+import styled from "styled-components";
+import ReviewSearchBar from "./ReviewSearchBar";
+import SearchInfo from "./SearchInfo";
+import SearchResult from "./SearchResult";
 
 export interface PlaceSearchProp {
   stepUp: () => void;
-  setPickedInfo: React.Dispatch<React.SetStateAction<getSearchPlacesResponse | null>>
+  setPickedInfo: React.Dispatch<
+    React.SetStateAction<GetSearchPlacesResponse | null>
+  >;
 }
 
 const PlaceSearch: React.FC<PlaceSearchProp> = ({ stepUp, setPickedInfo }) => {
   const [infoShow, setInfoShow] = useState<boolean>(true);
-  const [reviewSearch, setReviewSearch] = useState<string>('');
+  const [reviewSearch, setReviewSearch] = useState<string>("");
 
   const infoHideFunc = () => {
     setInfoShow(false);
@@ -35,7 +37,11 @@ const PlaceSearch: React.FC<PlaceSearchProp> = ({ stepUp, setPickedInfo }) => {
         reviewSearch={reviewSearch}
         setReviewSearch={setReviewSearch}
       />
-      <SearchResult stepUp={stepUp} results={data} setPickedInfo={setPickedInfo} />
+      <SearchResult
+        stepUp={stepUp}
+        results={data}
+        setPickedInfo={setPickedInfo}
+      />
     </StPlaceSearch>
   );
 };

@@ -1,15 +1,19 @@
-import styled from "styled-components";
-import PlaceInfo from "./PlaceInfo";
-import PhotoUpload from "./PhotoUpload";
-import CheckScore from "./CheckScore";
-import WriteReview from "./WriteReview";
-import { useState } from "react";
 import Button from "@/components/Button";
-import { getSearchPlacesResponse, PlaceRequestType, ReviewRequestType } from "@/interface/apiInterface";
 import useCreateReview from "@/hooks/api/review/usePostCreateReview";
+import {
+  GetSearchPlacesResponse,
+  PlaceRequestType,
+  ReviewRequestType,
+} from "@/interface/apiInterface";
+import { useState } from "react";
+import styled from "styled-components";
+import CheckScore from "./CheckScore";
+import PhotoUpload from "./PhotoUpload";
+import PlaceInfo from "./PlaceInfo";
+import WriteReview from "./WriteReview";
 
 interface ReviewTotalProps {
-  pickedInfo: getSearchPlacesResponse;
+  pickedInfo: GetSearchPlacesResponse;
   visitDate: Date;
 }
 
@@ -25,13 +29,17 @@ const ReviewTotal = ({ pickedInfo, visitDate }: ReviewTotalProps) => {
     const reviewRequest: ReviewRequestType = {
       content: reviewContent,
       starRating: starScore,
-      visitedDate: visitDate.toLocaleDateString().split('. ').join('').slice(0, 8),
+      visitedDate: visitDate
+        .toLocaleDateString()
+        .split(". ")
+        .join("")
+        .slice(0, 8),
     };
 
     const placeRequest: PlaceRequestType = {
       kakaoPlaceId: pickedInfo.kakaoMapId,
       name: pickedInfo.name,
-      category: pickedInfo.category === '음식점' ? 'RESTAURANT' : 'CAFE',
+      category: pickedInfo.category === "음식점" ? "RESTAURANT" : "CAFE",
       address: pickedInfo.address,
       roadAddress: pickedInfo.roadAddress,
       latitude: Number(pickedInfo.latitude),
@@ -41,33 +49,21 @@ const ReviewTotal = ({ pickedInfo, visitDate }: ReviewTotalProps) => {
     // 리뷰 데이터
     formData.append(
       "reviewRequest",
-      new Blob(
-        [
-          JSON.stringify(reviewRequest),
-        ],
-        { type: "application/json" }
-      )
+      new Blob([JSON.stringify(reviewRequest)], { type: "application/json" })
     );
 
     // 장소 데이터
     formData.append(
       "placeRequest",
-      new Blob(
-        [
-          JSON.stringify(placeRequest),
-        ],
-        { type: "application/json" }
-      )
+      new Blob([JSON.stringify(placeRequest)], { type: "application/json" })
     );
 
     imageData.forEach((file) => {
       formData.append(`multipartFiles`, file);
-    })
+    });
 
     reviewCreate.mutate(formData);
-
-  }
-
+  };
 
   return (
     <>

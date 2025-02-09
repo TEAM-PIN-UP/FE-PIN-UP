@@ -11,7 +11,7 @@ import StTextContainer from "../typography/StTextContainer";
 import { StageProps } from "./StageProps";
 import TosItem from "./TosItem";
 
-const Tos: React.FC<StageProps> = ({ data, updateData, onNext }) => {
+const Tos: React.FC<StageProps> = ({ updateData, onNext }) => {
   const [agreements, setAgreements] = useState<Set<AgreementKey>>(new Set());
 
   const handleToggleAgreement = (key: AgreementKey) => {
@@ -76,7 +76,6 @@ const Tos: React.FC<StageProps> = ({ data, updateData, onNext }) => {
         active={isRequiredAgreed}
         onClick={() => {
           updateData({ agreedToTerms: Array.from(agreements) });
-          console.log(data);
           onNext();
         }}
       >

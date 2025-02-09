@@ -1,17 +1,36 @@
-import { GetPlaceParams, getSearchPlacesRequest } from "@/interface/apiInterface";
+import {
+  GetPlaceParams,
+  GetSearchPlacesRequest,
+} from "@/interface/apiInterface";
+import { ReviewDetail } from "@/interface/review";
 import customAxios from "./Interceptor";
 
 const getApi = {
   //   getReview: () => customAxios.get(`/api/places/reviews`),
-  getPlace: ({ query, category, sort, swLatitude, swLongitude, neLatitude, neLongitude, currentLatitude, currentLongitude }: GetPlaceParams) =>
-    customAxios.get(
-      `/api/places?query=${query}&category=${category}&sort=${sort}&swLatitude=${swLatitude}&swLongitude=${swLongitude}&neLatitude=${neLatitude}&neLongitude=${neLongitude}&currentLatitude=${currentLatitude}&currentLongitude=${currentLongitude}`
-    ),
+
   getSpecificPlace: ({ kakaoPlaceId }: { kakaoPlaceId: string }) =>
-    customAxios.get(
-      `/api/places/${kakaoPlaceId}`
-    ),
-  getSearchPlaces: ({ keyword }: getSearchPlacesRequest) => customAxios.get(`/api/places/keyword?query=${keyword}`)
+    customAxios.get(`/api/places/${kakaoPlaceId}`),
+  getPlace: (params: GetPlaceParams) => {
+    const queryParams = new URLSearchParams(
+      Object.entries(params)
+        .filter(([value]) => value !== undefined && value !== null) // Remove undefined & null
+        .map(([key, value]) => [key, String(value)]) // Convert to string
+    ).toString();
+    return customAxios.get(`/api/places?${queryParams}`);
+  },
+
+  getSearchPlaces: ({ keyword }: GetSearchPlacesRequest) =>
+    customAxios.get(`/api/places/keyword?query=${keyword}`),
+
+  getMemberNicknameCheck: ({ nickname }: { nickname: string }) =>
+    customAxios.get(`/api/members/nickname/check?${nickname}`),
+
+  getMyProfile: () => customAxios.get(`/api/members/me/profile`),
+  getMyPhotos: () => customAxios.get(`/api/reviews/my/photo`),
+  getMyTexts: () => customAxios.get(`/api/reviews/my/text`),
+
+  getReviewId: ({ id }: { id: string }) =>
+    customAxios.get<ReviewDetail>(`/api/reviews/${id}`),
 };
 
 export default getApi;

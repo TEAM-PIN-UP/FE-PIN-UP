@@ -1,9 +1,13 @@
+import star from "@/image/icons/star.svg";
+import { GetSearchPlacesResponse } from "@/interface/apiInterface";
 import { B4, H2, H4 } from "@/style/font";
 import styled from "styled-components";
-import star from "@/image/icons/star.svg";
-import { getSearchPlacesResponse } from "@/interface/apiInterface";
 
-const PlaceInfo = ({ pickedInfo }: { pickedInfo: getSearchPlacesResponse | null }) => {
+const PlaceInfo = ({
+  pickedInfo,
+}: {
+  pickedInfo: GetSearchPlacesResponse | null;
+}) => {
   return (
     <StPlaceInfo>
       <p className="name">{pickedInfo?.name}</p>

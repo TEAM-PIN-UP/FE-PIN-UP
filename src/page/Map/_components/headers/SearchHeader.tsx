@@ -8,86 +8,110 @@ import coffee from "@/image/icons/coffee.svg";
 import coffeeWhite from "@/image/icons/coffeeWhite.svg";
 import food from "@/image/icons/food.svg";
 import foodWhite from "@/image/icons/foodWhite.svg";
+import { placeCategory, placeSort } from "@/interface/apiInterface";
 import { B4, H6 } from "@/style/font";
-import { category, sort } from "@/interface/apiInterface";
 
 interface SearchHeaderProps {
-  setSort: React.Dispatch<React.SetStateAction<sort>>
-  category: category
-  setCategory: React.Dispatch<React.SetStateAction<category>>
-  dataQuery: string
-  setDataQuery: React.Dispatch<React.SetStateAction<string>>
+  setSort: React.Dispatch<React.SetStateAction<placeSort>>;
+  category: placeCategory;
+  setCategory: React.Dispatch<React.SetStateAction<placeCategory>>;
+  dataQuery: string;
+  setDataQuery: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const SearchHeader = React.forwardRef<HTMLDivElement, SearchHeaderProps>((props, ref) => {
-  const { dataQuery, setDataQuery, setSort, category, setCategory } = props;
-  const [showSortMenu, setShowSortMenu] = useState(false);
-  const [sortType, setSortType] = useState<sort>("NEAR");
+const SearchHeader = React.forwardRef<HTMLDivElement, SearchHeaderProps>(
+  (props, ref) => {
+    const { dataQuery, setDataQuery, setSort, category, setCategory } = props;
+    const [showSortMenu, setShowSortMenu] = useState(false);
+    const [sortType, setSortType] = useState<placeSort>("NEAR");
 
-  const sortOptions = {
-    NEAR: "가까운 순",
-    LATEST: "최신 순",
-    STAR_HIGH: "별점 높은 순",
-    STAR_LOW: "별점 낮은 순"
-  };
+    const sortOptions = {
+      NEAR: "가까운 순",
+      LATEST: "최신 순",
+      STAR_HIGH: "별점 높은 순",
+      STAR_LOW: "별점 낮은 순",
+    };
 
-  const searchFn = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDataQuery(e.target.value)
+    const searchFn = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setDataQuery(e.target.value);
+    };
+
+    return (
+      <HeaderDiv ref={ref}>
+        <SearchContainer>
+          <SearchBar
+            placeholder="장소/가게 검색하기"
+            onChange={searchFn}
+            dataQuery={dataQuery}
+            setDataQuery={setDataQuery}
+          />
+        </SearchContainer>
+
+        <ChipContainer>
+          <Chip
+            selected={category === "ALL"}
+            onClick={() => setCategory("ALL")}
+          >
+            전체
+          </Chip>
+          <Chip
+            selected={category === "RESTAURANT"}
+            onClick={() => setCategory("RESTAURANT")}
+          >
+            {category === "RESTAURANT" ? (
+              <img src={foodWhite} />
+            ) : (
+              <img src={food} />
+            )}
+            <span>음식점</span>
+          </Chip>
+          <Chip
+            selected={category === "CAFE"}
+            onClick={() => setCategory("CAFE")}
+          >
+            {category === "CAFE" ? (
+              <img src={coffeeWhite} />
+            ) : (
+              <img src={coffee} />
+            )}
+            <span>카페</span>
+          </Chip>
+
+          <SortContainer>
+            <StPickedContainer onClick={() => setShowSortMenu(!showSortMenu)}>
+              <span className="pickedSort">{sortOptions[sortType]}</span>
+              <img
+                src={ChevronDown}
+                style={{
+                  transform: showSortMenu ? "rotate(180deg)" : "rotate(0deg)",
+                  transition: "transform 0.2s ease-in-out",
+                }}
+              />
+            </StPickedContainer>
+
+            {showSortMenu && (
+              <SortMenu>
+                {(Object.keys(sortOptions) as placeSort[]).map((type) => (
+                  <SortMenuItem
+                    key={type}
+                    selected={sortType === type}
+                    onClick={() => {
+                      setSort(type);
+                      setSortType(type);
+                      setShowSortMenu(false);
+                    }}
+                  >
+                    {sortOptions[type]}
+                  </SortMenuItem>
+                ))}
+              </SortMenu>
+            )}
+          </SortContainer>
+        </ChipContainer>
+      </HeaderDiv>
+    );
   }
-
-  return (
-    <HeaderDiv ref={ref}>
-      <SearchContainer>
-        <SearchBar placeholder="장소/가게 검색하기" onChange={searchFn} dataQuery={dataQuery} setDataQuery={setDataQuery} />
-      </SearchContainer>
-
-      <ChipContainer>
-        <Chip selected={category === "ALL"} onClick={() => setCategory("ALL")}>
-          전체
-        </Chip>
-        <Chip selected={category === "RESTAURANT"} onClick={() => setCategory("RESTAURANT")}>
-          {category === "RESTAURANT" ? <img src={foodWhite} /> : <img src={food} />}
-          <span>음식점</span>
-        </Chip>
-        <Chip selected={category === "CAFE"} onClick={() => setCategory("CAFE")}>
-          {category === "CAFE" ? <img src={coffeeWhite} /> : <img src={coffee} />}
-          <span>카페</span>
-        </Chip>
-
-        <SortContainer>
-          <StPickedContainer onClick={() => setShowSortMenu(!showSortMenu)}>
-            <span className="pickedSort">{sortOptions[sortType]}</span>
-            <img
-              src={ChevronDown}
-              style={{
-                transform: showSortMenu ? 'rotate(180deg)' : 'rotate(0deg)',
-                transition: 'transform 0.2s ease-in-out'
-              }}
-            />
-          </StPickedContainer>
-
-          {showSortMenu && (
-            <SortMenu>
-              {(Object.keys(sortOptions) as sort[]).map((type) => (
-                <SortMenuItem
-                  key={type}
-                  selected={sortType === type}
-                  onClick={() => {
-                    setSort(type)
-                    setSortType(type);
-                    setShowSortMenu(false);
-                  }}
-                >
-                  {sortOptions[type]}
-                </SortMenuItem>
-              ))}
-            </SortMenu>
-          )}
-        </SortContainer>
-      </ChipContainer>
-    </HeaderDiv>
-  );
-});
+);
 
 // Styled components for layout and styling
 const HeaderDiv = styled.div`
@@ -118,10 +142,10 @@ const StPickedContainer = styled.div`
   align-items: center;
   margin-left: auto;
   cursor: pointer;
-  .pickedSort{
+  .pickedSort {
     ${B4}
   }
-  img{
+  img {
     width: 18px;
     height: 18px;
   }
@@ -144,7 +168,8 @@ const SortMenuItem = styled.button<{ selected: boolean }>`
   width: 100%;
   padding: var(--spacing_12);
   border: none;
-  background: ${props => props.selected ? 'var(--neutral_100)' : 'transparent'};
+  background: ${(props) =>
+    props.selected ? "var(--neutral_100)" : "transparent"};
   color: var(--neutral_800);
   text-align: left;
   cursor: pointer;
