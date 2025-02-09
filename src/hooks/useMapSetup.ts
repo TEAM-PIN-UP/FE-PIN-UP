@@ -6,6 +6,7 @@ const useMapSetup = (
   useGeolocation: boolean,
   map: naver.maps.Map | null,
   user: naver.maps.Marker | null,
+  followUser: boolean,
   setActivePinIndex: React.Dispatch<React.SetStateAction<number | null>>
 ) => {
   const naverMaps = useNavermaps();
@@ -23,10 +24,10 @@ const useMapSetup = (
         position.coords.latitude,
         position.coords.longitude
       );
-      map.setCenter(location);
+      if (followUser) map.setCenter(location);
       setUserPosition(location);
     },
-    [map, user, naverMaps]
+    [map, user, naverMaps, followUser]
   );
 
   const onGeolocationError = useCallback(() => {
@@ -53,10 +54,36 @@ const useMapSetup = (
     };
   }, [useGeolocation, map, onGeolocationSuccess, onGeolocationError, user]);
 
-  // Effect to update user marker when position changes
+  // Get & watch user position
   useEffect(() => {
-    if (user && userPosition) user.setPosition(userPosition);
-  }, [user, userPosition]);
+    if (!map) return;
+
+    if (useGeolocation && navigator.geolocation) {
+      // First get position immediately
+      // navigator.geolocation.getCurrentPosition(
+      //   onGeolocationSuccess,
+      //   onGeolocationError,
+      //   { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+      // );
+
+      // Start watching position
+      const watcherId = navigator.geolocation.watchPosition(
+        onGeolocationSuccess,
+        onGeolocationError,
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+      );
+      return () => {
+        navigator.geolocation.clearWatch(watcherId);
+      };
+    }
+  }, [
+    map,
+    onGeolocationError,
+    onGeolocationSuccess,
+    useGeolocation,
+    user,
+    userPosition,
+  ]);
 
   // Detect drag vs click
   useEffect(() => {

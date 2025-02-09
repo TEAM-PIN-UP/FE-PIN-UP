@@ -48,6 +48,7 @@ const MapPage: React.FC = () => {
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [user, setUser] = useState<naver.maps.Marker | null>(null);
   const [activePinIndex, setActivePinIndex] = useState<number | null>(null);
+  const [followUser, setFollowUser] = useState(true);
   const defaultZoom = 20;
 
   // URL params
@@ -65,7 +66,7 @@ const MapPage: React.FC = () => {
       )
     );
   }
-  useMapSetup(!hasParams, map, user, setActivePinIndex);
+  useMapSetup(!hasParams, map, user, followUser, setActivePinIndex);
 
   // Bottom sheet logic
   const sheetRef = useRef<SheetRef>();
@@ -78,69 +79,6 @@ const MapPage: React.FC = () => {
 
   // Header State
   const [isReviewView, setIsReviewView] = useState(false);
-
-  // Places list
-
-  // const handleMapMove = async (
-  //   bounds: naver.maps.Bounds | undefined,
-  //   position: naver.maps.Coord | undefined
-  // ) => {
-  //   // Geolocation and map setup
-
-  //   try {
-  //     if (!bounds || !position) return;
-
-  //     const swLatitude = bounds.getMin().y.toString();
-  //     const swLongitude = bounds.getMin().x.toString();
-  //     const neLatitude = bounds.getMax().y.toString();
-  //     const neLongitude = bounds.getMax().x.toString();
-  //     const currentLatitude = position.y.toString();
-  //     const currentLongitude = position.x.toString();
-
-  //     const { data: places, isError } = useGetPlaces({
-  //       category,
-  //       sort,
-  //       swLatitude,
-  //       swLongitude,
-  //       neLatitude,
-  //       neLongitude,
-  //       currentLatitude,
-  //       currentLongitude,
-  //     })
-
-  //     if (isError) {
-  //       console.error('Failed to fetch places');
-  //       return;
-  //     }
-
-  //     if (places) {
-  //       setPlaces(places);
-  //     }
-
-  //     // const response = await axios.get(
-  //     //   `${import.meta.env.VITE_SERVER_ADDRESS}/api/places`,
-  //     //   {
-  //     //     headers: {
-  //     //       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-  //     //     },
-  //     //     params: {
-  //     //       category: category,
-  //     //       sort: sort,
-  //     //       swLatitude,
-  //     //       swLongitude,
-  //     //       neLatitude,
-  //     //       neLongitude,
-  //     //       currentLatitude,
-  //     //       currentLongitude,
-  //     //     } as PlaceParams,
-  //     //   }
-  //     // );
-
-  //     // setPlaces(response.data.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
 
   useEffect(() => {
     // Update bottom sheet alignment on window resize
@@ -163,7 +101,9 @@ const MapPage: React.FC = () => {
               handleMapMove(map?.getBounds(), user?.getPosition())
             }
           >
-            {user?.getPosition() && <UserPositionMarker ref={setUser} />}
+            {user?.getPosition() && (
+              <UserPositionMarker ref={(marker) => marker && setUser(marker)} />
+            )}
             {places &&
               places.map((item, index) => (
                 <PinMarker
@@ -171,7 +111,7 @@ const MapPage: React.FC = () => {
                   active={activePinIndex === index}
                   type={item.placeCategory}
                   name={item.name}
-                  image={`https://picsum.photos/200`}
+                  image={item.reviewImageUrls[0]}
                   count={item.reviewCount.toString()}
                   onClick={() => {
                     setActivePinIndex(index);
