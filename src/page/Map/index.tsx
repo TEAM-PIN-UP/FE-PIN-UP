@@ -163,7 +163,7 @@ const MapPage: React.FC = () => {
               handleMapMove(map?.getBounds(), user?.getPosition())
             }
           >
-            <UserPositionMarker ref={setUser} />
+            {user?.getPosition() && <UserPositionMarker ref={setUser} />}
             {places &&
               places.map((item, index) => (
                 <PinMarker
