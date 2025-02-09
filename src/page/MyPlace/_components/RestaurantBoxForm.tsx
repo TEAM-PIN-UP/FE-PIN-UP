@@ -1,17 +1,21 @@
 import styled from "styled-components";
 import foodPin from "@/image/icons/food.svg";
 import cafePin from "@/image/icons/coffee.svg";
-import { category } from "@/interface/apiInterface";
+import bookmarkActive from "@/image/icons/bookmarkActive.svg";
+import { placeCategory } from "@/interface/apiInterface";
 import { B5, H4 } from "@/style/font";
 
 interface Props {
-  sort: category;
+  sort: placeCategory;
 }
 
 const RestaurantBoxForm: React.FC<Props> = ({ sort }) => {
   return (
     <StRestaurantBoxForm>
-      <div className="restaurantImg">img</div>
+      <div className="restaurantImg">
+        <img className="mark" src={bookmarkActive} />
+        img
+      </div>
       <div className="restaurantInfo">
         <div className="title">
           <img src={sort === "CAFE" ? cafePin : foodPin} />
@@ -29,9 +33,16 @@ const StRestaurantBoxForm = styled.div`
   gap: 8px;
   width: 100%;
   .restaurantImg {
+    position: relative;
     width: 100%;
+    aspect-ratio: 1/1;
     background-color: var(--neutral_100);
     border-radius: 8px;
+    .mark {
+      position: absolute;
+      top: 15.6px;
+      right: 16.6px;
+    }
   }
   .restaurantInfo {
     display: flex;

@@ -17,7 +17,7 @@ import {
   NavermapsProvider,
   useNavermaps,
 } from "react-naver-maps";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import ReviewHeader from "./_components/headers/ReviewHeader";
 import SearchHeader from "./_components/headers/SearchHeader";
@@ -35,6 +35,8 @@ const MapPage: React.FC = () => {
   const [sort, setSort] = useState<placeSort>("NEAR");
   const [places, setPlaces] = useState<GetPlaceResponse[]>();
   const [dataQuery, setDataQuery] = useState<string>("");
+  const [searchParams] = useSearchParams();
+  const placeId = searchParams.get("placeId");
 
   const { handleMapMove } = useUpdatePlaces({
     query: dataQuery,
@@ -76,12 +78,14 @@ const MapPage: React.FC = () => {
     setLeft(newLeft);
   };
 
-  // Header State
+  const removeQueries = () => {
+    const path = window.location.pathname; // 현재 경로
+    window.history.pushState({}, "", path); // 쿼리 없이 경로만 유지
+  };
+
   const [isReviewView, setIsReviewView] = useState(false);
-  // const [searchParams, setSearchParams] = useSearchParams()
 
   useEffect(() => {
-    // Update bottom sheet alignment on window resize
     updateLeftPosition();
     window.addEventListener("resize", updateLeftPosition);
 
@@ -89,6 +93,10 @@ const MapPage: React.FC = () => {
       window.removeEventListener("resize", updateLeftPosition);
     };
   }, [navigate, toast]);
+
+  useEffect(() => {
+    if (placeId) setIsReviewView(true);
+  }, [placeId]);
 
   return (
     <StDiv ref={attachRef}>
@@ -147,7 +155,12 @@ const MapPage: React.FC = () => {
                   />
                 )}
                 {isReviewView && (
-                  <ReviewHeader onBack={() => { setIsReviewView(false); searchParams.delete(); }} />
+                  <ReviewHeader
+                    onBack={() => {
+                      removeQueries();
+                      setIsReviewView(false);
+                    }}
+                  />
                 )}
               </Sheet.Header>
               <Sheet.Content style={{ paddingBottom: sheetRef.current?.y }}>
