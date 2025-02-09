@@ -35,11 +35,13 @@ const useMapSetup = (
   }, [map, user, toast]);
 
   useEffect(() => {
-    if (!map) return;
+    if (!map || !user) return;
+    let watcherId: number | null = null;
     if (useGeolocation && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
+      watcherId = navigator.geolocation.watchPosition(
         onGeolocationSuccess,
-        onGeolocationError
+        onGeolocationError,
+        { enableHighAccuracy: true, maximumAge: 1000, timeout: 5000 }
       );
     }
 
@@ -85,6 +87,7 @@ const useMapSetup = (
     );
 
     return () => {
+      if (watcherId !== null) navigator.geolocation.clearWatch(watcherId);
       naver.maps.Event.removeListener(mouseDownListener);
       naver.maps.Event.removeListener(mouseMoveListener);
       naver.maps.Event.removeListener(mouseUpListener);
@@ -95,6 +98,7 @@ const useMapSetup = (
     onGeolocationSuccess,
     onGeolocationError,
     setActivePinIndex,
+    user,
   ]);
 };
 
