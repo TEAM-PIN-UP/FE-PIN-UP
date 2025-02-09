@@ -22,9 +22,9 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({ onBack }) => {
         <button onClick={() => setIsScraped(!isScraped)}>
           <img src={isScraped ? scrapActive : scrapInactive} alt="scrap" />
         </button>
-        <button>
+        {/* <button>
           <img src={edit} alt="edit" />
-        </button>
+        </button> */}
       </StActionButtons>
     </StHeaderContainer>
   );
