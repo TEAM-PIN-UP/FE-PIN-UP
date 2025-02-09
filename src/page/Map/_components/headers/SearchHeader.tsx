@@ -42,8 +42,8 @@ const SearchHeader = React.forwardRef<HTMLDivElement, SearchHeaderProps>(
           <SearchBar
             placeholder="장소/가게 검색하기"
             onChange={searchFn}
-            dataQuery={dataQuery}
-            setDataQuery={setDataQuery}
+            $dataQuery={dataQuery}
+            $setDataQuery={setDataQuery}
           />
         </SearchContainer>
 
