@@ -1,6 +1,7 @@
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useMapSetup from "@/hooks/useMapSetup";
 import { H3 } from "@/style/font";
+import useToastPopup from "@/utils/toastPopup";
 import { useEffect, useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 import {
@@ -22,10 +23,11 @@ import Review from "./_components/review/Review";
 
 const MapPage: React.FC = () => {
   const navigate = useNavigate();
-  const [category, setCategory] = useState<category>('CAFE');
-  const [sort, setSort] = useState<sort>('NEAR');
+  const toast = useToastPopup();
+  const [category, setCategory] = useState<category>("CAFE");
+  const [sort, setSort] = useState<sort>("NEAR");
   const [places, setPlaces] = useState<GetPlaceResponse[]>();
-  const [dataQuery, setDataQuery] = useState<string>('');
+  const [dataQuery, setDataQuery] = useState<string>("");
 
   const { handleMapMove } = useUpdatePlaces({
     query: dataQuery,
@@ -77,7 +79,6 @@ const MapPage: React.FC = () => {
   //   position: naver.maps.Coord | undefined
   // ) => {
   //   // Geolocation and map setup
-
 
   //   try {
   //     if (!bounds || !position) return;
@@ -136,7 +137,10 @@ const MapPage: React.FC = () => {
 
   useEffect(() => {
     // Check signin
-    if (!localStorage.getItem("accessToken")) navigate("/signup");
+    if (!localStorage.getItem("accessToken")) {
+      toast("로그인 후 이용해 주세요.");
+      navigate("/signup");
+    }
 
     // Update bottom sheet alignment on window resize
     updateLeftPosition();
@@ -145,9 +149,8 @@ const MapPage: React.FC = () => {
     return () => {
       window.removeEventListener("resize", updateLeftPosition);
     };
-  }, [navigate]);
 
-  console.log(isReviewView)
+  }, [navigate, toast]);
 
   return (
     <StDiv ref={attachRef}>
@@ -197,7 +200,13 @@ const MapPage: React.FC = () => {
               <Sheet.Header ref={sheetHeaderRef}>
                 <Sheet.Header />
                 {!isReviewView && (
-                  <SearchHeader dataQuery={dataQuery} setDataQuery={setDataQuery} setSort={setSort} category={category} setCategory={setCategory} />
+                  <SearchHeader
+                    dataQuery={dataQuery}
+                    setDataQuery={setDataQuery}
+                    setSort={setSort}
+                    category={category}
+                    setCategory={setCategory}
+                  />
                 )}
                 {isReviewView && (
                   <ReviewHeader onBack={() => setIsReviewView(false)} />
@@ -227,7 +236,9 @@ const MapPage: React.FC = () => {
                           name={item.name}
                           averageStarRating={item.averageStarRating}
                           reviewImageUrls={item.reviewImageUrls}
-                          reviewerProfileImageUrls={item.reviewerProfileImageUrls}
+                          reviewerProfileImageUrls={
+                            item.reviewerProfileImageUrls
+                          }
                           reviewCount={item.reviewCount}
                           distance={item.distance}
                         />

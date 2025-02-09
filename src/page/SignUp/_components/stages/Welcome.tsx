@@ -10,8 +10,9 @@ const Welcome = ({ data }: { data: SignUpForm }) => {
 
   const handleClick = async () => {
     try {
-      const accessToken = localStorage.getItem("accessToken");
+      const accessToken = localStorage.getItem("tempAccessToken");
       if (!accessToken) throw new Error("No access token found.");
+      localStorage.setItem("accessToken", accessToken);
 
       const request: MemberPatchBody["request"] = {
         nickname: data.nickname,
@@ -70,7 +71,13 @@ const Welcome = ({ data }: { data: SignUpForm }) => {
         <div className="h1">반가워요!</div>
         <div className="h1">이제 ‘찐’ 맛집 리뷰를 탐색해볼까요?</div>
       </StTextContainer>
-      <Button size="full" onClick={handleClick}>
+      <Button
+        size="full"
+        onClick={() => {
+          handleClick();
+          navigate("/map");
+        }}
+      >
         핀업 시작하기
       </Button>
     </>

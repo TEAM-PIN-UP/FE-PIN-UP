@@ -11,7 +11,7 @@ import notificationInactive from "@/image/icons/notificationInactive.svg";
 import settings from "@/image/icons/settings.svg";
 import share from "@/image/icons/share.svg";
 import { MemberMyProfileResponse } from "@/interface/member";
-import { TextReview } from "@/interface/review";
+import { PhotoReview, TextReview } from "@/interface/review";
 import { B3, B4, H1, H2, H3, H4 } from "@/style/font";
 import useToastPopup from "@/utils/toastPopup";
 import axios, { AxiosRequestConfig } from "axios";
@@ -22,6 +22,7 @@ import UserStatsSection, { Stat } from "./_components/UserStatsSection";
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
+  const toast = useToastPopup();
 
   // Bottom sheet logic
   const sheetRef = useRef<SheetRef>();
@@ -39,16 +40,17 @@ const Profile: React.FC = () => {
   );
 
   const [myDetails, setMyDetails] = useState<MemberMyProfileResponse>();
-  const [myPhotos, setMyPhotos] = useState<string[]>();
+  const [myPhotos, setMyPhotos] = useState<PhotoReview[]>();
   const [myTexts, setMyTexts] = useState<TextReview[]>();
 
   useEffect(() => {
     // Redirect to signup if not logged in
-    if (!isLoggedIn) navigate("/signup");
-    return () => {};
-  }, [isLoggedIn, navigate]);
+    if (!isLoggedIn) {
+      toast("로그인 후 이용해 주세요.");
+      navigate("/signup");
+      return;
+    }
 
-  useEffect(() => {
     const authHeader: AxiosRequestConfig = {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -76,6 +78,9 @@ const Profile: React.FC = () => {
           setMyDetails(userData.data.data);
           setMyPhotos(photoReviews.data.data);
           setMyTexts(textReviews.data.data);
+          console.log(userData.data.data);
+          console.log(photoReviews.data.data);
+          console.log(textReviews.data.data);
         } catch (error) {
           console.error("Error fetching member details:", error);
         }
@@ -85,7 +90,7 @@ const Profile: React.FC = () => {
       console.error(error);
     }
     return () => {};
-  }, []);
+  }, [isLoggedIn, navigate, toast]);
 
   useEffect(() => {
     // Update bottom sheet alignment on window resize
@@ -95,9 +100,7 @@ const Profile: React.FC = () => {
     return () => {
       window.removeEventListener("resize", updateLeftPosition);
     };
-  }, [isLoggedIn, navigate]);
-
-  const toast = useToastPopup();
+  }, []);
 
   // Review history swiper view state
   const [index, setIndex] = useState(0);

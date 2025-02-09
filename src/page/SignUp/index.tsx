@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-
 import Header from "@/components/Header";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import { H3 } from "@/style/font";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import TransitionWrapper, {
   TransitionDirection,
 } from "../../components/TransitionWrapper";
@@ -89,7 +88,6 @@ const SignUpPage: React.FC = () => {
           </Header.Center>
         </Header>
       )}
-
       <div className="content">
         <TransitionWrapper
           className="transition"

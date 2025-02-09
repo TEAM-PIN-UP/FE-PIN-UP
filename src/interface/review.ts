@@ -16,3 +16,10 @@ export interface TextReview {
   imageUrls: string[];
   createdAt: DateTimeTuple;
 }
+
+export interface PhotoReview {
+  id: number;
+  content: string;
+  createdAt: DateTimeTuple;
+  previewImageUrl: string;
+}

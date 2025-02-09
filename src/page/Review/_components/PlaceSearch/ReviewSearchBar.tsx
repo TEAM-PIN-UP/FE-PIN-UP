@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 
 import search from "@/image/icons/search.svg";
@@ -62,7 +62,7 @@ const ReviewSearchBar: React.FC<SearchBarProps> = ({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [reviewSearch]);
+  }, [infoShowFunc, reviewSearch]);
 
   const showClearIcon = reviewSearch.length > 0;
 
