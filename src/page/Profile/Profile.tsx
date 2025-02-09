@@ -8,8 +8,8 @@ import notificationActive from "@/image/icons/notificationActive.svg";
 import notificationInactive from "@/image/icons/notificationInactive.svg";
 import settings from "@/image/icons/settings.svg";
 import share from "@/image/icons/share.svg";
-import { MemberMyProfileResponse } from "@/interface/member";
-import { PhotoReview, TextReview } from "@/interface/review";
+import { MyFeed } from "@/interface/member";
+import { Review } from "@/interface/review";
 import { B3, B4, H1, H2, H3, H4 } from "@/style/font";
 import checkLogin from "@/utils/checkLogin";
 import useToastPopup from "@/utils/toastPopup";
@@ -36,27 +36,27 @@ const Profile: React.FC = () => {
     setLeft(newLeft);
   };
 
-  const [myDetails, setMyDetails] = useState<MemberMyProfileResponse>();
-  const [myPhotos, setMyPhotos] = useState<PhotoReview[]>();
-  const [myTexts, setMyTexts] = useState<TextReview[]>();
+  const [myFeed, setMyFeed] = useState<MyFeed | null>(null);
+  const [photos, setPhotos] = useState<Review[] | null>(null);
+  const [texts, setTexts] = useState<Review[] | null>(null);
 
   useEffect(() => {
     try {
       // Fetch current user profile
       const getMemberDetails = async () => {
         try {
-          const [userData, photoReviews, textReviews] = await Promise.all([
-            getApi.getMyProfile(),
-            getApi.getMyPhotos(),
-            getApi.getMyTexts(),
-          ]);
+          const response = await getApi.getMyFeed();
+          setMyFeed(response.data);
 
-          setMyDetails(userData.data);
-          setMyPhotos(photoReviews.data);
-          setMyTexts(textReviews.data);
-          console.log(userData.data);
-          console.log(photoReviews.data);
-          console.log(textReviews.data);
+          // Sort memberReviews into photos and texts
+          const p: Review[] = [];
+          const t: Review[] = [];
+          myFeed?.memberReviews.forEach((review: Review) => {
+            if (review.reviewImageUrls.length > 0) p.push(review);
+            else t.push(review);
+          });
+          setPhotos(p);
+          setTexts(t);
         } catch (error) {
           console.error("Error fetching member details:", error);
         }
@@ -66,7 +66,7 @@ const Profile: React.FC = () => {
       console.error(error);
     }
     return () => {};
-  }, [navigate, toast]);
+  }, [myFeed?.memberReviews, navigate, toast]);
 
   useEffect(() => {
     // Update bottom sheet alignment on window resize
@@ -122,27 +122,27 @@ const Profile: React.FC = () => {
         <div className="user-section">
           <div className="profile">
             <img
-              src={myDetails?.member.profilePictureUrl}
+              src={myFeed?.memberResponse.profilePictureUrl}
               className="profile-image"
             />
             <UserStatsSection
               stats={
                 [
-                  { label: "리뷰", value: myDetails?.reviewCount },
+                  { label: "리뷰", value: myFeed?.reviewCount },
                   {
                     label: "평균 평점",
-                    value: myDetails?.averageRating,
+                    value: myFeed?.averageStarRating,
                   },
                   {
                     label: "핀버디",
-                    value: myDetails?.friendCount,
+                    value: myFeed?.pinBuddyCount,
                   },
                 ] as Stat[]
               }
             />
           </div>
-          <div className="username">{myDetails?.member.nickname}</div>
-          <div className="intro">{myDetails?.member.bio}</div>
+          <div className="username">{myFeed?.memberResponse.nickname}</div>
+          <div className="intro">{myFeed?.memberResponse.bio}</div>
 
           <div className="profile-buttons">
             <ProfileButton
@@ -162,13 +162,13 @@ const Profile: React.FC = () => {
               className={`review-filter ${index === 0 ? "active" : ""}`}
               onClick={() => setIndex(0)}
             >
-              포토 리뷰 {myPhotos?.length}
+              포토 리뷰 {photos?.length}
             </button>
             <button
               className={`review-filter ${index === 1 ? "active" : ""}`}
               onClick={() => setIndex(1)}
             >
-              텍스트 리뷰 {myTexts?.length}
+              텍스트 리뷰 {texts?.length}
             </button>
           </div>
         </div>
@@ -176,8 +176,8 @@ const Profile: React.FC = () => {
           <ReviewHistory
             index={index}
             onChangeIndex={(i) => setIndex(i)}
-            photos={myPhotos ? myPhotos : []}
-            texts={myTexts ? myTexts : []}
+            photos={photos ? photos : []}
+            texts={texts ? texts : []}
           />
         </div>
 
@@ -197,21 +197,23 @@ const Profile: React.FC = () => {
               {!showLogin && (
                 <div className="profile-share">
                   <img
-                    src={myDetails?.member.profilePictureUrl}
+                    src={myFeed?.memberResponse.profilePictureUrl}
                     className="profile-image"
                   />
-                  <span className="username">{myDetails?.member.nickname}</span>
+                  <span className="username">
+                    {myFeed?.memberResponse.nickname}
+                  </span>
                   <UserStatsSection
                     stats={
                       [
-                        { label: "리뷰", value: myDetails?.reviewCount },
+                        { label: "리뷰", value: myFeed?.reviewCount },
                         {
                           label: "평균 평점",
-                          value: myDetails?.averageRating,
+                          value: myFeed?.averageStarRating,
                         },
                         {
                           label: "핀버디",
-                          value: myDetails?.friendCount,
+                          value: myFeed?.pinBuddyCount,
                         },
                       ] as Stat[]
                     }
