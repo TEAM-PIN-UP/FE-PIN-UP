@@ -6,9 +6,8 @@ import { B3, B4, B5, B6, H3, H4 } from "@/style/font";
 import { useNavigate } from "react-router-dom";
 
 interface ReviewTextProps {
+  id: number;
   placeName: string;
-  longitude: number;
-  latitude: number;
   userName: string;
   score: string;
   reviewDate: string;
@@ -17,9 +16,8 @@ interface ReviewTextProps {
 }
 
 const ReviewText: React.FC<ReviewTextProps> = ({
+  id,
   placeName,
-  longitude,
-  latitude,
   userName,
   score,
   reviewDate,
@@ -37,11 +35,8 @@ const ReviewText: React.FC<ReviewTextProps> = ({
             src={chevronRight}
             onClick={() => {
               const params = new URLSearchParams({
-                query: placeName,
-                longitude: longitude.toString(),
-                latitude: latitude.toString(),
+                placeId: id.toString(),
               });
-
               navigate(`/map?${params.toString()}`);
             }}
           />

@@ -36,6 +36,7 @@ const Welcome = ({ data }: { data: SignUpForm }) => {
       const memberResponse = getMemberResponseObj();
       if (memberResponse) {
         memberResponse.nickname = data.nickname;
+        memberResponse.profilePictureUrl = data.profileImage;
         localStorage.setItem("memberResponse", JSON.stringify(memberResponse));
       } else {
         navigate("/signup");

@@ -8,20 +8,15 @@ export type DateTimeTuple = [
   /* timestamp */ number
 ];
 
-export interface TextReview {
-  id: number;
+export interface Review {
   content: string;
+  createdAt: string;
+  kakaoPlaceId: string;
+  placeName: string;
+  reviewId: number;
+  reviewImageUrls: string[];
   starRating: number;
-  type: "TEXT";
-  imageUrls: string[];
-  createdAt: DateTimeTuple;
-}
-
-export interface PhotoReview {
-  id: number;
-  content: string;
-  createdAt: DateTimeTuple;
-  previewImageUrl: string;
+  visitedDate: string;
 }
 
 export interface ReviewDetail {

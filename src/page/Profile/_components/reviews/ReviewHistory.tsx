@@ -1,5 +1,5 @@
 import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
-import { DateTimeTuple, PhotoReview, TextReview } from "@/interface/review";
+import { Review } from "@/interface/review";
 import { H4 } from "@/style/font";
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,8 +10,8 @@ import ReviewText from "./ReviewText";
 interface ReviewHistoryProps {
   index: number;
   onChangeIndex: (arg0: number) => void;
-  photos: PhotoReview[];
-  texts: TextReview[];
+  photos: Review[];
+  texts: Review[];
 }
 
 const ReviewHistory: React.FC<ReviewHistoryProps> = ({
@@ -42,12 +42,9 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
     navigate(`photo-review/${index}`);
   };
 
-  const formatDate = (dateArray: DateTimeTuple): string => {
-    const year = dateArray[0] % 100;
-    const month = dateArray[1].toString().padStart(2, "0");
-    const day = dateArray[2].toString().padStart(2, "0");
-
-    return `${year}.${month}.${day}`;
+  const formatDate = (date: string): string => {
+    const [year, month, day] = date.split("-");
+    return `${year.slice(2)}.${month}.${day}`;
   };
 
   return (
@@ -65,57 +62,26 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
           {Array.isArray(photos) &&
             photos.map((item) => (
               <ImgWithPlaceholder
-                key={item.id}
-                src={item.previewImageUrl}
+                key={item.reviewId}
+                src={item.reviewImageUrls[0]}
                 className="image"
-                onClick={() => handleClick(item.id)}
+                onClick={() => handleClick(item.reviewId)}
               />
             ))}
         </div>
         <div className="text-reviews">
           {texts.map((item) => (
             <ReviewText
-              key={item.id}
-              placeName={""}
-              longitude={0}
-              latitude={0}
+              key={item.reviewId}
+              id={item.reviewId}
+              placeName={item.placeName}
               userName="나"
               score={item.starRating.toString()}
               reviewDate={formatDate(item.createdAt)}
               body={item.content}
-              visitDate={""}
+              visitDate={formatDate(item.visitedDate)}
             />
           ))}
-          <ReviewText
-            placeName="잠실새내 딤딤섬"
-            longitude={127.104809}
-            latitude={37.5144}
-            userName="나"
-            score="4.0"
-            reviewDate="24.10.17"
-            body="새우 들어간 딤섬이 젤 마싯음 !! 매장도 깔끔"
-            visitDate="2024년 10월 31일"
-          />
-          <ReviewText
-            placeName="잠실새내 딤딤섬"
-            longitude={127.104809}
-            latitude={37.5144}
-            userName="나"
-            score="4.0"
-            reviewDate="24.10.17"
-            body="새우 들어간 딤섬이 젤 마싯음 !! 매장도 깔끔"
-            visitDate="2024년 10월 31일"
-          />
-          <ReviewText
-            placeName="잠실새내 딤딤섬"
-            longitude={127.104809}
-            latitude={37.5144}
-            userName="나"
-            score="4.0"
-            reviewDate="24.10.17"
-            body="새우 들어간 딤섬이 젤 마싯음 !! 매장도 깔끔"
-            visitDate="2024년 10월 31일"
-          />
         </div>
       </SwipeableViews>
     </StDiv>

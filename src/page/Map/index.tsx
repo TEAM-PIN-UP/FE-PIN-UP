@@ -50,6 +50,7 @@ const MapPage: React.FC = () => {
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [user, setUser] = useState<naver.maps.Marker | null>(null);
   const [activePinIndex, setActivePinIndex] = useState<number | null>(null);
+  const [followUser, setFollowUser] = useState(true);
   const defaultZoom = 20;
 
   // URL params
@@ -67,7 +68,7 @@ const MapPage: React.FC = () => {
       )
     );
   }
-  useMapSetup(!hasParams, map, user, defaultZoom, setActivePinIndex);
+  useMapSetup(!hasParams, map, user, followUser, setActivePinIndex);
 
   // Bottom sheet logic
   const sheetRef = useRef<SheetRef>();
@@ -109,7 +110,7 @@ const MapPage: React.FC = () => {
               handleMapMove(map?.getBounds(), user?.getPosition())
             }
           >
-            <UserPositionMarker ref={setUser} />
+            <UserPositionMarker ref={(marker) => marker && setUser(marker)} />
             {places &&
               places.map((item, index) => (
                 <PinMarker
@@ -117,7 +118,7 @@ const MapPage: React.FC = () => {
                   active={activePinIndex === index}
                   type={item.placeCategory}
                   name={item.name}
-                  image={`https://picsum.photos/200`}
+                  image={item.reviewImageUrls[0]}
                   count={item.reviewCount.toString()}
                   onClick={() => {
                     setActivePinIndex(index);
