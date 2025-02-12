@@ -36,13 +36,6 @@ const MapPage: React.FC = () => {
   const [places, setPlaces] = useState<GetPlaceResponse[]>();
   const [dataQuery, setDataQuery] = useState<string>("");
 
-  const { handleMapMove } = useUpdatePlaces({
-    query: dataQuery,
-    category,
-    sort,
-    setPlaces,
-  });
-
   // Geolocation and map setup
   const naverMaps = useNavermaps();
   const [map, setMap] = useState<naver.maps.Map | null>(null);
@@ -89,6 +82,33 @@ const MapPage: React.FC = () => {
       window.removeEventListener("resize", updateLeftPosition);
     };
   }, [navigate, toast]);
+
+  // Track mouse down
+  const [isPointerDown, setIsPointerDown] = useState(false);
+  useEffect(() => {
+    const handlePointerDown = () => setIsPointerDown(true);
+    const handlePointerUp = () => setIsPointerDown(false);
+
+    window.addEventListener("mousedown", handlePointerDown);
+    window.addEventListener("mouseup", handlePointerUp);
+    window.addEventListener("touchstart", handlePointerDown);
+    window.addEventListener("touchend", handlePointerUp);
+
+    return () => {
+      window.removeEventListener("mousedown", handlePointerDown);
+      window.removeEventListener("mouseup", handlePointerUp);
+      window.removeEventListener("touchstart", handlePointerDown);
+      window.removeEventListener("touchend", handlePointerUp);
+    };
+  }, []);
+
+  const { handleMapMove } = useUpdatePlaces({
+    query: dataQuery,
+    category,
+    sort,
+    isPointerDown,
+    setPlaces,
+  });
 
   return (
     <StDiv ref={attachRef}>
