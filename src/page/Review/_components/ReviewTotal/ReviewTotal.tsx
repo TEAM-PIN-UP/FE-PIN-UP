@@ -15,13 +15,28 @@ import WriteReview from "./WriteReview";
 interface ReviewTotalProps {
   pickedInfo: GetSearchPlacesResponse;
   visitDate: Date;
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setPlaceId: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ReviewTotal = ({ pickedInfo, visitDate }: ReviewTotalProps) => {
+const ReviewTotal: React.FC<ReviewTotalProps> = ({
+  pickedInfo,
+  visitDate,
+  setModalOpen,
+  setPlaceId,
+}) => {
   const [starScore, setStarScore] = useState<number>(0);
   const [imageData, setImageData] = useState<File[]>([]);
   const [reviewContent, setReviewContent] = useState<string>("");
-  const reviewCreate = useCreateReview();
+  const reviewCreate = useCreateReview({ setModalOpen, setPlaceId });
+
+  const formatDate = (date: Date) => {
+    const year = date.getFullYear() % 100;
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}.${month}.${day}`;
+  };
 
   const handleReviewSubmit = () => {
     const formData = new FormData();
@@ -29,11 +44,7 @@ const ReviewTotal = ({ pickedInfo, visitDate }: ReviewTotalProps) => {
     const reviewRequest: ReviewRequestType = {
       content: reviewContent,
       starRating: starScore,
-      visitedDate: visitDate
-        .toLocaleDateString()
-        .split(". ")
-        .join("")
-        .slice(0, 8),
+      visitedDate: formatDate(visitDate),
     };
 
     const placeRequest: PlaceRequestType = {
@@ -79,7 +90,11 @@ const ReviewTotal = ({ pickedInfo, visitDate }: ReviewTotalProps) => {
           setReviewContent={setReviewContent}
         />
         <div className="buttonBucket">
-          <Button size="full" onClick={handleReviewSubmit}>
+          <Button
+            size="full"
+            active={starScore > 0 && reviewContent.length >= 10}
+            onClick={handleReviewSubmit}
+          >
             리뷰 등록하기
           </Button>
         </div>

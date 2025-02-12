@@ -17,7 +17,7 @@ import {
   NavermapsProvider,
   useNavermaps,
 } from "react-naver-maps";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import ReviewHeader from "./_components/headers/ReviewHeader";
 import SearchHeader from "./_components/headers/SearchHeader";
@@ -31,10 +31,16 @@ const MapPage: React.FC = () => {
 
   const navigate = useNavigate();
   const toast = useToastPopup();
-  const [category, setCategory] = useState<placeCategory>("CAFE");
+  const [category, setCategory] = useState<placeCategory>("ALL");
   const [sort, setSort] = useState<placeSort>("NEAR");
   const [places, setPlaces] = useState<GetPlaceResponse[]>();
   const [dataQuery, setDataQuery] = useState<string>("");
+  const [searchParams] = useSearchParams();
+  const placeId = searchParams.get("placeId");
+  
+  useEffect(() => {
+    if (placeId) setIsReviewView(true);
+  }, [placeId]);
 
   // Geolocation and map setup
   const naverMaps = useNavermaps();
@@ -70,11 +76,14 @@ const MapPage: React.FC = () => {
     setLeft(newLeft);
   };
 
-  // Header State
+  const removeQueries = () => {
+    const path = window.location.pathname; // 현재 경로
+    window.history.pushState({}, "", path); // 쿼리 없이 경로만 유지
+  };
+
   const [isReviewView, setIsReviewView] = useState(false);
 
   useEffect(() => {
-    // Update bottom sheet alignment on window resize
     updateLeftPosition();
     window.addEventListener("resize", updateLeftPosition);
 
@@ -167,7 +176,12 @@ const MapPage: React.FC = () => {
                   />
                 )}
                 {isReviewView && (
-                  <ReviewHeader onBack={() => setIsReviewView(false)} />
+                  <ReviewHeader
+                    onBack={() => {
+                      removeQueries();
+                      setIsReviewView(false);
+                    }}
+                  />
                 )}
               </Sheet.Header>
               <Sheet.Content style={{ paddingBottom: sheetRef.current?.y }}>
@@ -193,7 +207,7 @@ const MapPage: React.FC = () => {
                       >
                         <Restaurant
                           key={item.placeId}
-                          placeId={item.placeId}
+                          // placeId={item.placeId}
                           name={item.name}
                           averageStarRating={item.averageStarRating}
                           reviewImageUrls={item.reviewImageUrls}
@@ -208,7 +222,10 @@ const MapPage: React.FC = () => {
                   {isReviewView && (
                     // || activePinIndex !== null
                     <>
-                      <Review />
+                      <Review
+                        currentLatitude={user?.getPosition()?.y}
+                        currentLongitude={user?.getPosition()?.x}
+                      />
                     </>
                   )}
                 </Sheet.Scroller>
@@ -242,6 +259,24 @@ const StSheet = styled(Sheet)<{ $left: number }>`
   max-width: 440px;
   min-width: 320px;
   left: ${({ $left }) => `${$left}px !important`};
+
+  .react-modal-sheet-content::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .react-modal-sheet-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  .react-modal-sheet-content::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+
+  .react-modal-sheet-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 
   .no-reviews {
     ${H3}

@@ -3,16 +3,13 @@ import styled from "styled-components";
 import emptyStar from "@/image/icons/emptyStar.svg";
 import fullStar from "@/image/icons/blackStar.svg";
 import halfStar from "@/image/icons/halfBlackStar.svg";
-import option from '@/image/icons/option.svg'
+import option from "@/image/icons/option.svg";
 
-import profileImg from "@/image/icons/profile.jpg";
 import { B3, B4, B5, B6, C2, D2, H4, H5 } from "@/style/font";
-import { reviewProps } from "./Review";
 import ReviewModal from "./ReviewModal";
+import { ReviewSingleType } from "@/interface/apiInterface";
 
-const ReviewSingle: React.FC<reviewProps> = (data) => {
-  const [openModal, setOpenModal] = useState<boolean>(false);
-
+const ReviewSingle: React.FC<ReviewSingleType> = (data) => {
   const starShow = (score: number) => {
     const stars = [];
     let count = score;
@@ -33,26 +30,26 @@ const ReviewSingle: React.FC<reviewProps> = (data) => {
     <StReviewSingle>
       <div className="profileInfo">
         <div className="profileBucket">
-          <img className="profileImg" src={profileImg} alt="profileImg" />
+          <img
+            className="profileImg"
+            src={data.writerProfileImageUrl}
+            alt="profileImg"
+          />
           <div className="profileDetail">
-            <p className="name">{data.name}</p>
-            <p className="reviewCount">총 리뷰 32</p>
+            <p className="name">{data.writerName}</p>
+            <p className="reviewCount">총 리뷰 {data.writerTotalReviewCount}</p>
           </div>
         </div>
         <img src={option} />
       </div>
-      <div className='reviewInfo'>
+      <div className="reviewInfo">
         <div className="scoreBox">
-          <p className="score">{data.score}</p>
-          <div className="starBox">
-            {starShow(data.score)}
-          </div>
+          <p className="score">{data.starRating}</p>
+          <div className="starBox">{starShow(data.starRating)}</div>
         </div>
-        <p className="date">방문날짜 {data.date}</p>
+        <p className="date">방문날짜 {data.visitedDate}</p>
       </div>
-      <div className="reviewContent">
-        {data.comment}
-      </div>
+      <div className="reviewContent">{data.content}</div>
     </StReviewSingle>
   );
 };
@@ -64,59 +61,60 @@ const StReviewSingle = styled.div`
   padding: 0 var(--spacing_20);
   box-sizing: border-box;
   gap: 12px;
+  display: flex;
+  flex-direction: column;
+  .profileInfo {
     display: flex;
-    flex-direction: column;
-    .profileInfo{
+    justify-content: space-between;
+    .profileBucket {
       display: flex;
-      justify-content: space-between;
-      .profileBucket{
+      gap: 6px;
+      .profileImg {
+        width: 30px;
+        height: 30px;
+        border-radius: var(--radius_circle);
+      }
+      .profileDetail {
         display: flex;
-        gap : 6px;
-        .profileImg {
-          width: 30px;
-          height: 30px;
-          border-radius: var(--radius_circle);
-        }
-        .profileDetail{
+        flex-direction: column;
+        gap: 3px;
+        .name {
           display: flex;
-          flex-direction: column;
-          gap : 3px;
-          .name{
-            display: flex;
-            ${H5}
-            color : var(--neutral_800);
-          }
-          .reviewCount{
-            ${B5}
-            color : var(--neutral_500)
-          }
+          ${H5}
+          color : var(--neutral_800);
+        }
+        .reviewCount {
+          ${B5}
+          color : var(--neutral_500)
         }
       }
     }
-    .reviewInfo{
+  }
+  .reviewInfo {
+    display: flex;
+    ${C2}
+    .scoreBox {
       display: flex;
-      ${C2}
-      .scoreBox{
-        display: flex;
-        .score{
-          ${B4}
-        }
-        .date{
-          color : var(--neutral_500);
-        }
-        .starBox{
-          margin-left: 2px;
-          img{
-            width: 14px;
-            height: 14px;
-          }
+      margin-right: 8px;
+      .score {
+        ${B4}
+      }
+      .starBox {
+        margin-left: 2px;
+        img {
+          width: 14px;
+          height: 14px;
         }
       }
     }
-    .reviewContent{
-      display: flex;
-      ${D2}
+    .date {
+      color: var(--neutral_500);
     }
+  }
+  .reviewContent {
+    display: flex;
+    ${D2}
+  }
   /* .bucket {
     display: flex;
     flex-direction: column;
