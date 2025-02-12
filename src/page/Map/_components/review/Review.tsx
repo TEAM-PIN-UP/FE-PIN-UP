@@ -12,11 +12,13 @@ import ReviewGraph from "./ReviewGraph";
 export interface ReviewProps {
   currentLatitude: number | undefined;
   currentLongitude: number | undefined;
+  setBookmark: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Review: React.FC<ReviewProps> = ({
   currentLatitude,
   currentLongitude,
+  setBookmark,
 }) => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -26,12 +28,15 @@ const Review: React.FC<ReviewProps> = ({
   }
 
   const { data } = useGetSpecificPlaces({
+    setBookmark,
     kakaoPlaceId,
     currentLatitude,
     currentLongitude,
   });
 
   if (!data) return null;
+
+  console.log(data);
 
   return (
     <StReview>
