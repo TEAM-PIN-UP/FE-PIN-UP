@@ -32,7 +32,7 @@ const useMapSetup = (
 
   const onGeolocationError = useCallback(() => {
     setErrorCount((prev) => {
-      if (prev > 3) {
+      if (prev > 8) {
         toast("위치정보를 확인하지 못했어요.");
         return 0;
       }
