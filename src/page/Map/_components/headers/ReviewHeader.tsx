@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-
 import arrowLeft from "@/image/icons/arrowLeft.svg";
-import edit from "@/image/icons/edit.svg";
 import scrapActive from "@/image/icons/scrapActive.svg";
 import scrapInactive from "@/image/icons/scrapInactive.svg";
 
@@ -22,9 +20,6 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({ onBack }) => {
         <button onClick={() => setIsScraped(!isScraped)}>
           <img src={isScraped ? scrapActive : scrapInactive} alt="scrap" />
         </button>
-        {/* <button>
-          <img src={edit} alt="edit" />
-        </button> */}
       </StActionButtons>
     </StHeaderContainer>
   );
@@ -58,8 +53,8 @@ const StActionButtons = styled.div`
   gap: var(--spacing_12);
 
   button {
-  border: none;
-  width: 40px;
+    border: none;
+    width: 40px;
     height: 40px;
     border-radius: var(--radius_circle);
     flex-shrink: 0;

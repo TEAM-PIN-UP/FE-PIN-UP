@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import emptyStar from "@/image/icons/emptyStar.svg";
 import fullStar from "@/image/icons/blackStar.svg";
@@ -6,7 +5,6 @@ import halfStar from "@/image/icons/halfBlackStar.svg";
 import option from "@/image/icons/option.svg";
 
 import { B3, B4, B5, B6, C2, D2, H4, H5 } from "@/style/font";
-import ReviewModal from "./ReviewModal";
 import { ReviewSingleType } from "@/interface/apiInterface";
 
 const ReviewSingle: React.FC<ReviewSingleType> = (data) => {

@@ -8,6 +8,7 @@ import { placeCategory, placeSort } from "@/interface/apiInterface";
 const MyPlacePage = () => {
   const [category, setCategory] = useState<placeCategory>("CAFE");
   const [sort, setSort] = useState<placeSort>("NEAR");
+  console.log(sort);
 
   return (
     <StMyPlacePage>
