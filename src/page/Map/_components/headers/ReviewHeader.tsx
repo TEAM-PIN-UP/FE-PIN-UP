@@ -22,7 +22,11 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({ onBack }) => {
 
   const scrapHandler = () => {
     if (kakaoPlaceId) {
-      applyMyPlace.mutate({ kakaoPlaceId: Number(kakaoPlaceId) });
+      if (isScraped) {
+        deleteMyPlace.mutate({ kakaoPlaceId: Number(kakaoPlaceId) });
+      } else {
+        applyMyPlace.mutate({ kakaoPlaceId: Number(kakaoPlaceId) });
+      }
       toast("북마크 등록되었습니다.");
     }
   };
