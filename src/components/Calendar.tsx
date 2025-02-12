@@ -25,7 +25,7 @@ const Calendar: React.FC<DatePickerProp> = ({ setDate, date }) => {
             onChange={(e: Date | null) => onChangeDate(e)}
             selected={date}
             inline
-            minDate={new Date()}
+            maxDate={new Date()}
             //디자인 커스텀
 
             renderCustomHeader={({

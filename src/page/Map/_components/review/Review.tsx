@@ -3,73 +3,88 @@ import styled from "styled-components";
 import { H3 } from "@/style/font";
 import ReviewDefault from "./ReviewDefault";
 import ReviewSingle from "./ReviewSingle";
+import Restaurant from "../Restaurant";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import useGetSpecificPlaces from "@/hooks/api/useGetSpecificPlace";
+import Button from "@/components/Button";
+import ReviewGraph from "./ReviewGraph";
 
-export interface reviewProps {
-  profileImg: string;
-  name: string;
-  score: number;
-  date: string;
-  comment: string;
+export interface ReviewProps {
+  currentLatitude: number | undefined;
+  currentLongitude: number | undefined;
 }
 
-const Review: React.FC = () => {
-  const dummy: reviewProps[] = [
-    {
-      profileImg: "aa",
-      name: "강석우",
-      score: 1.5,
-      date: "2024-10-07",
-      comment: "나쁘지 않음",
-    },
-    {
-      profileImg: "aa",
-      name: "김하연",
-      score: 3,
-      date: "2024-10-04",
-      comment: "굿굿",
-    },
-    {
-      profileImg: "aa",
-      name: "이서윤",
-      score: 2.5,
-      date: "2024-10-02",
-      comment: "다시 안갈듯",
-    },
-    {
-      profileImg: "aa",
-      name: "임하늘",
-      score: 3.5,
-      date: "2024-10-11",
-      comment:
-        "평범한 불고기의 맛, 공기밥이 차가웠음, 가게 직원들 불친절 한 사람 너무 많았음",
-    },
-  ];
+const Review: React.FC<ReviewProps> = ({
+  currentLatitude,
+  currentLongitude,
+}) => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const kakaoPlaceId = searchParams.get("kakaoPlaceId");
+  if (!kakaoPlaceId) {
+    throw new Error("kakaoPlaceId is required");
+  }
+
+  const { data } = useGetSpecificPlaces({
+    kakaoPlaceId,
+    currentLatitude,
+    currentLongitude,
+  });
+
+  if (!data) return null;
 
   return (
     <StReview>
-      <div className="reviewTitle">
-        <span>리뷰</span>
-        <span>{dummy.length}</span>
-      </div>
-      {dummy.length > 0 ? (
-        dummy.map((value, index) => {
-          return (
-            <>
-              <ReviewSingle
-                key={index}
-                name={value.name}
-                score={value.score}
-                profileImg={value.profileImg}
-                date={value.date}
-                comment={value.comment}
-              />
-              {index + 1 !== dummy.length && <div className="midLine" />}
-            </>
-          );
-        })
-      ) : (
-        <ReviewDefault />
+      {data && (
+        <Restaurant
+          key={kakaoPlaceId}
+          name={data?.placeName}
+          averageStarRating={data.averageStarRating}
+          reviewImageUrls={data.reviewImageUrls}
+          reviewerProfileImageUrls={data.reviewerProfileImageUrls}
+          reviewCount={data.reviewCount}
+          distance={data.distance}
+        />
       )}
+      <div className="reviewBucket">
+        <div className="reviewTitle">
+          <span>핀버디 리뷰</span>
+          <Button size="small" onClick={() => navigate(`/review`)}>
+            리뷰 작성
+          </Button>
+        </div>
+        <ReviewGraph
+          reviewCount={data.reviewCount}
+          averageStarRating={data.averageStarRating}
+          ratingGraph={data.ratingGraph}
+        />
+        <div className="reviewList">
+          {data?.reviewCount > 0 ? (
+            data.reviews.map((value, index) => {
+              return (
+                <div key={value.reviewId}>
+                  <ReviewSingle
+                    key={index}
+                    writerName={value.writerName}
+                    starRating={value.starRating}
+                    writerProfileImageUrl={value.writerProfileImageUrl}
+                    visitedDate={value.visitedDate}
+                    content={value.content}
+                    reviewId={value.reviewId}
+                    writerTotalReviewCount={value.writerTotalReviewCount}
+                    reviewImageUrls={value.reviewImageUrls}
+                  />
+                  {index + 1 !== data?.reviewCount && (
+                    <div className="midLine" />
+                  )}
+                </div>
+              );
+            })
+          ) : (
+            <ReviewDefault />
+          )}
+        </div>
+      </div>
     </StReview>
   );
 };
@@ -78,14 +93,27 @@ const StReview = styled.div`
   width: 100%;
   min-width: 320px;
   max-width: 440px;
-  padding: var(--spacing_24) 0;
+  padding: var(--spacing_8) 0;
+  .reviewBucket {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 0;
+    box-sizing: border-box;
+  }
   .reviewTitle {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     gap: 4px;
     padding: 0 var(--spacing_20);
     box-sizing: border-box;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     ${H3}
+  }
+  .reviewList {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
   }
   .midLine {
     width: 100%;

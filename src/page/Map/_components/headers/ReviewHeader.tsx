@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-
 import arrowLeft from "@/image/icons/arrowLeft.svg";
-import edit from "@/image/icons/edit.svg";
 import scrapActive from "@/image/icons/scrapActive.svg";
 import scrapInactive from "@/image/icons/scrapInactive.svg";
+import { useSearchParams } from "react-router-dom";
+import useToastPopup from "@/utils/toastPopup";
+import usePostMyPlace from "@/hooks/api/myPlace/usePostMyPlace";
+import useDeleteMyPlace from "@/hooks/api/myPlace/useDeleteMyPlace";
 
 interface SearchHeaderProps {
   onBack: () => void;
@@ -12,6 +14,22 @@ interface SearchHeaderProps {
 
 const SearchHeader: React.FC<SearchHeaderProps> = ({ onBack }) => {
   const [isScraped, setIsScraped] = useState(false);
+  const [searchParams] = useSearchParams();
+  const kakaoPlaceId = searchParams.get("kakaoPlaceId");
+  const toast = useToastPopup();
+  const applyMyPlace = usePostMyPlace();
+  const deleteMyPlace = useDeleteMyPlace();
+
+  const scrapHandler = () => {
+    if (kakaoPlaceId) {
+      if (isScraped) {
+        deleteMyPlace.mutate({ kakaoPlaceId: Number(kakaoPlaceId) });
+      } else {
+        applyMyPlace.mutate({ kakaoPlaceId: Number(kakaoPlaceId) });
+      }
+      toast("북마크 등록되었습니다.");
+    }
+  };
 
   return (
     <StHeaderContainer>
@@ -19,11 +37,13 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({ onBack }) => {
         <img src={arrowLeft} alt="back" />
       </StBackButton>
       <StActionButtons>
-        <button onClick={() => setIsScraped(!isScraped)}>
+        <button
+          onClick={() => {
+            setIsScraped(!isScraped);
+            scrapHandler();
+          }}
+        >
           <img src={isScraped ? scrapActive : scrapInactive} alt="scrap" />
-        </button>
-        <button>
-          <img src={edit} alt="edit" />
         </button>
       </StActionButtons>
     </StHeaderContainer>
@@ -38,6 +58,7 @@ const StHeaderContainer = styled.div`
 `;
 
 const StBackButton = styled.button`
+  border: none;
   width: 36px;
   height: 36px;
   border-radius: var(--radius_circle);
@@ -57,6 +78,7 @@ const StActionButtons = styled.div`
   gap: var(--spacing_12);
 
   button {
+    border: none;
     width: 40px;
     height: 40px;
     border-radius: var(--radius_circle);

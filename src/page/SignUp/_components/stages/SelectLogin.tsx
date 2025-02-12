@@ -1,5 +1,7 @@
+import { useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
-
 import googleIcon from "../../_icons/googleIcon.png";
 import kakaoIcon from "../../_icons/kakaoIcon.png";
 import naverIcon from "../../_icons/naverIcon.svg";
@@ -9,6 +11,36 @@ import StTextContainer from "../typography/StTextContainer";
 import { StageProps } from "./StageProps";
 
 const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
+  const navigate = useNavigate();
+  const googleLogin = useGoogleLogin({
+    flow: "auth-code",
+    onSuccess: async (codeResponse) => {
+      const tokens = await axios.get(
+        `${import.meta.env.VITE_SERVER_ADDRESS}/api/auth/login/google/callback`,
+        {
+          params: {
+            code: codeResponse.code,
+          },
+        }
+      );
+
+      updateData({ authMethod: "google" });
+      const data = tokens.data.data;
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
+      localStorage.setItem(
+        "memberResponse",
+        JSON.stringify(data.memberResponse)
+      );
+
+      // Check memberResponse for nickname (if not empty then existing user)
+      const nickname = data.memberResponse.nickname;
+      if (typeof nickname === "string" && nickname.length > 0) navigate("/map");
+      onNext();
+    },
+    onError: (errorResponse) => console.log(errorResponse),
+  });
+
   return (
     <StDiv>
       <div className="logo-container">
@@ -45,15 +77,7 @@ const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
         <SocialSignUpButton
           icon={googleIcon}
           backgroundColor="var(--white)"
-          onClick={() => {
-            window.open(
-              `${import.meta.env.VITE_SERVER_ADDRESS}/api/auth/login/google`,
-              "_blank"
-            );
-            // updateData({ authMethod: "google" });
-            // console.log(data);
-            // onNext();
-          }}
+          onClick={googleLogin}
         >
           구글로 계속하기
         </SocialSignUpButton>

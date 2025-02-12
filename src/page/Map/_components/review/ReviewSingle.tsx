@@ -1,55 +1,119 @@
-import { useState } from "react";
 import styled from "styled-components";
-
+import emptyStar from "@/image/icons/emptyStar.svg";
+import fullStar from "@/image/icons/blackStar.svg";
+import halfStar from "@/image/icons/halfBlackStar.svg";
 import option from "@/image/icons/option.svg";
-import profileImg from "@/image/icons/profile.jpg";
-import star from "@/image/icons/star.svg";
-import { B3, B6, D2, H4 } from "@/style/font";
-import { reviewProps } from "./Review";
-import ReviewModal from "./ReviewModal";
 
-const ReviewSingle: React.FC<reviewProps> = (data) => {
-  const [openModal, setOpenModal] = useState<boolean>(false);
+import { B3, B4, B5, B6, C2, D2, H4, H5 } from "@/style/font";
+import { ReviewSingleType } from "@/interface/apiInterface";
+
+const ReviewSingle: React.FC<ReviewSingleType> = (data) => {
+  const starShow = (score: number) => {
+    const stars = [];
+    let count = score;
+    for (let i = 0; i < 5; i++) {
+      if (count <= 0) {
+        stars.push(<img src={emptyStar} alt="empty star" key={i} />);
+      } else if (count >= 1) {
+        stars.push(<img src={fullStar} alt="full star" key={i} />);
+      } else if (count < 1 && count > 0) {
+        stars.push(<img src={halfStar} alt="half star" key={i} />);
+      }
+      count--;
+    }
+    return stars;
+  };
 
   return (
     <StReviewSingle>
-      <img className="profileImg" src={profileImg} alt="profileImg" />
-      <div className="bucket">
-        <div className="commentInfoWithIcon">
-          <div className="commentInfo">
-            <p className="name">{data.name}</p>
-            <img className="star" src={star} alt="star" />
-            <p className="score">{data.score}</p>
-            <p className="date">{data.date}</p>
-          </div>
-          <div className="option">
-            {openModal ? <ReviewModal setOpenModal={setOpenModal} /> : <></>}
-            <img
-              className="pointer"
-              src={option}
-              onClick={() => setOpenModal(true)}
-              alt="option"
-            />
+      <div className="profileInfo">
+        <div className="profileBucket">
+          <img
+            className="profileImg"
+            src={data.writerProfileImageUrl}
+            alt="profileImg"
+          />
+          <div className="profileDetail">
+            <p className="name">{data.writerName}</p>
+            <p className="reviewCount">총 리뷰 {data.writerTotalReviewCount}</p>
           </div>
         </div>
-        <div className="reviewContent">{data.comment}</div>
+        <img src={option} />
       </div>
+      <div className="reviewInfo">
+        <div className="scoreBox">
+          <p className="score">{data.starRating}</p>
+          <div className="starBox">{starShow(data.starRating)}</div>
+        </div>
+        <p className="date">방문날짜 {data.visitedDate}</p>
+      </div>
+      <div className="reviewContent">{data.content}</div>
     </StReviewSingle>
   );
 };
 
 const StReviewSingle = styled.div`
   display: flex;
+  flex-direction: column;
   width: 100%;
   padding: 0 var(--spacing_20);
   box-sizing: border-box;
   gap: 12px;
-  .profileImg {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius_circle);
+  display: flex;
+  flex-direction: column;
+  .profileInfo {
+    display: flex;
+    justify-content: space-between;
+    .profileBucket {
+      display: flex;
+      gap: 6px;
+      .profileImg {
+        width: 30px;
+        height: 30px;
+        border-radius: var(--radius_circle);
+      }
+      .profileDetail {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        .name {
+          display: flex;
+          ${H5}
+          color : var(--neutral_800);
+        }
+        .reviewCount {
+          ${B5}
+          color : var(--neutral_500)
+        }
+      }
+    }
   }
-  .bucket {
+  .reviewInfo {
+    display: flex;
+    ${C2}
+    .scoreBox {
+      display: flex;
+      margin-right: 8px;
+      .score {
+        ${B4}
+      }
+      .starBox {
+        margin-left: 2px;
+        img {
+          width: 14px;
+          height: 14px;
+        }
+      }
+    }
+    .date {
+      color: var(--neutral_500);
+    }
+  }
+  .reviewContent {
+    display: flex;
+    ${D2}
+  }
+  /* .bucket {
     display: flex;
     flex-direction: column;
     gap: 5.5px;
@@ -98,7 +162,7 @@ const StReviewSingle = styled.div`
       text-align: left;
       color: var(--neutral_700);
     }
-  }
+  } */
 `;
 
 export default ReviewSingle;

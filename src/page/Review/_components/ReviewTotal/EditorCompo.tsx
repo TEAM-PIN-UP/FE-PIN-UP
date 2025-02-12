@@ -12,7 +12,7 @@ const EditorCompo: React.FC<WriteReviewProp> = ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const editorRef = useRef<any>(null);
   const [charCount, setCharCount] = useState<number>(0);
-  const maxChars = 10;
+  const maxChars = 200;
   const placeholder = `작성 된 리뷰는 나의 친구들에게만 보여요!\n
 *주의: 욕설, 비방 목적 혹은 명예 훼손성 내용은 작성 시 삭제 처리 될 수 있습니다.`;
 

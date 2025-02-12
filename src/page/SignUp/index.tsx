@@ -1,25 +1,30 @@
+import Header from "@/components/Header";
+import chevronLeft from "@/image/icons/chevronLeft.svg";
+import { H3 } from "@/style/font";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
-import Header from "./_components/Header";
+import TransitionWrapper, {
+  TransitionDirection,
+} from "../../components/TransitionWrapper";
 import SelectLogin from "./_components/stages/SelectLogin";
 import SetName from "./_components/stages/SetName";
 import SetProfile from "./_components/stages/SetProfile";
 import Tos from "./_components/stages/Tos";
 import Welcome from "./_components/stages/Welcome";
-import TransitionWrapper, {
-  TransitionDirection,
-} from "./_components/TransitionWrapper";
-import { SignUpForm } from "./SignUpInterface";
+import { MemberResponse, SignUpForm } from "./SignUpInterface";
 
 const SignUpPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const [stage, setStage] = useState(1);
   const lastStage = 5;
   const [direction, setDirection] = useState<TransitionDirection>("forward");
 
   const [signUpData, setSignUpData] = useState<SignUpForm>({
     authMethod: "",
-    name: "",
+    nickname: "",
     profileImage: "",
     agreedToTerms: [],
   });
@@ -47,6 +52,15 @@ const SignUpPage: React.FC = () => {
   };
 
   useEffect(() => {
+    // Check if signed in
+    const accessToken = localStorage.getItem("accessToken");
+    const memberResponseJson = localStorage.getItem("memberResponse");
+    const memberResponse: MemberResponse | null = memberResponseJson
+      ? (JSON.parse(memberResponseJson) as MemberResponse)
+      : null;
+    if (accessToken && memberResponse && memberResponse.nickname)
+      navigate("/map");
+
     // Use system back button for prev stage
     const handlePopState = (e: PopStateEvent) => {
       e.preventDefault();
@@ -58,12 +72,22 @@ const SignUpPage: React.FC = () => {
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, []);
+  }, [navigate]);
 
   return (
     <StDiv $stage={stage}>
-      {stage !== 1 && <Header title="회원가입" onPrev={goPrev} />}
-
+      {stage !== 1 && (
+        <Header>
+          <Header.Left>
+            <button className="back-button" onClick={goPrev}>
+              <img src={chevronLeft} />
+            </button>
+          </Header.Left>
+          <Header.Center>
+            <span className="h3">회원가입</span>
+          </Header.Center>
+        </Header>
+      )}
       <div className="content">
         <TransitionWrapper
           className="transition"
@@ -71,11 +95,15 @@ const SignUpPage: React.FC = () => {
           direction={direction}
         >
           {stage === 1 && (
-            <SelectLogin
-              data={signUpData}
-              updateData={(newData) => updateSignUpData(newData)}
-              onNext={goNext}
-            />
+            <GoogleOAuthProvider
+              clientId={import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID}
+            >
+              <SelectLogin
+                data={signUpData}
+                updateData={(newData) => updateSignUpData(newData)}
+                onNext={goNext}
+              />
+            </GoogleOAuthProvider>
           )}
           {stage === 2 && (
             <SetName
@@ -98,7 +126,7 @@ const SignUpPage: React.FC = () => {
               onNext={goNext}
             />
           )}
-          {stage === lastStage && <Welcome />}
+          {stage === lastStage && <Welcome data={signUpData} />}
         </TransitionWrapper>
       </div>
     </StDiv>
@@ -114,6 +142,26 @@ const StDiv = styled.div<{ $stage: number }>`
   background-color: ${({ $stage }) =>
     $stage === 1 ? "var(--black)" : "var(--white)"};
   transition: background-color 0.5s ease, color 0.5s ease-in-out;
+  padding-top: 48px;
+
+  .h3 {
+    ${H3}
+  }
+
+  .back-button {
+    display: flex;
+    position: absolute;
+    left: 0px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing_12);
+    box-sizing: content-box;
+    width: 24px;
+    height: 24px;
+  }
 
   .content {
     display: flex;

@@ -1,17 +1,33 @@
+import { GetSearchPlacesResponse } from "@/interface/apiInterface";
 import { H4 } from "@/style/font";
 import styled from "styled-components";
 import SearchedPlace from "./SearchedPlace";
 
-export interface StepUp {
+export interface SearchResultProp {
   stepUp: () => void;
+  results?: GetSearchPlacesResponse[];
+  setPickedInfo: React.Dispatch<
+    React.SetStateAction<GetSearchPlacesResponse | null>
+  >;
 }
 
-const SearchResult: React.FC<StepUp> = ({ stepUp }) => {
+const SearchResult: React.FC<SearchResultProp> = ({
+  stepUp,
+  results,
+  setPickedInfo,
+}) => {
   return (
     <StSearchResult>
       <div className="title">검색 결과</div>
       <div className="results">
-        <SearchedPlace stepUp={stepUp} />
+        {results?.map((result) => (
+          <SearchedPlace
+            key={result.kakaoMapId}
+            stepUp={stepUp}
+            result={result}
+            setPickedInfo={setPickedInfo}
+          />
+        ))}
       </div>
     </StSearchResult>
   );

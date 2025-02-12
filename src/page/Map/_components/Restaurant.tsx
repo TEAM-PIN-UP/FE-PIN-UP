@@ -6,31 +6,46 @@ import { B4, H3, H4 } from "@/style/font";
 import ImageSwiper from "./ImageSwiper";
 
 export interface RestaurantProps {
+  // placeId: string;
   name: string;
-  averageRating: number;
-  defaultImgUrl: string;
+  averageStarRating: number;
+  reviewCount: number;
+  distance: string;
+  reviewImageUrls: string[];
+  reviewerProfileImageUrls: string[];
 }
 
 const Restaurant: React.FC<RestaurantProps> = ({
   name,
-  averageRating,
-  defaultImgUrl,
+  averageStarRating,
+  reviewCount,
+  distance,
+  reviewImageUrls,
+  reviewerProfileImageUrls,
 }) => {
+
   return (
     <StRestaurant>
       <div className="container">
         <div className="infoContainer">
           <div className="textContainer">
             <div className="title">{name}</div>
-            <div className="rating">⭐ {averageRating.toFixed(1)}</div>
+            <div className="rating">⭐ {averageStarRating.toFixed(1)}</div>
             <div className="detail">
-              <span className="distance">2.4km</span>
-              <span className="reviewNum">리뷰 4</span>
+              <span className="distance">{distance}</span>
+              <span className="reviewNum">리뷰 {reviewCount}</span>
             </div>
+          </div>
+          <div className="profileBox">
+            {
+              reviewerProfileImageUrls ? reviewerProfileImageUrls.map((val, index) => (
+                <img className="profileImg" src={val} key={index} />
+              )) : <img src={profileImg} />
+            }
           </div>
           <div className="profile" />
         </div>
-        <ImageSwiper defaultImgUrl={defaultImgUrl} />
+        <ImageSwiper imageUrls={reviewImageUrls} />
       </div>
       <div className="gap" />
     </StRestaurant>
@@ -42,7 +57,8 @@ const StRestaurant = styled.div`
   .container {
     padding: var(--spacing_20);
     margin: 0 auto;
-    .infoContainer {
+    cursor: pointer;
+  .infoContainer {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -76,13 +92,17 @@ const StRestaurant = styled.div`
           }
         }
       }
-      .profile {
-        width: 26px;
-        height: 26px;
-        border-radius: var(--radius_circle);
-        border: 1px solid var(--white);
-        background: url(${profileImg}) lightgray 50% / cover no-repeat;
+      .profileBox{
+        display: flex;
+        margin-left: auto;
+        .profileImg{
+          width: 26px;
+          height: 26px;
+          border-radius: var(--radius_circle);
+          border: 1px solid var(--white);
+        }
       }
+      
     }
   }
   .gap {

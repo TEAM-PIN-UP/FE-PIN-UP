@@ -1,13 +1,14 @@
-import React, { useState, useRef, useEffect } from "react";
-import styled from "styled-components";
-
-import search from "@/image/icons/search.svg";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
+import search from "@/image/icons/search.svg";
 import xCircle from "@/image/icons/xCircle.svg";
-import { B2 } from "@/style/font";
+import { B3 } from "@/style/font";
+import React, { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
 
 interface SearchBarProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onChange?: (value: React.ChangeEvent<HTMLInputElement>) => void;
+  $dataQuery: string;
+  $setDataQuery: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onChange, ...rest }) => {
@@ -22,9 +23,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onChange, ...rest }) => {
 
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => {
-    if (!inputValue) {
-      setIsFocused(false);
-    }
+    if (!inputValue) setIsFocused(false);
   };
 
   const handleClear = () => {
@@ -43,9 +42,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onChange, ...rest }) => {
         inputRef.current &&
         !inputRef.current.contains(e.target as Node) &&
         !inputValue
-      ) {
+      )
         setIsFocused(false);
-      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -58,10 +56,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onChange, ...rest }) => {
   const showClearIcon = inputValue.length > 0;
 
   return (
-    <StSearchBarContainer>
-      <StIconWrapper>
-        <img src={icon} alt="Search icon" />
-      </StIconWrapper>
+    <StDiv>
+      <img className="icon" src={icon} />
       <StInput
         ref={inputRef}
         value={inputValue}
@@ -71,15 +67,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ onChange, ...rest }) => {
         {...rest}
       />
       {showClearIcon && (
-        <StClear onClick={handleClear}>
-          <img src={xCircle} alt="Clear search" />
-        </StClear>
+        <img className="clear" src={xCircle} onClick={handleClear} />
       )}
-    </StSearchBarContainer>
+    </StDiv>
   );
 };
 
-const StSearchBarContainer = styled.div`
+const StDiv = styled.div`
   display: flex;
   align-items: center;
   background-color: var(--neutral_50);
@@ -87,32 +81,29 @@ const StSearchBarContainer = styled.div`
   padding: 0 var(--spacing_12);
   box-sizing: border-box;
   width: 100%;
-`;
 
-const StIconWrapper = styled.div`
-  display: flex;
-  padding-right: var(--spacing_12);
+  .icon {
+    padding-right: var(--spacing_12);
+  }
+
+  .clear {
+    cursor: pointer;
+    padding: var(--spacing_10) var(--spacing_12);
+  }
 `;
 
 const StInput = styled.input`
-  ${B2}
+  ${B3}
   background-color: transparent;
   border: none;
   color: var(--black);
   flex: 1;
-  font-size: 16px;
   outline: none;
   padding: var(--spacing_12) 0;
   width: 100%;
   ::placeholder {
     color: var(--neutral_400);
   }
-`;
-
-const StClear = styled.div`
-  display: flex;
-  cursor: pointer;
-  padding: var(--spacing_10) var(--spacing_12);
 `;
 
 export default SearchBar;

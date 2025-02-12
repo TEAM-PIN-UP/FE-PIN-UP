@@ -1,4 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
+import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
+import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
+import useMapSetup from "@/hooks/useMapSetup";
+import useUpdatePlaces from "@/hooks/useUpdatePlaces";
+import {
+  GetPlaceResponse,
+  placeCategory,
+  placeSort,
+} from "@/interface/apiInterface";
+import { H3 } from "@/style/font";
+import useToastPopup from "@/utils/toastPopup";
 import { useEffect, useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 import {
@@ -7,39 +17,58 @@ import {
   NavermapsProvider,
   useNavermaps,
 } from "react-naver-maps";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
-
-import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
-import useMapSetup from "@/hooks/useMapSetup";
-import PinMarker from "./_components/PinMarker";
-import Restaurant, { RestaurantProps } from "./_components/Restaurant";
-import UserPositionMarker from "./_components/UserPositionMarker";
 import ReviewHeader from "./_components/headers/ReviewHeader";
 import SearchHeader from "./_components/headers/SearchHeader";
+import PinMarker from "./_components/PinMarker";
+import Restaurant from "./_components/Restaurant";
 import Review from "./_components/review/Review";
-
-interface PinProps extends RestaurantProps {
-  latitude: number;
-  longitude: number;
-}
-
-const fetchPlaces = async (): Promise<PinProps[]> => {
-  const response = await fetch("http://localhost:8080/search");
-  if (!response.ok) {
-    throw new Error("Failed to fetch places");
-  }
-  return response.json();
-};
+import UserPositionMarker from "./_components/UserPositionMarker";
 
 const MapPage: React.FC = () => {
+  useCheckLoginAndRoute();
+
+  const navigate = useNavigate();
+  const toast = useToastPopup();
+  const [category, setCategory] = useState<placeCategory>("ALL");
+  const [sort, setSort] = useState<placeSort>("NEAR");
+  const [places, setPlaces] = useState<GetPlaceResponse[]>();
+  const [dataQuery, setDataQuery] = useState<string>("");
+  const [searchParams] = useSearchParams();
+
+  const placeId = searchParams.get("placeId");
+
+  useEffect(() => {
+    if (placeId) setIsReviewView(true);
+  }, [placeId]);
+
   // Geolocation and map setup
   const naverMaps = useNavermaps();
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [user, setUser] = useState<naver.maps.Marker | null>(null);
   const [activePinIndex, setActivePinIndex] = useState<number | null>(null);
-  const defaultCenter = new naverMaps.LatLng(37.6077842, 127.0270642);
-  const defaultZoom = 18;
-  useMapSetup(map, user, defaultZoom, setActivePinIndex);
+  const [followUser, setFollowUser] = useState(true);
+  const defaultZoom = 20;
+
+  console.log(setFollowUser);
+
+  // URL params
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  const hasParams = !!search;
+  const query = params.get("query");
+  const longitude = params.get("longitude");
+  const latitude = params.get("latitude");
+  if (hasParams && query && longitude && latitude) {
+    map?.setCenter(
+      new naverMaps.LatLng(
+        Number.parseFloat(latitude) - 0.0001, // Offset for bottom sheet
+        Number.parseFloat(longitude)
+      )
+    );
+  }
+  useMapSetup(!hasParams, map, user, followUser, setActivePinIndex);
 
   // Bottom sheet logic
   const sheetRef = useRef<SheetRef>();
@@ -50,53 +79,79 @@ const MapPage: React.FC = () => {
     setLeft(newLeft);
   };
 
-  // Header State
+  const removeQueries = () => {
+    const path = window.location.pathname; // 현재 경로
+    window.history.pushState({}, "", path); // 쿼리 없이 경로만 유지
+  };
+
   const [isReviewView, setIsReviewView] = useState(false);
 
-  // Fetch data
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["places"],
-    queryFn: fetchPlaces,
-  });
-
   useEffect(() => {
-    // Update bottom sheet alignment on window resize
     updateLeftPosition();
     window.addEventListener("resize", updateLeftPosition);
 
     return () => {
       window.removeEventListener("resize", updateLeftPosition);
     };
-  }, [map]);
+  }, [navigate, toast]);
+
+  // Track mouse down
+  const [isPointerDown, setIsPointerDown] = useState(false);
+  useEffect(() => {
+    const handlePointerDown = () => setIsPointerDown(true);
+    const handlePointerUp = () => setIsPointerDown(false);
+
+    window.addEventListener("mousedown", handlePointerDown);
+    window.addEventListener("mouseup", handlePointerUp);
+    window.addEventListener("touchstart", handlePointerDown);
+    window.addEventListener("touchend", handlePointerUp);
+
+    return () => {
+      window.removeEventListener("mousedown", handlePointerDown);
+      window.removeEventListener("mouseup", handlePointerUp);
+      window.removeEventListener("touchstart", handlePointerDown);
+      window.removeEventListener("touchend", handlePointerUp);
+    };
+  }, []);
+
+  const { handleMapMove } = useUpdatePlaces({
+    query: dataQuery,
+    category,
+    sort,
+    isPointerDown,
+    setPlaces,
+  });
 
   return (
     <StDiv ref={attachRef}>
       <NavermapsProvider ncpClientId={import.meta.env.VITE_NAVER_MAPS}>
         <StMapDiv>
           <NaverMap
-            defaultCenter={defaultCenter}
             zoom={defaultZoom}
             ref={setMap}
+            onBoundsChanged={() =>
+              handleMapMove(map?.getBounds(), user?.getPosition())
+            }
           >
-            <UserPositionMarker ref={setUser} />
-            {data &&
-              data.map((item, index) => (
+            <UserPositionMarker ref={(marker) => marker && setUser(marker)} />
+            {places &&
+              places.map((item, index) => (
                 <PinMarker
                   key={index}
                   active={activePinIndex === index}
-                  type="cafe"
+                  type={item.placeCategory}
                   name={item.name}
-                  image={item.defaultImgUrl}
-                  count={Math.floor(Math.random() * 5 + 1).toString()}
+                  image={item.reviewImageUrls[0]}
+                  count={item.reviewCount.toString()}
                   onClick={() => {
                     setActivePinIndex(index);
-                    console.log(index);
+                    setIsReviewView(true);
                   }}
-                  defaultPosition={
-                    new naverMaps.LatLng(
-                      item.longitude / 1e7,
-                      item.latitude / 1e7
-                    )
+                  position={
+                    new naverMaps.LatLng({
+                      lat: item.latitude,
+                      lng: item.longitude,
+                    })
                   }
                 />
               ))}
@@ -109,45 +164,71 @@ const MapPage: React.FC = () => {
             snapPoints={snapPoints}
             initialSnap={1}
             mountPoint={attachRef.current!}
-            left={left}
+            $left={left}
           >
             <Sheet.Container>
               <Sheet.Header ref={sheetHeaderRef}>
                 <Sheet.Header />
-                {!isReviewView && <SearchHeader />}
+                {!isReviewView && (
+                  <SearchHeader
+                    dataQuery={dataQuery}
+                    setDataQuery={setDataQuery}
+                    setSort={setSort}
+                    category={category}
+                    setCategory={setCategory}
+                  />
+                )}
                 {isReviewView && (
-                  <ReviewHeader onBack={() => setIsReviewView(false)} />
+                  <ReviewHeader
+                    onBack={() => {
+                      removeQueries();
+                      setIsReviewView(false);
+                    }}
+                  />
                 )}
               </Sheet.Header>
               <Sheet.Content style={{ paddingBottom: sheetRef.current?.y }}>
-                {isLoading && <span>Loading...</span>}
-                {error && <span>Error</span>}
                 <Sheet.Scroller>
-                  {data &&
+                  {(!places || places.length === 0) && (
+                    <div className="no-reviews">
+                      <p>근처에 리뷰 있는</p>
+                      <p>가게가 없어요!</p>
+                    </div>
+                  )}
+                  {places &&
                     !isReviewView &&
-                    activePinIndex === null &&
-                    data.map((item, index) => (
-                      <div key={index} onClick={() => setIsReviewView(true)}>
+                    // activePinIndex === null &&
+                    places.map((item, index) => (
+                      <div
+                        key={index}
+                        onClick={() => {
+                          setIsReviewView(true);
+                          navigate(
+                            `${window.location.pathname}?kakaoPlaceId=${item.kakaoPlaceId}`
+                          );
+                        }}
+                      >
                         <Restaurant
-                          key={index}
+                          key={item.kakaoPlaceId}
+                          // placeId={item.placeId}
                           name={item.name}
-                          averageRating={item.averageRating}
-                          defaultImgUrl={item.defaultImgUrl}
+                          averageStarRating={item.averageStarRating}
+                          reviewImageUrls={item.reviewImageUrls}
+                          reviewerProfileImageUrls={
+                            item.reviewerProfileImageUrls
+                          }
+                          reviewCount={item.reviewCount}
+                          distance={item.distance}
                         />
                       </div>
                     ))}
-                  {(isReviewView || activePinIndex !== null) && (
+                  {isReviewView && (
+                    // || activePinIndex !== null
                     <>
-                      <Restaurant
-                        name={data?.[activePinIndex ?? 0].name ?? ""}
-                        averageRating={
-                          data?.[activePinIndex ?? 0].averageRating ?? 0
-                        }
-                        defaultImgUrl={
-                          data?.[activePinIndex ?? 0].defaultImgUrl ?? ""
-                        }
+                      <Review
+                        currentLatitude={user?.getPosition()?.y}
+                        currentLongitude={user?.getPosition()?.x}
                       />
-                      <Review />
                     </>
                   )}
                 </Sheet.Scroller>
@@ -175,12 +256,39 @@ const StMapDiv = styled(MapDiv)`
   height: 100%;
 `;
 
-const StSheet = styled(Sheet)<{ left: number }>`
+const StSheet = styled(Sheet)<{ $left: number }>`
   display: flex;
   justify-content: center;
   max-width: 440px;
   min-width: 320px;
-  left: ${({ left }) => `${left}px !important`};
+  left: ${({ $left }) => `${$left}px !important`};
+
+  .react-modal-sheet-content::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .react-modal-sheet-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  .react-modal-sheet-content::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+
+  .react-modal-sheet-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  .no-reviews {
+    ${H3}
+    display:flex;
+    flex-direction: column;
+    color: var(--neutral_500);
+    gap: var(--spacing_8);
+    margin-top: var(--spacing_12);
+  }
 `;
 
 const StGap = styled.div<{ $attachHeight: number }>`

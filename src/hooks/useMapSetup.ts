@@ -1,16 +1,20 @@
-import { useCallback, useEffect, useRef } from "react";
+import useToastPopup from "@/utils/toastPopup";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavermaps } from "react-naver-maps";
 
 const useMapSetup = (
+  useGeolocation: boolean,
   map: naver.maps.Map | null,
   user: naver.maps.Marker | null,
-  defaultZoom: number,
+  followUser: boolean,
   setActivePinIndex: React.Dispatch<React.SetStateAction<number | null>>
 ) => {
   const naverMaps = useNavermaps();
   const isDragging = useRef(false);
+  const toast = useToastPopup();
+  const [, setErrorCount] = useState(0);
 
-  const onSuccessGeolocation = useCallback(
+  const onGeolocationSuccess = useCallback(
     (position: GeolocationPosition) => {
       if (!map || !user) return;
 
@@ -19,29 +23,42 @@ const useMapSetup = (
         position.coords.longitude
       );
 
-      map.setCenter(location);
-      map.setZoom(defaultZoom);
+      if (followUser) map.setCenter(location);
       user.setPosition(location);
-      console.log("Coordinates: " + location.toString());
+      setErrorCount(0);
     },
-    [map, user, naverMaps, defaultZoom]
+    [map, user, naverMaps, followUser]
   );
 
-  const onErrorGeolocation = useCallback(() => {
-    if (!map || !user) return;
-    console.error("Geolocation error.");
-  }, [map, user]);
+  const onGeolocationError = useCallback(() => {
+    setErrorCount((prev) => {
+      if (prev > 3) {
+        toast("위치정보를 확인하지 못했어요.");
+        return 0;
+      }
+      return prev + 1;
+    });
+  }, [toast]);
 
+  // Get & watch user position
   useEffect(() => {
     if (!map) return;
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        onSuccessGeolocation,
-        onErrorGeolocation
+    if (useGeolocation && navigator.geolocation) {
+      const watcherId = navigator.geolocation.watchPosition(
+        onGeolocationSuccess,
+        onGeolocationError,
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
       );
+      return () => {
+        navigator.geolocation.clearWatch(watcherId);
+      };
     }
+  }, [map, onGeolocationError, onGeolocationSuccess, useGeolocation, user]);
 
-    // Detect drag vs click
+  // Detect drag vs click
+  useEffect(() => {
+    if (!map) return;
+
     let startX = 0;
     let startY = 0;
 
@@ -54,7 +71,6 @@ const useMapSetup = (
     const handleMouseMove = (e: naver.maps.PointerEvent) => {
       const dx = Math.abs(e.offset.x - startX);
       const dy = Math.abs(e.offset.y - startY);
-
       if (dx > 5 || dy > 5) {
         isDragging.current = true;
       }
@@ -87,7 +103,7 @@ const useMapSetup = (
       naver.maps.Event.removeListener(mouseMoveListener);
       naver.maps.Event.removeListener(mouseUpListener);
     };
-  }, [map, onSuccessGeolocation, onErrorGeolocation, setActivePinIndex]);
+  }, [map, setActivePinIndex]);
 };
 
 export default useMapSetup;
