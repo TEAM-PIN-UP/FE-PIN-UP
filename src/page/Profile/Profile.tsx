@@ -47,16 +47,6 @@ const Profile: React.FC = () => {
         try {
           const response = await getApi.getMyFeed();
           setMyFeed(response.data);
-
-          // Sort memberReviews into photos and texts
-          const p: Review[] = [];
-          const t: Review[] = [];
-          myFeed?.memberReviews.forEach((review: Review) => {
-            if (review.reviewImageUrls.length > 0) p.push(review);
-            else t.push(review);
-          });
-          setPhotos(p);
-          setTexts(t);
         } catch (error) {
           console.error("Error fetching member details:", error);
         }
@@ -66,7 +56,21 @@ const Profile: React.FC = () => {
       console.error(error);
     }
     return () => {};
-  }, [myFeed?.memberReviews, navigate, toast]);
+  }, [navigate, toast]);
+
+  useEffect(() => {
+    if (!myFeed?.memberReviews) return;
+    const p: Review[] = [];
+    const t: Review[] = [];
+
+    myFeed.memberReviews.forEach((review: Review) => {
+      if (review.reviewImageUrls.length > 0) p.push(review);
+      else t.push(review);
+    });
+
+    setPhotos(p);
+    setTexts(t);
+  }, [myFeed]);
 
   useEffect(() => {
     // Update bottom sheet alignment on window resize

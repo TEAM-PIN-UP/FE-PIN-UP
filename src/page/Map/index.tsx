@@ -36,14 +36,12 @@ const MapPage: React.FC = () => {
   const [places, setPlaces] = useState<GetPlaceResponse[]>();
   const [dataQuery, setDataQuery] = useState<string>("");
   const [searchParams] = useSearchParams();
-  const kakaoPlaceId = searchParams.get("kakaoPlaceId");
 
-  const { handleMapMove } = useUpdatePlaces({
-    query: dataQuery,
-    category,
-    sort,
-    setPlaces,
-  });
+  const placeId = searchParams.get("placeId");
+
+  useEffect(() => {
+    if (placeId) setIsReviewView(true);
+  }, [placeId]);
 
   // Geolocation and map setup
   const naverMaps = useNavermaps();
@@ -52,6 +50,8 @@ const MapPage: React.FC = () => {
   const [activePinIndex, setActivePinIndex] = useState<number | null>(null);
   const [followUser, setFollowUser] = useState(true);
   const defaultZoom = 20;
+
+  console.log(setFollowUser);
 
   // URL params
   const { search } = useLocation();
@@ -95,9 +95,32 @@ const MapPage: React.FC = () => {
     };
   }, [navigate, toast]);
 
+  // Track mouse down
+  const [isPointerDown, setIsPointerDown] = useState(false);
   useEffect(() => {
-    if (kakaoPlaceId) setIsReviewView(true);
-  }, [kakaoPlaceId]);
+    const handlePointerDown = () => setIsPointerDown(true);
+    const handlePointerUp = () => setIsPointerDown(false);
+
+    window.addEventListener("mousedown", handlePointerDown);
+    window.addEventListener("mouseup", handlePointerUp);
+    window.addEventListener("touchstart", handlePointerDown);
+    window.addEventListener("touchend", handlePointerUp);
+
+    return () => {
+      window.removeEventListener("mousedown", handlePointerDown);
+      window.removeEventListener("mouseup", handlePointerUp);
+      window.removeEventListener("touchstart", handlePointerDown);
+      window.removeEventListener("touchend", handlePointerUp);
+    };
+  }, []);
+
+  const { handleMapMove } = useUpdatePlaces({
+    query: dataQuery,
+    category,
+    sort,
+    isPointerDown,
+    setPlaces,
+  });
 
   return (
     <StDiv ref={attachRef}>
