@@ -4,14 +4,14 @@ import styled from "styled-components";
 
 interface CompleteModalProp {
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  placeId: string;
+  kakaoPlaceId: string;
 }
 
-const CompleteModal = ({ setModalOpen, placeId }: CompleteModalProp) => {
+const CompleteModal = ({ setModalOpen, kakaoPlaceId }: CompleteModalProp) => {
   const navigate = useNavigate();
 
   const moveToReview = () => {
-    navigate(`/map?placeId=${placeId}`);
+    navigate(`/map?kakaoPlaceId=${kakaoPlaceId}`);
   };
   return (
     <StCompleteModal>

@@ -36,7 +36,7 @@ const MapPage: React.FC = () => {
   const [places, setPlaces] = useState<GetPlaceResponse[]>();
   const [dataQuery, setDataQuery] = useState<string>("");
   const [searchParams] = useSearchParams();
-  const placeId = searchParams.get("placeId");
+  const kakaoPlaceId = searchParams.get("kakaoPlaceId");
 
   const { handleMapMove } = useUpdatePlaces({
     query: dataQuery,
@@ -96,8 +96,8 @@ const MapPage: React.FC = () => {
   }, [navigate, toast]);
 
   useEffect(() => {
-    if (placeId) setIsReviewView(true);
-  }, [placeId]);
+    if (kakaoPlaceId) setIsReviewView(true);
+  }, [kakaoPlaceId]);
 
   return (
     <StDiv ref={attachRef}>
@@ -181,12 +181,12 @@ const MapPage: React.FC = () => {
                         onClick={() => {
                           setIsReviewView(true);
                           navigate(
-                            `${window.location.pathname}?placeId=${item.kakaoPlaceId}`
+                            `${window.location.pathname}?kakaoPlaceId=${item.kakaoPlaceId}`
                           );
                         }}
                       >
                         <Restaurant
-                          key={item.placeId}
+                          key={item.kakaoPlaceId}
                           // placeId={item.placeId}
                           name={item.name}
                           averageStarRating={item.averageStarRating}

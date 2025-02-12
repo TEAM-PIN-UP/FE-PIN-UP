@@ -20,13 +20,13 @@ const Review: React.FC<ReviewProps> = ({
 }) => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const placeId = searchParams.get("placeId");
-  if (!placeId) {
-    throw new Error("placeId is required");
+  const kakaoPlaceId = searchParams.get("kakaoPlaceId");
+  if (!kakaoPlaceId) {
+    throw new Error("kakaoPlaceId is required");
   }
 
   const { data } = useGetSpecificPlaces({
-    kakaoPlaceId: placeId,
+    kakaoPlaceId,
     currentLatitude,
     currentLongitude,
   });
@@ -37,7 +37,7 @@ const Review: React.FC<ReviewProps> = ({
     <StReview>
       {data && (
         <Restaurant
-          key={placeId}
+          key={kakaoPlaceId}
           name={data?.placeName}
           averageStarRating={data.averageStarRating}
           reviewImageUrls={data.reviewImageUrls}

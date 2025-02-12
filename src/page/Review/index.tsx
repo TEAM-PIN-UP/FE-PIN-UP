@@ -21,7 +21,7 @@ const ReviewPage = () => {
     null
   );
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [placeId, setPlaceId] = useState<string>("");
+  const [kakaoPlaceId, setKakaoPlaceId] = useState<string>("");
 
   const stepDown = () => {
     setStep((prevStep) => {
@@ -52,7 +52,10 @@ const ReviewPage = () => {
   return (
     <>
       {modalOpen && (
-        <CompleteModal setModalOpen={setModalOpen} placeId={placeId} />
+        <CompleteModal
+          setModalOpen={setModalOpen}
+          kakaoPlaceId={kakaoPlaceId}
+        />
       )}
 
       <StReview>
@@ -78,7 +81,7 @@ const ReviewPage = () => {
               pickedInfo={pickedInfo}
               visitDate={visitDate}
               setModalOpen={setModalOpen}
-              setPlaceId={setPlaceId}
+              setKakaoPlaceId={setKakaoPlaceId}
             />
           ) : null
         ) : null}

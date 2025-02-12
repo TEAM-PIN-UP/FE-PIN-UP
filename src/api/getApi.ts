@@ -7,8 +7,6 @@ import { ReviewDetail } from "@/interface/review";
 import customAxios from "./Interceptor";
 
 const getApi = {
-  //   getReview: () => customAxios.get(`/api/places/reviews`),
-
   getSpecificPlace: ({
     kakaoPlaceId,
     currentLatitude,
@@ -36,6 +34,7 @@ const getApi = {
 
   getReviewId: ({ id }: { id: string }) =>
     customAxios.get<ReviewDetail>(`/api/reviews/${id}`),
+  getMyPlace: () => customAxios.get(`/api/bookmarks/my`),
 };
 
 export default getApi;

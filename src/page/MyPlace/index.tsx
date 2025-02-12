@@ -4,10 +4,13 @@ import RestaurantBoxForm from "./_components/RestaurantBoxForm";
 import FilterHead from "./_components/FilterHead";
 import { useState } from "react";
 import { placeCategory, placeSort } from "@/interface/apiInterface";
+import useGetMyPlace from "@/hooks/api/myPlace/useGetMyPlace";
 
 const MyPlacePage = () => {
   const [category, setCategory] = useState<placeCategory>("CAFE");
   const [sort, setSort] = useState<placeSort>("NEAR");
+  const data = useGetMyPlace();
+  console.log(data);
   console.log(sort);
 
   return (

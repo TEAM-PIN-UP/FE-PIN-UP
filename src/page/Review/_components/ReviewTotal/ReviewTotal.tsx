@@ -16,19 +16,19 @@ interface ReviewTotalProps {
   pickedInfo: GetSearchPlacesResponse;
   visitDate: Date;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setPlaceId: React.Dispatch<React.SetStateAction<string>>;
+  setKakaoPlaceId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const ReviewTotal: React.FC<ReviewTotalProps> = ({
   pickedInfo,
   visitDate,
   setModalOpen,
-  setPlaceId,
+  setKakaoPlaceId,
 }) => {
   const [starScore, setStarScore] = useState<number>(0);
   const [imageData, setImageData] = useState<File[]>([]);
   const [reviewContent, setReviewContent] = useState<string>("");
-  const reviewCreate = useCreateReview({ setModalOpen, setPlaceId });
+  const reviewCreate = useCreateReview({ setModalOpen, setKakaoPlaceId });
 
   const formatDate = (date: Date) => {
     const year = date.getFullYear() % 100;
