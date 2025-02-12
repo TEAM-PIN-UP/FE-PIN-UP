@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import ReviewText from "./ReviewText";
+import getMemberResponseObj from "@/utils/getMemberResponseObj";
 
 export const ReviewDetails: React.FC = () => {
   useCheckLoginAndRoute();
@@ -18,6 +19,8 @@ export const ReviewDetails: React.FC = () => {
   const toast = useToastPopup();
   const { id } = useParams();
   const [detail, setDetail] = useState<ReviewDetail>();
+
+  const memberResponse = getMemberResponseObj();
 
   useEffect(() => {
     const fetchReviewDetail = async () => {
@@ -53,12 +56,15 @@ export const ReviewDetails: React.FC = () => {
       <StTransitionWrapper duration={0.25}>
         <div className="user-header">
           <div className="profile">
-            <img src="https://picsum.photos/200" className="profile-image" />
+            <img
+              src={memberResponse?.profilePictureUrl}
+              className="profile-image"
+            />
             <div className="username">
-              <span className="h4">레벨조이</span>
+              <span className="h4">{memberResponse?.nickname}</span>
               <div className="review-count">
                 <span className="b6 gray">리뷰</span>
-                <span className="b6">24</span>
+                <span className="b6">{}</span>
               </div>
             </div>
           </div>
@@ -67,17 +73,17 @@ export const ReviewDetails: React.FC = () => {
         <div className="review-images">
           <img src={detail?.imageUrls[0]} className="image" />
         </div>
-
-        <ReviewText
-          placeName="잠실새내 딤딤섬"
-          longitude={127.104809}
-          latitude={37.5144}
-          userName="나"
-          score="4.0"
-          reviewDate="24.10.17"
-          body="새우 들어간 딤섬이 젤 마싯음 !! 매장도 깔끔"
-          visitDate="2024년 10월 31일"
-        />
+        {detail?.id && (
+          <ReviewText
+            id={detail?.id}
+            placeName=""
+            userName="나"
+            score={detail.starRating.toFixed(1).toString()}
+            reviewDate="24.10.17"
+            body={detail.content}
+            visitDate="2024년 10월 31일"
+          />
+        )}
       </StTransitionWrapper>
     </StDiv>
   );

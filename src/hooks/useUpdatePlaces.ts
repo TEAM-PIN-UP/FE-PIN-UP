@@ -15,6 +15,7 @@ interface UseUpdatePlacesProps {
   query?: string;
   category: placeCategory;
   sort: placeSort;
+  isPointerDown: boolean;
   setPlaces: React.Dispatch<
     React.SetStateAction<GetPlaceResponse[] | undefined>
   >;
@@ -24,6 +25,7 @@ const useUpdatePlaces = ({
   query,
   category,
   sort,
+  isPointerDown,
   setPlaces,
 }: UseUpdatePlacesProps) => {
   const [mapBounds, setMapBounds] = useState<MapBounds>({
@@ -58,7 +60,7 @@ const useUpdatePlaces = ({
     bounds: naver.maps.Bounds | undefined,
     position: naver.maps.Coord | undefined
   ) => {
-    if (!bounds || !position) return;
+    if (!bounds || !position || isPointerDown) return;
     setMapBounds({ bounds, position });
   };
 
