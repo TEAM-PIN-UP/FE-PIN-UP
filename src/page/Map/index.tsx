@@ -147,6 +147,9 @@ const MapPage: React.FC = () => {
                   onClick={() => {
                     setActivePinIndex(index);
                     setIsReviewView(true);
+                    navigate(
+                      `${window.location.pathname}?kakaoPlaceId=${item.kakaoPlaceId}`
+                    );
                   }}
                   position={
                     new naverMaps.LatLng({
