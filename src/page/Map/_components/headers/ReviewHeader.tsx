@@ -10,10 +10,15 @@ import useDeleteMyPlace from "@/hooks/api/myPlace/useDeleteMyPlace";
 
 interface SearchHeaderProps {
   onBack: () => void;
+  bookmark: boolean;
+  setBookmark: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SearchHeader: React.FC<SearchHeaderProps> = ({ onBack }) => {
-  const [isScraped, setIsScraped] = useState(false);
+const SearchHeader: React.FC<SearchHeaderProps> = ({
+  onBack,
+  bookmark,
+  setBookmark,
+}) => {
   const [searchParams] = useSearchParams();
   const kakaoPlaceId = searchParams.get("kakaoPlaceId");
   const toast = useToastPopup();
@@ -22,7 +27,7 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({ onBack }) => {
 
   const scrapHandler = () => {
     if (kakaoPlaceId) {
-      if (isScraped) {
+      if (bookmark) {
         deleteMyPlace.mutate({ kakaoPlaceId: Number(kakaoPlaceId) });
       } else {
         applyMyPlace.mutate({ kakaoPlaceId: Number(kakaoPlaceId) });
@@ -39,11 +44,11 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({ onBack }) => {
       <StActionButtons>
         <button
           onClick={() => {
-            setIsScraped(!isScraped);
+            setBookmark(!bookmark);
             scrapHandler();
           }}
         >
-          <img src={isScraped ? scrapActive : scrapInactive} alt="scrap" />
+          <img src={bookmark ? scrapActive : scrapInactive} alt="scrap" />
         </button>
       </StActionButtons>
     </StHeaderContainer>

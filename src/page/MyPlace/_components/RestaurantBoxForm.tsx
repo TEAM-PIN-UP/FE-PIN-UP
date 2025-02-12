@@ -2,26 +2,30 @@ import styled from "styled-components";
 import foodPin from "@/image/icons/food.svg";
 import cafePin from "@/image/icons/coffee.svg";
 import bookmarkActive from "@/image/icons/bookmarkActive.svg";
-import { placeCategory } from "@/interface/apiInterface";
+import { GetMyPlaceResponse, placeCategory } from "@/interface/apiInterface";
 import { B5, H4 } from "@/style/font";
 
 interface Props {
   sort: placeCategory;
+  data: GetMyPlaceResponse;
 }
 
-const RestaurantBoxForm: React.FC<Props> = ({ sort }) => {
+const RestaurantBoxForm: React.FC<Props> = ({ sort, data }) => {
+  console.log(sort);
   return (
     <StRestaurantBoxForm>
-      <div className="restaurantImg">
+      <div
+        className="restaurantImg"
+        style={{ backgroundImage: `url(${data.placeDefaultImgUrl})` }}
+      >
         <img className="mark" src={bookmarkActive} />
-        img
       </div>
       <div className="restaurantInfo">
         <div className="title">
-          <img src={sort === "CAFE" ? cafePin : foodPin} />
-          <p>음식점</p>
+          <img src={data.placeCategory === "CAFE" ? cafePin : foodPin} />
+          <p>{data.placeName}</p>
         </div>
-        <p className="address">서울 00동</p>
+        <p className="address">{data.placeAddress}</p>
       </div>
     </StRestaurantBoxForm>
   );

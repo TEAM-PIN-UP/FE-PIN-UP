@@ -5,17 +5,24 @@ import {
 } from "@/interface/apiInterface";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
+interface setProp {
+  setBookmark: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 const useGetSpecificPlaces = ({
   kakaoPlaceId,
   currentLongitude,
   currentLatitude,
-}: GetSpecificPlaceRequest): UseQueryResult<GetSpecificPlaceResponse> => {
+  setBookmark,
+}: GetSpecificPlaceRequest &
+  setProp): UseQueryResult<GetSpecificPlaceResponse> => {
   const queryFn = async () => {
     const response = await getApi.getSpecificPlace({
       kakaoPlaceId,
       currentLongitude,
       currentLatitude,
     });
+    setBookmark(response.data.bookmark);
     return response.data;
   };
 
@@ -24,7 +31,7 @@ const useGetSpecificPlaces = ({
     queryKey: ["places", kakaoPlaceId],
     enabled: Boolean(kakaoPlaceId),
     retry: 1,
-    staleTime: 1000 * 60 * 5,
+    // staleTime: 1000 * 60 * 5,
   });
 };
 
