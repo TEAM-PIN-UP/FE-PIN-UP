@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import arrowLeft from "@/image/icons/arrowLeft.svg";
 import scrapActive from "@/image/icons/scrapActive.svg";
