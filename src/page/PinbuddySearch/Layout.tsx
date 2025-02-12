@@ -1,12 +1,13 @@
 import Header from "@/components/Header";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import { H3 } from "@/style/font";
 
 const PinBuddyLayout: React.FC = () => {
+  const navigate = useNavigate();
   const handleClick = () => {
-    window.history.back();
+    navigate(-1);
   };
 
   return (
@@ -14,7 +15,6 @@ const PinBuddyLayout: React.FC = () => {
       <StPinBuddyLayout>
         <Header>
           <Header.Left className="backButton">
-            {" "}
             <img
               src={chevronLeft}
               className="back-button"
