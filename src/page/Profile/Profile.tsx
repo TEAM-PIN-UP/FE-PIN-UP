@@ -24,7 +24,7 @@ import UserStatsSection, { Stat } from "./_components/UserStatsSection";
 const Profile: React.FC = () => {
   const navigate = useNavigate();
   const toast = useToastPopup();
-  useCheckLoginAndRoute(); 
+  useCheckLoginAndRoute();
 
   // Bottom sheet logic
   const sheetRef = useRef<SheetRef>();
@@ -46,7 +46,7 @@ const Profile: React.FC = () => {
       const getMemberDetails = async () => {
         try {
           const response = await getApi.getMyFeed();
-          setMyFeed(response.data)
+          setMyFeed(response.data);
         } catch (error) {
           console.error("Error fetching member details:", error);
         }
@@ -62,16 +62,15 @@ const Profile: React.FC = () => {
     if (!myFeed?.memberReviews) return;
     const p: Review[] = [];
     const t: Review[] = [];
-    
+
     myFeed.memberReviews.forEach((review: Review) => {
       if (review.reviewImageUrls.length > 0) p.push(review);
       else t.push(review);
     });
-  
+
     setPhotos(p);
     setTexts(t);
   }, [myFeed]);
-  
 
   useEffect(() => {
     // Update bottom sheet alignment on window resize
