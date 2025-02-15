@@ -3,12 +3,14 @@ import checkImageValidity from "./checkImageValidity";
 export const downscaleImage = async ({
   image,
   targetWidth,
-  targetHeight = 1080,
+  targetHeight = 720,
+  returnFormat = "base64",
 }: {
   image: string | File;
   targetWidth?: number;
   targetHeight?: number;
-}): Promise<string> => {
+  returnFormat?: "base64" | "file";
+}): Promise<string | File> => {
   return new Promise((resolve, reject) => {
     if (targetWidth) targetWidth = Math.floor(targetWidth);
     if (targetHeight) targetHeight = Math.floor(targetHeight);
@@ -34,7 +36,7 @@ export const downscaleImage = async ({
         (targetWidth && img.width <= targetWidth) ||
         (targetHeight && img.height <= targetHeight)
       ) {
-        resolve(image instanceof File ? img.src : image);
+        resolve(image instanceof File ? image : img.src);
         return;
       }
 
@@ -60,14 +62,39 @@ export const downscaleImage = async ({
 
       ctx.drawImage(img, 0, 0, newWidth, newHeight);
 
-      // Canvas to base64
-      const downscaledImage = canvas.toDataURL("image/jpeg", 0.9);
+      // Convert to Base64
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) {
+            reject(new Error("Failed to create Blob from canvas"));
+            return;
+          }
 
-      resolve(downscaledImage);
+          if (returnFormat === "file") {
+            // Convert Blob to File
+            const fileName =
+              image instanceof File ? image.name : "downscaled.jpg";
+            const downscaledFile = new File([blob], fileName, {
+              type: "image/jpeg",
+            });
+            resolve(downscaledFile);
+          } else {
+            // Convert Blob to Base64
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              if (reader.result) resolve(reader.result as string);
+              else reject(new Error("Failed to convert Blob to Base64"));
+            };
+            reader.readAsDataURL(blob);
+          }
+        },
+        "image/jpeg",
+        0.9
+      );
     };
 
     img.onerror = (err) => {
-      reject(new Error("Failed to load the image" + err));
+      reject(new Error("Failed to load image: " + err));
     };
 
     // Read image
