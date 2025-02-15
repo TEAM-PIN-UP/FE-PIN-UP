@@ -9,9 +9,7 @@ import useGetMyPlace from "@/hooks/api/myPlace/useGetMyPlace";
 const MyPlacePage = () => {
   const [category, setCategory] = useState<placeCategory>("CAFE");
   const [sort, setSort] = useState<placeSort>("NEAR");
-  const data = useGetMyPlace();
-  console.log(data);
-  console.log(sort);
+  const { data } = useGetMyPlace({ sort, category });
 
   return (
     <StMyPlacePage>
@@ -22,10 +20,16 @@ const MyPlacePage = () => {
         setCategory={setCategory}
       />
       <StCardGrid>
-        <RestaurantBoxForm sort={"CAFE"} />
-        <RestaurantBoxForm sort={"CAFE"} />
-        <RestaurantBoxForm sort={"CAFE"} />
-        <RestaurantBoxForm sort={"CAFE"} />
+        {data &&
+          data?.map((val) => {
+            return (
+              <RestaurantBoxForm
+                data={val}
+                sort={"CAFE"}
+                key={val.kakaoPlaceId}
+              />
+            );
+          })}
       </StCardGrid>
     </StMyPlacePage>
   );

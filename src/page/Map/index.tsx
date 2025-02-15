@@ -36,6 +36,7 @@ const MapPage: React.FC = () => {
   const [places, setPlaces] = useState<GetPlaceResponse[]>();
   const [dataQuery, setDataQuery] = useState<string>("");
   const [searchParams] = useSearchParams();
+  const [bookmark, setBookmark] = useState<boolean>(false);
 
   const placeId = searchParams.get("placeId");
 
@@ -146,6 +147,9 @@ const MapPage: React.FC = () => {
                   onClick={() => {
                     setActivePinIndex(index);
                     setIsReviewView(true);
+                    navigate(
+                      `${window.location.pathname}?kakaoPlaceId=${item.kakaoPlaceId}`
+                    );
                   }}
                   position={
                     new naverMaps.LatLng({
@@ -180,6 +184,8 @@ const MapPage: React.FC = () => {
                 )}
                 {isReviewView && (
                   <ReviewHeader
+                    bookmark={bookmark}
+                    setBookmark={setBookmark}
                     onBack={() => {
                       removeQueries();
                       setIsReviewView(false);
@@ -226,6 +232,7 @@ const MapPage: React.FC = () => {
                     // || activePinIndex !== null
                     <>
                       <Review
+                        setBookmark={setBookmark}
                         currentLatitude={user?.getPosition()?.y}
                         currentLongitude={user?.getPosition()?.x}
                       />

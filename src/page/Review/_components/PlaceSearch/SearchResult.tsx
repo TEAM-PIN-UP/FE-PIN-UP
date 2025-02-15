@@ -22,7 +22,7 @@ const SearchResult: React.FC<SearchResultProp> = ({
       <div className="results">
         {results?.map((result) => (
           <SearchedPlace
-            key={result.kakaoMapId}
+            key={result.kakaoPlaceId}
             stepUp={stepUp}
             result={result}
             setPickedInfo={setPickedInfo}

@@ -4,6 +4,7 @@ import {
   GetSpecificPlaceRequest,
 } from "@/interface/apiInterface";
 import customAxios from "./Interceptor";
+import { getMyPlaceProps } from "@/hooks/api/myPlace/useGetMyPlace";
 
 const getApi = {
   getSpecificPlace: ({
@@ -27,7 +28,12 @@ const getApi = {
   getMemberNicknameCheck: ({ nickname }: { nickname: string }) =>
     customAxios.get(`/api/members/nickname/check?nickname=${nickname}`),
   getMyFeed: () => customAxios.get(`/api/members/me/feed`),
-  getMyPlace: () => customAxios.get(`/api/bookmarks/my`),
+  getReviewId: ({ id }: { id: string }) =>
+    customAxios.get<ReviewDetail>(`/api/reviews/${id}`),
+  getMyPlace: ({ category, sort }: getMyPlaceProps) =>
+    customAxios.get(`/api/bookmarks/my?category=${category}&sort=${sort}`),
+  getSearchMember: ({ nickname }: { nickname: string }) =>
+    customAxios.get(`/api/members/search?nickname=${nickname}`),
 };
 
 export default getApi;

@@ -13,6 +13,30 @@ export interface GetPlaceParams {
   currentLongitude: string;
 }
 
+export interface GetMyPlaceResponse {
+  id: number;
+  placeId: number;
+  placeName: string;
+  placeAddress: string;
+  placeRoadAddress: string;
+  placeDefaultImgUrl: string;
+  placeLatitude: number;
+  placeLongitude: number;
+  placeStatus: string;
+  placeCategory: placeCategory;
+  kakaoPlaceId: string;
+}
+
+export interface GetPinBuddySearch {
+  memberId: number;
+  email: string;
+  name: string;
+  nickname: string;
+  profilePictureUrl: string;
+  bio: string;
+  termsOfMarketing: string;
+}
+
 export interface GetSpecificPlaceRequest {
   kakaoPlaceId: string;
   currentLatitude: number | undefined;
@@ -45,6 +69,7 @@ export interface GetSpecificPlaceResponse {
   reviewerProfileImageUrls: string[];
   ratingGraph: Map<string, number>;
   reviews: ReviewSingleType[];
+  bookmark: boolean;
 }
 
 export interface ReviewSingleType {
@@ -63,7 +88,7 @@ export interface GetSearchPlacesRequest {
 }
 
 export interface GetSearchPlacesResponse {
-  kakaoMapId: string;
+  kakaoPlaceId: string;
   name: string;
   category: string;
   address: string;
