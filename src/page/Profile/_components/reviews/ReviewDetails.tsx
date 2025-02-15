@@ -57,15 +57,7 @@ export const ReviewDetails: React.FC = () => {
         <div className="review-images">
           <img src={detail.reviewImageUrls[0]} className="image" />
         </div>
-        <ReviewText
-          id={detail.reviewId}
-          placeName={detail.placeName}
-          userName="나"
-          score={detail.starRating.toFixed(1).toString()}
-          reviewDate={detail.createdAt}
-          body={detail.content}
-          visitDate={detail.visitedDate}
-        />
+        <ReviewText item={detail} userName="나" />
       </StTransitionWrapper>
     </StDiv>
   );

@@ -1,40 +1,33 @@
 import blackStar from "@/image/icons/blackStar.svg";
 import chevronRight from "@/image/icons/chevronRightBlack.svg";
+import { Review } from "@/interface/review";
 import { B3, B4, B5, B6, H3, H4 } from "@/style/font";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 interface ReviewTextProps {
-  id: number;
-  placeName: string;
+  item: Review;
   userName: string;
-  score: string;
-  reviewDate: string;
-  body: string;
-  visitDate: string;
 }
 
-const ReviewText: React.FC<ReviewTextProps> = ({
-  id,
-  placeName,
-  userName,
-  score,
-  reviewDate,
-  body,
-  visitDate,
-}) => {
+const ReviewText: React.FC<ReviewTextProps> = ({ item, userName }) => {
   const navigate = useNavigate();
+
+  const formatDate = (date: string): string => {
+    const [year, month, day] = date.split("-");
+    return `${year.slice(2)}.${month}.${day}`;
+  };
 
   return (
     <StDiv>
       <div className="header">
-        <span>{placeName}</span>
+        <span>{item.placeName}</span>
         <button className="see-map-button">
           <img
             src={chevronRight}
             onClick={() => {
               const params = new URLSearchParams({
-                placeId: id.toString(),
+                kakaoPlaceId: item.kakaoPlaceId,
               });
               navigate(`/map?${params.toString()}`);
             }}
@@ -47,16 +40,20 @@ const ReviewText: React.FC<ReviewTextProps> = ({
         <div className="review-title">
           <span className="h3">{userName}</span>
           <img src={blackStar} className="star" />
-          <span className="score b3">{score}</span>
-          <span className="review-date b5 gray">{reviewDate}</span>
+          <span className="score b3">
+            {item.starRating.toFixed(1).toString()}
+          </span>
+          <span className="review-date b5 gray">
+            {formatDate(item.createdAt)}
+          </span>
         </div>
         <div className="review-body">
-          <span>{body}</span>
+          <span>{item.content}</span>
         </div>
       </div>
 
       <div className="visit-date">
-        <span>방문 날짜 {visitDate}</span>
+        <span>방문 날짜 {formatDate(item.visitedDate)}</span>
       </div>
     </StDiv>
   );

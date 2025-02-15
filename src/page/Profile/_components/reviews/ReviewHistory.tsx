@@ -43,11 +43,6 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
     });
   };
 
-  const formatDate = (date: string): string => {
-    const [year, month, day] = date.split("-");
-    return `${year.slice(2)}.${month}.${day}`;
-  };
-
   return (
     <StDiv>
       <SwipeableViews
@@ -73,18 +68,7 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
         </div>
         <div className="text-reviews">
           {texts.length > 0 &&
-            texts.map((item) => (
-              <ReviewText
-                key={item.reviewId}
-                id={item.reviewId}
-                placeName={item.placeName}
-                userName="나"
-                score={item.starRating.toString()}
-                reviewDate={formatDate(item.createdAt)}
-                body={item.content}
-                visitDate={formatDate(item.visitedDate)}
-              />
-            ))}
+            texts.map((item) => <ReviewText item={item} userName="나" />)}
           {texts.length === 0 && <ReviewEmpty />}
         </div>
       </SwipeableViews>
