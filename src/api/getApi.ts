@@ -3,7 +3,6 @@ import {
   GetSearchPlacesRequest,
   GetSpecificPlaceRequest,
 } from "@/interface/apiInterface";
-import { ReviewDetail } from "@/interface/review";
 import customAxios from "./Interceptor";
 import { getMyPlaceProps } from "@/hooks/api/myPlace/useGetMyPlace";
 
@@ -24,15 +23,11 @@ const getApi = {
     ).toString();
     return customAxios.get(`/api/places?${queryParams}`);
   },
-
   getSearchPlaces: ({ keyword }: GetSearchPlacesRequest) =>
     customAxios.get(`/api/places/keyword?query=${keyword}`),
-
   getMemberNicknameCheck: ({ nickname }: { nickname: string }) =>
-    customAxios.get(`/api/members/nickname/check?${nickname}`),
-
+    customAxios.get(`/api/members/nickname/check?nickname=${nickname}`),
   getMyFeed: () => customAxios.get(`/api/members/me/feed`),
-
   getReviewId: ({ id }: { id: string }) =>
     customAxios.get<ReviewDetail>(`/api/reviews/${id}`),
   getMyPlace: ({ category, sort }: getMyPlaceProps) =>

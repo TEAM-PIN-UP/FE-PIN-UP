@@ -5,6 +5,7 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
+import ReviewEmpty from "./ReviewEmpty";
 import ReviewText from "./ReviewText";
 
 interface ReviewHistoryProps {
@@ -21,30 +22,25 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
   texts,
 }) => {
   const navigate = useNavigate();
-
   const [isSwiping, setIsSwiping] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Distinguish between swipe & click
   const handleSwitch = () => {
     setIsSwiping(true);
-
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-
     timeoutRef.current = setTimeout(() => {
       setIsSwiping(false);
     }, 50);
   };
 
-  const handleClick = (index: number) => {
+  const handleClick = (item: Review) => {
     if (isSwiping) return;
-
-    navigate(`photo-review/${index}`);
-  };
-
-  const formatDate = (date: string): string => {
-    const [year, month, day] = date.split("-");
-    return `${year.slice(2)}.${month}.${day}`;
+    navigate(`photo-review/${item.reviewId}`, {
+      state: {
+        item,
+      },
+    });
   };
 
   return (
@@ -59,29 +55,21 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
         style={{ width: "100%" }}
       >
         <div className="image-reviews">
-          {Array.isArray(photos) &&
+          {photos.length > 0 &&
             photos.map((item) => (
               <ImgWithPlaceholder
                 key={item.reviewId}
                 src={item.reviewImageUrls[0]}
                 className="image"
-                onClick={() => handleClick(item.reviewId)}
+                onClick={() => handleClick(item)}
               />
             ))}
+          {photos.length === 0 && <ReviewEmpty />}
         </div>
         <div className="text-reviews">
-          {texts.map((item) => (
-            <ReviewText
-              key={item.reviewId}
-              id={item.reviewId}
-              placeName={item.placeName}
-              userName="나"
-              score={item.starRating.toString()}
-              reviewDate={formatDate(item.createdAt)}
-              body={item.content}
-              visitDate={formatDate(item.visitedDate)}
-            />
-          ))}
+          {texts.length > 0 &&
+            texts.map((item) => <ReviewText item={item} userName="나" />)}
+          {texts.length === 0 && <ReviewEmpty />}
         </div>
       </SwipeableViews>
     </StDiv>
@@ -114,6 +102,7 @@ const StDiv = styled.div`
       height: 0px;
       overflow: hidden;
       flex: 1 0 auto;
+      width: 100%;
       height: 100%;
       overflow-y: auto;
 

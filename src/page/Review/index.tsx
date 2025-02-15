@@ -59,7 +59,7 @@ const ReviewPage = () => {
       )}
 
       <StReview>
-        <ReviewHeader stepDown={stepDown} />
+        <ReviewHeader step={step} stepDown={stepDown} />
         {step === 1 ? (
           <PlaceSearch stepUp={stepUp} setPickedInfo={setPickedInfo} />
         ) : (
@@ -95,6 +95,7 @@ const StReview = styled.div`
   flex-direction: column;
   width: 100%;
   text-align: left;
+  padding-top: 44px;
 `;
 
 export default ReviewPage;

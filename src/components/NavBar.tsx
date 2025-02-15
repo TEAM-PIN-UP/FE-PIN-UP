@@ -1,6 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
 import bookMarkActive from "@/image/icons/bookmarkActive.svg";
 import bookMarkInactive from "@/image/icons/bookmarkInActive.svg";
 import contentsActive from "@/image/icons/contentsActive.svg";
@@ -11,6 +10,8 @@ import profile from "@/image/icons/profile.jpg";
 import uploadActive from "@/image/icons/uploadActive.svg";
 import uploadInactive from "@/image/icons/uploadInactive.svg";
 import NavBarIcon from "./NavBarIcon";
+import getMemberResponseObj from "@/utils/getMemberResponseObj";
+import checkLogin from "@/utils/checkLogin";
 
 interface styleProps {
   $path: string;
@@ -19,6 +20,8 @@ interface styleProps {
 const NavBar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const memberResponse = getMemberResponseObj();
+  const isSignedIn = checkLogin();
 
   return (
     <StNavBar $path={location.pathname.split("/")[1]}>
@@ -45,7 +48,10 @@ const NavBar: React.FC = () => {
             navigate("/profile");
         }}
       >
-        <img src={profile} className="profile" />
+        <img
+          src={isSignedIn ? memberResponse?.profilePictureUrl : profile}
+          className="profile"
+        />
       </div>
     </StNavBar>
   );

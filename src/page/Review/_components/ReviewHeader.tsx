@@ -1,33 +1,27 @@
-import styled from "styled-components";
+import Header from "@/components/Header";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import { H3 } from "@/style/font";
+import styled from "styled-components";
 
 interface HeaderProp {
+  step: number;
   stepDown: () => void;
 }
 
-const ReviewHeader: React.FC<HeaderProp> = ({ stepDown }) => {
+const ReviewHeader: React.FC<HeaderProp> = ({ step, stepDown }) => {
   return (
     <StReviewHeader>
-      <img src={chevronLeft} onClick={stepDown} />
-      <p>리뷰 작성</p>
-      <div />
+      <Header.Left>
+        {step !== 1 && <img src={chevronLeft} onClick={stepDown} />}
+      </Header.Left>
+      <Header.Center>리뷰 작성</Header.Center>
     </StReviewHeader>
   );
 };
 
-const StReviewHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: var(--spacing_12) var(--spacing_16);
-  box-sizing: border-box;
-  border-bottom: 1px solid var(--neutral_100);
+const StReviewHeader = styled(Header)`
   ${H3}
   img {
-    width: 24px;
-    height: 24px;
     cursor: pointer;
   }
 `;

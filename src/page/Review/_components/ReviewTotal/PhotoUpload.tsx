@@ -1,14 +1,15 @@
-import { H4, H5 } from "@/style/font";
-import styled, { css } from "styled-components";
-import { SwiperSlide } from "swiper/react";
-import useToastPopup from "@/utils/toastPopup";
+import BasicSwiper from "@/components/BasicSwiper";
 import camera from "@/image/icons/camera.svg";
 import cancelIcon from "@/image/icons/xCircle.svg";
-import BasicSwiper from "@/components/BasicSwiper";
+import { H4, H5 } from "@/style/font";
+import { downscaleImage } from "@/utils/downscaleImage";
+import useToastPopup from "@/utils/toastPopup";
+import styled, { css } from "styled-components";
+import { SwiperSlide } from "swiper/react";
 
 interface PhotoUploadProp {
   imageData: File[];
-  setImageData: React.Dispatch<React.SetStateAction<File[]>>
+  setImageData: React.Dispatch<React.SetStateAction<File[]>>;
 }
 
 const PhotoUpload: React.FC<PhotoUploadProp> = ({
@@ -41,23 +42,40 @@ const PhotoUpload: React.FC<PhotoUploadProp> = ({
       toast("사진 업로드는 3장까지만 가능합니다!");
       return;
     }
-    setImageData(prev => [...prev, files[0]]);
+    setImageData((prev) => [...prev, files[0]]);
   };
 
-  const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
       if (files?.length + imageData.length >= 4) {
         toast("사진 업로드는 3장까지만 가능합니다!");
       } else {
         const newFiles = Array.from(files).slice(0, 3 - imageData.length);
-        setImageData(prev => [...prev, ...newFiles]);
+
+        // Downscale images
+        const downscaledImages = await Promise.all(
+          newFiles.map(async (file) => {
+            const result = await downscaleImage({
+              image: file,
+              targetHeight: 720,
+              returnFormat: "file",
+            });
+            if (result instanceof File) return result;
+          })
+        );
+        // Remove null values
+        const validImages = downscaledImages.filter(
+          (img): img is File => img !== null
+        );
+
+        setImageData((prev) => [...prev, ...validImages]);
       }
     }
   };
 
   const removeImg = (index: number) => {
-    setImageData(prev => {
+    setImageData((prev) => {
       const newImageData = [...prev];
       newImageData.splice(index, 1);
       return newImageData;
@@ -108,7 +126,11 @@ const PhotoUpload: React.FC<PhotoUploadProp> = ({
                   src={cancelIcon}
                   onClick={() => removeImg(index)}
                 />
-                <img className="uploadedImg" src={getPreviewURL(value)} key={index} />
+                <img
+                  className="uploadedImg"
+                  src={getPreviewURL(value)}
+                  key={index}
+                />
               </SwiperSlide>
             );
           })}
