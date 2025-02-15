@@ -1,9 +1,8 @@
-import styled from "styled-components";
-
 import blackStar from "@/image/icons/blackStar.svg";
 import chevronRight from "@/image/icons/chevronRightBlack.svg";
 import { B3, B4, B5, B6, H3, H4 } from "@/style/font";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 interface ReviewTextProps {
   id: number;

@@ -5,8 +5,8 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
-import ReviewText from "./ReviewText";
 import ReviewEmpty from "./ReviewEmpty";
+import ReviewText from "./ReviewText";
 
 interface ReviewHistoryProps {
   index: number;
