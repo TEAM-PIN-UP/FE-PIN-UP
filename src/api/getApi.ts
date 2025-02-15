@@ -28,7 +28,7 @@ const getApi = {
     customAxios.get(`/api/places/keyword?query=${keyword}`),
 
   getMemberNicknameCheck: ({ nickname }: { nickname: string }) =>
-    customAxios.get(`/api/members/nickname/check?${nickname}`),
+    customAxios.get(`/api/members/nickname/check?nickname=${nickname}`),
 
   getMyFeed: () => customAxios.get(`/api/members/me/feed`),
 

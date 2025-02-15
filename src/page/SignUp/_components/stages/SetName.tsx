@@ -46,9 +46,7 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
       const response = await getApi.getMemberNicknameCheck({
         nickname: data.nickname,
       });
-      const isAvailable = response.data;
-      setIsNicknameValid(!isAvailable);
-
+      setIsNicknameValid(!response.data);
       if (isNicknameValid) onNext();
     } catch (error) {
       console.error("Error checking nickname:", error);
