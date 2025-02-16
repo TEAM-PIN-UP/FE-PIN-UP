@@ -1,10 +1,9 @@
-import { useState } from "react";
-import styled, { css, keyframes } from "styled-components";
-
 import getApi from "@/api/getApi";
 import Button from "@/components/Button";
 import TextInput from "@/components/TextInput";
 import { B5 } from "@/style/font";
+import { useEffect, useState } from "react";
+import styled, { css, keyframes } from "styled-components";
 import StTextContainer from "../typography/StTextContainer";
 import { StageProps } from "./StageProps";
 
@@ -20,10 +19,11 @@ const shake = keyframes`
 const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
   // User input validity, nickname duplicate check result
   const [isInputValid, setIsInputValid] = useState(true);
-  const [isNicknameValid, setIsNicknameValid] = useState(true);
+  const [isNicknameValid, setIsNicknameValid] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsNicknameValid(true);
+    setIsSubmitting(false);
     const value = e.target.value;
     if (value.length <= charLimit) {
       updateData({ nickname: value });
@@ -43,16 +43,22 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
 
   const handleNext = async () => {
     try {
+      setIsSubmitting(true);
       const response = await getApi.getMemberNicknameCheck({
         nickname: data.nickname,
       });
-      setIsNicknameValid(!response.data);
-      if (isNicknameValid) onNext();
+      setIsNicknameValid(!(response.data as boolean));
     } catch (error) {
       console.error("Error checking nickname:", error);
       setIsNicknameValid(false);
+      setIsSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    if (isSubmitting && isInputValid && isNicknameValid) onNext();
+    return () => {};
+  }, [isInputValid, isNicknameValid, isSubmitting, onNext]);
 
   return (
     <StDiv>
@@ -72,22 +78,23 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           style={{ width: "100%", marginBottom: "6px" }}
-          $onError={!isNicknameValid}
+          $onError={isSubmitting && !isNicknameValid}
         />
         <div className="char-limit">
-          {isNicknameValid && (
+          {!(isSubmitting && !isNicknameValid) && (
             <StB5 $isInvalid={!isInputValid}>한글, 영문만 입력 가능</StB5>
           )}
-          {!isNicknameValid && (
+          {isSubmitting && !isNicknameValid && (
             <StB5 style={{ color: "var(--system_error)" }}>
               중복되는 닉네임이에요.
             </StB5>
           )}
           <StB5
             style={{
-              color: isNicknameValid
-                ? "var(--neutral_500)"
-                : "var(--system_error)",
+              color:
+                isSubmitting && !isNicknameValid
+                  ? "var(--system_error)"
+                  : "var(--neutral_500)",
             }}
           >
             {data.nickname.length} / {charLimit}
