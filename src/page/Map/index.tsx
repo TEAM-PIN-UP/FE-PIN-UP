@@ -52,8 +52,6 @@ const MapPage: React.FC = () => {
   const [followUser, setFollowUser] = useState(true);
   const defaultZoom = 20;
 
-  console.log(setFollowUser);
-
   // URL params
   const { search } = useLocation();
   const params = new URLSearchParams(search);
@@ -130,9 +128,10 @@ const MapPage: React.FC = () => {
           <NaverMap
             zoom={defaultZoom}
             ref={setMap}
-            onBoundsChanged={() =>
-              handleMapMove(map?.getBounds(), user?.getPosition())
-            }
+            onBoundsChanged={() => {
+              setFollowUser(false);
+              handleMapMove(map?.getBounds(), user?.getPosition());
+            }}
           >
             <UserPositionMarker ref={(marker) => marker && setUser(marker)} />
             {places &&
