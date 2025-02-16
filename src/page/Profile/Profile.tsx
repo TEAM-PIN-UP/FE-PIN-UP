@@ -64,8 +64,8 @@ const Profile: React.FC = () => {
     const t: Review[] = [];
 
     myFeed.memberReviews.forEach((review: Review) => {
-      if (review.reviewImageUrls.length > 0) p.push(review);
-      else t.push(review);
+      if (review.reviewImageUrls.length > 0) p.unshift(review);
+      else t.unshift(review);
     });
 
     setPhotos(p);
