@@ -1,7 +1,10 @@
+import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import { ModalProps } from "@/store/modalStore";
 import useModalPopup from "@/utils/modalPopup";
 
 const ContentsPage = () => {
+  useCheckLoginAndRoute();
+
   const { openModal, closeModal } = useModalPopup();
 
   const modalData: ModalProps = {

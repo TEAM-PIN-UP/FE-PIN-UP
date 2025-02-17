@@ -13,11 +13,6 @@ interface ReviewTextProps {
 const ReviewText: React.FC<ReviewTextProps> = ({ item, userName }) => {
   const navigate = useNavigate();
 
-  const formatDate = (date: string): string => {
-    const [year, month, day] = date.split("-");
-    return `${year.slice(2)}.${month}.${day}`;
-  };
-
   return (
     <StDiv>
       <div className="header">
@@ -43,9 +38,7 @@ const ReviewText: React.FC<ReviewTextProps> = ({ item, userName }) => {
           <span className="score b3">
             {item.starRating.toFixed(1).toString()}
           </span>
-          <span className="review-date b5 gray">
-            {formatDate(item.createdAt)}
-          </span>
+          <span className="review-date b5 gray">{item.createdAt}</span>
         </div>
         <div className="review-body">
           <span>{item.content}</span>
@@ -53,7 +46,7 @@ const ReviewText: React.FC<ReviewTextProps> = ({ item, userName }) => {
       </div>
 
       <div className="visit-date">
-        <span>방문 날짜 {formatDate(item.visitedDate)}</span>
+        <span>방문 날짜 {item.visitedDate}</span>
       </div>
     </StDiv>
   );

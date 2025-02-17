@@ -1,12 +1,15 @@
+import useGetMyPlace from "@/hooks/api/myPlace/useGetMyPlace";
+import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
+import { placeCategory, placeSort } from "@/interface/apiInterface";
+import { useState } from "react";
 import styled from "styled-components";
+import FilterHead from "./_components/FilterHead";
 import MyPlaceHeader from "./_components/Header";
 import RestaurantBoxForm from "./_components/RestaurantBoxForm";
-import FilterHead from "./_components/FilterHead";
-import { useState } from "react";
-import { placeCategory, placeSort } from "@/interface/apiInterface";
-import useGetMyPlace from "@/hooks/api/myPlace/useGetMyPlace";
 
 const MyPlacePage = () => {
+  useCheckLoginAndRoute();
+
   const [category, setCategory] = useState<placeCategory>("CAFE");
   const [sort, setSort] = useState<placeSort>("NEAR");
   const { data } = useGetMyPlace({ sort, category });

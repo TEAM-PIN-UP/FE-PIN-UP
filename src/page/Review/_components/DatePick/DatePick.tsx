@@ -15,7 +15,7 @@ const DatePick: React.FC<DatePickProp> = ({
   stepUp,
   visitDate,
   setVisitDate,
-  name
+  name,
 }) => {
   const [calendarOpen, setCalendarOpen] = useState<boolean>(false);
 
