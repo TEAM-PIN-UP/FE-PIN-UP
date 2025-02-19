@@ -26,7 +26,7 @@ const ImgWithPlaceholder: React.FC<ImgWithPlaceholderProps> = ({
   };
 
   return (
-    <StDiv maxWidth={maxWidth}>
+    <StDiv $maxWidth={maxWidth}>
       <div className={`placeholder${isLoading ? " active" : ""}`} />
       <img
         {...props}
@@ -38,10 +38,10 @@ const ImgWithPlaceholder: React.FC<ImgWithPlaceholderProps> = ({
   );
 };
 
-const StDiv = styled.div<{ maxWidth: string }>`
+const StDiv = styled.div<{ $maxWidth: string }>`
   position: relative;
   display: block;
-  max-width: ${(props) => props.maxWidth};
+  max-width: ${(props) => props.$maxWidth};
   aspect-ratio: 1;
 
   .placeholder {
