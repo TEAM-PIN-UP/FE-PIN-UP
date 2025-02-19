@@ -11,6 +11,7 @@ import {
 } from "@/interface/apiInterface";
 import { H3 } from "@/style/font";
 import { getLastKnownPositionObj } from "@/utils/getFromLocalStorage";
+import useToastPopup from "@/utils/toastPopup";
 import { useEffect, useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 import {
@@ -32,6 +33,7 @@ const MapPage: React.FC = () => {
   useCheckLoginAndRoute();
 
   const navigate = useNavigate();
+  const toast = useToastPopup();
   const [category, setCategory] = useState<placeCategory>("ALL");
   const [sort, setSort] = useState<placeSort>("NEAR");
   const [places, setPlaces] = useState<GetPlaceResponse[]>();
@@ -125,8 +127,22 @@ const MapPage: React.FC = () => {
     setPlaces,
   });
 
+  const handleMoveToCurrent = () => {
+    setFollowUser(true);
+    setActivePinIndex(null);
+    const pos = getLastKnownPositionObj();
+    if (pos)
+      map?.setCenter(
+        new naverMaps.LatLng(pos?.coords.latitude, pos?.coords.longitude)
+      );
+    else toast("현위치를 확인할 수 없어요.");
+  };
+
   return (
     <StDiv ref={attachRef}>
+      <button className="move-to-current" onClick={handleMoveToCurrent}>
+        현위치로 이동
+      </button>
       <NavermapsProvider ncpClientId={import.meta.env.VITE_NAVER_MAPS}>
         <StMapDiv>
           <NaverMap
@@ -263,6 +279,13 @@ const MapPage: React.FC = () => {
 const StDiv = styled.div`
   width: 100%;
   height: 100%;
+
+  .move-to-current {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 10;
+  }
 `;
 
 const StMapDiv = styled(MapDiv)`
