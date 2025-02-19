@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 interface MapBounds {
   bounds: naver.maps.Bounds | undefined;
-  position: naver.maps.Coord | undefined;
+  position: GeolocationPosition | null;
 }
 
 interface UseUpdatePlacesProps {
@@ -30,7 +30,7 @@ const useUpdatePlaces = ({
 }: UseUpdatePlacesProps) => {
   const [mapBounds, setMapBounds] = useState<MapBounds>({
     bounds: undefined,
-    position: undefined,
+    position: null,
   });
 
   const { data: placesData, isError } = useGetPlaces({
@@ -41,8 +41,8 @@ const useUpdatePlaces = ({
     swLongitude: mapBounds.bounds?.getMin().x.toString() ?? "",
     neLatitude: mapBounds.bounds?.getMax().y.toString() ?? "",
     neLongitude: mapBounds.bounds?.getMax().x.toString() ?? "",
-    currentLatitude: mapBounds.position?.y.toString() ?? "",
-    currentLongitude: mapBounds.position?.x.toString() ?? "",
+    currentLatitude: mapBounds.position?.coords.latitude.toString() ?? "",
+    currentLongitude: mapBounds.position?.coords.longitude.toString() ?? "",
   });
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const useUpdatePlaces = ({
 
   const handleMapMove = (
     bounds: naver.maps.Bounds | undefined,
-    position: naver.maps.Coord | undefined
+    position: GeolocationPosition | null
   ) => {
     if (!bounds || !position || isPointerDown) return;
     setMapBounds({ bounds, position });
