@@ -1,3 +1,4 @@
+import { getLastKnownPositionObj } from "@/utils/getFromLocalStorage";
 import useToastPopup from "@/utils/toastPopup";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavermaps } from "react-naver-maps";
@@ -16,6 +17,9 @@ const useMapSetup = (
 
   const onGeolocationSuccess = useCallback(
     (position: GeolocationPosition) => {
+      localStorage.setItem("lastKnownPosition", JSON.stringify(position));
+      console.log(getLastKnownPositionObj());
+
       if (!map || !user) return;
 
       const location = new naverMaps.LatLng(
