@@ -66,7 +66,7 @@ const MapPage: React.FC = () => {
         });
         const placePos = response.data as GetSpecificPlaceResponse;
         return new naverMaps.LatLng(
-          placePos.latitude - 0.0001,
+          placePos.latitude - 0.001,
           placePos.longitude
         );
       };
@@ -192,6 +192,7 @@ const MapPage: React.FC = () => {
                     onBack={() => {
                       removeQueries();
                       setIsReviewView(false);
+                      setActivePinIndex(null);
                     }}
                   />
                 )}
@@ -207,11 +208,12 @@ const MapPage: React.FC = () => {
                   {places &&
                     !isReviewView &&
                     // activePinIndex === null &&
-                    places.map((item, index) => (
+                    places.map((item) => (
                       <div
-                        key={index}
+                        key={item.kakaoPlaceId}
                         onClick={() => {
                           setIsReviewView(true);
+                          setActivePinIndex(item.kakaoPlaceId);
                           navigate(
                             `${window.location.pathname}?kakaoPlaceId=${item.kakaoPlaceId}`
                           );
