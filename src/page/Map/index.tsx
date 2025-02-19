@@ -1,14 +1,16 @@
+import getApi from "@/api/getApi";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import useMapSetup from "@/hooks/useMapSetup";
 import useUpdatePlaces from "@/hooks/useUpdatePlaces";
 import {
   GetPlaceResponse,
+  GetSpecificPlaceResponse,
   placeCategory,
   placeSort,
 } from "@/interface/apiInterface";
 import { H3 } from "@/style/font";
-import useToastPopup from "@/utils/toastPopup";
+import { getLastKnownPositionObj } from "@/utils/getFromLocalStorage";
 import { useEffect, useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 import {
@@ -17,7 +19,7 @@ import {
   NavermapsProvider,
   useNavermaps,
 } from "react-naver-maps";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import ReviewHeader from "./_components/headers/ReviewHeader";
 import SearchHeader from "./_components/headers/SearchHeader";
@@ -30,44 +32,49 @@ const MapPage: React.FC = () => {
   useCheckLoginAndRoute();
 
   const navigate = useNavigate();
-  const toast = useToastPopup();
   const [category, setCategory] = useState<placeCategory>("ALL");
   const [sort, setSort] = useState<placeSort>("NEAR");
   const [places, setPlaces] = useState<GetPlaceResponse[]>();
   const [dataQuery, setDataQuery] = useState<string>("");
   const [searchParams] = useSearchParams();
   const [bookmark, setBookmark] = useState<boolean>(false);
-
-  const placeId = searchParams.get("placeId");
-
-  useEffect(() => {
-    if (placeId) setIsReviewView(true);
-  }, [placeId]);
+  const [isReviewView, setIsReviewView] = useState(false);
 
   // Geolocation and map setup
   const naverMaps = useNavermaps();
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [user, setUser] = useState<naver.maps.Marker | null>(null);
-  const [activePinIndex, setActivePinIndex] = useState<number | null>(null);
+  const [activePinIndex, setActivePinIndex] = useState<string | null>(null);
   const [followUser, setFollowUser] = useState(true);
   const defaultZoom = 20;
+  useMapSetup(true, map, user, followUser, setActivePinIndex);
 
   // URL params
-  const { search } = useLocation();
-  const params = new URLSearchParams(search);
-  const hasParams = !!search;
-  const query = params.get("query");
-  const longitude = params.get("longitude");
-  const latitude = params.get("latitude");
-  if (hasParams && query && longitude && latitude) {
-    map?.setCenter(
-      new naverMaps.LatLng(
-        Number.parseFloat(latitude) - 0.0001, // Offset for bottom sheet
-        Number.parseFloat(longitude)
-      )
-    );
-  }
-  useMapSetup(!hasParams, map, user, followUser, setActivePinIndex);
+  const kakaoPlaceId = searchParams.get("kakaoPlaceId");
+
+  useEffect(() => {
+    const updateMapCenter = async () => {
+      if (!kakaoPlaceId) return;
+      setIsReviewView(true);
+      setActivePinIndex(kakaoPlaceId);
+      const getLatLon = async () => {
+        const pos = getLastKnownPositionObj();
+        const response = await getApi.getSpecificPlace({
+          kakaoPlaceId,
+          currentLatitude: pos?.coords.latitude,
+          currentLongitude: pos?.coords.longitude,
+        });
+        const placePos = response.data as GetSpecificPlaceResponse;
+        return new naverMaps.LatLng(
+          placePos.latitude - 0.0001,
+          placePos.longitude
+        );
+      };
+      const newCenter = await getLatLon();
+      if (map) map.setCenter(newCenter);
+    };
+    updateMapCenter();
+  }, [map, kakaoPlaceId, naverMaps.LatLng]);
 
   // Bottom sheet logic
   const sheetRef = useRef<SheetRef>();
@@ -83,16 +90,13 @@ const MapPage: React.FC = () => {
     window.history.pushState({}, "", path); // 쿼리 없이 경로만 유지
   };
 
-  const [isReviewView, setIsReviewView] = useState(false);
-
   useEffect(() => {
     updateLeftPosition();
     window.addEventListener("resize", updateLeftPosition);
-
     return () => {
       window.removeEventListener("resize", updateLeftPosition);
     };
-  }, [navigate, toast]);
+  }, []);
 
   // Track mouse down
   const [isPointerDown, setIsPointerDown] = useState(false);
@@ -130,21 +134,21 @@ const MapPage: React.FC = () => {
             ref={setMap}
             onBoundsChanged={() => {
               setFollowUser(false);
-              handleMapMove(map?.getBounds(), user?.getPosition());
+              handleMapMove(map?.getBounds(), getLastKnownPositionObj());
             }}
           >
             <UserPositionMarker ref={(marker) => marker && setUser(marker)} />
             {places &&
-              places.map((item, index) => (
+              places.map((item) => (
                 <PinMarker
-                  key={index}
-                  active={activePinIndex === index}
+                  key={item.kakaoPlaceId}
+                  active={activePinIndex === item.kakaoPlaceId}
                   type={item.placeCategory}
                   name={item.name}
                   image={item.reviewImageUrls[0]}
                   count={item.reviewCount.toString()}
                   onClick={() => {
-                    setActivePinIndex(index);
+                    setActivePinIndex(item.kakaoPlaceId);
                     setIsReviewView(true);
                     navigate(
                       `${window.location.pathname}?kakaoPlaceId=${item.kakaoPlaceId}`
@@ -194,7 +198,7 @@ const MapPage: React.FC = () => {
               </Sheet.Header>
               <Sheet.Content style={{ paddingBottom: sheetRef.current?.y }}>
                 <Sheet.Scroller>
-                  {(!places || places.length === 0) && (
+                  {((!isReviewView && !places) || places?.length === 0) && (
                     <div className="no-reviews">
                       <p>근처에 리뷰 있는</p>
                       <p>가게가 없어요!</p>
@@ -229,13 +233,15 @@ const MapPage: React.FC = () => {
                     ))}
                   {isReviewView && (
                     // || activePinIndex !== null
-                    <>
-                      <Review
-                        setBookmark={setBookmark}
-                        currentLatitude={user?.getPosition()?.y}
-                        currentLongitude={user?.getPosition()?.x}
-                      />
-                    </>
+                    <Review
+                      setBookmark={setBookmark}
+                      currentLatitude={
+                        getLastKnownPositionObj()?.coords.latitude
+                      }
+                      currentLongitude={
+                        getLastKnownPositionObj()?.coords.longitude
+                      }
+                    />
                   )}
                 </Sheet.Scroller>
               </Sheet.Content>
