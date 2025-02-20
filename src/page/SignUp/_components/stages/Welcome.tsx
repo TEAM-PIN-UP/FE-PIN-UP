@@ -1,7 +1,7 @@
 import patchApi from "@/api/patchApi";
 import Button from "@/components/Button";
 import { MemberPatchBody } from "@/interface/member";
-import getMemberResponseObj from "@/utils/getMemberResponseObj";
+import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
 import { useNavigate } from "react-router-dom";
 import { SignUpForm } from "../../SignUpInterface";
 import StTextContainer from "../typography/StTextContainer";

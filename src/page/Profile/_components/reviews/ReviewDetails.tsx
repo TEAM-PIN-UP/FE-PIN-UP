@@ -5,7 +5,7 @@ import chevronLeft from "@/image/icons/chevronLeft.svg";
 import moreDotsGray from "@/image/icons/moreDotsGray.svg";
 import { Review } from "@/interface/review";
 import { B6, H3, H4 } from "@/style/font";
-import getMemberResponseObj from "@/utils/getMemberResponseObj";
+import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";

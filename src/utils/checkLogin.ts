@@ -1,4 +1,4 @@
-import getMemberResponseObj from "./getMemberResponseObj";
+import { getMemberResponseObj } from "./getFromLocalStorage";
 
 const checkLogin = (): boolean => {
   const memberResponse = getMemberResponseObj();

@@ -196,6 +196,7 @@ const StPhotoUpload = styled.div`
       .uploadedImg {
         ${StCard}
         cursor: default;
+        object-fit: cover;
       }
       .cancelIcon {
         position: absolute;
