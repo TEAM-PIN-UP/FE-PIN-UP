@@ -25,6 +25,7 @@
     "react-swipeable-views": "^0.14.0",
     "styled-components": "^6.1.13",
     "swiper": "8.4.7",
+    "uuid": "^11.1.0",
     "zustand": "^5.0.0"
   },
   "devDependencies": {
