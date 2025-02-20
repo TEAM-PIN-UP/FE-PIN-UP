@@ -6,6 +6,7 @@ import EditorArticlePage from "@/page/EditorArticle";
 import EditorPostPage from "@/page/EditorArticle/EditorPost";
 import LandingPage from "@/page/Landing";
 import MapPage from "@/page/Map";
+import MyPlace from "@/page/MyPlace";
 import OtherProfile from "@/page/OtherProfile";
 import PinbuddySearch from "@/page/PinbuddySearch";
 import PinBuddyLayout from "@/page/PinbuddySearch/Layout";
@@ -15,7 +16,7 @@ import Notifications from "@/page/Profile/Notifications";
 import { ReviewDetails } from "@/page/Profile/_components/reviews/ReviewDetails";
 import ReviewPage from "@/page/Review";
 import SignUpPage from "@/page/SignUp";
-import MyPlace from "@/page/MyPlace";
+import NaverAuthCallback from "@/page/SignUp/_components/auth/NaverAuthCallback";
 
 const router = createBrowserRouter([
   {
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <SignUpPage />,
+      },
+      {
+        path: "/auth/naver",
+        element: <NaverAuthCallback />,
       },
     ],
   },
