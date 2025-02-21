@@ -4,19 +4,23 @@ import NavBar from "@/components/NavBar";
 import Modal from "./components/Modal";
 import Toast from "./components/Toast";
 
-interface layoutProps {
+interface LayoutProps {
   children: React.ReactNode;
 }
 
-const Layout: React.FC<layoutProps> = ({ children }) => {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const excludeNavBarRoutes = ["/auth/naver"];
   return (
     <StLayout>
       <Toast />
       <Modal />
       <StContentContainer>{children}</StContentContainer>
-      <StNavBarContainer>
-        <NavBar />
-      </StNavBarContainer>
+      {/* NavBar conditional rendering */}
+      {!excludeNavBarRoutes.includes(location.pathname) && (
+        <StNavBarContainer>
+          <NavBar />
+        </StNavBarContainer>
+      )}
     </StLayout>
   );
 };

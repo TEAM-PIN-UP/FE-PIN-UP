@@ -2,15 +2,16 @@ import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
+import { v4 as uuidv4 } from "uuid";
 import googleIcon from "../../_icons/googleIcon.png";
-import kakaoIcon from "../../_icons/kakaoIcon.png";
+// import kakaoIcon from "../../_icons/kakaoIcon.png";
 import naverIcon from "../../_icons/naverIcon.svg";
 import pinupLogo from "../../_icons/pinupLogo.svg";
 import SocialSignUpButton from "../SocialSignUpButton";
 import StTextContainer from "../typography/StTextContainer";
 import { StageProps } from "./StageProps";
 
-const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
+const SelectLogin: React.FC<StageProps> = ({ updateData, onNext }) => {
   const navigate = useNavigate();
   const googleLogin = useGoogleLogin({
     flow: "auth-code",
@@ -41,6 +42,36 @@ const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
     onError: (errorResponse) => console.log(errorResponse),
   });
 
+  // Naver auth
+  const handleNaverLogin = () => {
+    const width = 500;
+    const height = 600;
+    const left = (window.innerWidth - width) / 2;
+    const top = (window.innerHeight - height) / 2;
+    const state = uuidv4();
+    sessionStorage.setItem("naverAuthState", state);
+
+    const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${
+      import.meta.env.VITE_NAVER_AUTH_CLIENT_ID
+    }&state=${state}&redirect_uri=${import.meta.env.VITE_URI}/auth/naver`;
+    window.open(
+      naverAuthUrl,
+      "authPopup",
+      `width=${width},height=${height},top=${top},left=${left},resizable=no`
+    );
+
+    window.addEventListener("message", (event) => {
+      if (event.origin !== window.location.origin) return;
+
+      const { code } = event.data;
+
+      if (code) {
+        localStorage.setItem("naverAuthCode", code);
+        onNext();
+      }
+    });
+  };
+
   return (
     <StDiv>
       <div className="logo-container">
@@ -51,26 +82,21 @@ const SelectLogin: React.FC<StageProps> = ({ data, updateData, onNext }) => {
       </div>
 
       <div className="button-container">
-        <SocialSignUpButton
+        {/* <SocialSignUpButton
           icon={kakaoIcon}
           backgroundColor="#FAE300"
           onClick={() => {
             updateData({ authMethod: "kakao" });
-            console.log(data);
             onNext();
           }}
         >
           카카오로 계속하기
-        </SocialSignUpButton>
+        </SocialSignUpButton> */}
         <SocialSignUpButton
           icon={naverIcon}
           color="var(--white)"
           backgroundColor="#00C73C"
-          onClick={() => {
-            updateData({ authMethod: "naver" });
-            console.log(data);
-            onNext();
-          }}
+          onClick={handleNaverLogin}
         >
           네이버로 계속하기
         </SocialSignUpButton>
