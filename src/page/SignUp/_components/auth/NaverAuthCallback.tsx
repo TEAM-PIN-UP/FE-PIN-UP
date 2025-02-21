@@ -17,30 +17,10 @@ const NaverAuthCallback = () => {
         navigate("/");
         return;
       }
-
-      //   try {
-      //     // Request token from naver
-      //     const response = await axios.get(
-      //       "https://nid.naver.com/oauth2.0/token",
-      //       {
-      //         params: {
-      //           grant_type: "authorization_code",
-      //           client_id: import.meta.env.VITE_NAVER_AUTH_CLIENT_ID,
-      //           client_secret: import.meta.env.VITE_NAVER_AUTH_CLIENT_SECRET,
-      //           code,
-      //           state: returnedState,
-      //         },
-      //       }
-      //     );
-
-      //     const { access_token, refresh_token } = response.data;
-
-      //     localStorage.setItem("accessToken", access_token);
-      //     localStorage.setItem("refreshToken", refresh_token);
+      sessionStorage.removeItem("naverAuthState");
 
       if (window.opener) {
         window.opener.postMessage(
-          // { access_token },
           { code, state: returnedState },
           window.opener.location.origin
         );
@@ -48,10 +28,6 @@ const NaverAuthCallback = () => {
       } else {
         navigate("/"); // Redirect if not in popup
       }
-      //   } catch (error) {
-      //     console.error("Error fetching access token:", error);
-      //     navigate("/");
-      //   }
     };
 
     fetchToken();
