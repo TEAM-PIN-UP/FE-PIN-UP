@@ -1,35 +1,65 @@
 import styled from "styled-components";
-import profileImg from "@/image/icons/profile.jpg";
+// import profileImg from "@/image/icons/profile.jpg";
 import { B3, B5, H6 } from "@/style/font";
 import { useNavigate } from "react-router-dom";
+import {
+  GetPinBuddySearchResponse,
+  relationType,
+} from "@/interface/apiInterface";
+import { useEffect, useState } from "react";
+import usePostFriendRequest from "@/hooks/api/pinbuddySearch/usePostFriendRequest";
 
-const SearchResultSingle = () => {
-  const navigate = useNavigate();
+interface PinBuddySingleProps {
+  data: GetPinBuddySearchResponse;
+}
+
+const SearchResultSingle: React.FC<PinBuddySingleProps> = ({ data }) => {
+  const friendRequest = usePostFriendRequest();
+  const [currentState, setCurrentState] = useState<string>("");
+
+  useEffect(() => {
+    if (data.relationType === "FRIEND") {
+      setCurrentState("친구");
+    } else if (data.relationType === "PENDING") {
+      setCurrentState("요청보냄");
+    } else if (data.relationType === "SELF") {
+      setCurrentState("나야");
+    } else if (data.relationType === "STRANGER") {
+      setCurrentState("친구 요청");
+    }
+  }, [data.relationType]);
+
+  const requestController = () => {
+    if (data.relationType === "STRANGER") {
+      friendRequest.mutate({ reveiverId: data.memberResponse.memberId });
+    } else {
+    }
+  };
 
   return (
-    <StSearchResultSingle>
-      <img src={profileImg} />
+    <StSearchResultSingle relation={data.relationType}>
+      <img src={data.memberResponse.profilePictureUrl} />
       <div className="profileInfo">
-        <div className="name">은채vv</div>
+        <div className="name">{data.memberResponse.nickname}</div>
         <div className="counts">
           <div className="singleInfo">
             <span className="title">리뷰</span>
-            <span>3</span>
+            <span>{data.reviewCount}</span>
           </div>
           <div className="singleInfo">
             <span className="title">핀버디</span>
-            <span>24</span>
+            <span>{data.pinBuddyCount}</span>
           </div>
         </div>
       </div>
-      <div className="profileButton" onClick={() => navigate(`/profile/1`)}>
-        프로필
+      <div className="profileButton" onClick={requestController}>
+        {currentState}
       </div>
     </StSearchResultSingle>
   );
 };
 
-const StSearchResultSingle = styled.div`
+const StSearchResultSingle = styled.div<{ relation: relationType }>`
   display: flex;
   width: 100%;
   img {
@@ -69,8 +99,11 @@ const StSearchResultSingle = styled.div`
     border-radius: 6px;
     background-color: var(--neutral_100);
     margin: auto 0 auto auto;
+    color: ${(props) =>
+      props.relation === "STRANGER" ? "" : "var(--neutral_500)"};
     ${H6}
-    cursor: pointer;
+    cursor: ${(props) =>
+      props.relation === "STRANGER" ? "pointer" : "default"};
   }
 `;
 

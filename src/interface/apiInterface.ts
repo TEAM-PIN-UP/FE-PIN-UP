@@ -1,5 +1,6 @@
 export type placeCategory = "ALL" | "RESTAURANT" | "CAFE";
 export type placeSort = "NEAR" | "LATEST" | "STAR_HIGH" | "STAR_LOW";
+export type relationType = "SELF" | "FRIEND" | "PENDING" | "STRANGER";
 
 export interface GetPlaceParams {
   query?: string;
@@ -19,7 +20,7 @@ export interface GetMyPlaceResponse {
   placeName: string;
   placeAddress: string;
   placeRoadAddress: string;
-  placeDefaultImgUrl: string;
+  placeFirstReviewImageUrl: string;
   placeLatitude: number;
   placeLongitude: number;
   placeStatus: string;
@@ -27,14 +28,19 @@ export interface GetMyPlaceResponse {
   kakaoPlaceId: string;
 }
 
-export interface GetPinBuddySearch {
-  memberId: number;
-  email: string;
-  name: string;
-  nickname: string;
-  profilePictureUrl: string;
-  bio: string;
-  termsOfMarketing: string;
+export interface GetPinBuddySearchResponse {
+  memberResponse: {
+    memberId: number;
+    email: string;
+    name: string;
+    nickname: string;
+    profilePictureUrl: string;
+    bio: string;
+    termsOfMarketing: string;
+  };
+  relationType: relationType;
+  reviewCount: 0;
+  pinBuddyCount: 0;
 }
 
 export interface GetSpecificPlaceRequest {

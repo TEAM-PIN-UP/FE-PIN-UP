@@ -37,12 +37,20 @@ const MapPage: React.FC = () => {
   const [dataQuery, setDataQuery] = useState<string>("");
   const [searchParams] = useSearchParams();
   const [bookmark, setBookmark] = useState<boolean>(false);
+  const [isReviewView, setIsReviewView] = useState(false);
+  const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
 
-  const placeId = searchParams.get("placeId");
+  const kakaoPlaceId = searchParams.get("kakaoPlaceId");
 
   useEffect(() => {
-    if (placeId) setIsReviewView(true);
-  }, [placeId]);
+    if (kakaoPlaceId) setIsReviewView(true);
+    navigator.geolocation.getCurrentPosition((position) => {
+      setPosition({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
+    });
+  }, [kakaoPlaceId, navigator]);
 
   // Geolocation and map setup
   const naverMaps = useNavermaps();
@@ -84,8 +92,6 @@ const MapPage: React.FC = () => {
     const path = window.location.pathname; // 현재 경로
     window.history.pushState({}, "", path); // 쿼리 없이 경로만 유지
   };
-
-  const [isReviewView, setIsReviewView] = useState(false);
 
   useEffect(() => {
     updateLeftPosition();
@@ -233,8 +239,8 @@ const MapPage: React.FC = () => {
                     <>
                       <Review
                         setBookmark={setBookmark}
-                        currentLatitude={user?.getPosition()?.y}
-                        currentLongitude={user?.getPosition()?.x}
+                        currentLatitude={position.latitude}
+                        currentLongitude={position.longitude}
                       />
                     </>
                   )}

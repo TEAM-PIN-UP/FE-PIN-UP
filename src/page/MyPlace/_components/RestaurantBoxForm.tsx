@@ -16,7 +16,7 @@ const RestaurantBoxForm: React.FC<Props> = ({ sort, data }) => {
     <StRestaurantBoxForm>
       <div
         className="restaurantImg"
-        style={{ backgroundImage: `url(${data.placeDefaultImgUrl})` }}
+        style={{ backgroundImage: `url(${data.placeFirstReviewImageUrl})` }}
       >
         <img className="mark" src={bookmarkActive} />
       </div>
