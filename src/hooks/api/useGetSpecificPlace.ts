@@ -28,7 +28,7 @@ const useGetSpecificPlaces = ({
 
   return useQuery({
     queryFn,
-    queryKey: ["places", kakaoPlaceId],
+    queryKey: ["places", kakaoPlaceId, currentLatitude, currentLongitude],
     enabled: Boolean(kakaoPlaceId),
     retry: 1,
     // staleTime: 1000 * 60 * 5,

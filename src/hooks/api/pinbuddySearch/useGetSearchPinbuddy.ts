@@ -1,5 +1,6 @@
 import getApi from "@/api/getApi";
-import { useQuery } from "@tanstack/react-query";
+import { GetPinBuddySearchResponse } from "@/interface/apiInterface";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 interface useGetSearchPinbuddyProps {
   setSearchList: React.Dispatch<React.SetStateAction<boolean>>;
@@ -9,7 +10,7 @@ interface useGetSearchPinbuddyProps {
 const useGetSearchPinbuddy = ({
   nickname,
   setSearchList,
-}: useGetSearchPinbuddyProps) => {
+}: useGetSearchPinbuddyProps): UseQueryResult<GetPinBuddySearchResponse[]> => {
   const queryFn = async () => {
     const response = await getApi.getSearchMember({ nickname });
     setSearchList(response.data);

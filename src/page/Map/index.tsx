@@ -41,6 +41,21 @@ const MapPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const [bookmark, setBookmark] = useState<boolean>(false);
   const [isReviewView, setIsReviewView] = useState(false);
+  const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
+
+  console.log(position);
+
+  const kakaoPlaceId = searchParams.get("kakaoPlaceId");
+
+  useEffect(() => {
+    if (kakaoPlaceId) setIsReviewView(true);
+    navigator.geolocation.getCurrentPosition((position) => {
+      setPosition({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
+    });
+  }, [kakaoPlaceId, navigator]);
 
   // Geolocation and map setup
   const naverMaps = useNavermaps();
@@ -52,7 +67,6 @@ const MapPage: React.FC = () => {
   useMapSetup(true, map, user, followUser, setActivePinIndex);
 
   // URL params
-  const kakaoPlaceId = searchParams.get("kakaoPlaceId");
 
   useEffect(() => {
     const updateMapCenter = async () => {
