@@ -8,7 +8,7 @@ const postApi = {
       },
     }),
   postFriendRequest: ({ reveiverId }: { reveiverId: number }) =>
-    customAxios.post(`/api/friend-request/send`, {
+    customAxios.post(`/api/friend-requests/send`, {
       reveiverId: reveiverId,
     }),
   postMyPlace: ({ kakaoPlaceId }: { kakaoPlaceId: number }) =>
