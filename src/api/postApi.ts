@@ -7,9 +7,9 @@ const postApi = {
         "Content-Type": "multipart/form-data",
       },
     }),
-  postFriendRequest: ({ reveiverId }: { reveiverId: number }) =>
+  postFriendRequest: ({ receiverId }: { receiverId: number }) =>
     customAxios.post(`/api/friend-requests/send`, {
-      reveiverId: reveiverId,
+      receiverId: receiverId,
     }),
   postMyPlace: ({ kakaoPlaceId }: { kakaoPlaceId: number }) =>
     customAxios.post(`/api/bookmarks`, { kakaoPlaceId }),

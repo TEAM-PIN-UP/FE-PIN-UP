@@ -30,7 +30,7 @@ const SearchResultSingle: React.FC<PinBuddySingleProps> = ({ data }) => {
 
   const requestController = () => {
     if (data.relationType === "STRANGER") {
-      friendRequest.mutate({ reveiverId: data.memberResponse.memberId });
+      friendRequest.mutate({ receiverId: data.memberResponse.memberId });
     } else {
     }
   };

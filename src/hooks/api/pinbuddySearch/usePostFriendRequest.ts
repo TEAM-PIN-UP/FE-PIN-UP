@@ -4,10 +4,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 const usePostFriendRequest = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ reveiverId }: { reveiverId: number }) =>
-      postApi.postFriendRequest({ reveiverId }),
+    mutationFn: ({ receiverId }: { receiverId: number }) =>
+      postApi.postFriendRequest({ receiverId }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["friendRequest"] });
+      queryClient.invalidateQueries({ queryKey: ["searchPinbuddy"] });
     },
   });
 };
