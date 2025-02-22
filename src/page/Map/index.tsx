@@ -43,6 +43,8 @@ const MapPage: React.FC = () => {
   const [isReviewView, setIsReviewView] = useState(false);
   const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
 
+  console.log(position);
+
   const kakaoPlaceId = searchParams.get("kakaoPlaceId");
 
   useEffect(() => {

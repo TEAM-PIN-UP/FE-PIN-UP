@@ -13,7 +13,7 @@ import styled from "styled-components";
 const EditorPostPage = () => {
   const navigate = useNavigate();
   const toast = useToastPopup();
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState<string>("");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
@@ -30,7 +30,7 @@ const EditorPostPage = () => {
       const imageUrl = reader.result;
       if (typeof imageUrl === "string") {
         const compressedImage = await downscaleImage({ image: imageUrl });
-        setImage(compressedImage);
+        setImage(compressedImage as string);
       }
     };
 

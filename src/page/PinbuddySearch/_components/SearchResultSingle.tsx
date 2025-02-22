@@ -1,7 +1,6 @@
 import styled from "styled-components";
 // import profileImg from "@/image/icons/profile.jpg";
 import { B3, B5, H6 } from "@/style/font";
-import { useNavigate } from "react-router-dom";
 import {
   GetPinBuddySearchResponse,
   relationType,

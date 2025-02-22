@@ -4,7 +4,6 @@ import {
   GetSearchPlacesRequest,
   GetSpecificPlaceRequest,
 } from "@/interface/apiInterface";
-import { ReviewDetail } from "@/interface/review";
 import customAxios from "./Interceptor";
 
 const getApi = {
