@@ -1,10 +1,11 @@
+import { getMyPlaceProps } from "@/hooks/api/myPlace/useGetMyPlace";
 import {
   GetPlaceParams,
   GetSearchPlacesRequest,
   GetSpecificPlaceRequest,
 } from "@/interface/apiInterface";
+import { ReviewDetail } from "@/interface/review";
 import customAxios from "./Interceptor";
-import { getMyPlaceProps } from "@/hooks/api/myPlace/useGetMyPlace";
 
 const getApi = {
   getSpecificPlace: ({

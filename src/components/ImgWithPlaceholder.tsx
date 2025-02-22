@@ -4,11 +4,13 @@ import styled from "styled-components";
 interface ImgWithPlaceholderProps extends ImgHTMLAttributes<HTMLImageElement> {
   onLoad?: () => void;
   onError?: () => void;
+  maxWidth?: string;
 }
 
 const ImgWithPlaceholder: React.FC<ImgWithPlaceholderProps> = ({
   onLoad,
   onError,
+  maxWidth = "100%",
   ...props
 }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -24,7 +26,7 @@ const ImgWithPlaceholder: React.FC<ImgWithPlaceholderProps> = ({
   };
 
   return (
-    <StDiv>
+    <StDiv $maxWidth={maxWidth}>
       <div className={`placeholder${isLoading ? " active" : ""}`} />
       <img
         {...props}
@@ -36,10 +38,10 @@ const ImgWithPlaceholder: React.FC<ImgWithPlaceholderProps> = ({
   );
 };
 
-const StDiv = styled.div`
+const StDiv = styled.div<{ $maxWidth: string }>`
   position: relative;
   display: block;
-  width: 100%;
+  max-width: ${(props) => props.$maxWidth};
   aspect-ratio: 1;
 
   .placeholder {
@@ -62,7 +64,7 @@ const StDiv = styled.div`
 
   .image {
     width: 100%;
-    /* height: 100%; */
+    height: 100%;
     object-fit: cover;
     z-index: 0;
   }

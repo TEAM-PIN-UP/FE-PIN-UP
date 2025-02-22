@@ -7,7 +7,7 @@ const useMapSetup = (
   map: naver.maps.Map | null,
   user: naver.maps.Marker | null,
   followUser: boolean,
-  setActivePinIndex: React.Dispatch<React.SetStateAction<number | null>>
+  setActivePinIndex: React.Dispatch<React.SetStateAction<string | null>>
 ) => {
   const naverMaps = useNavermaps();
   const isDragging = useRef(false);
@@ -16,6 +16,8 @@ const useMapSetup = (
 
   const onGeolocationSuccess = useCallback(
     (position: GeolocationPosition) => {
+      localStorage.setItem("lastKnownPosition", JSON.stringify(position));
+
       if (!map || !user) return;
 
       const location = new naverMaps.LatLng(

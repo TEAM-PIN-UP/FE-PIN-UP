@@ -1,3 +1,4 @@
+import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import { GetSearchPlacesResponse } from "@/interface/apiInterface";
 import useToastPopup from "@/utils/toastPopup";
 import { useEffect, useState } from "react";
@@ -12,6 +13,8 @@ import ReviewTotal from "./_components/ReviewTotal/ReviewTotal";
 type stepType = 1 | 2 | 3 | 4 | 5;
 
 const ReviewPage = () => {
+  useCheckLoginAndRoute();
+
   const navigate = useNavigate();
   const toast = useToastPopup();
 

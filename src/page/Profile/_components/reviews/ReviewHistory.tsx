@@ -62,6 +62,7 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
                 src={item.reviewImageUrls[0]}
                 className="image"
                 onClick={() => handleClick(item)}
+                $maxWidth="calc(440px/3)"
               />
             ))}
           {photos.length === 0 && <ReviewEmpty />}
@@ -92,7 +93,6 @@ const StDiv = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    width: calc(100vw - 3px);
     height: 100%;
 
     .image-reviews {
