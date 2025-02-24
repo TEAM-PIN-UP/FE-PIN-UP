@@ -28,6 +28,16 @@ export interface GetMyPlaceResponse {
   kakaoPlaceId: string;
 }
 
+export interface GetPinBuddySingle {
+  memberId: number;
+  email: string;
+  name: string;
+  nickname: string;
+  profilePictureUrl: string;
+  bio: string;
+  termsOfMarketing: string;
+}
+
 export interface GetPinBuddySearchResponse {
   memberResponse: {
     memberId: number;
@@ -64,18 +74,20 @@ export interface GetPlaceResponse {
 }
 
 export interface GetSpecificPlaceResponse {
-  placeName: string;
-  reviewCount: number;
-  averageStarRating: number;
-  distance: string;
-  latitude: number;
-  longitude: number;
-  placeCategory: placeCategory;
-  reviewImageUrls: string[];
-  reviewerProfileImageUrls: string[];
+  mapPlaceResponse: {
+    name: string;
+    reviewCount: number;
+    averageStarRating: number;
+    distance: string;
+    latitude: number;
+    longitude: number;
+    placeCategory: placeCategory;
+    reviewImageUrls: string[];
+    reviewerProfileImageUrls: string[];
+    bookmark: boolean;
+  };
   ratingGraph: Map<string, number>;
   reviews: ReviewSingleType[];
-  bookmark: boolean;
 }
 
 export interface ReviewSingleType {
@@ -96,7 +108,7 @@ export interface GetSearchPlacesRequest {
 export interface GetSearchPlacesResponse {
   kakaoPlaceId: string;
   name: string;
-  category: string;
+  placeCategory: string;
   address: string;
   roadAddress: string;
   latitude: number;
@@ -114,7 +126,7 @@ export interface ReviewRequestType {
 export interface PlaceRequestType {
   kakaoPlaceId: string;
   name: string;
-  category: placeCategory;
+  category: string;
   address: string;
   roadAddress: string;
   latitude: number;
