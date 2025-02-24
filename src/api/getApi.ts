@@ -34,6 +34,7 @@ const getApi = {
     customAxios.get(`/api/bookmarks/my?category=${category}&sort=${sort}`),
   getSearchMember: ({ nickname }: { nickname: string }) =>
     customAxios.get(`/api/members/search?nickname=${nickname}`),
+  getFriendShips: () => customAxios.get(`/api/friendships`),
 };
 
 export default getApi;

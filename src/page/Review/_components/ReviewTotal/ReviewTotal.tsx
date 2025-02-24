@@ -50,7 +50,7 @@ const ReviewTotal: React.FC<ReviewTotalProps> = ({
     const placeRequest: PlaceRequestType = {
       kakaoPlaceId: pickedInfo.kakaoPlaceId,
       name: pickedInfo.name,
-      category: pickedInfo.category === "음식점" ? "RESTAURANT" : "CAFE",
+      category: pickedInfo.placeCategory,
       address: pickedInfo.address,
       roadAddress: pickedInfo.roadAddress,
       latitude: Number(pickedInfo.latitude),

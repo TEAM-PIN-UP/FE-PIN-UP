@@ -82,8 +82,8 @@ const MapPage: React.FC = () => {
         });
         const placePos = response.data as GetSpecificPlaceResponse;
         return new naverMaps.LatLng(
-          placePos.latitude - 0.0001,
-          placePos.longitude
+          placePos.mapPlaceResponse.latitude - 0.0001,
+          placePos.mapPlaceResponse.longitude
         );
       };
       const newCenter = await getLatLon();
@@ -193,7 +193,6 @@ const MapPage: React.FC = () => {
                 />
               ))}
           </NaverMap>
-
           <StSheet
             ref={sheetRef}
             isOpen={true}
