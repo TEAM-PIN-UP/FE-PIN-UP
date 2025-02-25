@@ -14,9 +14,14 @@ const Settings: React.FC = () => {
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
-    await customAxios.post(`/api/auth/logout`, null, {
-      headers: { Access: localStorage.getItem("accessToken") },
-    });
+    try {
+      await customAxios.post(`/api/auth/logout`, null, {
+        headers: { Access: localStorage.getItem("accessToken") },
+      });
+    } catch (error) {
+      console.warn("Logout request failed, proceeding anyway.", error);
+    }
+
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     navigate("/signup");
