@@ -66,8 +66,10 @@ export const handleGlobalError = (error: CustomAxiosError) => {
   const defaultMessage = "알 수 없는 오류가 발생했습니다.";
   const errorMessage = errorCode ? getErrorMessage(errorCode) : defaultMessage;
 
-  // Refresh on bad token
-  if (errorCode === "AU001") {
+  // Refresh on bad/expired token
+  if (errorCode === "AU001" || errorCode === "AU006") {
+    console.log("bad token!");
+
     const originalRequest = error.config as CustomAxiosRequestConfig;
     if (!originalRequest._retry) {
       originalRequest._retry = true;
@@ -83,6 +85,9 @@ export const handleGlobalError = (error: CustomAxiosError) => {
             const newRefreshToken = refreshResponse.data.refreshToken;
             localStorage.setItem("accessToken", newAccessToken);
             localStorage.setItem("refreshToken", newRefreshToken);
+            console.log("new access", newAccessToken);
+            console.log("new refresh", newRefreshToken);
+
             originalRequest.headers[
               "Authorization"
             ] = `Bearer ${newAccessToken}`;
