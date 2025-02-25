@@ -61,47 +61,44 @@ const CLIENT_ERROR_CODES = [
   ErrorCodes.Global.CACHE_KEY_NULL,
 ] as const;
 
-export const handleGlobalError = (error: CustomAxiosError) => {
+export const handleGlobalError = async (error: CustomAxiosError) => {
   const errorCode = error.response?.data?.code;
   const defaultMessage = "알 수 없는 오류가 발생했습니다.";
   const errorMessage = errorCode ? getErrorMessage(errorCode) : defaultMessage;
 
-  // Refresh on bad/expired token
-  if (errorCode === "AU001" || errorCode === "AU006") {
-    console.log("bad token!");
-
+  // Refresh on expired token
+  if (errorCode === "AU006") {
     const originalRequest = error.config as CustomAxiosRequestConfig;
     if (!originalRequest._retry) {
       originalRequest._retry = true;
+
       const refreshToken = localStorage.getItem("refreshToken");
+
       if (refreshToken) {
         const baseURL = import.meta.env.VITE_SERVER_ADDRESS;
-        return axios
-          .post(`${baseURL}/api/auth/refresh`, null, {
-            headers: { Refresh: refreshToken },
-          })
-          .then((refreshResponse) => {
-            const newAccessToken = refreshResponse.data.accessToken;
-            const newRefreshToken = refreshResponse.data.refreshToken;
-            localStorage.setItem("accessToken", newAccessToken);
-            localStorage.setItem("refreshToken", newRefreshToken);
-            console.log("new access", newAccessToken);
-            console.log("new refresh", newRefreshToken);
+        try {
+          const refreshResponse = await axios.post(
+            `${baseURL}/api/auth/refresh`,
+            null,
+            { headers: { Refresh: refreshToken } }
+          );
 
-            originalRequest.headers[
-              "Authorization"
-            ] = `Bearer ${newAccessToken}`;
-            return axios.request(originalRequest);
-          })
-          .catch((refreshError) => {
-            console.error("토큰 갱신 실패:", refreshError);
-            const errorDetail: ErrorDetail = {
-              code: errorCode as ErrorCodeType,
-              message: errorMessage,
-              status: error.response?.status || 500,
-            };
-            return Promise.reject(errorDetail);
-          });
+          const newAccessToken = refreshResponse.data.data.accessToken;
+          const newRefreshToken = refreshResponse.data.data.refreshToken;
+          localStorage.setItem("accessToken", newAccessToken);
+          localStorage.setItem("refreshToken", newRefreshToken);
+
+          originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+          return (await axios.request(originalRequest)).data;
+        } catch (refreshError) {
+          console.error("토큰 갱신 실패:", refreshError);
+          const errorDetail: ErrorDetail = {
+            code: errorCode as ErrorCodeType,
+            message: errorMessage,
+            status: error.response?.status || 500,
+          };
+          return await Promise.reject(errorDetail);
+        }
       }
     }
   }
