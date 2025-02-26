@@ -1,5 +1,3 @@
-import styled from "styled-components";
-
 import customAxios from "@/api/Interceptor";
 import Header from "@/components/Header";
 import TransitionWrapper from "@/components/TransitionWrapper";
@@ -7,6 +5,7 @@ import chevronLeft from "@/image/icons/chevronLeft.svg";
 import { H3 } from "@/style/font";
 import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import SettingsGroup from "./_components/setttings/SettingsGroup";
 import SettingsItem from "./_components/setttings/SettingsItem";
 
