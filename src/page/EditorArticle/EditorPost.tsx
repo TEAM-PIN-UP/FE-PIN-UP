@@ -29,7 +29,10 @@ const EditorPostPage = () => {
     reader.onloadend = async () => {
       const imageUrl = reader.result;
       if (typeof imageUrl === "string") {
-        const compressedImage = await downscaleImage({ image: imageUrl });
+        const compressedImage = await downscaleImage({
+          image: imageUrl,
+          returnFormat: "base64",
+        });
         setImage(compressedImage as string);
       }
     };

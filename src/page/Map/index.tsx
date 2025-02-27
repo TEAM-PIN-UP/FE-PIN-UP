@@ -1,11 +1,10 @@
-import getApi from "@/api/getApi";
+import useGetSpecificPlaces from "@/hooks/api/useGetSpecificPlace";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import useMapSetup from "@/hooks/useMapSetup";
 import useUpdatePlaces from "@/hooks/useUpdatePlaces";
 import {
   GetPlaceResponse,
-  GetSpecificPlaceResponse,
   placeCategory,
   placeSort,
 } from "@/interface/apiInterface";
@@ -68,29 +67,25 @@ const MapPage: React.FC = () => {
 
   // URL params
 
+  const { data: placeData } = useGetSpecificPlaces({
+    kakaoPlaceId: kakaoPlaceId!,
+    currentLongitude: getLastKnownPositionObj()?.coords.longitude || 0,
+    currentLatitude: getLastKnownPositionObj()?.coords.latitude || 0,
+    setBookmark,
+  });
+
   useEffect(() => {
-    const updateMapCenter = async () => {
-      if (!kakaoPlaceId) return;
-      setIsReviewView(true);
-      setActivePinIndex(kakaoPlaceId);
-      const getLatLon = async () => {
-        const pos = getLastKnownPositionObj();
-        const response = await getApi.getSpecificPlace({
-          kakaoPlaceId,
-          currentLatitude: pos?.coords.latitude,
-          currentLongitude: pos?.coords.longitude,
-        });
-        const placePos = response.data as GetSpecificPlaceResponse;
-        return new naverMaps.LatLng(
-          placePos.mapPlaceResponse.latitude - 0.0001,
-          placePos.mapPlaceResponse.longitude
-        );
-      };
-      const newCenter = await getLatLon();
-      if (map) map.setCenter(newCenter);
-    };
-    updateMapCenter();
-  }, [map, kakaoPlaceId, naverMaps.LatLng]);
+    if (!kakaoPlaceId || !placeData || !map) return;
+    setIsReviewView(true);
+    setActivePinIndex(kakaoPlaceId);
+
+    const newCenter = new naverMaps.LatLng(
+      placeData.mapPlaceResponse.latitude - 0.0001,
+      placeData.mapPlaceResponse.longitude
+    );
+
+    map.setCenter(newCenter);
+  }, [kakaoPlaceId, placeData, map, naverMaps.LatLng]);
 
   // Bottom sheet logic
   const sheetRef = useRef<SheetRef>();
@@ -228,7 +223,8 @@ const MapPage: React.FC = () => {
               </Sheet.Header>
               <Sheet.Content style={{ paddingBottom: sheetRef.current?.y }}>
                 <Sheet.Scroller>
-                  {((!isReviewView && !places) || places?.length === 0) && (
+                  {((!isReviewView && !places) ||
+                    (!isReviewView && places?.length === 0)) && (
                     <div className="no-reviews">
                       <p>근처에 리뷰 있는</p>
                       <p>가게가 없어요!</p>

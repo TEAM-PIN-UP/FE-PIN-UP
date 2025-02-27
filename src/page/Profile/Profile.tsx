@@ -90,6 +90,9 @@ const Profile: React.FC = () => {
     setNewNotifications((prev) => !prev);
     navigate("notifications");
   };
+  const handleSettings = () => {
+    navigate("settings");
+  };
 
   const [showLogin, setShowLogin] = useState(false);
   const handleShare = async () => {
@@ -119,7 +122,7 @@ const Profile: React.FC = () => {
               onClick={handleNotifications}
               className="button"
             />
-            <img src={settings} className="button" />
+            <img src={settings} onClick={handleSettings} className="button" />
           </Header.Right>
         </Header>
 

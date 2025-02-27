@@ -13,6 +13,7 @@ import PinBuddyLayout from "@/page/PinbuddySearch/Layout";
 import ProfilePage from "@/page/Profile";
 import EditProfile from "@/page/Profile/EditProfile";
 import Notifications from "@/page/Profile/Notifications";
+import Settings from "@/page/Profile/Settings";
 import { ReviewDetails } from "@/page/Profile/_components/reviews/ReviewDetails";
 import ReviewPage from "@/page/Review";
 import SignUpPage from "@/page/SignUp";
@@ -81,6 +82,7 @@ const router = createBrowserRouter([
         path: "/profile/:uid",
         element: <OtherProfile />,
       },
+      { path: "/profile/settings", element: <Settings /> },
       {
         path: "/profile/settings/edit-profile",
         element: <EditProfile />,
