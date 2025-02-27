@@ -33,29 +33,6 @@ export interface PlaceDetailsParams {
   kakaoPlaceId: string;
 }
 
-interface RatingGraph {
-  [key: string]: number;
-}
-
-interface Review {
-  reviewId: number;
-  writerName: string;
-  writerTotalReviewCount: number;
-  starRating: number;
-  visitedDate: string;
-  content: string;
-  writerProfileImageUrl: string;
-  reviewImageUrls: string[];
-}
-
-export interface PlaceDetailsResponse {
-  placeName: string;
-  reviewCount: number;
-  averageStarRating: number;
-  ratingGraph: RatingGraph;
-  reviews: Review[];
-}
-
 // Place keyword
 
 export interface PlaceKeywordParams {

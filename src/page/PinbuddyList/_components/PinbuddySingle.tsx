@@ -10,9 +10,10 @@ import usePostFriendRequest from "@/hooks/api/pinbuddySearch/usePostFriendReques
 
 interface PinBuddySingleProps {
   data: GetPinBuddySearchResponse;
+  state: relationType;
 }
 
-const SearchResultSingle: React.FC<PinBuddySingleProps> = ({ data }) => {
+const PinbuddySingle: React.FC<PinBuddySingleProps> = ({ data }) => {
   const friendRequest = usePostFriendRequest();
   const [currentState, setCurrentState] = useState<string>("");
 
@@ -106,4 +107,4 @@ const StSearchResultSingle = styled.div<{ relation: relationType }>`
   }
 `;
 
-export default SearchResultSingle;
+export default PinbuddySingle;

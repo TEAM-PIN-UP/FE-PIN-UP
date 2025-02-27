@@ -1,5 +1,6 @@
 export type placeCategory = "ALL" | "RESTAURANT" | "CAFE";
 export type placeSort = "NEAR" | "LATEST" | "STAR_HIGH" | "STAR_LOW";
+export type relationType = "SELF" | "FRIEND" | "PENDING" | "STRANGER";
 
 export interface GetPlaceParams {
   query?: string;
@@ -19,7 +20,7 @@ export interface GetMyPlaceResponse {
   placeName: string;
   placeAddress: string;
   placeRoadAddress: string;
-  placeDefaultImgUrl: string;
+  placeFirstReviewImageUrl: string;
   placeLatitude: number;
   placeLongitude: number;
   placeStatus: string;
@@ -27,7 +28,7 @@ export interface GetMyPlaceResponse {
   kakaoPlaceId: string;
 }
 
-export interface GetPinBuddySearch {
+export interface GetPinBuddySingle {
   memberId: number;
   email: string;
   name: string;
@@ -35,6 +36,21 @@ export interface GetPinBuddySearch {
   profilePictureUrl: string;
   bio: string;
   termsOfMarketing: string;
+}
+
+export interface GetPinBuddySearchResponse {
+  memberResponse: {
+    memberId: number;
+    email: string;
+    name: string;
+    nickname: string;
+    profilePictureUrl: string;
+    bio: string;
+    termsOfMarketing: string;
+  };
+  relationType: relationType;
+  reviewCount: 0;
+  pinBuddyCount: 0;
 }
 
 export interface GetSpecificPlaceRequest {
@@ -58,24 +74,22 @@ export interface GetPlaceResponse {
 }
 
 export interface GetSpecificPlaceResponse {
-  mapPlaceResponse: MapPlaceResponse;
+  mapPlaceResponse: {
+    name: string;
+    reviewCount: number;
+    averageStarRating: number;
+    distance: string;
+    latitude: number;
+    longitude: number;
+    placeCategory: placeCategory;
+    reviewImageUrls: string[];
+    reviewerProfileImageUrls: string[];
+    bookmark: boolean;
+  };
   ratingGraph: Map<string, number>;
   reviews: ReviewSingleType[];
 }
 
-interface MapPlaceResponse {
-  kakaoPlaceId: string;
-  name: string;
-  averageStarRating: number;
-  reviewCount: number;
-  distance: string;
-  latitude: number;
-  longitude: number;
-  placeCategory: placeCategory;
-  reviewImageUrls: string[];
-  reviewerProfileImageUrls: string[];
-  bookmark: boolean;
-}
 export interface ReviewSingleType {
   reviewId: number;
   writerName: string;
@@ -94,7 +108,7 @@ export interface GetSearchPlacesRequest {
 export interface GetSearchPlacesResponse {
   kakaoPlaceId: string;
   name: string;
-  category: string;
+  placeCategory: string;
   address: string;
   roadAddress: string;
   latitude: number;
@@ -112,7 +126,7 @@ export interface ReviewRequestType {
 export interface PlaceRequestType {
   kakaoPlaceId: string;
   name: string;
-  category: placeCategory;
+  category: string;
   address: string;
   roadAddress: string;
   latitude: number;

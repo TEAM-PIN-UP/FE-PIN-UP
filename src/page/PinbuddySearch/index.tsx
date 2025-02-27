@@ -17,18 +17,17 @@ const PinbuddySearch: React.FC = () => {
   };
 
   const { data } = useGetSearchPinbuddy({ nickname, setSearchList });
-  console.log(data);
   return (
     <StPinBuddySearch>
       <div className="emptyBox" />
       <ReviewSearchBar
-        infoHideFunc={ResultShow}
-        infoShowFunc={ResultHide}
+        infoHideFunc={ResultHide}
+        infoShowFunc={ResultShow}
         placeholder="친구 닉네임을 검색해보세요."
         reviewSearch={nickname}
         setReviewSearch={setNickname}
       />
-      {searchList ? <SearchResultList /> : <></>}
+      {searchList && data ? <SearchResultList data={data} /> : <></>}
     </StPinBuddySearch>
   );
 };

@@ -43,7 +43,7 @@ const Review: React.FC<ReviewProps> = ({
       {data && (
         <Restaurant
           key={kakaoPlaceId}
-          name={data.mapPlaceResponse.name}
+          name={data?.mapPlaceResponse.name}
           averageStarRating={data.mapPlaceResponse.averageStarRating}
           reviewImageUrls={data.mapPlaceResponse.reviewImageUrls}
           reviewerProfileImageUrls={
@@ -66,7 +66,7 @@ const Review: React.FC<ReviewProps> = ({
           ratingGraph={data.ratingGraph}
         />
         <div className="reviewList">
-          {data.mapPlaceResponse.reviewCount > 0 ? (
+          {data?.mapPlaceResponse.reviewCount > 0 ? (
             data.reviews.map((value, index) => {
               return (
                 <div key={value.reviewId}>
@@ -81,7 +81,7 @@ const Review: React.FC<ReviewProps> = ({
                     writerTotalReviewCount={value.writerTotalReviewCount}
                     reviewImageUrls={value.reviewImageUrls}
                   />
-                  {index + 1 !== data.mapPlaceResponse.reviewCount && (
+                  {index + 1 !== data?.mapPlaceResponse.reviewCount && (
                     <div className="midLine" />
                   )}
                 </div>

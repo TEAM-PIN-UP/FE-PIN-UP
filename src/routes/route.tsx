@@ -18,6 +18,7 @@ import { ReviewDetails } from "@/page/Profile/_components/reviews/ReviewDetails"
 import ReviewPage from "@/page/Review";
 import SignUpPage from "@/page/SignUp";
 import NaverAuthCallback from "@/page/SignUp/_components/auth/NaverAuthCallback";
+import PinbuddyList from "@/page/PinbuddyList";
 
 const router = createBrowserRouter([
   {
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
             element: <PinbuddySearch />,
           },
         ],
+      },
+      {
+        path: "/profile/pinbuddyList",
+        element: <PinbuddyList />,
       },
       {
         path: "/profile/:uid",
