@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
-import { H3 } from "@/style/font";
-import ReviewDefault from "./ReviewDefault";
-import ReviewSingle from "./ReviewSingle";
-import Restaurant from "../Restaurant";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import useGetSpecificPlaces from "@/hooks/api/useGetSpecificPlace";
 import Button from "@/components/Button";
+import useGetSpecificPlaces from "@/hooks/api/useGetSpecificPlace";
+import { H3 } from "@/style/font";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import Restaurant from "../Restaurant";
+import ReviewDefault from "./ReviewDefault";
 import ReviewGraph from "./ReviewGraph";
+import ReviewSingle from "./ReviewSingle";
 
 export interface ReviewProps {
   currentLatitude: number | undefined;
@@ -43,12 +43,14 @@ const Review: React.FC<ReviewProps> = ({
       {data && (
         <Restaurant
           key={kakaoPlaceId}
-          name={data?.placeName}
-          averageStarRating={data.averageStarRating}
-          reviewImageUrls={data.reviewImageUrls}
-          reviewerProfileImageUrls={data.reviewerProfileImageUrls}
-          reviewCount={data.reviewCount}
-          distance={data.distance}
+          name={data.mapPlaceResponse.name}
+          averageStarRating={data.mapPlaceResponse.averageStarRating}
+          reviewImageUrls={data.mapPlaceResponse.reviewImageUrls}
+          reviewerProfileImageUrls={
+            data.mapPlaceResponse.reviewerProfileImageUrls
+          }
+          reviewCount={data.mapPlaceResponse.reviewCount}
+          distance={data.mapPlaceResponse.distance}
         />
       )}
       <div className="reviewBucket">
@@ -59,12 +61,12 @@ const Review: React.FC<ReviewProps> = ({
           </Button>
         </div>
         <ReviewGraph
-          reviewCount={data.reviewCount}
-          averageStarRating={data.averageStarRating}
+          reviewCount={data.mapPlaceResponse.reviewCount}
+          averageStarRating={data.mapPlaceResponse.averageStarRating}
           ratingGraph={data.ratingGraph}
         />
         <div className="reviewList">
-          {data?.reviewCount > 0 ? (
+          {data.mapPlaceResponse.reviewCount > 0 ? (
             data.reviews.map((value, index) => {
               return (
                 <div key={value.reviewId}>
@@ -79,7 +81,7 @@ const Review: React.FC<ReviewProps> = ({
                     writerTotalReviewCount={value.writerTotalReviewCount}
                     reviewImageUrls={value.reviewImageUrls}
                   />
-                  {index + 1 !== data?.reviewCount && (
+                  {index + 1 !== data.mapPlaceResponse.reviewCount && (
                     <div className="midLine" />
                   )}
                 </div>

@@ -58,20 +58,24 @@ export interface GetPlaceResponse {
 }
 
 export interface GetSpecificPlaceResponse {
-  placeName: string;
-  reviewCount: number;
+  mapPlaceResponse: MapPlaceResponse;
+  ratingGraph: Map<string, number>;
+  reviews: ReviewSingleType[];
+}
+
+interface MapPlaceResponse {
+  kakaoPlaceId: string;
+  name: string;
   averageStarRating: number;
+  reviewCount: number;
   distance: string;
   latitude: number;
   longitude: number;
   placeCategory: placeCategory;
   reviewImageUrls: string[];
   reviewerProfileImageUrls: string[];
-  ratingGraph: Map<string, number>;
-  reviews: ReviewSingleType[];
   bookmark: boolean;
 }
-
 export interface ReviewSingleType {
   reviewId: number;
   writerName: string;

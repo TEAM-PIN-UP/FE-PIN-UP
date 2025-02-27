@@ -23,7 +23,6 @@ const Restaurant: React.FC<RestaurantProps> = ({
   reviewImageUrls,
   reviewerProfileImageUrls,
 }) => {
-
   return (
     <StRestaurant>
       <div className="container">
@@ -37,11 +36,13 @@ const Restaurant: React.FC<RestaurantProps> = ({
             </div>
           </div>
           <div className="profileBox">
-            {
-              reviewerProfileImageUrls ? reviewerProfileImageUrls.map((val, index) => (
+            {reviewerProfileImageUrls ? (
+              reviewerProfileImageUrls.map((val, index) => (
                 <img className="profileImg" src={val} key={index} />
-              )) : <img src={profileImg} />
-            }
+              ))
+            ) : (
+              <img src={profileImg} />
+            )}
           </div>
           <div className="profile" />
         </div>
@@ -58,7 +59,7 @@ const StRestaurant = styled.div`
     padding: var(--spacing_20);
     margin: 0 auto;
     cursor: pointer;
-  .infoContainer {
+    .infoContainer {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -92,17 +93,16 @@ const StRestaurant = styled.div`
           }
         }
       }
-      .profileBox{
+      .profileBox {
         display: flex;
         margin-left: auto;
-        .profileImg{
+        .profileImg {
           width: 26px;
           height: 26px;
           border-radius: var(--radius_circle);
           border: 1px solid var(--white);
         }
       }
-      
     }
   }
   .gap {
