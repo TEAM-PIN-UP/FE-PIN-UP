@@ -21,8 +21,7 @@ const Settings: React.FC = () => {
       console.warn("Logout request failed, proceeding anyway.", error);
     }
 
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
+    localStorage.clear();
     navigate("/signup");
   };
 
