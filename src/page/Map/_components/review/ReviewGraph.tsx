@@ -17,7 +17,7 @@ const ReviewGraph: React.FC<ReviewGraphProps> = ({
     Object.entries(ratingGraph).map(([key, value]) => [Number(key), value])
   );
   let sum = 0;
-  let array = [];
+  const array = [];
   for (let i = 1; i <= 5; i++) {
     if (ratingGraphMap.has(i)) {
       sum += ratingGraphMap.get(i);
