@@ -1,10 +1,12 @@
-import React from "react";
-import ReactDatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import styled from "styled-components";
-import { getMonth, getYear } from "date-fns";
 import prev from "@/image/icons/arrowLeft.svg";
 import next from "@/image/icons/chevronDown.svg";
+import { getMonth, getYear } from "date-fns";
+import React, { lazy, Suspense } from "react";
+import "react-datepicker/dist/react-datepicker.css";
+import styled from "styled-components";
+
+// lazy load ReactDatePicker
+const ReactDatePicker = lazy(() => import("react-datepicker"));
 
 interface DatePickerProp {
   setCalendarModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,39 +23,41 @@ const Calendar: React.FC<DatePickerProp> = ({ setDate, date }) => {
     <>
       <CustomDatePicker>
         <div className="datePicker">
-          <ReactDatePicker
-            onChange={(e: Date | null) => onChangeDate(e)}
-            selected={date}
-            inline
-            maxDate={new Date()}
-            //디자인 커스텀
+          <Suspense fallback={<p>불러오는 중...</p>}>
+            <ReactDatePicker
+              onChange={(e: Date | null) => onChangeDate(e)}
+              selected={date}
+              inline
+              maxDate={new Date()}
+              //디자인 커스텀
 
-            renderCustomHeader={({
-              date,
-              decreaseMonth,
-              increaseMonth,
-              prevMonthButtonDisabled,
-              nextMonthButtonDisabled,
-            }) => (
-              <div className="headerContent">
-                <button
-                  onClick={() => decreaseMonth()}
-                  disabled={prevMonthButtonDisabled}
-                >
-                  <img src={prev} alt="" />
-                </button>
-                <div className="headerText">
-                  {getYear(date)}. {getMonth(date) + 1}
+              renderCustomHeader={({
+                date,
+                decreaseMonth,
+                increaseMonth,
+                prevMonthButtonDisabled,
+                nextMonthButtonDisabled,
+              }) => (
+                <div className="headerContent">
+                  <button
+                    onClick={() => decreaseMonth()}
+                    disabled={prevMonthButtonDisabled}
+                  >
+                    <img src={prev} alt="" />
+                  </button>
+                  <div className="headerText">
+                    {getYear(date)}. {getMonth(date) + 1}
+                  </div>
+                  <button
+                    onClick={() => increaseMonth()}
+                    disabled={nextMonthButtonDisabled}
+                  >
+                    <img src={next} alt="" />
+                  </button>
                 </div>
-                <button
-                  onClick={() => increaseMonth()}
-                  disabled={nextMonthButtonDisabled}
-                >
-                  <img src={next} alt="" />
-                </button>
-              </div>
-            )}
-          />
+              )}
+            />
+          </Suspense>
         </div>
       </CustomDatePicker>
     </>

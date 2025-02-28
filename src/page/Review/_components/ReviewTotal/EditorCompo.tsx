@@ -1,9 +1,22 @@
-import { Editor } from "@toast-ui/react-editor";
-import "@toast-ui/editor/toastui-editor.css";
-import styled from "styled-components";
 import { B5, D1 } from "@/style/font";
-import { useEffect, useRef, useState } from "react";
+import "@toast-ui/editor/toastui-editor.css";
+import {
+  lazy,
+  startTransition,
+  Suspense,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { styled } from "styled-components";
 import { WriteReviewProp } from "./WriteReview";
+
+// toast-ui is too big, lazy load
+const Editor = lazy(() =>
+  import("@toast-ui/react-editor").then((module) => ({
+    default: module.Editor,
+  }))
+);
 
 const EditorCompo: React.FC<WriteReviewProp> = ({
   reviewContent,
@@ -17,36 +30,47 @@ const EditorCompo: React.FC<WriteReviewProp> = ({
 *주의: 욕설, 비방 목적 혹은 명예 훼손성 내용은 작성 시 삭제 처리 될 수 있습니다.`;
 
   useEffect(() => {
-    if (reviewContent.length > maxChars && editorRef.current) {
-      const truncatedContent = reviewContent.substring(0, maxChars);
-      setReviewContent(truncatedContent);
-      editorRef.current.getInstance().setMarkdown(truncatedContent);
-    } else {
-      setCharCount(reviewContent.length);
-    }
+    startTransition(() => {
+      if (!editorRef.current) return;
+      const editorInstance = editorRef.current.getInstance?.();
+      if (!editorInstance) return;
+
+      if (reviewContent.length > maxChars && editorRef.current) {
+        const truncatedContent = reviewContent.substring(0, maxChars);
+        setReviewContent(truncatedContent);
+        editorRef.current.getInstance().setMarkdown(truncatedContent);
+      } else {
+        setCharCount(reviewContent.length);
+      }
+    });
   }, [reviewContent, setReviewContent]);
 
   const handleChange = () => {
-    if (editorRef.current) {
-      const newContent = editorRef.current.getInstance().getMarkdown();
-      setReviewContent(newContent);
-    }
+    if (!editorRef.current) return;
+    startTransition(() => {
+      const editorInstance = editorRef.current.getInstance?.();
+      if (!editorInstance) return;
+
+      setReviewContent(editorInstance.getMarkdown());
+    });
   };
 
   return (
     <StEditorCompo>
-      <Editor
-        ref={editorRef}
-        initialValue={" "}
-        previewStyle="vertical"
-        height="151px"
-        initialEditType="wysiwyg"
-        placeholder={placeholder}
-        useCommandShortcut={false}
-        toolbarItems={[]}
-        hideModeSwitch={true}
-        onChange={handleChange}
-      />
+      <Suspense fallback={<p>에디터를 불러오고 있어요...</p>}>
+        <Editor
+          ref={editorRef}
+          initialValue={" "}
+          previewStyle="vertical"
+          height="151px"
+          initialEditType="wysiwyg"
+          placeholder={placeholder}
+          useCommandShortcut={false}
+          toolbarItems={[]}
+          hideModeSwitch={true}
+          onChange={handleChange}
+        />
+      </Suspense>
       <p className="countInfo">
         <span className="charCount">{charCount}</span>
         <span>/</span>
