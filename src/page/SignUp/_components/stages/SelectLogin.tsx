@@ -5,7 +5,6 @@ import { styled } from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import googleIcon from "../../_icons/googleIcon.png";
 // import kakaoIcon from "../../_icons/kakaoIcon.png";
-import naverIcon from "../../_icons/naverIcon.svg";
 import pinupLogo from "../../_icons/pinupLogo.svg";
 import SocialSignUpButton from "../SocialSignUpButton";
 import StTextContainer from "../typography/StTextContainer";
@@ -92,14 +91,14 @@ const SelectLogin: React.FC<StageProps> = ({ updateData, onNext }) => {
         >
           카카오로 계속하기
         </SocialSignUpButton> */}
-        <SocialSignUpButton
+        {/* <SocialSignUpButton
           icon={naverIcon}
           color="var(--white)"
           backgroundColor="#00C73C"
           onClick={handleNaverLogin}
         >
           네이버로 계속하기
-        </SocialSignUpButton>
+        </SocialSignUpButton> */}
         <SocialSignUpButton
           icon={googleIcon}
           backgroundColor="var(--white)"
