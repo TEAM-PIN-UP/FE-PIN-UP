@@ -1,12 +1,11 @@
-import styled from "styled-components";
-// import profileImg from "@/image/icons/profile.jpg";
-import { B3, B5, H6 } from "@/style/font";
+import usePostFriendRequest from "@/hooks/api/pinbuddySearch/usePostFriendRequest";
 import {
   GetPinBuddySearchResponse,
   relationType,
 } from "@/interface/apiInterface";
+import { B3, B5, H6 } from "@/style/font";
 import { useEffect, useState } from "react";
-import usePostFriendRequest from "@/hooks/api/pinbuddySearch/usePostFriendRequest";
+import styled from "styled-components";
 
 interface PinBuddySingleProps {
   data: GetPinBuddySearchResponse;
@@ -32,7 +31,6 @@ const PinbuddySingle: React.FC<PinBuddySingleProps> = ({ data }) => {
   const requestController = () => {
     if (data.relationType === "STRANGER") {
       friendRequest.mutate({ receiverId: data.memberResponse.memberId });
-    } else {
     }
   };
 

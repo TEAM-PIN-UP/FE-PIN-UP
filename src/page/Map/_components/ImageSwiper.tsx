@@ -5,11 +5,10 @@ import { SwiperSlide } from "swiper/react";
 import BasicSwiper from "@/components/BasicSwiper";
 
 interface ImageSwiperProps {
-  imageUrls: string[]
+  imageUrls: string[];
 }
 
 const ImageSwiper: React.FC<ImageSwiperProps> = ({ imageUrls }) => {
-  // const images = [imageUrls, ...Array(4).fill("/swiper_exampleimg.jpg")];
   const images = imageUrls;
 
   return (
