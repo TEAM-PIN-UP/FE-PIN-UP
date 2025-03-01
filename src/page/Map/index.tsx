@@ -54,7 +54,13 @@ const MapPage: React.FC = () => {
         longitude: position.coords.longitude,
       });
     });
-  }, [kakaoPlaceId, navigator]);
+  }, [kakaoPlaceId]);
+
+  // Don't follow user on review view
+  useEffect(() => {
+    if (isReviewView) setFollowUser(false);
+    return () => {};
+  }, [isReviewView]);
 
   // Geolocation and map setup
   const naverMaps = useNavermaps();
@@ -64,8 +70,6 @@ const MapPage: React.FC = () => {
   const [followUser, setFollowUser] = useState(true);
   const defaultZoom = 20;
   useMapSetup(true, map, user, followUser, setActivePinIndex);
-
-  // URL params
 
   const { data: placeData } = useGetSpecificPlaces({
     kakaoPlaceId: kakaoPlaceId!,
