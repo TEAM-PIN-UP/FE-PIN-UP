@@ -1,8 +1,7 @@
+import defaultProfile from "@/image/icons/defaultProfile.svg";
+import { B4, H3, H4 } from "@/style/font";
 import React from "react";
 import styled from "styled-components";
-
-import profileImg from "@/image/icons/profile.jpg";
-import { B4, H3, H4 } from "@/style/font";
 import ImageSwiper from "./ImageSwiper";
 
 export interface RestaurantProps {
@@ -41,7 +40,7 @@ const Restaurant: React.FC<RestaurantProps> = ({
                 <img className="profileImg" src={val} key={index} />
               ))
             ) : (
-              <img src={profileImg} />
+              <img src={defaultProfile} />
             )}
           </div>
           <div className="profile" />
