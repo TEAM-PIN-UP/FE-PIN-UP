@@ -1,4 +1,4 @@
-import sample from "@/image/icons/profile.jpg";
+import defaultProfile from "@/image/icons/defaultProfile.svg";
 import { GetSearchPlacesResponse } from "@/interface/apiInterface";
 import { B3, B5, C3 } from "@/style/font";
 import styled from "styled-components";
@@ -23,7 +23,7 @@ const SearchedPlace: React.FC<SearchResultProp> = ({
         setPickedInfo(result);
       }}
     >
-      <img src={sample} />
+      <img src={defaultProfile} />
       <div className="totalInfo">
         <div className="placeInfo">
           <p className="placeName">{result?.name}</p>

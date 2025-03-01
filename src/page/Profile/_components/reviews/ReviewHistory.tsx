@@ -55,21 +55,25 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
         style={{ width: "100%" }}
       >
         <div className="image-reviews">
-          {photos.length > 0 &&
-            photos.map((item) => (
-              <ImgWithPlaceholder
-                key={item.reviewId}
-                src={item.reviewImageUrls[0]}
-                className="image"
-                onClick={() => handleClick(item)}
-                maxWidth="calc(440px/3)"
-              />
-            ))}
-          {photos.length === 0 && <ReviewEmpty />}
+          <div className="image-reviews-content">
+            {photos.length > 0 &&
+              photos.map((item) => (
+                <ImgWithPlaceholder
+                  key={item.reviewId}
+                  src={item.reviewImageUrls[0]}
+                  className="image"
+                  onClick={() => handleClick(item)}
+                  maxWidth="calc(440px/3)"
+                />
+              ))}
+            {photos.length === 0 && <ReviewEmpty />}
+          </div>
         </div>
         <div className="text-reviews">
           {texts.length > 0 &&
-            texts.map((item) => <ReviewText item={item} userName="나" />)}
+            texts.map((item) => (
+              <ReviewText key={item.reviewId} item={item} userName="나" />
+            ))}
           {texts.length === 0 && <ReviewEmpty />}
         </div>
       </SwipeableViews>
@@ -96,23 +100,24 @@ const StDiv = styled.div`
     height: 100%;
 
     .image-reviews {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5px;
-      height: 0px;
-      overflow: hidden;
-      flex: 1 0 auto;
-      width: 100%;
-      height: 100%;
-      overflow-y: auto;
-
-      .image {
+      .image-reviews-content {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5px;
+        overflow: hidden;
+        flex: 1 0 auto;
         width: 100%;
-        height: auto;
-        aspect-ratio: 1;
-        display: block;
-        object-fit: cover;
-        cursor: pointer;
+        overflow-y: auto;
+        align-items: start;
+
+        .image {
+          width: 100%;
+          height: auto;
+          aspect-ratio: 1;
+          display: block;
+          object-fit: cover;
+          cursor: pointer;
+        }
       }
     }
 

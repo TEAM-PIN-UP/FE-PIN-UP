@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import addUser from "@/image/icons/addUser.svg";
+import defaultProfile from "@/image/icons/defaultProfile.svg";
 import notificationActive from "@/image/icons/notificationActive.svg";
 import notificationInactive from "@/image/icons/notificationInactive.svg";
 import settings from "@/image/icons/settings.svg";
@@ -129,7 +130,11 @@ const Profile: React.FC = () => {
         <div className="user-section">
           <div className="profile">
             <img
-              src={myFeed?.memberResponse.profilePictureUrl}
+              src={
+                myFeed?.memberResponse.profilePictureUrl
+                  ? myFeed.memberResponse.profilePictureUrl
+                  : defaultProfile
+              }
               className="profile-image"
             />
             <UserStatsSection

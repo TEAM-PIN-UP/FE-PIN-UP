@@ -1,76 +1,42 @@
 import { B5, D1 } from "@/style/font";
 import "@toast-ui/editor/toastui-editor.css";
-import {
-  lazy,
-  startTransition,
-  Suspense,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import { WriteReviewProp } from "./WriteReview";
-
-// toast-ui is too big, lazy load
-const Editor = lazy(() =>
-  import("@toast-ui/react-editor").then((module) => ({
-    default: module.Editor,
-  }))
-);
 
 const EditorCompo: React.FC<WriteReviewProp> = ({
   reviewContent,
   setReviewContent,
 }) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const editorRef = useRef<any>(null);
+  const editorRef = useRef<HTMLTextAreaElement | null>(null);
   const [charCount, setCharCount] = useState<number>(0);
   const maxChars = 200;
   const placeholder = `작성 된 리뷰는 나의 친구들에게만 보여요!\n
 *주의: 욕설, 비방 목적 혹은 명예 훼손성 내용은 작성 시 삭제 처리 될 수 있습니다.`;
 
   useEffect(() => {
-    startTransition(() => {
-      if (!editorRef.current) return;
-      const editorInstance = editorRef.current.getInstance?.();
-      if (!editorInstance) return;
-
-      if (reviewContent.length > maxChars && editorRef.current) {
-        const truncatedContent = reviewContent.substring(0, maxChars);
-        setReviewContent(truncatedContent);
-        editorRef.current.getInstance().setMarkdown(truncatedContent);
-      } else {
-        setCharCount(reviewContent.length);
-      }
-    });
+    if (!editorRef.current) return;
+    if (reviewContent.length > maxChars) {
+      const truncatedContent = reviewContent.substring(0, maxChars);
+      setReviewContent(truncatedContent);
+    } else {
+      setCharCount(reviewContent.length);
+    }
   }, [reviewContent, setReviewContent]);
 
   const handleChange = () => {
-    if (!editorRef.current) return;
-    startTransition(() => {
-      const editorInstance = editorRef.current.getInstance?.();
-      if (!editorInstance) return;
-
-      setReviewContent(editorInstance.getMarkdown());
-    });
+    if (editorRef.current) setReviewContent(editorRef.current?.value);
   };
 
   return (
     <StEditorCompo>
-      <Suspense fallback={<p>에디터를 불러오고 있어요...</p>}>
-        <Editor
-          ref={editorRef}
-          initialValue={" "}
-          previewStyle="vertical"
-          height="151px"
-          initialEditType="wysiwyg"
-          placeholder={placeholder}
-          useCommandShortcut={false}
-          toolbarItems={[]}
-          hideModeSwitch={true}
-          onChange={handleChange}
-        />
-      </Suspense>
+      <textarea
+        className="review-text-area"
+        ref={editorRef}
+        value={reviewContent}
+        placeholder={placeholder}
+        onChange={handleChange}
+      />
       <p className="countInfo">
         <span className="charCount">{charCount}</span>
         <span>/</span>
@@ -88,6 +54,15 @@ const StEditorCompo = styled.div`
   box-sizing: border-box;
   border-radius: 8px;
   ${D1}
+
+  .review-text-area {
+    border: none;
+    background: transparent;
+    width: 100%;
+    height: 90%;
+    outline: none;
+    resize: none;
+  }
   .countInfo {
     display: flex;
     gap: 2px;

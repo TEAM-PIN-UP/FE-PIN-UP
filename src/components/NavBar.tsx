@@ -2,12 +2,11 @@ import bookMarkActive from "@/image/icons/bookmarkActive.svg";
 import bookMarkInactive from "@/image/icons/bookmarkInActive.svg";
 import contentsActive from "@/image/icons/contentsActive.svg";
 import contentsInactive from "@/image/icons/contentsInactive.svg";
+import defaultProfile from "@/image/icons/defaultProfile.svg";
 import mapPinActive from "@/image/icons/mapPinActive26.svg";
 import mapPinInactive from "@/image/icons/mapPinInactive26.svg";
-import profile from "@/image/icons/profile.jpg";
 import uploadActive from "@/image/icons/uploadActive.svg";
 import uploadInactive from "@/image/icons/uploadInactive.svg";
-import checkLogin from "@/utils/checkLogin";
 import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -21,7 +20,6 @@ const NavBar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const memberResponse = getMemberResponseObj();
-  const isSignedIn = checkLogin();
 
   return (
     <StNavBar $path={location.pathname.split("/")[1]}>
@@ -49,7 +47,11 @@ const NavBar: React.FC = () => {
         }}
       >
         <img
-          src={isSignedIn ? memberResponse?.profilePictureUrl : profile}
+          src={
+            memberResponse?.profilePictureUrl
+              ? memberResponse?.profilePictureUrl
+              : defaultProfile
+          }
           className="profile"
         />
       </div>

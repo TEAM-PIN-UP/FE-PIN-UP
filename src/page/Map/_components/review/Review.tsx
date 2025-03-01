@@ -36,8 +36,6 @@ const Review: React.FC<ReviewProps> = ({
 
   if (!data) return null;
 
-  console.log(data);
-
   return (
     <StReview>
       {data && (

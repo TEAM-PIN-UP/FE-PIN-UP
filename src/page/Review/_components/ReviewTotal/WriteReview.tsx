@@ -1,4 +1,4 @@
-import { H4 } from "@/style/font";
+import { H4, H5 } from "@/style/font";
 
 import styled from "styled-components";
 import EditorCompo from "./EditorCompo";
@@ -19,6 +19,7 @@ const WriteReview: React.FC<WriteReviewProp> = ({
         reviewContent={reviewContent}
         setReviewContent={setReviewContent}
       />
+      <p className="info">10자 이상 작성해 주세요.</p>
     </StWriteReview>
   );
 };
@@ -30,6 +31,10 @@ const StWriteReview = styled.div`
   padding: 0 20px;
   .title {
     ${H4}
+  }
+  .info {
+    ${H5}
+    color: var(--neutral_400);
   }
 `;
 
