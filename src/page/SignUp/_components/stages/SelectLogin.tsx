@@ -2,9 +2,10 @@ import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import googleIcon from "../../_icons/googleIcon.png";
 // import kakaoIcon from "../../_icons/kakaoIcon.png";
+// import naverIcon from "../../_icons/naverIcon.svg";
 import pinupLogo from "../../_icons/pinupLogo.svg";
 import SocialSignUpButton from "../SocialSignUpButton";
 import StTextContainer from "../typography/StTextContainer";
@@ -42,34 +43,34 @@ const SelectLogin: React.FC<StageProps> = ({ updateData, onNext }) => {
   });
 
   // Naver auth
-  const handleNaverLogin = () => {
-    const width = 500;
-    const height = 600;
-    const left = (window.innerWidth - width) / 2;
-    const top = (window.innerHeight - height) / 2;
-    const state = uuidv4();
-    sessionStorage.setItem("naverAuthState", state);
+  // const handleNaverLogin = () => {
+  //   const width = 500;
+  //   const height = 600;
+  //   const left = (window.innerWidth - width) / 2;
+  //   const top = (window.innerHeight - height) / 2;
+  //   const state = uuidv4();
+  //   sessionStorage.setItem("naverAuthState", state);
 
-    const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${
-      import.meta.env.VITE_NAVER_AUTH_CLIENT_ID
-    }&state=${state}&redirect_uri=${import.meta.env.VITE_URI}/auth/naver`;
-    window.open(
-      naverAuthUrl,
-      "authPopup",
-      `width=${width},height=${height},top=${top},left=${left},resizable=no`
-    );
+  //   const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${
+  //     import.meta.env.VITE_NAVER_AUTH_CLIENT_ID
+  //   }&state=${state}&redirect_uri=${import.meta.env.VITE_URI}/auth/naver`;
+  //   window.open(
+  //     naverAuthUrl,
+  //     "authPopup",
+  //     `width=${width},height=${height},top=${top},left=${left},resizable=no`
+  //   );
 
-    window.addEventListener("message", (event) => {
-      if (event.origin !== window.location.origin) return;
+  //   window.addEventListener("message", (event) => {
+  //     if (event.origin !== window.location.origin) return;
 
-      const { code } = event.data;
+  //     const { code } = event.data;
 
-      if (code) {
-        localStorage.setItem("naverAuthCode", code);
-        onNext();
-      }
-    });
-  };
+  //     if (code) {
+  //       localStorage.setItem("naverAuthCode", code);
+  //       onNext();
+  //     }
+  //   });
+  // };
 
   return (
     <StDiv>
