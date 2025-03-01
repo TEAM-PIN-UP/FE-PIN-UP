@@ -1,3 +1,4 @@
+import Button from "@/components/Button";
 import useGetSpecificPlaces from "@/hooks/api/useGetSpecificPlace";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
@@ -40,9 +41,7 @@ const MapPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const [bookmark, setBookmark] = useState<boolean>(false);
   const [isReviewView, setIsReviewView] = useState(false);
-  const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
-
-  console.log(position);
+  const [, setPosition] = useState({ latitude: 0, longitude: 0 });
 
   const kakaoPlaceId = searchParams.get("kakaoPlaceId");
 
@@ -141,21 +140,40 @@ const MapPage: React.FC = () => {
   });
 
   const handleMoveToCurrent = () => {
-    setFollowUser(true);
     setActivePinIndex(null);
     const pos = getLastKnownPositionObj();
-    if (pos)
-      map?.setCenter(
-        new naverMaps.LatLng(pos?.coords.latitude, pos?.coords.longitude)
+    if (pos) {
+      map?.morph(
+        new naverMaps.LatLng(pos?.coords.latitude, pos?.coords.longitude),
+        defaultZoom
       );
-    else toast("현위치를 확인할 수 없어요.");
+      map?.setZoom(defaultZoom);
+      setFollowUser(true);
+    } else toast("현위치를 확인할 수 없어요.");
+  };
+
+  const handleMoveButton = (): boolean => {
+    const pos = getLastKnownPositionObj();
+    const center = map?.getCenter();
+    if (pos && center) {
+      return !(
+        Math.abs(pos.coords.latitude - center.y) < 0.001 &&
+        Math.abs(pos.coords.longitude - center.x) < 0.001
+      );
+    }
+    return false;
   };
 
   return (
     <StDiv ref={attachRef}>
-      <button className="move-to-current" onClick={handleMoveToCurrent}>
+      <StButton
+        className="move-to-current"
+        onClick={handleMoveToCurrent}
+        size="small"
+        $enabled={handleMoveButton()}
+      >
         현위치로 이동
-      </button>
+      </StButton>
       <NavermapsProvider ncpClientId={import.meta.env.VITE_NAVER_MAPS}>
         <StMapDiv>
           <NaverMap
@@ -292,13 +310,15 @@ const MapPage: React.FC = () => {
 const StDiv = styled.div`
   width: 100%;
   height: 100%;
+`;
 
-  .move-to-current {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    z-index: 10;
-  }
+const StButton = styled(Button)<{ $enabled: boolean }>`
+  position: absolute;
+  top: ${({ $enabled }) => ($enabled ? "0px" : "-40px")};
+  transition: top 0.3s ease-in-out;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
 `;
 
 const StMapDiv = styled(MapDiv)`
