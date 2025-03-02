@@ -37,9 +37,7 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
   const handleClick = (item: Review) => {
     if (isSwiping) return;
     navigate(`photo-review/${item.reviewId}`, {
-      state: {
-        item,
-      },
+      state: { item },
     });
   };
 
