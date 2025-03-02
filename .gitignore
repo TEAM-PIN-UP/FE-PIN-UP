@@ -29,3 +29,6 @@ dist-ssr
 
 # Rollup Visualizer
 stats.html
+
+# Build info
+*.tsbuildinfo
