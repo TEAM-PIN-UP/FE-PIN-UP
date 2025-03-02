@@ -70,7 +70,7 @@ const bounce = keyframes`
 
 const StDiv = styled.div<{ $modalOn: boolean }>`
   width: 100%;
-  max-width: 440px;
+  max-width: var(--max_width);
   height: 100%;
   left: 0px;
   top: 0px;

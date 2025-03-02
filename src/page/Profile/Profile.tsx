@@ -383,8 +383,8 @@ const StSheet = styled(Sheet)<{ $left: number }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 440px;
-  min-width: 320px;
+  max-width: var(--max_width);
+  min-width: var(--min_width);
   left: ${({ $left }) => `${$left}px !important`};
 
   .content {

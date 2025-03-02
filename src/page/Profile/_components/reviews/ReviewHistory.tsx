@@ -61,7 +61,7 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
                   src={item.reviewImageUrls[0]}
                   className="image"
                   onClick={() => handleClick(item)}
-                  maxWidth="calc(440px/3)"
+                  maxWidth="calc(var(--max_width)/3)"
                 />
               ))}
             {photos.length === 0 && <ReviewEmpty />}

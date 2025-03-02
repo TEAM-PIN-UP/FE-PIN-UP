@@ -42,7 +42,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
 const StCalendarModal = styled.div`
   width: 100%;
   .calendarModal {
-    max-width: 440px;
+    max-width: var(--max_width);
     width: 100%;
     display: flex;
     flex-direction: column;

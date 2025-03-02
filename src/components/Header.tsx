@@ -36,7 +36,7 @@ Header.Right = ({ children, className, ...props }) => {
 const HeaderContainer = styled.div`
   position: absolute;
   width: 100%;
-  max-width: 440px;
+  max-width: var(--max_width);
   height: 44px;
   top: 0px;
   left: 0;
