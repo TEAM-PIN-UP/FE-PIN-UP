@@ -21,7 +21,7 @@ const StDiv = styled.div`
   align-items: center;
   justify-content: center;
   gap: var(--spacing_16);
-  width: 440px;
+  width: var(--max_width);
   height: 100%;
   text-align: center;
   background-color: var(--white);

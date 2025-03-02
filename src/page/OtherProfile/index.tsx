@@ -6,8 +6,8 @@ import Button from "@/components/Button";
 import Header from "@/components/Header";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import addUser from "@/image/icons/addUser.svg";
-import share from "@/image/icons/share.svg";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
+import share from "@/image/icons/share.svg";
 import { B4, H2, H3, H4 } from "@/style/font";
 import useToastPopup from "@/utils/toastPopup";
 import { useNavigate } from "react-router-dom";
@@ -250,12 +250,12 @@ const StDiv = styled.div`
   }
 `;
 
-const StSheet = styled(Sheet) <{ $left: number }>`
+const StSheet = styled(Sheet)<{ $left: number }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 440px;
-  min-width: 320px;
+  max-width: var(--max_width);
+  min-width: var(--min_width);
   left: ${({ $left }) => `${$left}px !important`};
 
   .content {

@@ -83,6 +83,7 @@ const StTransitionWrapper = styled(TransitionWrapper)`
   width: 100%;
   height: 100%;
   padding-top: var(--spacing_20);
+  box-sizing: border-box;
 `;
 
 export default Settings;

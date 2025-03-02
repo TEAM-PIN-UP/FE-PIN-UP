@@ -1,3 +1,5 @@
+import { MemberDetails } from "./member";
+
 export type placeCategory = "ALL" | "RESTAURANT" | "CAFE";
 export type placeSort = "NEAR" | "LATEST" | "STAR_HIGH" | "STAR_LOW";
 export type relationType = "SELF" | "FRIEND" | "PENDING" | "STRANGER";
@@ -39,18 +41,10 @@ export interface GetPinBuddySingle {
 }
 
 export interface GetPinBuddySearchResponse {
-  memberResponse: {
-    memberId: number;
-    email: string;
-    name: string;
-    nickname: string;
-    profilePictureUrl: string;
-    bio: string;
-    termsOfMarketing: string;
-  };
+  memberResponse: MemberDetails;
   relationType: relationType;
-  reviewCount: 0;
-  pinBuddyCount: 0;
+  reviewCount: number;
+  pinBuddyCount: number;
 }
 
 export interface GetSpecificPlaceRequest {

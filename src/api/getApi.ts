@@ -7,6 +7,7 @@ import {
 import customAxios from "./Interceptor";
 
 const getApi = {
+  // Places
   getSpecificPlace: ({
     kakaoPlaceId,
     currentLatitude,
@@ -25,8 +26,12 @@ const getApi = {
   },
   getSearchPlaces: ({ keyword }: GetSearchPlacesRequest) =>
     customAxios.get(`/api/places/keyword?query=${keyword}`),
+
+  // Signup
   getMemberNicknameCheck: ({ nickname }: { nickname: string }) =>
     customAxios.get(`/api/members/nickname/check?nickname=${nickname}`),
+
+  // My Feed
   getMyFeed: () => customAxios.get(`/api/members/me/feed`),
   getReviewId: ({ id }: { id: string }) =>
     customAxios.get(`/api/reviews/${id}`),
@@ -35,6 +40,8 @@ const getApi = {
   getSearchMember: ({ nickname }: { nickname: string }) =>
     customAxios.get(`/api/members/search?nickname=${nickname}`),
   getFriendShips: () => customAxios.get(`/api/friendships`),
+  getReceivedFriendRequests: () =>
+    customAxios.get(`/api/friend-requests/received`),
 };
 
 export default getApi;

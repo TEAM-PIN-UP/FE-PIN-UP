@@ -2,12 +2,12 @@ import { H4 } from "@/style/font";
 import React from "react";
 import styled from "styled-components";
 
-interface NotificationDateGroupProps
+interface NotificationDateHeaderProps
   extends React.HTMLAttributes<HTMLDivElement> {
   date: string;
 }
 
-const NotificationDateGroup: React.FC<NotificationDateGroupProps> = ({
+const NotificationDateHeader: React.FC<NotificationDateHeaderProps> = ({
   children,
   date,
 }) => {
@@ -35,4 +35,4 @@ const StDiv = styled.div`
   }
 `;
 
-export default NotificationDateGroup;
+export default NotificationDateHeader;

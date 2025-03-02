@@ -3,6 +3,10 @@ import "./font.css";
 
 const GlobalStyle = createGlobalStyle`
     :root{
+        // screen width
+        --min_width:320px;
+        --max_width:440px;
+
         // font
         --H1 : 'H1';
         --H2 : 'H2';

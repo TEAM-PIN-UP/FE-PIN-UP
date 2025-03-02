@@ -1,8 +1,8 @@
 import getApi from "@/api/getApi";
-import { GetPinBuddySingle } from "@/interface/apiInterface";
+import { MemberDetails } from "@/interface/member";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
-const useFriendList = (): UseQueryResult<GetPinBuddySingle[]> => {
+const useFriendList = (): UseQueryResult<MemberDetails[]> => {
   const queryFn = async () => {
     const response = await getApi.getFriendShips();
     return response.data;

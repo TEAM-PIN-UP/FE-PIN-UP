@@ -96,8 +96,8 @@ const Review: React.FC<ReviewProps> = ({
 
 const StReview = styled.div`
   width: 100%;
-  min-width: 320px;
-  max-width: 440px;
+  min-width: var(--min_width);
+  max-width: var(--max_width);
   padding: var(--spacing_8) 0;
   .reviewBucket {
     display: flex;

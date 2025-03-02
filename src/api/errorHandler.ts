@@ -66,7 +66,9 @@ export const handleGlobalError = async (error: CustomAxiosError) => {
   const defaultMessage = "알 수 없는 오류가 발생했습니다.";
   const errorMessage = errorCode ? getErrorMessage(errorCode) : defaultMessage;
 
-  // Refresh on expired token
+  console.log(error);
+
+  // Refresh on expired access token
   if (errorCode === "AU006") {
     const originalRequest = error.config as CustomAxiosRequestConfig;
     if (!originalRequest._retry) {
@@ -92,6 +94,15 @@ export const handleGlobalError = async (error: CustomAxiosError) => {
           return (await axios.request(originalRequest)).data;
         } catch (refreshError) {
           console.error("토큰 갱신 실패:", refreshError);
+          const axiosError = refreshError as AxiosError<ApiErrorResponse>;
+          // Signout on expired refresh token
+          if (axiosError.response?.data?.code === "AU001") {
+            localStorage.clear();
+            textChange("세션이 만료되었어요.");
+            pop(true);
+            window.location.href = "/signup";
+            return Promise.reject(error);
+          }
           const errorDetail: ErrorDetail = {
             code: errorCode as ErrorCodeType,
             message: errorMessage,

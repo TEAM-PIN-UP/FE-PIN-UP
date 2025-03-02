@@ -33,3 +33,10 @@ export interface MyFeed {
   pinBuddyCount: number;
   reviewCount: number;
 }
+
+export interface ReceivedFriendRequestResponse {
+  id: number;
+  friendRequestStatus: string;
+  sender: MemberDetails;
+  receiver: MemberDetails;
+}

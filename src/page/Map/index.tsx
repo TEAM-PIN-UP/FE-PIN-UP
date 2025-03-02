@@ -329,8 +329,8 @@ const StMapDiv = styled(MapDiv)`
 const StSheet = styled(Sheet)<{ $left: number }>`
   display: flex;
   justify-content: center;
-  max-width: 440px;
-  min-width: 320px;
+  max-width: var(--max_width);
+  min-width: var(--min_width);
   left: ${({ $left }) => `${$left}px !important`};
 
   .react-modal-sheet-content::-webkit-scrollbar {
