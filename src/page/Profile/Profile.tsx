@@ -9,7 +9,7 @@ import notificationActive from "@/image/icons/notificationActive.svg";
 import notificationInactive from "@/image/icons/notificationInactive.svg";
 import settings from "@/image/icons/settings.svg";
 import share from "@/image/icons/share.svg";
-import { MyFeed } from "@/interface/member";
+import { MyFeed, ReceivedFriendRequestResponse } from "@/interface/member";
 import { Review } from "@/interface/review";
 import { B3, B4, H1, H2, H3, H4 } from "@/style/font";
 import checkLogin from "@/utils/checkLogin";
@@ -40,6 +40,9 @@ const Profile: React.FC = () => {
   const [myFeed, setMyFeed] = useState<MyFeed | null>(null);
   const [photos, setPhotos] = useState<Review[] | null>(null);
   const [texts, setTexts] = useState<Review[] | null>(null);
+  const [newFriendRequests, setNewFriendRequests] = useState<
+    ReceivedFriendRequestResponse[] | null
+  >(null);
 
   useEffect(() => {
     try {
@@ -52,7 +55,19 @@ const Profile: React.FC = () => {
           console.error("Error fetching member details:", error);
         }
       };
+      // Get pending friend requests
+      const getPendingFriendRequests = async () => {
+        try {
+          const response = await getApi.getReceivedFriendRequests();
+          setNewFriendRequests(
+            response.data as ReceivedFriendRequestResponse[]
+          );
+        } catch (error) {
+          console.error("Error fetching pending friend requests:", error);
+        }
+      };
       getMemberDetails();
+      getPendingFriendRequests();
     } catch (error) {
       console.error(error);
     }
@@ -77,7 +92,6 @@ const Profile: React.FC = () => {
     // Update bottom sheet alignment on window resize
     updateLeftPosition();
     window.addEventListener("resize", updateLeftPosition);
-
     return () => {
       window.removeEventListener("resize", updateLeftPosition);
     };
@@ -86,10 +100,10 @@ const Profile: React.FC = () => {
   // Review history swiper view state
   const [index, setIndex] = useState(0);
 
-  const [newNotifications, setNewNotifications] = useState(false);
   const handleNotifications = () => {
-    setNewNotifications((prev) => !prev);
-    navigate("notifications");
+    navigate("notifications", {
+      state: { newFriendRequests },
+    });
   };
   const handleSettings = () => {
     navigate("settings");
@@ -119,7 +133,11 @@ const Profile: React.FC = () => {
           </Header.Left>
           <Header.Right>
             <img
-              src={newNotifications ? notificationActive : notificationInactive}
+              src={
+                newFriendRequests && newFriendRequests?.length > 0
+                  ? notificationActive
+                  : notificationInactive
+              }
               onClick={handleNotifications}
               className="button"
             />

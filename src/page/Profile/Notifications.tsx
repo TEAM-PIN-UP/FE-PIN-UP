@@ -1,15 +1,17 @@
-import styled from "styled-components";
-
 import Header from "@/components/Header";
 import TransitionWrapper from "@/components/TransitionWrapper";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
+import defaultProfile from "@/image/icons/defaultProfile.svg";
+import { ReceivedFriendRequestResponse } from "@/interface/member";
 import { H3 } from "@/style/font";
-import { useNavigate } from "react-router-dom";
-import NotificationDateGroup from "./_components/notifications/NotificationDateGroup";
+import { useLocation, useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import NotificationItem from "./_components/notifications/NotificationItem";
 
 const Notifications: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const friendRequests = location.state.item as ReceivedFriendRequestResponse[];
 
   return (
     <StDiv>
@@ -25,63 +27,28 @@ const Notifications: React.FC = () => {
           <span className="header-title">알림</span>
         </Header.Center>
       </Header>
-
       <StTransitionWrapper duration={0.25}>
         <div className="notifications-groups">
-          <NotificationDateGroup date="오늘">
-            <NotificationItem
-              profileImage="https://picsum.photos/200"
-              username="은채vv"
-              type="receivedRequestFromUser"
-              isRead={false}
-            />
-            <NotificationItem
-              profileImage="https://picsum.photos/200"
-              username="은채vv"
-              type="userAcceptedRequest"
-              isRead={true}
-            />
-          </NotificationDateGroup>
-          <NotificationDateGroup date="10월 21일">
-            <NotificationItem
-              profileImage="https://picsum.photos/200"
-              username="은채vv"
-              type="receivedRequestFromUser"
-              isRead={false}
-            />
-            <NotificationItem
-              profileImage="https://picsum.photos/200"
-              username="은채vv"
-              type="receivedRequestFromUser"
-              isRead={false}
-            />{" "}
-            <NotificationItem
-              profileImage="https://picsum.photos/200"
-              username="은채vv"
-              type="receivedRequestFromUser"
-              isRead={false}
-            />
-          </NotificationDateGroup>
-          <NotificationDateGroup date="10월 20일">
-            <NotificationItem
-              profileImage="https://picsum.photos/200"
-              username="은채vv"
-              type="receivedRequestFromUser"
-              isRead={false}
-            />{" "}
-            <NotificationItem
-              profileImage="https://picsum.photos/200"
-              username="은채vv"
-              type="receivedRequestFromUser"
-              isRead={false}
-            />
-            <NotificationItem
-              profileImage="https://picsum.photos/200"
-              username="은채vv"
-              type="receivedRequestFromUser"
-              isRead={false}
-            />
-          </NotificationDateGroup>
+          {/* <NotificationDateGroup date="오늘"> */}
+          {friendRequests &&
+            friendRequests.map((request) => (
+              <NotificationItem
+                profileImage={
+                  request.sender.profilePictureUrl
+                    ? request.sender.profilePictureUrl
+                    : defaultProfile
+                }
+                username={request.sender.nickname}
+                type="receivedRequestFromUser"
+                isRead={false}
+              />
+            ))}
+          {!friendRequests && (
+            <div className="no-friend-requests">
+              새로 받은 친구 요청이 없어요!
+            </div>
+          )}
+          {/* </NotificationDateGroup> */}
         </div>
       </StTransitionWrapper>
     </StDiv>
@@ -108,11 +75,22 @@ const StTransitionWrapper = styled(TransitionWrapper)`
   width: 100%;
   height: 100%;
   padding-top: var(--spacing_20);
+  box-sizing: border-box;
 
   .notifications-groups {
     display: flex;
+    flex-grow: 1;
     flex-direction: column;
+    height: 100%;
     gap: var(--spacing_32);
+  }
+  .no-friend-requests {
+    display: flex;
+    flex-grow: 1;
+    ${H3}
+    color: var(--neutral_400);
+    align-items: center;
+    justify-content: center;
   }
 `;
 
