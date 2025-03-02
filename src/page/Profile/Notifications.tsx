@@ -11,7 +11,8 @@ import NotificationItem from "./_components/notifications/NotificationItem";
 const Notifications: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const friendRequests = location.state.item as ReceivedFriendRequestResponse[];
+  const friendRequests = location.state
+    .newFriendRequests as ReceivedFriendRequestResponse[];
 
   return (
     <StDiv>

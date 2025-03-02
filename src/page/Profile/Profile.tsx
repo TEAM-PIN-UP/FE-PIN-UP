@@ -166,6 +166,11 @@ const Profile: React.FC = () => {
                   {
                     label: "핀버디",
                     value: myFeed?.pinBuddyCount,
+                    onClick: () => {
+                      navigate("/profile/pinbuddylist", {
+                        state: { newFriendRequests },
+                      });
+                    },
                   },
                 ] as Stat[]
               }

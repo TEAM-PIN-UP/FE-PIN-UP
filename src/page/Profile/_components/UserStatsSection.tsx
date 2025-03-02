@@ -5,6 +5,7 @@ import styled from "styled-components";
 export interface Stat {
   label: string;
   value: string | number;
+  onClick?: () => void;
 }
 
 interface StatsSectionProps {
@@ -18,7 +19,10 @@ const UserStatsSection: React.FC<StatsSectionProps> = ({ stats }) => {
         {stats.map((stat, index) => (
           <React.Fragment key={stat.label}>
             {index !== 0 && <div className="stat-divider" />}
-            <div className="stat-item">
+            <div
+              className={`stat-item ${stat.onClick ? "clickable" : ""}`}
+              onClick={() => stat.onClick?.()}
+            >
               <div className="stat-value">{stat.value}</div>
               <div className="stat-label">{stat.label}</div>
             </div>
@@ -48,6 +52,9 @@ const StDiv = styled.div`
       justify-content: center;
       width: 48px;
       gap: var(--spacing_4);
+    }
+    .stat-item.clickable {
+      cursor: pointer;
     }
     .stat-value {
       ${H4}
