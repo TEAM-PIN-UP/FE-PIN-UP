@@ -221,7 +221,6 @@ const Profile: React.FC = () => {
                       ] as Stat[]
                     }
                   />
-                  <div className="expand" />
                   <Button
                     size="xlarge"
                     onClick={handleShare}
@@ -388,14 +387,9 @@ const StSheet = styled(Sheet)<{ $left: number }>`
         margin-bottom: var(--spacing_32);
       }
 
-      .expand {
-        display: flex;
-        flex-grow: 1;
-      }
-
       .share-button {
         max-width: 400px;
-        margin: 0px var(--spacing_20);
+        margin: var(--spacing_48) var(--spacing_20);
       }
     }
 
