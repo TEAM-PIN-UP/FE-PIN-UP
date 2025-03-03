@@ -13,7 +13,14 @@ export const getLastKnownPositionObj = () => {
   const lastKnownPositionJson = localStorage.getItem("lastKnownPosition");
   const lastKnownPosition: GeolocationPosition | null = lastKnownPositionJson
     ? (JSON.parse(lastKnownPositionJson) as GeolocationPosition)
-    : null;
+    : ({
+        coords: {
+          latitude: 37.5,
+          longitude: 127.0,
+          accuracy: 10,
+        },
+        timestamp: Date.now(),
+      } as GeolocationPosition);
 
   return lastKnownPosition;
 };
