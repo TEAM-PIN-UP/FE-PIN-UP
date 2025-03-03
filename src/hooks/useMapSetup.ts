@@ -19,7 +19,7 @@ const useMapSetup = (
     (position: GeolocationPosition) => {
       localStorage.setItem("lastKnownPosition", JSON.stringify(position));
 
-      if (!map || !user) return;
+      if (!map || !user || !position || !position.coords) return;
 
       const location = new naverMaps.LatLng(
         position.coords.latitude,
