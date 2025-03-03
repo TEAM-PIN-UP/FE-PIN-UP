@@ -69,6 +69,7 @@ const StDiv = styled.div`
   padding: 0px var(--spacing_20);
   padding-top: 48px;
   box-sizing: border-box;
+  overflow-x: hidden;
   overflow-y: auto;
 
   .back-button {

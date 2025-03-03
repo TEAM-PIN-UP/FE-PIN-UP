@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import Button from "@/components/Button";
-import useGetSpecificPlaces from "@/hooks/api/useGetSpecificPlace";
+import useGetSpecificPlaces from "@/hooks/api/place/useGetSpecificPlace";
 import { H3 } from "@/style/font";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Restaurant from "../Restaurant";

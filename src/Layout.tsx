@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import NavBar from "@/components/NavBar";
+import { useEffect, useState } from "react";
 import Modal from "./components/Modal";
 import Toast from "./components/Toast";
 
@@ -9,9 +10,25 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const [height, setHeight] = useState(window.innerHeight);
+
+  useEffect(() => {
+    const updateHeight = () => {
+      setHeight(window.visualViewport?.height || window.innerHeight);
+    };
+
+    window.visualViewport?.addEventListener("resize", updateHeight);
+    window.addEventListener("resize", updateHeight);
+
+    return () => {
+      window.visualViewport?.removeEventListener("resize", updateHeight);
+      window.removeEventListener("resize", updateHeight);
+    };
+  }, []);
+
   const excludeNavBarRoutes = ["/auth/naver"];
   return (
-    <StLayout>
+    <StLayout $dynamicHeight={height}>
       <Toast />
       <Modal />
       <StContentContainer>{children}</StContentContainer>
@@ -25,11 +42,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   );
 };
 
-const StLayout = styled.div`
+const StLayout = styled.div<{ $dynamicHeight: number }>`
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: ${(props) => props.$dynamicHeight}px;
 `;
 
 const StContentContainer = styled.div`

@@ -1,4 +1,4 @@
-import usePostFriendRequest from "@/hooks/api/pinbuddySearch/usePostFriendRequest";
+import usePostFriendRequest from "@/hooks/api/pinBuddy/usePostFriendRequest";
 import {
   GetPinBuddySearchResponse,
   relationType,

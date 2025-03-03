@@ -143,6 +143,7 @@ const StDiv = styled.div<{ $stage: number }>`
     $stage === 1 ? "var(--black)" : "var(--white)"};
   transition: background-color 0.5s ease, color 0.5s ease-in-out;
   padding-top: 48px;
+  overflow-x: hidden;
 
   .h3 {
     ${H3}
