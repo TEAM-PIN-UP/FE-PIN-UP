@@ -74,8 +74,8 @@ const MapPage: React.FC = () => {
 
   const { data: placeData } = useGetSpecificPlaces({
     kakaoPlaceId: kakaoPlaceId!,
-    currentLongitude: getLastKnownPositionObj()?.coords.longitude || 0,
-    currentLatitude: getLastKnownPositionObj()?.coords.latitude || 0,
+    currentLongitude: getLastKnownPositionObj().coords.longitude,
+    currentLatitude: getLastKnownPositionObj().coords.latitude,
     setBookmark,
   });
 
@@ -152,7 +152,7 @@ const MapPage: React.FC = () => {
     const pos = getLastKnownPositionObj();
     if (pos) {
       map?.morph(
-        new naverMaps.LatLng(pos?.coords.latitude, pos?.coords.longitude),
+        new naverMaps.LatLng(pos.coords.latitude, pos.coords.longitude),
         defaultZoom
       );
       map?.setZoom(defaultZoom);
@@ -295,10 +295,10 @@ const MapPage: React.FC = () => {
                     <Review
                       setBookmark={setBookmark}
                       currentLatitude={
-                        getLastKnownPositionObj()?.coords.latitude
+                        getLastKnownPositionObj().coords.latitude
                       }
                       currentLongitude={
-                        getLastKnownPositionObj()?.coords.longitude
+                        getLastKnownPositionObj().coords.longitude
                       }
                     />
                   )}
