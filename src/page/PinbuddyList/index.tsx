@@ -44,21 +44,21 @@ const PinbuddyList = () => {
     <StDiv>
       <PinbuddyListHeader />
       <StBlock />
-      <div className="review-heading">
+      <div className="pinbuddy-tabs">
         <button
-          className={`review-filter ${index === 0 ? "active" : ""}`}
+          className={`pinbuddy-tab ${index === 0 ? "active" : ""}`}
           onClick={() => setIndex(0)}
         >
           핀버디
         </button>
         <button
-          className={`review-filter ${index === 1 ? "active" : ""}`}
+          className={`pinbuddy-tab ${index === 1 ? "active" : ""}`}
           onClick={() => setIndex(1)}
         >
           받은 신청
         </button>
         <button
-          className={`review-filter ${index === 2 ? "active" : ""}`}
+          className={`pinbuddy-tab ${index === 2 ? "active" : ""}`}
           onClick={() => setIndex(2)}
         >
           보낸 신청
@@ -138,7 +138,7 @@ const StDiv = styled.div`
   flex-direction: column;
   flex-grow: 1;
 
-  .review-heading {
+  .pinbuddy-tabs {
     display: flex;
     flex-direction: row;
     align-items: start;
@@ -146,7 +146,7 @@ const StDiv = styled.div`
     padding-top: var(--spacing_8);
     gap: var(--spacing_16);
 
-    .review-filter {
+    .pinbuddy-tab {
       ${H3}
       background-color: var(--white);
       border: none;
