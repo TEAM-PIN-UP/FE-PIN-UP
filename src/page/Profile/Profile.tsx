@@ -191,7 +191,7 @@ const Profile: React.FC = () => {
           onClose={() => {
             setIsSheetOpen(false);
           }}
-          snapPoints={[0.5]}
+          snapPoints={[0.7, 0.5]}
           $left={left}
         >
           <Sheet.Container>
@@ -370,7 +370,7 @@ const StSheet = styled(Sheet)<{ $left: number }>`
       padding: var(--spacing_24);
       padding-bottom: var(--spacing_48);
       align-items: center;
-      justify-content: center;
+      justify-content: start;
       height: 100%;
 
       .profile-image {
