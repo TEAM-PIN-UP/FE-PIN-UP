@@ -45,9 +45,7 @@ const Notifications: React.FC = () => {
               />
             ))}
           {friendRequests && friendRequests.length === 0 && (
-            <div className="no-friend-requests">
-              새로 받은 친구 요청이 없어요!
-            </div>
+            <div className="no-notifications">새로운 알림이 없어요.</div>
           )}
           {/* </NotificationDateGroup> */}
         </div>
@@ -86,7 +84,7 @@ const StTransitionWrapper = styled(TransitionWrapper)`
     height: 100%;
     gap: var(--spacing_32);
   }
-  .no-friend-requests {
+  .no-notifications {
     display: flex;
     flex-grow: 1;
     ${H3}

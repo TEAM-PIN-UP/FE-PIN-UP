@@ -69,11 +69,12 @@ const PinbuddyList = () => {
         style={{ width: "100%", height: "100%" }}
       >
         <div className="tab pinbuddy-list">
-          {friends && (
-            <div className="tab-page-header">
-              <span className="header-title">핀버디</span>
-              <span className="header-count">{friends.length}</span>
-            </div>
+          <div className="tab-page-header">
+            <span className="header-title">핀버디</span>
+            <span className="header-count">{friends ? friends.length : 0}</span>
+          </div>
+          {(!friends || friends.length === 0) && (
+            <div className="list-empty">아직 핀버디가 없어요.</div>
           )}
           {friends &&
             friends.length > 0 &&
@@ -90,11 +91,14 @@ const PinbuddyList = () => {
             ))}
         </div>
         <div className="tab received-list">
-          {requests && (
-            <div className="tab-page-header">
-              <span className="header-title">받은 신청</span>
-              <span className="header-count">{requests.length}</span>
-            </div>
+          <div className="tab-page-header">
+            <span className="header-title">받은 신청</span>
+            <span className="header-count">
+              {requests ? requests.length : 0}
+            </span>
+          </div>
+          {(!requests || requests.length === 0) && (
+            <div className="list-empty">받은 핀버디 요청이 없어요.</div>
           )}
           {requests &&
             requests.length > 0 &&
@@ -111,15 +115,17 @@ const PinbuddyList = () => {
             ))}
         </div>
         <div className="tab sent-list">
-          {requests && (
-            <div className="tab-page-header">
-              <span className="header-title">보낸 신청</span>
-              <span className="header-count">{requests.length}</span>
-            </div>
+          <div className="tab-page-header">
+            <span className="header-title">보낸 신청</span>
+            <span className="header-count">
+              {requests ? requests.length : 0}
+            </span>
+          </div>
+          {(!requests || requests.length === 0) && (
+            <div className="list-empty">보낸 핀버디 요청이 없어요.</div>
           )}
         </div>
       </SwipeableViews>
-      <div>{/* {data?.map((val)=><PinbuddySingle data={val}/>)} */}</div>
     </StDiv>
   );
 };
@@ -186,6 +192,14 @@ const StDiv = styled.div`
         ${H3}
         color: var(--neutral_400);
       }
+    }
+    .list-empty {
+      ${H3}
+      color: var(--neutral_400);
+      display: flex;
+      flex-grow: 1;
+      align-items: center;
+      justify-content: center;
     }
   }
 `;
