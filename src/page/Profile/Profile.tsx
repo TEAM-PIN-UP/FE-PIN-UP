@@ -244,7 +244,7 @@ const Profile: React.FC = () => {
                   <div className="button-group">
                     <Button
                       className="signup-button"
-                      size="full"
+                      size="xlarge"
                       onClick={() => navigate("/signup")}
                     >
                       로그인/회원가입
@@ -391,6 +391,7 @@ const StSheet = styled(Sheet)<{ $left: number }>`
       .share-button {
         max-width: 400px;
         margin: var(--spacing_48) var(--spacing_20);
+        z-index: 999999999;
       }
     }
 
