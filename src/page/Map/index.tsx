@@ -42,18 +42,11 @@ const MapPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const [bookmark, setBookmark] = useState<boolean>(false);
   const [isReviewView, setIsReviewView] = useState(false);
-  const [, setPosition] = useState({ latitude: 0, longitude: 0 });
 
   const kakaoPlaceId = searchParams.get("kakaoPlaceId");
 
   useEffect(() => {
     if (kakaoPlaceId) setIsReviewView(true);
-    navigator.geolocation.getCurrentPosition((position) => {
-      setPosition({
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      });
-    });
   }, [kakaoPlaceId]);
 
   // Don't follow user on review view
