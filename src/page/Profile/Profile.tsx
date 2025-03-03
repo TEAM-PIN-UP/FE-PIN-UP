@@ -1,6 +1,7 @@
-import getApi from "@/api/getApi";
 import Button from "@/components/Button";
 import Header from "@/components/Header";
+import useFriendRequests from "@/hooks/api/pinBuddy/useFriendRequests";
+import useMyFeed from "@/hooks/api/profile/useMyFeed";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import addUser from "@/image/icons/addUser.svg";
@@ -9,7 +10,6 @@ import notificationActive from "@/image/icons/notificationActive.svg";
 import notificationInactive from "@/image/icons/notificationInactive.svg";
 import settings from "@/image/icons/settings.svg";
 import share from "@/image/icons/share.svg";
-import { MyFeed, ReceivedFriendRequestResponse } from "@/interface/member";
 import { Review } from "@/interface/review";
 import { B3, B4, H1, H2, H3, H4 } from "@/style/font";
 import checkLogin from "@/utils/checkLogin";
@@ -37,42 +37,10 @@ const Profile: React.FC = () => {
     setLeft(newLeft);
   };
 
-  const [myFeed, setMyFeed] = useState<MyFeed | null>(null);
+  const { data: myFeed } = useMyFeed();
+  const { data: newFriendRequests } = useFriendRequests();
   const [photos, setPhotos] = useState<Review[] | null>(null);
   const [texts, setTexts] = useState<Review[] | null>(null);
-  const [newFriendRequests, setNewFriendRequests] = useState<
-    ReceivedFriendRequestResponse[] | null
-  >(null);
-
-  useEffect(() => {
-    try {
-      // Fetch current user profile
-      const getMemberDetails = async () => {
-        try {
-          const response = await getApi.getMyFeed();
-          setMyFeed(response.data);
-        } catch (error) {
-          console.error("Error fetching member details:", error);
-        }
-      };
-      // Get pending friend requests
-      const getPendingFriendRequests = async () => {
-        try {
-          const response = await getApi.getReceivedFriendRequests();
-          setNewFriendRequests(
-            response.data as ReceivedFriendRequestResponse[]
-          );
-        } catch (error) {
-          console.error("Error fetching pending friend requests:", error);
-        }
-      };
-      getMemberDetails();
-      getPendingFriendRequests();
-    } catch (error) {
-      console.error(error);
-    }
-    return () => {};
-  }, [navigate, toast]);
 
   useEffect(() => {
     if (!myFeed?.memberReviews) return;

@@ -1,4 +1,4 @@
-import usePostFriendRequest from "@/hooks/api/pinbuddySearch/usePostFriendRequest";
+import usePostFriendRequest from "@/hooks/api/pinBuddy/usePostFriendRequest";
 import {
   GetPinBuddySearchResponse,
   relationType,
@@ -18,7 +18,7 @@ const PinbuddySingle: React.FC<PinBuddySingleProps> = ({ data }) => {
 
   useEffect(() => {
     if (data.relationType === "FRIEND") {
-      setCurrentState("친구");
+      setCurrentState("삭제");
     } else if (data.relationType === "PENDING") {
       setCurrentState("요청보냄");
     } else if (data.relationType === "SELF") {

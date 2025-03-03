@@ -1,24 +1,19 @@
-import useFriendList from "@/hooks/api/pinbuddyList/useFriendList";
-import { GetPinBuddySearchResponse } from "@/interface/apiInterface";
-import { ReceivedFriendRequestResponse } from "@/interface/member";
+import useFriendList from "@/hooks/api/pinBuddy/useFriendList";
+import useFriendRequests from "@/hooks/api/pinBuddy/useFriendRequests";
 import { H3 } from "@/style/font";
 import { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
 import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
 import PinbuddyListHeader from "./_components/Header";
 import PinbuddySingle from "./_components/PinbuddySingle";
 
 const PinbuddyList = () => {
-  const location = useLocation();
-  const friendRequests = location.state
-    .newFriendRequests as ReceivedFriendRequestResponse[];
-
   const [index, setIndex] = useState(0);
   const [, setIsSwiping] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const { data: friends } = useFriendList();
+  const { data: requests } = useFriendRequests();
 
   // Distinguish between swipe & click
   const handleSwitch = () => {
@@ -44,21 +39,21 @@ const PinbuddyList = () => {
     <StDiv>
       <PinbuddyListHeader />
       <StBlock />
-      <div className="review-heading">
+      <div className="pinbuddy-tabs">
         <button
-          className={`review-filter ${index === 0 ? "active" : ""}`}
+          className={`pinbuddy-tab ${index === 0 ? "active" : ""}`}
           onClick={() => setIndex(0)}
         >
           핀버디
         </button>
         <button
-          className={`review-filter ${index === 1 ? "active" : ""}`}
+          className={`pinbuddy-tab ${index === 1 ? "active" : ""}`}
           onClick={() => setIndex(1)}
         >
           받은 신청
         </button>
         <button
-          className={`review-filter ${index === 2 ? "active" : ""}`}
+          className={`pinbuddy-tab ${index === 2 ? "active" : ""}`}
           onClick={() => setIndex(2)}
         >
           보낸 신청
@@ -74,18 +69,19 @@ const PinbuddyList = () => {
         style={{ width: "100%", height: "100%" }}
       >
         <div className="tab pinbuddy-list">
-          {friends && (
-            <div className="tab-page-header">
-              <span className="header-title">핀버디</span>
-              <span className="header-count">{friends.length}</span>
-            </div>
+          <div className="tab-page-header">
+            <span className="header-title">핀버디</span>
+            <span className="header-count">{friends ? friends.length : 0}</span>
+          </div>
+          {(!friends || friends.length === 0) && (
+            <div className="list-empty">아직 핀버디가 없어요.</div>
           )}
           {friends &&
             friends.length > 0 &&
-            friends.map((f) => (
+            friends.map((friend) => (
               <PinbuddySingle
                 data={{
-                  memberResponse: f,
+                  memberResponse: friend,
                   relationType: "FRIEND",
                   reviewCount: 0,
                   pinBuddyCount: 0,
@@ -95,38 +91,41 @@ const PinbuddyList = () => {
             ))}
         </div>
         <div className="tab received-list">
-          {friendRequests && (
-            <div className="tab-page-header">
-              <span className="header-title">받은 신청</span>
-              <span className="header-count">{friendRequests.length}</span>
-            </div>
+          <div className="tab-page-header">
+            <span className="header-title">받은 신청</span>
+            <span className="header-count">
+              {requests ? requests.length : 0}
+            </span>
+          </div>
+          {(!requests || requests.length === 0) && (
+            <div className="list-empty">받은 핀버디 요청이 없어요.</div>
           )}
-          {friendRequests &&
-            friendRequests.length > 0 &&
-            friendRequests.map((request) => (
+          {requests &&
+            requests.length > 0 &&
+            requests.map((request) => (
               <PinbuddySingle
-                data={
-                  {
-                    memberResponse: request.sender,
-                    relationType: "PENDING",
-                    reviewCount: 0,
-                    pinBuddyCount: 0,
-                  } as GetPinBuddySearchResponse
-                }
+                data={{
+                  memberResponse: request.sender,
+                  relationType: "PENDING",
+                  reviewCount: 0,
+                  pinBuddyCount: 0,
+                }}
                 state="PENDING"
               />
             ))}
         </div>
         <div className="tab sent-list">
-          {friendRequests && (
-            <div className="tab-page-header">
-              <span className="header-title">보낸 신청</span>
-              <span className="header-count">{friendRequests.length}</span>
-            </div>
+          <div className="tab-page-header">
+            <span className="header-title">보낸 신청</span>
+            <span className="header-count">
+              {requests ? requests.length : 0}
+            </span>
+          </div>
+          {(!requests || requests.length === 0) && (
+            <div className="list-empty">보낸 핀버디 요청이 없어요.</div>
           )}
         </div>
       </SwipeableViews>
-      <div>{/* {data?.map((val)=><PinbuddySingle data={val}/>)} */}</div>
     </StDiv>
   );
 };
@@ -138,7 +137,7 @@ const StDiv = styled.div`
   flex-direction: column;
   flex-grow: 1;
 
-  .review-heading {
+  .pinbuddy-tabs {
     display: flex;
     flex-direction: row;
     align-items: start;
@@ -146,7 +145,7 @@ const StDiv = styled.div`
     padding-top: var(--spacing_8);
     gap: var(--spacing_16);
 
-    .review-filter {
+    .pinbuddy-tab {
       ${H3}
       background-color: var(--white);
       border: none;
@@ -193,6 +192,14 @@ const StDiv = styled.div`
         ${H3}
         color: var(--neutral_400);
       }
+    }
+    .list-empty {
+      ${H3}
+      color: var(--neutral_400);
+      display: flex;
+      flex-grow: 1;
+      align-items: center;
+      justify-content: center;
     }
   }
 `;
