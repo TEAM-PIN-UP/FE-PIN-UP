@@ -7,7 +7,8 @@ const useMapSetup = (
   map: naver.maps.Map | null,
   user: naver.maps.Marker | null,
   followUser: boolean,
-  setActivePinIndex: React.Dispatch<React.SetStateAction<string | null>>
+  setActivePinIndex: React.Dispatch<React.SetStateAction<string | null>>,
+  setIsGeoAvailable: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const naverMaps = useNavermaps();
   const isDragging = useRef(false);
@@ -28,19 +29,21 @@ const useMapSetup = (
       if (followUser) map.setCenter(location);
       user.setPosition(location);
       setErrorCount(0);
+      setIsGeoAvailable(true);
     },
-    [map, user, naverMaps, followUser]
+    [map, user, naverMaps.LatLng, followUser, setIsGeoAvailable]
   );
 
   const onGeolocationError = useCallback(() => {
     setErrorCount((prev) => {
       if (prev > 8) {
+        setIsGeoAvailable(false);
         toast("위치정보를 확인하지 못했어요.");
         return 0;
       }
       return prev + 1;
     });
-  }, [toast]);
+  }, [setIsGeoAvailable, toast]);
 
   // Get & watch user position
   useEffect(() => {

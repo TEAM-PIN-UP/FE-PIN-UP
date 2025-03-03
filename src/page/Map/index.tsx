@@ -69,7 +69,15 @@ const MapPage: React.FC = () => {
   const [activePinIndex, setActivePinIndex] = useState<string | null>(null);
   const [followUser, setFollowUser] = useState(true);
   const defaultZoom = 20;
-  useMapSetup(true, map, user, followUser, setActivePinIndex);
+  const [isGeoAvailable, setIsGeoAvailable] = useState(false);
+  useMapSetup(
+    true,
+    map,
+    user,
+    followUser,
+    setActivePinIndex,
+    setIsGeoAvailable
+  );
 
   const { data: placeData } = useGetSpecificPlaces({
     kakaoPlaceId: kakaoPlaceId!,
@@ -82,12 +90,10 @@ const MapPage: React.FC = () => {
     if (!kakaoPlaceId || !placeData || !map) return;
     setIsReviewView(true);
     setActivePinIndex(kakaoPlaceId);
-
     const newCenter = new naverMaps.LatLng(
       placeData.mapPlaceResponse.latitude - 0.0001,
       placeData.mapPlaceResponse.longitude
     );
-
     map.setCenter(newCenter);
   }, [kakaoPlaceId, placeData, map, naverMaps.LatLng]);
 
@@ -114,10 +120,26 @@ const MapPage: React.FC = () => {
   }, []);
 
   // Track mouse down
-  const [isPointerDown, setIsPointerDown] = useState(false);
+  // Don't call places API while dragging
+  // Call places API 500ms after pointer up
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const { handleMapMove } = useUpdatePlaces({
+    query: dataQuery,
+    category,
+    sort,
+    setPlaces,
+  });
+
   useEffect(() => {
-    const handlePointerDown = () => setIsPointerDown(true);
-    const handlePointerUp = () => setIsPointerDown(false);
+    const handlePointerDown = () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+    const handlePointerUp = () => {
+      timeoutRef.current = setTimeout(() => {
+        handleMapMove(map?.getBounds(), getLastKnownPositionObj());
+      }, 500);
+    };
 
     window.addEventListener("mousedown", handlePointerDown);
     window.addEventListener("mouseup", handlePointerUp);
@@ -130,15 +152,7 @@ const MapPage: React.FC = () => {
       window.removeEventListener("touchstart", handlePointerDown);
       window.removeEventListener("touchend", handlePointerUp);
     };
-  }, []);
-
-  const { handleMapMove } = useUpdatePlaces({
-    query: dataQuery,
-    category,
-    sort,
-    isPointerDown,
-    setPlaces,
-  });
+  }, [handleMapMove, map]);
 
   const handleMoveToCurrent = () => {
     setActivePinIndex(null);
@@ -153,13 +167,13 @@ const MapPage: React.FC = () => {
     } else toast("현위치를 확인할 수 없어요.");
   };
 
-  const handleMoveButton = (): boolean => {
+  const showMoveButton = (): boolean => {
     const pos = getLastKnownPositionObj();
     const center = map?.getCenter();
     if (pos && center) {
       return !(
-        Math.abs(pos.coords.latitude - center.y) < 0.001 &&
-        Math.abs(pos.coords.longitude - center.x) < 0.001
+        Math.abs(pos.coords.latitude - center.y) < 0.0005 &&
+        Math.abs(pos.coords.longitude - center.x) < 0.0005
       );
     }
     return false;
@@ -171,7 +185,7 @@ const MapPage: React.FC = () => {
         className="move-to-current"
         onClick={handleMoveToCurrent}
         size="small"
-        $enabled={handleMoveButton()}
+        $enabled={isGeoAvailable && showMoveButton()}
       >
         현위치로 이동
       </StButton>
@@ -180,12 +194,12 @@ const MapPage: React.FC = () => {
           <NaverMap
             zoom={defaultZoom}
             ref={setMap}
-            onBoundsChanged={() => {
-              setFollowUser(false);
-              handleMapMove(map?.getBounds(), getLastKnownPositionObj());
-            }}
+            onBoundsChanged={() => setFollowUser(false)}
           >
-            <UserPositionMarker ref={(marker) => marker && setUser(marker)} />
+            <UserPositionMarker
+              ref={(marker) => marker && setUser(marker)}
+              enabled={isGeoAvailable}
+            />
             {places &&
               places.map((item) => (
                 <PinMarker
