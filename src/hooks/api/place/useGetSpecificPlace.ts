@@ -19,8 +19,9 @@ const useGetSpecificPlaces = ({
   const queryFn = async () => {
     const response = await getApi.getSpecificPlace({
       kakaoPlaceId,
-      currentLongitude,
-      currentLatitude,
+      currentLongitude:
+        currentLongitude === undefined ? 127.0 : currentLongitude,
+      currentLatitude: currentLatitude === undefined ? 37.5 : currentLatitude,
     });
     setBookmark(response.data.bookmark);
     return response.data;
@@ -28,7 +29,12 @@ const useGetSpecificPlaces = ({
 
   return useQuery({
     queryFn,
-    queryKey: ["places", kakaoPlaceId, currentLatitude, currentLongitude],
+    queryKey: [
+      "places",
+      kakaoPlaceId,
+      currentLatitude === undefined ? 37.5 : currentLatitude,
+      currentLongitude === undefined ? 127.0 : currentLongitude,
+    ],
     enabled: Boolean(kakaoPlaceId),
     retry: 1,
     // staleTime: 1000 * 60 * 5,
