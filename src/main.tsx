@@ -1,5 +1,3 @@
-import "./SentryInit";
-
 import router from "@/routes/route.tsx";
 import GlobalStyle from "@/style/GlobalStyle.ts";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
