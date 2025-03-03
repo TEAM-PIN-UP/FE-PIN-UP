@@ -1,22 +1,23 @@
-import * as Sentry from "@sentry/vite-plugin";
+import * as Sentry from "@sentry/react";
+import { useEffect } from "react";
 import {
-    createRoutesFromChildren,
-    matchRoutes,
-    useLocation,
-    useNavigationType,
+  createRoutesFromChildren,
+  matchRoutes,
+  useLocation,
+  useNavigationType,
 } from "react-router-dom";
-  
+
 Sentry.init({
   dsn: "https://1bde7f559a3481eaf6709758160f667a@o4508912692953088.ingest.de.sentry.io/4508912699113552",
   integrations: [
     Sentry.reactRouterV6BrowserTracingIntegration({
-        useEffect,
-        useLocation,
-        useNavigationType,
-        createRoutesFromChildren,
-        matchRoutes,
-      }),
-      Sentry.replayIntegration(),
+      useEffect,
+      useLocation,
+      useNavigationType,
+      createRoutesFromChildren,
+      matchRoutes,
+    }),
+    Sentry.replayIntegration(),
   ],
   // Set tracesSampleRate to 1.0 to capture 100%
   // of transactions for tracing.
