@@ -1,9 +1,9 @@
 import Button from "@/components/Button";
-import useGetSpecificPlaces from "@/hooks/api/useGetSpecificPlace";
+import useGetSpecificPlaces from "@/hooks/api/place/useGetSpecificPlace";
+import useUpdatePlaces from "@/hooks/api/place/useUpdatePlaces";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import useMapSetup from "@/hooks/useMapSetup";
-import useUpdatePlaces from "@/hooks/useUpdatePlaces";
 import noReviews from "@/image/icons/receiptLines.svg";
 import {
   GetPlaceResponse,
@@ -105,12 +105,6 @@ const MapPage: React.FC = () => {
     const newLeft = window.innerWidth > 440 ? (window.innerWidth - 440) / 2 : 0;
     setLeft(newLeft);
   };
-
-  const removeQueries = () => {
-    const path = window.location.pathname; // 현재 경로
-    window.history.pushState({}, "", path); // 쿼리 없이 경로만 유지
-  };
-
   useEffect(() => {
     updateLeftPosition();
     window.addEventListener("resize", updateLeftPosition);
@@ -118,6 +112,11 @@ const MapPage: React.FC = () => {
       window.removeEventListener("resize", updateLeftPosition);
     };
   }, []);
+
+  const removeQueries = () => {
+    const path = window.location.pathname; // 현재 경로
+    window.history.pushState({}, "", path); // 쿼리 없이 경로만 유지
+  };
 
   // Track mouse down
   // Don't call places API while dragging
@@ -136,9 +135,10 @@ const MapPage: React.FC = () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
     const handlePointerUp = () => {
-      timeoutRef.current = setTimeout(() => {
-        handleMapMove(map?.getBounds(), getLastKnownPositionObj());
-      }, 500);
+      timeoutRef.current = setTimeout(
+        () => handleMapMove(map?.getBounds(), getLastKnownPositionObj()),
+        500
+      );
     };
 
     window.addEventListener("mousedown", handlePointerDown);

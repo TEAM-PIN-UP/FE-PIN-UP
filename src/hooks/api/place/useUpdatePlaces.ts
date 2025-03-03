@@ -1,4 +1,4 @@
-import useGetPlaces from "@/hooks/api/useGetPlaces";
+import useGetPlaces from "@/hooks/api/place/useGetPlaces";
 import {
   GetPlaceResponse,
   placeCategory,

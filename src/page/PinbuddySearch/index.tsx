@@ -1,8 +1,8 @@
+import useFriendSearch from "@/hooks/api/pinBuddy/useFriendSearch";
+import { useState } from "react";
 import styled from "styled-components";
 import ReviewSearchBar from "../Review/_components/PlaceSearch/ReviewSearchBar";
 import SearchResultList from "./_components/SearchResultList";
-import { useState } from "react";
-import useGetSearchPinbuddy from "@/hooks/api/pinbuddySearch/useGetSearchPinbuddy";
 
 const PinbuddySearch: React.FC = () => {
   const [searchList, setSearchList] = useState<boolean>(false);
@@ -16,7 +16,7 @@ const PinbuddySearch: React.FC = () => {
     setSearchList(true);
   };
 
-  const { data } = useGetSearchPinbuddy({ nickname, setSearchList });
+  const { data } = useFriendSearch({ nickname, setSearchList });
   return (
     <StPinBuddySearch>
       <div className="emptyBox" />
@@ -27,7 +27,7 @@ const PinbuddySearch: React.FC = () => {
         reviewSearch={nickname}
         setReviewSearch={setNickname}
       />
-      {searchList && data ? <SearchResultList data={data} /> : <></>}
+      {searchList && data && <SearchResultList data={data} />}
     </StPinBuddySearch>
   );
 };

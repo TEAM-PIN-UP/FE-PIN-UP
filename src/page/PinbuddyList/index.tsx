@@ -1,24 +1,19 @@
-import useFriendList from "@/hooks/api/pinbuddyList/useFriendList";
-import { GetPinBuddySearchResponse } from "@/interface/apiInterface";
-import { ReceivedFriendRequestResponse } from "@/interface/member";
+import useFriendList from "@/hooks/api/pinBuddy/useFriendList";
+import useFriendRequests from "@/hooks/api/pinBuddy/useFriendRequests";
 import { H3 } from "@/style/font";
 import { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
 import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
 import PinbuddyListHeader from "./_components/Header";
 import PinbuddySingle from "./_components/PinbuddySingle";
 
 const PinbuddyList = () => {
-  const location = useLocation();
-  const friendRequests = location.state
-    .newFriendRequests as ReceivedFriendRequestResponse[];
-
   const [index, setIndex] = useState(0);
   const [, setIsSwiping] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const { data: friends } = useFriendList();
+  const { data: requests } = useFriendRequests();
 
   // Distinguish between swipe & click
   const handleSwitch = () => {
@@ -82,10 +77,10 @@ const PinbuddyList = () => {
           )}
           {friends &&
             friends.length > 0 &&
-            friends.map((f) => (
+            friends.map((friend) => (
               <PinbuddySingle
                 data={{
-                  memberResponse: f,
+                  memberResponse: friend,
                   relationType: "FRIEND",
                   reviewCount: 0,
                   pinBuddyCount: 0,
@@ -95,33 +90,31 @@ const PinbuddyList = () => {
             ))}
         </div>
         <div className="tab received-list">
-          {friendRequests && (
+          {requests && (
             <div className="tab-page-header">
               <span className="header-title">받은 신청</span>
-              <span className="header-count">{friendRequests.length}</span>
+              <span className="header-count">{requests.length}</span>
             </div>
           )}
-          {friendRequests &&
-            friendRequests.length > 0 &&
-            friendRequests.map((request) => (
+          {requests &&
+            requests.length > 0 &&
+            requests.map((request) => (
               <PinbuddySingle
-                data={
-                  {
-                    memberResponse: request.sender,
-                    relationType: "PENDING",
-                    reviewCount: 0,
-                    pinBuddyCount: 0,
-                  } as GetPinBuddySearchResponse
-                }
+                data={{
+                  memberResponse: request.sender,
+                  relationType: "PENDING",
+                  reviewCount: 0,
+                  pinBuddyCount: 0,
+                }}
                 state="PENDING"
               />
             ))}
         </div>
         <div className="tab sent-list">
-          {friendRequests && (
+          {requests && (
             <div className="tab-page-header">
               <span className="header-title">보낸 신청</span>
-              <span className="header-count">{friendRequests.length}</span>
+              <span className="header-count">{requests.length}</span>
             </div>
           )}
         </div>
