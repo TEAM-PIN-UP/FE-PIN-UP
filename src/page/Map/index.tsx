@@ -13,6 +13,7 @@ import {
 import { H3 } from "@/style/font";
 import { getLastKnownPositionObj } from "@/utils/getFromLocalStorage";
 import useToastPopup from "@/utils/toastPopup";
+import { debounce } from "lodash";
 import { useEffect, useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 import {
@@ -79,6 +80,17 @@ const MapPage: React.FC = () => {
     setBookmark,
   });
 
+  const { handleMapMove } = useUpdatePlaces({
+    query: dataQuery,
+    category,
+    sort,
+    setPlaces,
+  });
+
+  const debouncedHandleMapMove = debounce(() => {
+    handleMapMove(map?.getBounds(), getLastKnownPositionObj());
+  }, 500);
+
   useEffect(() => {
     if (!kakaoPlaceId || !placeData || !map) return;
     setIsReviewView(true);
@@ -88,7 +100,8 @@ const MapPage: React.FC = () => {
       placeData.mapPlaceResponse.longitude
     );
     map.setCenter(newCenter);
-  }, [kakaoPlaceId, placeData, map, naverMaps.LatLng]);
+    debouncedHandleMapMove();
+  }, [kakaoPlaceId, placeData, map, naverMaps.LatLng, debouncedHandleMapMove]);
 
   // Bottom sheet logic
   const sheetRef = useRef<SheetRef>();
@@ -115,13 +128,6 @@ const MapPage: React.FC = () => {
   // Don't call places API while dragging
   // Call places API 500ms after pointer up
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const { handleMapMove } = useUpdatePlaces({
-    query: dataQuery,
-    category,
-    sort,
-    setPlaces,
-  });
 
   useEffect(() => {
     const handlePointerDown = () => {
@@ -187,7 +193,11 @@ const MapPage: React.FC = () => {
           <NaverMap
             zoom={defaultZoom}
             ref={setMap}
-            onBoundsChanged={() => setFollowUser(false)}
+            onBoundsChanged={() =>
+              debounce(() => {
+                setFollowUser(false);
+              }, 300)
+            }
           >
             <UserPositionMarker
               ref={(marker) => marker && setUser(marker)}
