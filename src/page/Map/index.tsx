@@ -284,13 +284,14 @@ const MapPage: React.FC = () => {
                       >
                         <Restaurant
                           key={item.kakaoPlaceId}
-                          // placeId={item.placeId}
                           name={item.name}
                           averageStarRating={item.averageStarRating}
-                          reviewImageUrls={item.reviewImageUrls}
-                          reviewerProfileImageUrls={
-                            item.reviewerProfileImageUrls
-                          }
+                          reviewImageUrls={item.reviewImageUrls
+                            .slice()
+                            .reverse()}
+                          reviewerProfileImageUrls={item.reviewerProfileImageUrls
+                            .slice()
+                            .reverse()}
                           reviewCount={item.reviewCount}
                           distance={item.distance}
                         />

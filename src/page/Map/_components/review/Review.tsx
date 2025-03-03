@@ -43,10 +43,12 @@ const Review: React.FC<ReviewProps> = ({
           key={kakaoPlaceId}
           name={data?.mapPlaceResponse.name}
           averageStarRating={data.mapPlaceResponse.averageStarRating}
-          reviewImageUrls={data.mapPlaceResponse.reviewImageUrls}
-          reviewerProfileImageUrls={
-            data.mapPlaceResponse.reviewerProfileImageUrls
-          }
+          reviewImageUrls={data.mapPlaceResponse.reviewImageUrls
+            .slice()
+            .reverse()}
+          reviewerProfileImageUrls={data.mapPlaceResponse.reviewerProfileImageUrls
+            .slice()
+            .reverse()}
           reviewCount={data.mapPlaceResponse.reviewCount}
           distance={data.mapPlaceResponse.distance}
         />
@@ -65,26 +67,29 @@ const Review: React.FC<ReviewProps> = ({
         />
         <div className="reviewList">
           {data?.mapPlaceResponse.reviewCount > 0 ? (
-            data.reviews.map((value, index) => {
-              return (
-                <div key={value.reviewId}>
-                  <ReviewSingle
-                    key={index}
-                    writerName={value.writerName}
-                    starRating={value.starRating}
-                    writerProfileImageUrl={value.writerProfileImageUrl}
-                    visitedDate={value.visitedDate}
-                    content={value.content}
-                    reviewId={value.reviewId}
-                    writerTotalReviewCount={value.writerTotalReviewCount}
-                    reviewImageUrls={value.reviewImageUrls}
-                  />
-                  {index + 1 !== data?.mapPlaceResponse.reviewCount && (
-                    <div className="midLine" />
-                  )}
-                </div>
-              );
-            })
+            data.reviews
+              .slice()
+              .reverse()
+              .map((value, index) => {
+                return (
+                  <div key={value.reviewId}>
+                    <ReviewSingle
+                      key={index}
+                      writerName={value.writerName}
+                      starRating={value.starRating}
+                      writerProfileImageUrl={value.writerProfileImageUrl}
+                      visitedDate={value.visitedDate}
+                      content={value.content}
+                      reviewId={value.reviewId}
+                      writerTotalReviewCount={value.writerTotalReviewCount}
+                      reviewImageUrls={value.reviewImageUrls}
+                    />
+                    {index + 1 !== data?.mapPlaceResponse.reviewCount && (
+                      <div className="midLine" />
+                    )}
+                  </div>
+                );
+              })
           ) : (
             <ReviewDefault />
           )}

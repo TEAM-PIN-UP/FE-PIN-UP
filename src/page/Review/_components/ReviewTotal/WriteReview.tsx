@@ -35,6 +35,7 @@ const StWriteReview = styled.div`
   .info {
     ${H5}
     color: var(--neutral_400);
+    margin-bottom: var(--spacing_12);
   }
 `;
 
