@@ -4,6 +4,7 @@ import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import useMapSetup from "@/hooks/useMapSetup";
 import useUpdatePlaces from "@/hooks/useUpdatePlaces";
+import noReviews from "@/image/icons/receiptLines.svg";
 import {
   GetPlaceResponse,
   placeCategory,
@@ -248,6 +249,7 @@ const MapPage: React.FC = () => {
                   {((!isReviewView && !places) ||
                     (!isReviewView && places?.length === 0)) && (
                     <div className="no-reviews">
+                      <img src={noReviews} />
                       <p>근처에 리뷰 있는</p>
                       <p>가게가 없어요!</p>
                     </div>
@@ -353,11 +355,18 @@ const StSheet = styled(Sheet)<{ $left: number }>`
 
   .no-reviews {
     ${H3}
-    display:flex;
+    height:80%;
+    display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     color: var(--neutral_500);
     gap: var(--spacing_8);
     margin-top: var(--spacing_12);
+
+    img {
+      height: 32px;
+    }
   }
 `;
 
