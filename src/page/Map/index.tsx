@@ -13,7 +13,7 @@ import {
 import { H3 } from "@/style/font";
 import { getLastKnownPositionObj } from "@/utils/getFromLocalStorage";
 import useToastPopup from "@/utils/toastPopup";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
 import {
   Container as MapDiv,
@@ -77,7 +77,11 @@ const MapPage: React.FC = () => {
     sort,
     setPlaces,
   });
+  const callbackHandleMapMove = useCallback(() => {
+    handleMapMove(map?.getBounds(), getLastKnownPositionObj());
+  }, [map, handleMapMove]);
 
+  // Move map to place when kakaoPlaceId is present
   useEffect(() => {
     if (!kakaoPlaceId || !placeData || !map) return;
 
@@ -86,18 +90,16 @@ const MapPage: React.FC = () => {
       placeData.mapPlaceResponse.latitude - 0.0001,
       placeData.mapPlaceResponse.longitude
     );
-
     const currentCenter = map.getCenter();
     if (
-      Math.abs(currentCenter.y - newCenter.y) < 0.00001 &&
-      Math.abs(currentCenter.x - newCenter.x) < 0.00001
+      Math.abs(currentCenter.y - newCenter.y) < 0.001 &&
+      Math.abs(currentCenter.x - newCenter.x) < 0.001
     ) {
       return; // Avoid unnecessary updates
     }
 
     map.setCenter(newCenter);
-    handleMapMove(map?.getBounds(), getLastKnownPositionObj());
-  }, [kakaoPlaceId, placeData, map, naverMaps.LatLng, handleMapMove]);
+  }, [kakaoPlaceId, placeData, map, naverMaps.LatLng]);
 
   useEffect(() => {
     if (kakaoPlaceId) {
@@ -113,17 +115,18 @@ const MapPage: React.FC = () => {
   const sheetRef = useRef<SheetRef>();
   const { snapPoints, attachRef, sheetHeaderRef } = useBottomSheetSnapPoints();
   const [left, setLeft] = useState(0);
-  const updateLeftPosition = () => {
-    const newLeft = window.innerWidth > 440 ? (window.innerWidth - 440) / 2 : 0;
-    setLeft(newLeft);
-  };
   useEffect(() => {
+    const updateLeftPosition = () => {
+      const newLeft =
+        window.innerWidth > 440 ? (window.innerWidth - 440) / 2 : 0;
+      if (newLeft !== left) setLeft(newLeft);
+    };
     updateLeftPosition();
     window.addEventListener("resize", updateLeftPosition);
     return () => {
       window.removeEventListener("resize", updateLeftPosition);
     };
-  }, []);
+  }, [left]);
 
   const removeQueries = () => {
     const path = window.location.pathname; // 현재 경로
@@ -140,10 +143,8 @@ const MapPage: React.FC = () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
     const handlePointerUp = () => {
-      timeoutRef.current = setTimeout(
-        () => handleMapMove(map?.getBounds(), getLastKnownPositionObj()),
-        500
-      );
+      if (isReviewView) return;
+      timeoutRef.current = setTimeout(() => callbackHandleMapMove(), 500);
     };
 
     window.addEventListener("mousedown", handlePointerDown);
@@ -157,7 +158,7 @@ const MapPage: React.FC = () => {
       window.removeEventListener("touchstart", handlePointerDown);
       window.removeEventListener("touchend", handlePointerUp);
     };
-  }, [handleMapMove, map]);
+  }, [isReviewView, map, callbackHandleMapMove]);
 
   const handleMoveToCurrent = () => {
     setKakaoPlaceId(null);
@@ -200,7 +201,9 @@ const MapPage: React.FC = () => {
           <NaverMap
             zoom={defaultZoom}
             ref={setMap}
-            onBoundsChanged={() => setFollowUser(false)}
+            onBoundsChanged={() => {
+              if (followUser) setFollowUser(false);
+            }}
           >
             <UserPositionMarker
               ref={(marker) => marker && setUser(marker)}
