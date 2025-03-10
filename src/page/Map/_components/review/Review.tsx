@@ -72,9 +72,8 @@ const Review: React.FC<ReviewProps> = ({
               .reverse()
               .map((value, index) => {
                 return (
-                  <div key={value.reviewId}>
+                  <div key={`${value.reviewId}-reviewsingle`}>
                     <ReviewSingle
-                      key={index}
                       writerName={value.writerName}
                       starRating={value.starRating}
                       writerProfileImageUrl={value.writerProfileImageUrl}
