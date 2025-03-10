@@ -43,33 +43,25 @@ const MapPage: React.FC = () => {
   const [bookmark, setBookmark] = useState<boolean>(false);
   const [isReviewView, setIsReviewView] = useState(false);
 
-  const kakaoPlaceId = searchParams.get("kakaoPlaceId");
-
-  useEffect(() => {
-    if (kakaoPlaceId) setIsReviewView(true);
-  }, [kakaoPlaceId]);
-
-  // Don't follow user on review view
-  useEffect(() => {
-    if (isReviewView) setFollowUser(false);
-    return () => {};
-  }, [isReviewView]);
-
   // Geolocation and map setup
   const naverMaps = useNavermaps();
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [user, setUser] = useState<naver.maps.Marker | null>(null);
-  const [activePinIndex, setActivePinIndex] = useState<string | null>(null);
+  const [kakaoPlaceId, setKakaoPlaceId] = useState<string | null>(
+    searchParams.get("kakaoPlaceId")
+  );
   const [followUser, setFollowUser] = useState(true);
   const defaultZoom = 20;
   const [isGeoAvailable, setIsGeoAvailable] = useState(false);
-  useMapSetup(
-    true,
-    map,
-    user,
-    followUser,
-    setActivePinIndex,
-    setIsGeoAvailable
+  useMapSetup(true, map, user, followUser, setKakaoPlaceId, setIsGeoAvailable);
+
+  console.log(
+    "id",
+    kakaoPlaceId,
+    "isreviewview",
+    isReviewView,
+    "follow",
+    followUser
   );
 
   const { data: placeData } = useGetSpecificPlaces({
@@ -79,16 +71,43 @@ const MapPage: React.FC = () => {
     setBookmark,
   });
 
+  const { handleMapMove } = useUpdatePlaces({
+    query: dataQuery,
+    category,
+    sort,
+    setPlaces,
+  });
+
   useEffect(() => {
     if (!kakaoPlaceId || !placeData || !map) return;
-    setIsReviewView(true);
-    setActivePinIndex(kakaoPlaceId);
+
+    // Check if current center is already there
     const newCenter = new naverMaps.LatLng(
       placeData.mapPlaceResponse.latitude - 0.0001,
       placeData.mapPlaceResponse.longitude
     );
+
+    const currentCenter = map.getCenter();
+    if (
+      Math.abs(currentCenter.y - newCenter.y) < 0.00001 &&
+      Math.abs(currentCenter.x - newCenter.x) < 0.00001
+    ) {
+      return; // Avoid unnecessary updates
+    }
+
     map.setCenter(newCenter);
-  }, [kakaoPlaceId, placeData, map, naverMaps.LatLng]);
+    handleMapMove(map?.getBounds(), getLastKnownPositionObj());
+  }, [kakaoPlaceId, placeData, map, naverMaps.LatLng, handleMapMove]);
+
+  useEffect(() => {
+    if (kakaoPlaceId) {
+      setIsReviewView(true);
+      setFollowUser(false);
+    } else {
+      setIsReviewView(false);
+    }
+    return () => {};
+  }, [kakaoPlaceId]);
 
   // Bottom sheet logic
   const sheetRef = useRef<SheetRef>();
@@ -116,13 +135,6 @@ const MapPage: React.FC = () => {
   // Call places API 500ms after pointer up
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const { handleMapMove } = useUpdatePlaces({
-    query: dataQuery,
-    category,
-    sort,
-    setPlaces,
-  });
-
   useEffect(() => {
     const handlePointerDown = () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -148,7 +160,8 @@ const MapPage: React.FC = () => {
   }, [handleMapMove, map]);
 
   const handleMoveToCurrent = () => {
-    setActivePinIndex(null);
+    setKakaoPlaceId(null);
+    setFollowUser(true);
     const pos = getLastKnownPositionObj();
     if (pos) {
       map?.morph(
@@ -197,14 +210,13 @@ const MapPage: React.FC = () => {
               places.map((item) => (
                 <PinMarker
                   key={item.kakaoPlaceId}
-                  active={activePinIndex === item.kakaoPlaceId}
+                  active={kakaoPlaceId === item.kakaoPlaceId}
                   type={item.placeCategory}
                   name={item.name}
                   image={item.reviewImageUrls[0]}
                   count={item.reviewCount.toString()}
                   onClick={() => {
-                    setActivePinIndex(item.kakaoPlaceId);
-                    setIsReviewView(true);
+                    setKakaoPlaceId(item.kakaoPlaceId);
                     navigate(
                       `${window.location.pathname}?kakaoPlaceId=${item.kakaoPlaceId}`
                     );
@@ -245,8 +257,7 @@ const MapPage: React.FC = () => {
                     setBookmark={setBookmark}
                     onBack={() => {
                       removeQueries();
-                      setIsReviewView(false);
-                      setActivePinIndex(null);
+                      setKakaoPlaceId(null);
                     }}
                   />
                 )}
@@ -263,13 +274,11 @@ const MapPage: React.FC = () => {
                   )}
                   {places &&
                     !isReviewView &&
-                    // activePinIndex === null &&
                     places.map((item) => (
                       <div
                         key={item.kakaoPlaceId}
                         onClick={() => {
-                          setIsReviewView(true);
-                          setActivePinIndex(item.kakaoPlaceId);
+                          setKakaoPlaceId(item.kakaoPlaceId);
                           navigate(
                             `${window.location.pathname}?kakaoPlaceId=${item.kakaoPlaceId}`
                           );
@@ -291,7 +300,6 @@ const MapPage: React.FC = () => {
                       </div>
                     ))}
                   {isReviewView && (
-                    // || activePinIndex !== null
                     <Review
                       setBookmark={setBookmark}
                       currentLatitude={

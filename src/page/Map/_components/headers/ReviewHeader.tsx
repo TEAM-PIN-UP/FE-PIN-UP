@@ -1,12 +1,12 @@
-import React from "react";
-import styled from "styled-components";
+import useDeleteMyPlace from "@/hooks/api/myPlace/useDeleteMyPlace";
+import usePostMyPlace from "@/hooks/api/myPlace/usePostMyPlace";
 import arrowLeft from "@/image/icons/arrowLeft.svg";
 import scrapActive from "@/image/icons/scrapActive.svg";
 import scrapInactive from "@/image/icons/scrapInactive.svg";
-import { useSearchParams } from "react-router-dom";
 import useToastPopup from "@/utils/toastPopup";
-import usePostMyPlace from "@/hooks/api/myPlace/usePostMyPlace";
-import useDeleteMyPlace from "@/hooks/api/myPlace/useDeleteMyPlace";
+import React from "react";
+import { useSearchParams } from "react-router-dom";
+import styled from "styled-components";
 
 interface SearchHeaderProps {
   onBack: () => void;
@@ -32,7 +32,7 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({
       } else {
         applyMyPlace.mutate({ kakaoPlaceId: Number(kakaoPlaceId) });
       }
-      toast("북마크 등록되었습니다.");
+      toast("북마크가 등록되었어요.");
     }
   };
 
@@ -60,6 +60,12 @@ const StHeaderContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing_8) var(--spacing_20);
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 const StBackButton = styled.button`
