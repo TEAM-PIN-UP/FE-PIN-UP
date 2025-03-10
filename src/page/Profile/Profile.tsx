@@ -126,14 +126,14 @@ const Profile: React.FC = () => {
             <UserStatsSection
               stats={
                 [
-                  { label: "리뷰", value: myFeed?.reviewCount },
+                  { label: "리뷰", value: myFeed?.memberResponse.reviewCount },
                   {
                     label: "평균 평점",
-                    value: myFeed?.averageStarRating,
+                    value: myFeed?.memberResponse.averageStarRating,
                   },
                   {
                     label: "핀버디",
-                    value: myFeed?.pinBuddyCount,
+                    value: myFeed?.memberResponse.pinBuddyCount,
                     onClick: () => {
                       navigate("/profile/pinbuddylist", {
                         state: { newFriendRequests },
@@ -209,14 +209,17 @@ const Profile: React.FC = () => {
                   <UserStatsSection
                     stats={
                       [
-                        { label: "리뷰", value: myFeed?.reviewCount },
+                        {
+                          label: "리뷰",
+                          value: myFeed?.memberResponse.reviewCount,
+                        },
                         {
                           label: "평균 평점",
-                          value: myFeed?.averageStarRating,
+                          value: myFeed?.memberResponse.averageStarRating,
                         },
                         {
                           label: "핀버디",
-                          value: myFeed?.pinBuddyCount,
+                          value: myFeed?.memberResponse.pinBuddyCount,
                         },
                       ] as Stat[]
                     }
