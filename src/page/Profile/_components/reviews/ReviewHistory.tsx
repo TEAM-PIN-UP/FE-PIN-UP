@@ -53,19 +53,21 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
         style={{ width: "100%" }}
       >
         <div className="image-reviews">
-          <div className="image-reviews-content">
-            {photos.length > 0 &&
-              photos.map((item) => (
-                <ImgWithPlaceholder
-                  key={item.reviewId}
-                  src={item.reviewImageUrls[0]}
-                  className="image"
-                  onClick={() => handleClick(item)}
-                  maxWidth="calc(var(--max_width)/3)"
-                />
-              ))}
-            {photos.length === 0 && <ReviewEmpty />}
-          </div>
+          {photos.length !== 0 && (
+            <div className="image-reviews-content">
+              {photos.length > 0 &&
+                photos.map((item) => (
+                  <ImgWithPlaceholder
+                    key={item.reviewId}
+                    src={item.reviewImageUrls[0]}
+                    className="image"
+                    onClick={() => handleClick(item)}
+                    maxWidth="calc((var(--max_width)-2px)/3)"
+                  />
+                ))}
+            </div>
+          )}
+          {photos.length === 0 && <ReviewEmpty />}
         </div>
         <div className="text-reviews">
           {texts.length > 0 &&
@@ -98,6 +100,10 @@ const StDiv = styled.div`
     height: 100%;
 
     .image-reviews {
+      display: flex;
+      flex-grow: 1;
+      max-width: calc(var(--max_width)-2px);
+
       .image-reviews-content {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -107,6 +113,7 @@ const StDiv = styled.div`
         width: 100%;
         overflow-y: auto;
         align-items: start;
+        max-width: calc(var(--max_width)-2px);
 
         .image {
           width: 100%;
