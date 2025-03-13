@@ -136,27 +136,20 @@ const MapPage: React.FC = () => {
   // Track mouse down
   // Don't call places API while dragging
   // Call places API 500ms after pointer up
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
   useEffect(() => {
-    const handlePointerDown = () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-    const handlePointerUp = () => {
+    if (!map) return;
+    let timeoutRef: NodeJS.Timeout | null = null;
+    const handleIdle = () => {
       if (isReviewView) return;
-      timeoutRef.current = setTimeout(() => callbackHandleMapMove(), 500);
+      if (timeoutRef) clearTimeout(timeoutRef);
+      timeoutRef = setTimeout(() => {
+        callbackHandleMapMove();
+      }, 500);
     };
-
-    window.addEventListener("mousedown", handlePointerDown);
-    window.addEventListener("mouseup", handlePointerUp);
-    window.addEventListener("touchstart", handlePointerDown);
-    window.addEventListener("touchend", handlePointerUp);
-
+    const idleListener = naver.maps.Event.addListener(map, "idle", handleIdle);
     return () => {
-      window.removeEventListener("mousedown", handlePointerDown);
-      window.removeEventListener("mouseup", handlePointerUp);
-      window.removeEventListener("touchstart", handlePointerDown);
-      window.removeEventListener("touchend", handlePointerUp);
+      if (timeoutRef) clearTimeout(timeoutRef);
+      naver.maps.Event.removeListener(idleListener);
     };
   }, [isReviewView, map, callbackHandleMapMove]);
 
