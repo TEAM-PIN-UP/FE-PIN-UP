@@ -1,17 +1,17 @@
 import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
-import { Review } from "@/interface/review";
+import { PhotoReview, Review } from "@/interface/review";
 import { H4 } from "@/style/font";
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SwipeableViews from "react-swipeable-views";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import ReviewEmpty from "./ReviewEmpty";
 import ReviewText from "./ReviewText";
 
 interface ReviewHistoryProps {
   index: number;
   onChangeIndex: (arg0: number) => void;
-  photos: Review[];
+  photos: PhotoReview[];
   texts: Review[];
 }
 
@@ -42,7 +42,7 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
   };
 
   return (
-    <StDiv>
+    <StDiv $empty={photos.length === 0}>
       <SwipeableViews
         slideClassName="reviews-container"
         enableMouseEvents
@@ -81,7 +81,7 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
   );
 };
 
-const StDiv = styled.div`
+const StDiv = styled.div<{ $empty: boolean }>`
   ${H4}
   display: flex;
   flex: 1 0 auto;
@@ -100,8 +100,12 @@ const StDiv = styled.div`
     height: 100%;
 
     .image-reviews {
-      display: flex;
-      flex-grow: 1;
+      ${({ $empty }) =>
+        $empty &&
+        css`
+          display: flex;
+          flex-grow: 1;
+        `}
       max-width: calc(var(--max_width)-2px);
 
       .image-reviews-content {

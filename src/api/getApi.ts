@@ -31,8 +31,33 @@ const getApi = {
   getMemberNicknameCheck: ({ nickname }: { nickname: string }) =>
     customAxios.get(`/api/members/nickname/check?nickname=${nickname}`),
 
-  // My Feed
-  getMyFeed: () => customAxios.get(`/api/members/me/feed`),
+  // Member Feed
+  getMemberDetails: ({ id }: { id: number }) =>
+    customAxios.get(`/api/members/${id}`),
+  getTextReviews: ({
+    id,
+    page,
+    size,
+  }: {
+    id: number | string;
+    page: number | string;
+    size: number | string;
+  }) =>
+    customAxios.get(`/api/members/${id}/text-reviews`, {
+      params: { page, size },
+    }),
+  getPhotoReviews: ({
+    id,
+    page,
+    size,
+  }: {
+    id: number | string;
+    page: number | string;
+    size: number | string;
+  }) =>
+    customAxios.get(`/api/members/${id}/photo-reviews`, {
+      params: { page, size },
+    }),
   getReviewId: ({ id }: { id: string }) =>
     customAxios.get(`/api/reviews/${id}`),
   getMyPlace: ({ category, sort }: getMyPlaceProps) =>
