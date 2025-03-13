@@ -43,6 +43,8 @@ const Profile: React.FC = () => {
 
   const [photoReviewsPage, setPhotoReviewsPage] = useState(0);
   const [textReviewsPage, setTextReviewsPage] = useState(0);
+  console.log(setPhotoReviewsPage, setTextReviewsPage);
+
   const pageSize = 15;
 
   const { data: memberFeed } = useProfileDetails({ id });
