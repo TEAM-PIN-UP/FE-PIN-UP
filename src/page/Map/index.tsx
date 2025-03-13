@@ -140,7 +140,6 @@ const MapPage: React.FC = () => {
     if (!map) return;
     let timeoutRef: NodeJS.Timeout | null = null;
     const handleIdle = () => {
-      if (isReviewView) return;
       if (timeoutRef) clearTimeout(timeoutRef);
       timeoutRef = setTimeout(() => {
         callbackHandleMapMove();
