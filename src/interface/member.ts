@@ -1,5 +1,3 @@
-import { Review } from "./review";
-
 export interface MemberDetails {
   averageStarRating: number;
   bio: string;
@@ -13,10 +11,9 @@ export interface MemberDetails {
   termsOfMarketing: "Y" | "N";
 }
 
-export interface MemberMyProfileResponse {
+export interface MemberProfileResponse {
   memberResponse: MemberDetails;
   relationType: string;
-  memberReviews: Review[];
 }
 
 export interface MemberPatchBody {

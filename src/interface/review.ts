@@ -9,17 +9,20 @@ export type DateTimeTuple = [
 ];
 
 export interface Review {
-  content: string;
-  createdAt: string;
+  reviewId: number;
   kakaoPlaceId: string;
   placeName: string;
-  reviewId: number;
-  reviewImageUrls: string[];
+  content: string;
   starRating: number;
+  createdAt: string;
   visitedDate: string;
   writerName: string;
   writerTotalReviewCount: number;
   writerProfileImageUrl: string;
+}
+
+export interface PhotoReview extends Review {
+  reviewImageUrls: string[];
 }
 
 export interface ReviewDetail {

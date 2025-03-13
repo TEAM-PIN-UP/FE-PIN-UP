@@ -1,17 +1,17 @@
 import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
-import { Review } from "@/interface/review";
+import { PhotoReview, Review } from "@/interface/review";
 import { H4 } from "@/style/font";
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SwipeableViews from "react-swipeable-views";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import ReviewEmpty from "./ReviewEmpty";
 import ReviewText from "./ReviewText";
 
 interface ReviewHistoryProps {
   index: number;
   onChangeIndex: (arg0: number) => void;
-  photos: Review[];
+  photos: PhotoReview[];
   texts: Review[];
 }
 
@@ -42,7 +42,7 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
   };
 
   return (
-    <StDiv>
+    <StDiv $empty={photos.length === 0}>
       <SwipeableViews
         slideClassName="reviews-container"
         enableMouseEvents
@@ -53,19 +53,21 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
         style={{ width: "100%" }}
       >
         <div className="image-reviews">
-          <div className="image-reviews-content">
-            {photos.length > 0 &&
-              photos.map((item) => (
-                <ImgWithPlaceholder
-                  key={item.reviewId}
-                  src={item.reviewImageUrls[0]}
-                  className="image"
-                  onClick={() => handleClick(item)}
-                  maxWidth="calc(var(--max_width)/3)"
-                />
-              ))}
-            {photos.length === 0 && <ReviewEmpty />}
-          </div>
+          {photos.length !== 0 && (
+            <div className="image-reviews-content">
+              {photos.length > 0 &&
+                photos.map((item) => (
+                  <ImgWithPlaceholder
+                    key={item.reviewId}
+                    src={item.reviewImageUrls[0]}
+                    className="image"
+                    onClick={() => handleClick(item)}
+                    maxWidth="calc((var(--max_width)-2px)/3)"
+                  />
+                ))}
+            </div>
+          )}
+          {photos.length === 0 && <ReviewEmpty />}
         </div>
         <div className="text-reviews">
           {texts.length > 0 &&
@@ -79,7 +81,7 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
   );
 };
 
-const StDiv = styled.div`
+const StDiv = styled.div<{ $empty: boolean }>`
   ${H4}
   display: flex;
   flex: 1 0 auto;
@@ -98,6 +100,14 @@ const StDiv = styled.div`
     height: 100%;
 
     .image-reviews {
+      ${({ $empty }) =>
+        $empty &&
+        css`
+          display: flex;
+          flex-grow: 1;
+        `}
+      max-width: calc(var(--max_width)-2px);
+
       .image-reviews-content {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -107,6 +117,7 @@ const StDiv = styled.div`
         width: 100%;
         overflow-y: auto;
         align-items: start;
+        max-width: calc(var(--max_width)-2px);
 
         .image {
           width: 100%;

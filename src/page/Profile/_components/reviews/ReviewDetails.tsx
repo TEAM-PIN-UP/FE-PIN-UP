@@ -3,7 +3,7 @@ import TransitionWrapper from "@/components/TransitionWrapper";
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import moreDotsGray from "@/image/icons/moreDotsGray.svg";
-import { Review } from "@/interface/review";
+import { PhotoReview } from "@/interface/review";
 import { B6, H3, H4 } from "@/style/font";
 import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
 import { useEffect } from "react";
@@ -15,7 +15,7 @@ export const ReviewDetails: React.FC = () => {
   useCheckLoginAndRoute();
   const navigate = useNavigate();
   const location = useLocation();
-  const detail = location.state.item as Review;
+  const detail = location.state.item as PhotoReview;
   const memberResponse = getMemberResponseObj();
 
   useEffect(() => {

@@ -1,7 +1,9 @@
 import Button from "@/components/Button";
 import Header from "@/components/Header";
 import useFriendRequests from "@/hooks/api/pinBuddy/useFriendRequests";
-import useMyFeed from "@/hooks/api/profile/useMyFeed";
+import usePhotoReviews from "@/hooks/api/profile/usePhotoReviews";
+import useProfileDetails from "@/hooks/api/profile/useProfileDetails";
+import useTextReviews from "@/hooks/api/profile/useTextReviews";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import addUser from "@/image/icons/addUser.svg";
@@ -10,9 +12,9 @@ import notificationActive from "@/image/icons/notificationActive.svg";
 import notificationInactive from "@/image/icons/notificationInactive.svg";
 import settings from "@/image/icons/settings.svg";
 import share from "@/image/icons/share.svg";
-import { Review } from "@/interface/review";
 import { B3, B4, H1, H2, H3, H4 } from "@/style/font";
 import checkLogin from "@/utils/checkLogin";
+import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
 import useToastPopup from "@/utils/toastPopup";
 import { useEffect, useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
@@ -26,6 +28,8 @@ const Profile: React.FC = () => {
   const navigate = useNavigate();
   const toast = useToastPopup();
   useCheckLoginAndRoute();
+  const memberDetails = getMemberResponseObj();
+  const id = memberDetails?.memberId;
 
   // Bottom sheet logic
   const sheetRef = useRef<SheetRef>();
@@ -37,24 +41,24 @@ const Profile: React.FC = () => {
     setLeft(newLeft);
   };
 
-  const { data: myFeed } = useMyFeed();
+  const [photoReviewsPage, setPhotoReviewsPage] = useState(0);
+  const [textReviewsPage, setTextReviewsPage] = useState(0);
+  console.log(setPhotoReviewsPage, setTextReviewsPage);
+
+  const pageSize = 15;
+
+  const { data: memberFeed } = useProfileDetails({ id });
+  const { data: photoReviews } = usePhotoReviews({
+    id,
+    page: photoReviewsPage,
+    size: pageSize,
+  });
+  const { data: textReviews } = useTextReviews({
+    id,
+    page: textReviewsPage,
+    size: pageSize,
+  });
   const { data: newFriendRequests } = useFriendRequests();
-  const [photos, setPhotos] = useState<Review[] | null>(null);
-  const [texts, setTexts] = useState<Review[] | null>(null);
-
-  useEffect(() => {
-    if (!myFeed?.memberReviews) return;
-    const p: Review[] = [];
-    const t: Review[] = [];
-
-    myFeed.memberReviews.forEach((review: Review) => {
-      if (review.reviewImageUrls.length > 0) p.unshift(review);
-      else t.unshift(review);
-    });
-
-    setPhotos(p);
-    setTexts(t);
-  }, [myFeed]);
 
   useEffect(() => {
     // Update bottom sheet alignment on window resize
@@ -117,8 +121,8 @@ const Profile: React.FC = () => {
           <div className="profile">
             <img
               src={
-                myFeed?.memberResponse.profilePictureUrl
-                  ? myFeed.memberResponse.profilePictureUrl
+                memberFeed?.memberResponse.profilePictureUrl
+                  ? memberFeed.memberResponse.profilePictureUrl
                   : defaultProfile
               }
               className="profile-image"
@@ -126,14 +130,17 @@ const Profile: React.FC = () => {
             <UserStatsSection
               stats={
                 [
-                  { label: "리뷰", value: myFeed?.memberResponse.reviewCount },
+                  {
+                    label: "리뷰",
+                    value: memberFeed?.memberResponse.reviewCount,
+                  },
                   {
                     label: "평균 평점",
-                    value: myFeed?.memberResponse.averageStarRating,
+                    value: memberFeed?.memberResponse.averageStarRating,
                   },
                   {
                     label: "핀버디",
-                    value: myFeed?.memberResponse.pinBuddyCount,
+                    value: memberFeed?.memberResponse.pinBuddyCount,
                     onClick: () => {
                       navigate("/profile/pinbuddylist", {
                         state: { newFriendRequests },
@@ -144,8 +151,8 @@ const Profile: React.FC = () => {
               }
             />
           </div>
-          <div className="username">{myFeed?.memberResponse.nickname}</div>
-          <div className="intro">{myFeed?.memberResponse.bio}</div>
+          <div className="username">{memberFeed?.memberResponse.nickname}</div>
+          <div className="intro">{memberFeed?.memberResponse.bio}</div>
 
           <div className="profile-buttons">
             <ProfileButton
@@ -165,13 +172,13 @@ const Profile: React.FC = () => {
               className={`review-filter ${index === 0 ? "active" : ""}`}
               onClick={() => setIndex(0)}
             >
-              포토 리뷰 {photos?.length}
+              포토 리뷰 {photoReviews?.length}
             </button>
             <button
               className={`review-filter ${index === 1 ? "active" : ""}`}
               onClick={() => setIndex(1)}
             >
-              텍스트 리뷰 {texts?.length}
+              텍스트 리뷰 {textReviews?.length}
             </button>
           </div>
         </div>
@@ -179,8 +186,8 @@ const Profile: React.FC = () => {
           <ReviewHistory
             index={index}
             onChangeIndex={(i) => setIndex(i)}
-            photos={photos ? photos : []}
-            texts={texts ? texts : []}
+            photos={photoReviews ? photoReviews : []}
+            texts={textReviews ? textReviews : []}
           />
         </div>
 
@@ -200,26 +207,26 @@ const Profile: React.FC = () => {
               {!showLogin && (
                 <div className="profile-share">
                   <img
-                    src={myFeed?.memberResponse.profilePictureUrl}
+                    src={memberFeed?.memberResponse.profilePictureUrl}
                     className="profile-image"
                   />
                   <span className="username">
-                    {myFeed?.memberResponse.nickname}
+                    {memberFeed?.memberResponse.nickname}
                   </span>
                   <UserStatsSection
                     stats={
                       [
                         {
                           label: "리뷰",
-                          value: myFeed?.memberResponse.reviewCount,
+                          value: memberFeed?.memberResponse.reviewCount,
                         },
                         {
                           label: "평균 평점",
-                          value: myFeed?.memberResponse.averageStarRating,
+                          value: memberFeed?.memberResponse.averageStarRating,
                         },
                         {
                           label: "핀버디",
-                          value: myFeed?.memberResponse.pinBuddyCount,
+                          value: memberFeed?.memberResponse.pinBuddyCount,
                         },
                       ] as Stat[]
                     }
