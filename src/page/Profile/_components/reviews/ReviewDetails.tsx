@@ -66,6 +66,7 @@ export const ReviewDetails: React.FC = () => {
 const StDiv = styled.div`
   width: 100%;
   height: 100%;
+  overflow-x: hidden;
 
   .back-button {
     cursor: pointer;

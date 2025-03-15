@@ -1,9 +1,5 @@
 import useGetPlaces from "@/hooks/api/place/useGetPlaces";
-import {
-  GetPlaceResponse,
-  placeCategory,
-  placeSort,
-} from "@/interface/apiInterface";
+import { GetPlaceResponse, placeCategory, placeSort } from "@/interface/place";
 import { useEffect, useState } from "react";
 
 interface MapBounds {
@@ -54,7 +50,7 @@ const useUpdatePlaces = ({
     }
   }, [placesData, isError, setPlaces]);
 
-  const handleMapMove = (
+  const getPlacesInView = (
     bounds: naver.maps.Bounds | undefined,
     position: GeolocationPosition | null
   ) => {
@@ -62,7 +58,7 @@ const useUpdatePlaces = ({
     setMapBounds({ bounds, position });
   };
 
-  return { handleMapMove };
+  return { getPlacesInView };
 };
 
 export default useUpdatePlaces;

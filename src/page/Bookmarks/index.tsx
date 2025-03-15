@@ -1,19 +1,25 @@
-import useGetMyPlace from "@/hooks/api/myPlace/useGetMyPlace";
+import useGetBookmarks from "@/hooks/api/myPlace/useGetMyPlace";
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
-import { placeCategory, placeSort } from "@/interface/apiInterface";
+import { placeCategory, placeSort } from "@/interface/place";
+import { getLastKnownPositionObj } from "@/utils/getFromLocalStorage";
 import { useState } from "react";
 import styled from "styled-components";
 import FilterHead from "./_components/FilterHead";
 import MyPlaceHeader from "./_components/Header";
 import RestaurantBoxForm from "./_components/RestaurantBoxForm";
 
-const MyPlacePage = () => {
+const BookmarkPage: React.FC = () => {
   useCheckLoginAndRoute();
 
   const [category, setCategory] = useState<placeCategory>("CAFE");
   const [sort, setSort] = useState<placeSort>("NEAR");
-  const { data } = useGetMyPlace({ sort, category });
-
+  const pos = getLastKnownPositionObj();
+  const { data } = useGetBookmarks({
+    sort,
+    category,
+    currentLatitude: pos.coords.latitude,
+    currentLongitude: pos.coords.longitude,
+  });
   return (
     <StMyPlacePage>
       <MyPlaceHeader />
@@ -49,4 +55,4 @@ const StCardGrid = styled.div`
   gap: 1rem;
 `;
 
-export default MyPlacePage;
+export default BookmarkPage;

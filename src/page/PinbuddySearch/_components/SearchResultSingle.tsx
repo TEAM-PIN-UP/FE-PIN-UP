@@ -1,8 +1,6 @@
 import usePostFriendRequest from "@/hooks/api/pinBuddy/usePostFriendRequest";
-import {
-  GetPinBuddySearchResponse,
-  relationType,
-} from "@/interface/apiInterface";
+import { GetPinBuddySearchResponse } from "@/interface/member";
+import { relationType } from "@/interface/place";
 import { B3, B5, H6 } from "@/style/font";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
