@@ -1,4 +1,5 @@
-import { Review } from "./review";
+import { PhotoReview } from "./review";
+
 export type placeCategory = "ALL" | "RESTAURANT" | "CAFE";
 export type placeSort = "NEAR" | "LATEST" | "STAR_HIGH" | "STAR_LOW";
 export type relationType = "SELF" | "FRIEND" | "PENDING" | "STRANGER";
@@ -80,7 +81,7 @@ export interface GetSpecificPlaceResponse {
     bookmark: boolean;
   };
   ratingGraph: Map<string, number>;
-  reviews: Review[];
+  reviews: PhotoReview[];
 }
 
 export interface PlaceRequestType {

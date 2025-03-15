@@ -1,13 +1,13 @@
 import Pin from "@/image/icons/pinSelected.svg";
 import RoundCafe from "@/image/icons/roundCafe.svg";
 import RoundFood from "@/image/icons/roundFood.svg";
-import { PlaceCategory } from "@/interface/place";
+import { placeCategory } from "@/interface/place";
 import { forwardRef } from "react";
 import { Marker, MarkerProps } from "react-naver-maps";
 
 interface PinMarkerProps extends MarkerProps {
   active: boolean;
-  type: PlaceCategory;
+  type: placeCategory;
   name: string;
   image?: string;
   count?: string;
