@@ -36,11 +36,13 @@ const StRestaurantBoxForm = styled.div`
   flex-direction: column;
   gap: 8px;
   width: 100%;
+
   .restaurantImg {
     position: relative;
     width: 100%;
     aspect-ratio: 1/1;
     background-color: var(--neutral_100);
+    background-size: cover;
     border-radius: 8px;
     .mark {
       position: absolute;
@@ -48,6 +50,7 @@ const StRestaurantBoxForm = styled.div`
       right: 16.6px;
     }
   }
+
   .restaurantInfo {
     display: flex;
     flex-direction: column;

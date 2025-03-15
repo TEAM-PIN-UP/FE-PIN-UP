@@ -1,13 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import App from "@/App";
+import MyPlace from "@/page/Bookmarks";
 import ContentsPage from "@/page/Contents";
 import EditorArticlePage from "@/page/EditorArticle";
 import EditorPostPage from "@/page/EditorArticle/EditorPost";
 import LandingPage from "@/page/Landing";
 import MapPage from "@/page/Map";
-import MyPlace from "@/page/MyPlace";
 import OtherProfile from "@/page/OtherProfile";
+import PinbuddyList from "@/page/PinbuddyList";
 import PinbuddySearch from "@/page/PinbuddySearch";
 import PinBuddyLayout from "@/page/PinbuddySearch/Layout";
 import ProfilePage from "@/page/Profile";
@@ -18,7 +19,6 @@ import { ReviewDetails } from "@/page/Profile/_components/reviews/ReviewDetails"
 import ReviewPage from "@/page/Review";
 import SignUpPage from "@/page/SignUp";
 import NaverAuthCallback from "@/page/SignUp/_components/auth/NaverAuthCallback";
-import PinbuddyList from "@/page/PinbuddyList";
 
 const router = createBrowserRouter([
   {
