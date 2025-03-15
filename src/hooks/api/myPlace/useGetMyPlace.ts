@@ -6,17 +6,18 @@ import {
 } from "@/interface/place";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
-export interface getMyPlaceProps {
+export interface GetMyPlaceProps {
   sort: placeSort;
   category: placeCategory;
+  currentLatitude: number | string;
+  currentLongitude: number | string;
 }
 
-const useGetMyPlace = ({
-  sort,
-  category,
-}: getMyPlaceProps): UseQueryResult<GetMyPlaceResponse[]> => {
+const useGetBookmarks = (
+  params: GetMyPlaceProps
+): UseQueryResult<GetMyPlaceResponse[]> => {
   const queryFn = async () => {
-    const response = await getApi.getMyPlace({ sort, category });
+    const response = await getApi.getBookmarks(params);
     return response.data;
   };
   return useQuery({
@@ -27,4 +28,4 @@ const useGetMyPlace = ({
   });
 };
 
-export default useGetMyPlace;
+export default useGetBookmarks;
