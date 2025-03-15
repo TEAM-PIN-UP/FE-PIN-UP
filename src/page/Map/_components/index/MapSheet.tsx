@@ -1,10 +1,6 @@
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import noReviews from "@/image/icons/receiptLines.svg";
-import {
-  GetPlaceResponse,
-  placeCategory,
-  placeSort,
-} from "@/interface/apiInterface";
+import { GetPlaceResponse, placeCategory, placeSort } from "@/interface/place";
 import { H3 } from "@/style/font";
 import { getLastKnownPositionObj } from "@/utils/getFromLocalStorage";
 import { useEffect, useRef, useState } from "react";

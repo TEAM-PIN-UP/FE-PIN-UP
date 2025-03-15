@@ -1,5 +1,5 @@
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
-import { GetSearchPlacesResponse } from "@/interface/apiInterface";
+import { GetSearchPlacesResponse } from "@/interface/place";
 import { useState } from "react";
 import styled from "styled-components";
 import DatePick from "./_components/DatePick/DatePick";

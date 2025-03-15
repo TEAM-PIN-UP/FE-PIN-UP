@@ -4,11 +4,7 @@ import useUpdatePlaces from "@/hooks/api/place/useUpdatePlaces";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import useMapSetup from "@/hooks/useMapSetup";
-import {
-  GetPlaceResponse,
-  placeCategory,
-  placeSort,
-} from "@/interface/apiInterface";
+import { GetPlaceResponse, placeCategory, placeSort } from "@/interface/place";
 import { getLastKnownPositionObj } from "@/utils/getFromLocalStorage";
 import useToastPopup from "@/utils/toastPopup";
 import { useCallback, useEffect, useState } from "react";

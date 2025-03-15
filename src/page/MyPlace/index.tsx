@@ -1,6 +1,6 @@
 import useGetMyPlace from "@/hooks/api/myPlace/useGetMyPlace";
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
-import { placeCategory, placeSort } from "@/interface/apiInterface";
+import { placeCategory, placeSort } from "@/interface/place";
 import { useState } from "react";
 import styled from "styled-components";
 import FilterHead from "./_components/FilterHead";

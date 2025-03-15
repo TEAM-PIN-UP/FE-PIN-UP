@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import foodPin from "@/image/icons/food.svg";
-import cafePin from "@/image/icons/coffee.svg";
 import bookmarkActive from "@/image/icons/bookmarkActive.svg";
-import { GetMyPlaceResponse, placeCategory } from "@/interface/apiInterface";
+import cafePin from "@/image/icons/coffee.svg";
+import foodPin from "@/image/icons/food.svg";
+import { GetMyPlaceResponse, placeCategory } from "@/interface/place";
 import { B5, H4 } from "@/style/font";
+import styled from "styled-components";
 
 interface Props {
   sort: placeCategory;

@@ -1,4 +1,4 @@
-import { GetSearchPlacesResponse } from "@/interface/apiInterface";
+import { GetSearchPlacesResponse } from "@/interface/place";
 import { H4 } from "@/style/font";
 import styled from "styled-components";
 import SearchedPlace from "./SearchedPlace";
