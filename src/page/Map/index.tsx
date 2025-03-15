@@ -66,8 +66,6 @@ const MapPage: React.FC = () => {
     getPlacesInView(map?.getBounds(), getLastKnownPositionObj());
   }, [map, getPlacesInView]);
 
-  //
-
   // Move map to place when kakaoPlaceId is present
   useEffect(() => {
     if (!kakaoPlaceId || !placeData || !map) return;
