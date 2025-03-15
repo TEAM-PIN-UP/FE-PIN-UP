@@ -6,14 +6,14 @@ export type relationType = "SELF" | "FRIEND" | "PENDING" | "STRANGER";
 // Get places
 export interface GetPlaceParams {
   query?: string;
-  category: placeCategory;
-  sort: placeSort;
-  swLatitude: string;
-  swLongitude: string;
-  neLatitude: string;
-  neLongitude: string;
-  currentLatitude: string;
-  currentLongitude: string;
+  category?: placeCategory;
+  sort?: placeSort;
+  swLatitude: string | number;
+  swLongitude: string | number;
+  neLatitude: string | number;
+  neLongitude: string | number;
+  currentLatitude?: string | number;
+  currentLongitude?: string | number;
 }
 export interface GetPlaceResponse {
   placeId: number;

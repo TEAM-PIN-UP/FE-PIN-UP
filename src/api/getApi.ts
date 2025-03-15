@@ -20,9 +20,12 @@ const getApi = {
   getPlace: (params: GetPlaceParams) => {
     const queryParams = new URLSearchParams(
       Object.entries(params)
-        .filter(([value]) => value !== undefined && value !== null) // Remove undefined & null
+        .filter(
+          ([, value]) => value !== undefined && value !== null && value !== "" // Remove empty values
+        )
         .map(([key, value]) => [key, String(value)]) // Convert to string
     ).toString();
+
     return customAxios.get(`/api/places?${queryParams}`);
   },
   getSearchPlaces: ({ keyword }: GetSearchPlacesRequest) =>

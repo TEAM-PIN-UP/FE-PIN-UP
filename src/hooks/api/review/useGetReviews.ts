@@ -3,7 +3,6 @@ import { PhotoReview, Review } from "@/interface/review";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 export interface GetReviewsParams {
-  type: "TEXT" | "PHOTO";
   id: string | number | undefined;
   page: string | number;
   size: string | number;

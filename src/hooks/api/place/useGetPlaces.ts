@@ -10,9 +10,12 @@ const useGetPlaces = (
     return response.data;
   };
 
-  const isValid = Object.values(params).every(
-    (val) => val !== undefined && val !== null
-  );
+  const isValid = [
+    params.swLatitude,
+    params.swLongitude,
+    params.neLatitude,
+    params.neLongitude,
+  ].every((val) => val !== undefined && val !== null && val !== "");
 
   return useQuery({
     queryFn,
