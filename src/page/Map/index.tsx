@@ -56,15 +56,17 @@ const MapPage: React.FC = () => {
     setBookmark,
   });
 
-  const { handleMapMove } = useUpdatePlaces({
+  const { getPlacesInView } = useUpdatePlaces({
     query: dataQuery,
     category,
     sort,
     setPlaces,
   });
-  const callbackHandleMapMove = useCallback(() => {
-    handleMapMove(map?.getBounds(), getLastKnownPositionObj());
-  }, [map, handleMapMove]);
+  const callbackGetPlacesInView = useCallback(() => {
+    getPlacesInView(map?.getBounds(), getLastKnownPositionObj());
+  }, [map, getPlacesInView]);
+
+  //
 
   // Move map to place when kakaoPlaceId is present
   useEffect(() => {
@@ -82,9 +84,9 @@ const MapPage: React.FC = () => {
     ) {
       return; // Avoid unnecessary updates
     }
-
     map.setCenter(newCenter);
-  }, [kakaoPlaceId, placeData, map, naverMaps.LatLng]);
+    callbackGetPlacesInView();
+  }, [kakaoPlaceId, placeData, map, naverMaps.LatLng, callbackGetPlacesInView]);
 
   useEffect(() => {
     if (kakaoPlaceId) {
@@ -108,7 +110,7 @@ const MapPage: React.FC = () => {
     const handleIdle = () => {
       if (timeoutRef) clearTimeout(timeoutRef);
       timeoutRef = setTimeout(() => {
-        callbackHandleMapMove();
+        callbackGetPlacesInView();
       }, 500);
     };
     const idleListener = naver.maps.Event.addListener(map, "idle", handleIdle);
@@ -116,7 +118,7 @@ const MapPage: React.FC = () => {
       if (timeoutRef) clearTimeout(timeoutRef);
       naver.maps.Event.removeListener(idleListener);
     };
-  }, [isReviewView, map, callbackHandleMapMove]);
+  }, [isReviewView, map, callbackGetPlacesInView]);
 
   const handleMoveToCurrent = () => {
     setKakaoPlaceId(null);
