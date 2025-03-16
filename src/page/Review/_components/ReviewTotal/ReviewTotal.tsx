@@ -1,10 +1,7 @@
 import Button from "@/components/Button";
 import useCreateReview from "@/hooks/api/review/usePostCreateReview";
-import {
-  GetSearchPlacesResponse,
-  PlaceRequestType,
-  ReviewRequestType,
-} from "@/interface/apiInterface";
+import { GetSearchPlacesResponse, PlaceRequestType } from "@/interface/place";
+import { ReviewRequestType } from "@/interface/review";
 import useModalPopup from "@/utils/modalPopup";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";

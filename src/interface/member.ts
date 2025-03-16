@@ -1,3 +1,5 @@
+import { relationType } from "./place";
+
 export interface MemberDetails {
   averageStarRating: number;
   bio: string;
@@ -29,4 +31,12 @@ export interface ReceivedFriendRequestResponse {
   friendRequestStatus: string;
   sender: MemberDetails;
   receiver: MemberDetails;
+}
+
+// Search member
+export interface GetPinBuddySearchResponse {
+  memberResponse: MemberDetails;
+  relationType: relationType;
+  reviewCount: number;
+  pinBuddyCount: number;
 }

@@ -8,7 +8,7 @@ import coffee from "@/image/icons/coffee.svg";
 import coffeeWhite from "@/image/icons/coffeeWhite.svg";
 import food from "@/image/icons/food.svg";
 import foodWhite from "@/image/icons/foodWhite.svg";
-import { placeCategory, placeSort } from "@/interface/apiInterface";
+import { placeCategory, placeSort } from "@/interface/place";
 import { B4, H6 } from "@/style/font";
 
 interface SearchHeaderProps {

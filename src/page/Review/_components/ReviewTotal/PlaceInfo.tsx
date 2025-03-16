@@ -1,5 +1,5 @@
 import star from "@/image/icons/star.svg";
-import { GetSearchPlacesResponse } from "@/interface/apiInterface";
+import { GetSearchPlacesResponse } from "@/interface/place";
 import { B4, H2, H4 } from "@/style/font";
 import styled from "styled-components";
 

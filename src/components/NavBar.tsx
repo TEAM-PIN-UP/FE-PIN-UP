@@ -25,7 +25,7 @@ const NavBar: React.FC = () => {
     <StNavBar $path={location.pathname.split("/")[1]}>
       <NavBarIcon path="map" active={mapPinActive} inActive={mapPinInactive} />
       <NavBarIcon
-        path="bookmark"
+        path="bookmarks"
         active={bookMarkActive}
         inActive={bookMarkInactive}
       />

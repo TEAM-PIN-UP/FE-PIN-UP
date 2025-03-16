@@ -1,5 +1,5 @@
 import getApi from "@/api/getApi";
-import { GetPinBuddySearchResponse } from "@/interface/apiInterface";
+import { GetPinBuddySearchResponse } from "@/interface/member";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 interface UseFriendSearchProps {

@@ -1,9 +1,10 @@
-import { getMyPlaceProps } from "@/hooks/api/myPlace/useGetMyPlace";
+import { GetMyPlaceProps } from "@/hooks/api/myPlace/useGetMyPlace";
+import { GetReviewsParams } from "@/hooks/api/review/useGetReviews";
 import {
   GetPlaceParams,
   GetSearchPlacesRequest,
   GetSpecificPlaceRequest,
-} from "@/interface/apiInterface";
+} from "@/interface/place";
 import customAxios from "./Interceptor";
 
 const getApi = {
@@ -13,57 +14,44 @@ const getApi = {
     currentLatitude,
     currentLongitude,
   }: GetSpecificPlaceRequest) =>
-    customAxios.get(
-      `/api/places/${kakaoPlaceId}?currentLatitude=${currentLatitude}&currentLongitude=${currentLongitude}`
-    ),
+    customAxios.get(`/api/places/${kakaoPlaceId}`, {
+      params: { currentLatitude, currentLongitude },
+    }),
   getPlace: (params: GetPlaceParams) => {
     const queryParams = new URLSearchParams(
       Object.entries(params)
-        .filter(([value]) => value !== undefined && value !== null) // Remove undefined & null
+        .filter(
+          ([, value]) => value !== undefined && value !== null && value !== "" // Remove empty values
+        )
         .map(([key, value]) => [key, String(value)]) // Convert to string
     ).toString();
+
     return customAxios.get(`/api/places?${queryParams}`);
   },
   getSearchPlaces: ({ keyword }: GetSearchPlacesRequest) =>
-    customAxios.get(`/api/places/keyword?query=${keyword}`),
+    customAxios.get(`/api/places/keyword`, { params: { query: keyword } }),
 
   // Signup
   getMemberNicknameCheck: ({ nickname }: { nickname: string }) =>
-    customAxios.get(`/api/members/nickname/check?nickname=${nickname}`),
+    customAxios.get(`/api/members/nickname/check`, { params: { nickname } }),
 
   // Member Feed
   getMemberDetails: ({ id }: { id: number }) =>
     customAxios.get(`/api/members/${id}`),
-  getTextReviews: ({
-    id,
-    page,
-    size,
-  }: {
-    id: number | string;
-    page: number | string;
-    size: number | string;
-  }) =>
-    customAxios.get(`/api/members/${id}/text-reviews`, {
-      params: { page, size },
+  getTextReviews: (params: GetReviewsParams) =>
+    customAxios.get(`/api/members/${params.id}/text-reviews`, {
+      params: { page: params.page, size: params.size },
     }),
-  getPhotoReviews: ({
-    id,
-    page,
-    size,
-  }: {
-    id: number | string;
-    page: number | string;
-    size: number | string;
-  }) =>
-    customAxios.get(`/api/members/${id}/photo-reviews`, {
-      params: { page, size },
+  getPhotoReviews: (params: GetReviewsParams) =>
+    customAxios.get(`/api/members/${params.id}/photo-reviews`, {
+      params: { page: params.page, size: params.size },
     }),
   getReviewId: ({ id }: { id: string }) =>
     customAxios.get(`/api/reviews/${id}`),
-  getMyPlace: ({ category, sort }: getMyPlaceProps) =>
-    customAxios.get(`/api/bookmarks/my?category=${category}&sort=${sort}`),
+  getBookmarks: (params: GetMyPlaceProps) =>
+    customAxios.get(`/api/bookmarks`, { params }),
   getSearchMember: ({ nickname }: { nickname: string }) =>
-    customAxios.get(`/api/members/search?nickname=${nickname}`),
+    customAxios.get(`/api/members/search`, { params: { nickname } }),
   getFriendShips: () => customAxios.get(`/api/friendships`),
   getReceivedFriendRequests: () =>
     customAxios.get(`/api/friend-requests/received`),

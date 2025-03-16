@@ -1,8 +1,8 @@
+import search from "@/image/icons/search.svg";
+import { GetPinBuddySearchResponse } from "@/interface/member";
+import { B3, H3, H4 } from "@/style/font";
 import styled from "styled-components";
 import SearchResultSingle from "./SearchResultSingle";
-import { B3, H3, H4 } from "@/style/font";
-import search from "@/image/icons/search.svg";
-import { GetPinBuddySearchResponse } from "@/interface/apiInterface";
 
 interface PinBuddySearchProps {
   data: GetPinBuddySearchResponse[];

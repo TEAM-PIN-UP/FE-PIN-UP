@@ -1,9 +1,11 @@
 import Button from "@/components/Button";
 import Header from "@/components/Header";
 import useFriendRequests from "@/hooks/api/pinBuddy/useFriendRequests";
-import usePhotoReviews from "@/hooks/api/profile/usePhotoReviews";
 import useProfileDetails from "@/hooks/api/profile/useProfileDetails";
-import useTextReviews from "@/hooks/api/profile/useTextReviews";
+import {
+  useGetPhotoReviews,
+  useGetTextReviews,
+} from "@/hooks/api/review/useGetReviews";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import addUser from "@/image/icons/addUser.svg";
@@ -40,26 +42,6 @@ const Profile: React.FC = () => {
     const newLeft = window.innerWidth > 440 ? (window.innerWidth - 440) / 2 : 0;
     setLeft(newLeft);
   };
-
-  const [photoReviewsPage, setPhotoReviewsPage] = useState(0);
-  const [textReviewsPage, setTextReviewsPage] = useState(0);
-  console.log(setPhotoReviewsPage, setTextReviewsPage);
-
-  const pageSize = 15;
-
-  const { data: memberFeed } = useProfileDetails({ id });
-  const { data: photoReviews } = usePhotoReviews({
-    id,
-    page: photoReviewsPage,
-    size: pageSize,
-  });
-  const { data: textReviews } = useTextReviews({
-    id,
-    page: textReviewsPage,
-    size: pageSize,
-  });
-  const { data: newFriendRequests } = useFriendRequests();
-
   useEffect(() => {
     // Update bottom sheet alignment on window resize
     updateLeftPosition();
@@ -68,6 +50,25 @@ const Profile: React.FC = () => {
       window.removeEventListener("resize", updateLeftPosition);
     };
   }, []);
+
+  const [photoReviewsPage, setPhotoReviewsPage] = useState(0);
+  const [textReviewsPage, setTextReviewsPage] = useState(0);
+  console.log(setPhotoReviewsPage, setTextReviewsPage);
+
+  const pageSize = 15;
+
+  const { data: memberFeed } = useProfileDetails({ id });
+  const { data: photoReviews } = useGetPhotoReviews({
+    id,
+    page: photoReviewsPage,
+    size: pageSize,
+  });
+  const { data: textReviews } = useGetTextReviews({
+    id,
+    page: textReviewsPage,
+    size: pageSize,
+  });
+  const { data: newFriendRequests } = useFriendRequests();
 
   // Review history swiper view state
   const [index, setIndex] = useState(0);

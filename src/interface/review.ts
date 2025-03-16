@@ -1,13 +1,4 @@
-export type DateTimeTuple = [
-  /* year */ number,
-  /* month */ number,
-  /* day */ number,
-  /* hour */ number,
-  /* minute */ number,
-  /* second */ number,
-  /* timestamp */ number
-];
-
+// Review
 export interface Review {
   reviewId: number;
   kakaoPlaceId: string;
@@ -25,11 +16,9 @@ export interface PhotoReview extends Review {
   reviewImageUrls: string[];
 }
 
-export interface ReviewDetail {
-  id: number;
+// Writing reviews
+export interface ReviewRequestType {
   content: string;
   starRating: number;
-  type: string;
-  imageUrls: string[];
-  createdAt: DateTimeTuple;
+  visitedDate: string;
 }

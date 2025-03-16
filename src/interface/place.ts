@@ -1,19 +1,22 @@
-import { placeCategory, placeSort } from "./apiInterface";
+import { PhotoReview } from "./review";
 
-export interface PlaceParams {
+export type placeCategory = "ALL" | "RESTAURANT" | "CAFE";
+export type placeSort = "NEAR" | "LATEST" | "STAR_HIGH" | "STAR_LOW";
+export type relationType = "SELF" | "FRIEND" | "PENDING" | "STRANGER";
+
+// Get places
+export interface GetPlaceParams {
+  query?: string;
   category?: placeCategory;
   sort?: placeSort;
-  swLatitude: string;
-  swLongitude: string;
-  neLatitude: string;
-  neLongitude: string;
-  currentLatitude: string;
-  currentLongitude: string;
+  swLatitude: string | number;
+  swLongitude: string | number;
+  neLatitude: string | number;
+  neLongitude: string | number;
+  currentLatitude?: string | number;
+  currentLongitude?: string | number;
 }
-
-export type PlaceCategory = "ALL" | "CAFE" | "RESTAURANT";
-
-export interface PlaceResponse {
+export interface GetPlaceResponse {
   placeId: number;
   kakaoPlaceId: string;
   name: string;
@@ -22,31 +25,71 @@ export interface PlaceResponse {
   distance: string;
   latitude: number;
   longitude: number;
-  placeCategory: PlaceCategory;
+  placeCategory: placeCategory;
   reviewImageUrls: string[];
   reviewerProfileImageUrls: string[];
 }
 
-// Place details
+// Search places
+export interface GetSearchPlacesRequest {
+  keyword: string;
+}
+export interface GetSearchPlacesResponse {
+  kakaoPlaceId: string;
+  name: string;
+  placeCategory: string;
+  address: string;
+  roadAddress: string;
+  latitude: number;
+  longitude: number;
+  reviewCount: number;
+  averageStarRating: number;
+}
 
-export interface PlaceDetailsParams {
+// My places
+export interface GetMyPlaceResponse {
+  id: number;
+  placeId: number;
+  placeName: string;
+  placeAddress: string;
+  placeRoadAddress: string;
+  placeFirstReviewImageUrl: string;
+  placeLatitude: number;
+  placeLongitude: number;
+  placeStatus: string;
+  placeCategory: placeCategory;
   kakaoPlaceId: string;
 }
 
-// Place keyword
-
-export interface PlaceKeywordParams {
-  query: string;
+// Specific places
+export interface GetSpecificPlaceRequest {
+  kakaoPlaceId: string;
+  currentLatitude: number | undefined;
+  currentLongitude: number | undefined;
+}
+export interface GetSpecificPlaceResponse {
+  mapPlaceResponse: {
+    name: string;
+    reviewCount: number;
+    averageStarRating: number;
+    distance: string;
+    latitude: number;
+    longitude: number;
+    placeCategory: placeCategory;
+    reviewImageUrls: string[];
+    reviewerProfileImageUrls: string[];
+    bookmark: boolean;
+  };
+  ratingGraph: Map<string, number>;
+  reviews: PhotoReview[];
 }
 
-export interface PlaceKeywordResponse {
-  kakaoMapId: string;
+export interface PlaceRequestType {
+  kakaoPlaceId: string;
   name: string;
   category: string;
   address: string;
   roadAddress: string;
-  latitude: string;
-  longitude: string;
-  reviewCount: number;
-  averageStarRating: number;
+  latitude: number;
+  longitude: number;
 }

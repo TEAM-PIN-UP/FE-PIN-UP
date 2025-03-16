@@ -43,12 +43,10 @@ const Review: React.FC<ReviewProps> = ({
           key={kakaoPlaceId}
           name={data?.mapPlaceResponse.name}
           averageStarRating={data.mapPlaceResponse.averageStarRating}
-          reviewImageUrls={data.mapPlaceResponse.reviewImageUrls
-            .slice()
-            .reverse()}
-          reviewerProfileImageUrls={data.mapPlaceResponse.reviewerProfileImageUrls
-            .slice()
-            .reverse()}
+          reviewImageUrls={data.mapPlaceResponse.reviewImageUrls}
+          reviewerProfileImageUrls={
+            data.mapPlaceResponse.reviewerProfileImageUrls
+          }
           reviewCount={data.mapPlaceResponse.reviewCount}
           distance={data.mapPlaceResponse.distance}
         />
@@ -81,7 +79,9 @@ const Review: React.FC<ReviewProps> = ({
                       content={value.content}
                       reviewId={value.reviewId}
                       writerTotalReviewCount={value.writerTotalReviewCount}
-                      reviewImageUrls={value.reviewImageUrls}
+                      kakaoPlaceId={value.kakaoPlaceId}
+                      placeName={value.placeName}
+                      createdAt={value.createdAt}
                     />
                     {index + 1 !== data?.mapPlaceResponse.reviewCount && (
                       <div className="midLine" />

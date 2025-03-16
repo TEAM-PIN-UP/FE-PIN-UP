@@ -1,5 +1,5 @@
 import useGetSearchPlaces from "@/hooks/api/review/useGetSearchPlaces";
-import { GetSearchPlacesResponse } from "@/interface/apiInterface";
+import { GetSearchPlacesResponse } from "@/interface/place";
 import { useState } from "react";
 import styled from "styled-components";
 import ReviewSearchBar from "./ReviewSearchBar";
