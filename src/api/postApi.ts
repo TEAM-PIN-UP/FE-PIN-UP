@@ -7,7 +7,7 @@ const postApi = {
         "Content-Type": "multipart/form-data",
       },
     }),
-  postFriendRequest: ({ receiverId }: { receiverId: number }) =>
+  postSendFriendRequest: ({ receiverId }: { receiverId: number }) =>
     customAxios.post(`/api/friend-requests/send`, {
       receiverId: receiverId,
     }),

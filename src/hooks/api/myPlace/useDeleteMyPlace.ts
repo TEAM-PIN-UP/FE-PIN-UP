@@ -5,7 +5,7 @@ const useDeleteMyPlace = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ kakaoPlaceId }: { kakaoPlaceId: number }) =>
-      deleteApi.deleteMyPlace({ kakaoPlaceId }),
+      deleteApi.myPlace({ kakaoPlaceId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["myplace"] });
     },

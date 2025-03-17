@@ -26,7 +26,7 @@ export interface MemberPatchBody {
   multipartFile: Blob; // Convert base64 jpeg/png image to blob
 }
 
-export interface ReceivedFriendRequestResponse {
+export interface FriendRequestResponse {
   id: number;
   friendRequestStatus: string;
   sender: MemberDetails;

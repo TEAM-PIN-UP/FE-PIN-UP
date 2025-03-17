@@ -1,4 +1,4 @@
-import usePostFriendRequest from "@/hooks/api/pinBuddy/usePostFriendRequest";
+import usePostFriendRequests from "@/hooks/api/pinBuddy/usePostFriendRequest";
 import { GetPinBuddySearchResponse } from "@/interface/member";
 import { relationType } from "@/interface/place";
 import { B3, B5, H6 } from "@/style/font";
@@ -10,7 +10,7 @@ interface PinBuddySingleProps {
 }
 
 const SearchResultSingle: React.FC<PinBuddySingleProps> = ({ data }) => {
-  const friendRequest = usePostFriendRequest();
+  const friendRequest = usePostFriendRequests();
   const [currentState, setCurrentState] = useState<string>("");
 
   useEffect(() => {
