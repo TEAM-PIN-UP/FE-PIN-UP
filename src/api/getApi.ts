@@ -52,9 +52,11 @@ const getApi = {
     customAxios.get(`/api/bookmarks`, { params }),
   getSearchMember: ({ nickname }: { nickname: string }) =>
     customAxios.get(`/api/members/search`, { params: { nickname } }),
-  getFriendShips: () => customAxios.get(`/api/friendships`),
+  getFriends: ({ id }: { id: string | number }) =>
+    customAxios.get(`/api/friendships/${id}`),
   getReceivedFriendRequests: () =>
     customAxios.get(`/api/friend-requests/received`),
+  getSentFriendRequests: () => customAxios.get(`/api/friend-requests/sent`),
 };
 
 export default getApi;

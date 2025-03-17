@@ -1,6 +1,10 @@
 import useFriendList from "@/hooks/api/pinBuddy/useFriendList";
-import useFriendRequests from "@/hooks/api/pinBuddy/useFriendRequests";
+import {
+  useReceivedFriendRequests,
+  useSentFriendRequests,
+} from "@/hooks/api/pinBuddy/useFriendRequests";
 import { H3 } from "@/style/font";
+import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
 import { useEffect, useRef, useState } from "react";
 import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
@@ -12,8 +16,10 @@ const PinbuddyList = () => {
   const [, setIsSwiping] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const { data: friends } = useFriendList();
-  const { data: requests } = useFriendRequests();
+  const memberResponse = getMemberResponseObj();
+  const { data: friends } = useFriendList({ id: memberResponse?.memberId });
+  const { data: receivedFriendRequests } = useReceivedFriendRequests();
+  const { data: sentFriendRequests } = useSentFriendRequests();
 
   // Distinguish between swipe & click
   const handleSwitch = () => {
@@ -80,13 +86,15 @@ const PinbuddyList = () => {
             friends.length > 0 &&
             friends.map((friend) => (
               <PinbuddySingle
+                key={friend.memberId}
                 data={{
                   memberResponse: friend,
                   relationType: "FRIEND",
                   reviewCount: 0,
                   pinBuddyCount: 0,
                 }}
-                state={"PENDING"}
+                state="FRIEND"
+                friendId={friend.memberId}
               />
             ))}
         </div>
@@ -94,23 +102,25 @@ const PinbuddyList = () => {
           <div className="tab-page-header">
             <span className="header-title">받은 신청</span>
             <span className="header-count">
-              {requests ? requests.length : 0}
+              {receivedFriendRequests ? receivedFriendRequests.length : 0}
             </span>
           </div>
-          {(!requests || requests.length === 0) && (
+          {(!receivedFriendRequests || receivedFriendRequests.length === 0) && (
             <div className="list-empty">받은 핀버디 요청이 없어요.</div>
           )}
-          {requests &&
-            requests.length > 0 &&
-            requests.map((request) => (
+          {receivedFriendRequests &&
+            receivedFriendRequests.length > 0 &&
+            receivedFriendRequests.map((request) => (
               <PinbuddySingle
+                key={request.id}
                 data={{
                   memberResponse: request.sender,
                   relationType: "PENDING",
                   reviewCount: 0,
                   pinBuddyCount: 0,
                 }}
-                state="PENDING"
+                state="RECEIVED_PENDING"
+                requestId={request.id}
               />
             ))}
         </div>
@@ -118,12 +128,27 @@ const PinbuddyList = () => {
           <div className="tab-page-header">
             <span className="header-title">보낸 신청</span>
             <span className="header-count">
-              {requests ? requests.length : 0}
+              {sentFriendRequests ? sentFriendRequests.length : 0}
             </span>
           </div>
-          {(!requests || requests.length === 0) && (
+          {(!sentFriendRequests || sentFriendRequests.length === 0) && (
             <div className="list-empty">보낸 핀버디 요청이 없어요.</div>
           )}
+          {sentFriendRequests &&
+            sentFriendRequests.length > 0 &&
+            sentFriendRequests.map((request) => (
+              <PinbuddySingle
+                key={request.id}
+                data={{
+                  memberResponse: request.sender,
+                  relationType: "PENDING",
+                  reviewCount: 0,
+                  pinBuddyCount: 0,
+                }}
+                state="SENT_PENDING"
+                requestId={request.id}
+              />
+            ))}
         </div>
       </SwipeableViews>
     </StDiv>

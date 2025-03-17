@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import TransitionWrapper from "@/components/TransitionWrapper";
-import useFriendRequests from "@/hooks/api/pinBuddy/useFriendRequests";
+import { useReceivedFriendRequests } from "@/hooks/api/pinBuddy/useFriendRequests";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import defaultProfile from "@/image/icons/defaultProfile.svg";
 import { H3 } from "@/style/font";
@@ -10,7 +10,7 @@ import NotificationItem from "./_components/notifications/NotificationItem";
 
 const Notifications: React.FC = () => {
   const navigate = useNavigate();
-  const { data: friendRequests } = useFriendRequests();
+  const { data: friendRequests } = useReceivedFriendRequests();
 
   return (
     <StDiv>

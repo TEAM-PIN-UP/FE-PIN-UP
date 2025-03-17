@@ -1,40 +1,92 @@
-import usePostFriendRequest from "@/hooks/api/pinBuddy/usePostFriendRequest";
+import useDeleteFriend from "@/hooks/api/pinBuddy/useDeleteFriend";
+import useDeleteFriendRequests from "@/hooks/api/pinBuddy/useDeleteFriendRequest";
+import usePatchFriendRequests from "@/hooks/api/pinBuddy/usePatchFriendRequests";
+import usePostFriendRequests from "@/hooks/api/pinBuddy/usePostFriendRequest";
+import defaultProfile from "@/image/icons/defaultProfile.svg";
 import { GetPinBuddySearchResponse } from "@/interface/member";
-import { relationType } from "@/interface/place";
+import { relationType, requestRelationType } from "@/interface/place";
 import { B3, B5, H6 } from "@/style/font";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 interface PinBuddySingleProps {
   data: GetPinBuddySearchResponse;
-  state: relationType;
+  state: relationType | requestRelationType;
+  friendId?: number;
+  requestId?: number;
 }
 
-const PinbuddySingle: React.FC<PinBuddySingleProps> = ({ data }) => {
-  const friendRequest = usePostFriendRequest();
-  const [currentState, setCurrentState] = useState<string>("");
+type requestControllerParams = "ACTION1" | "ACTION2";
+
+const PinbuddySingle: React.FC<PinBuddySingleProps> = ({
+  data,
+  state,
+  friendId,
+  requestId,
+}) => {
+  const friendRequest = usePostFriendRequests();
+  const { acceptFriendRequest, rejectFriendRequest } = usePatchFriendRequests();
+  const deleteFriendRequest = useDeleteFriendRequests();
+  const deleteFriend = useDeleteFriend();
+  const [action1, setAction1] = useState("");
+  const [action2, setAction2] = useState("");
 
   useEffect(() => {
-    if (data.relationType === "FRIEND") {
-      setCurrentState("삭제");
-    } else if (data.relationType === "PENDING") {
-      setCurrentState("요청보냄");
-    } else if (data.relationType === "SELF") {
-      setCurrentState("나야");
-    } else if (data.relationType === "STRANGER") {
-      setCurrentState("친구 요청");
+    switch (state) {
+      case "FRIEND":
+        setAction1("삭제");
+        break;
+      case "PENDING":
+      case "SENT_PENDING":
+        setAction1("신청 취소");
+        break;
+      case "SELF":
+        setAction1("나야");
+        break;
+      case "STRANGER":
+        setAction1("친구 요청");
+        break;
+      case "RECEIVED_PENDING":
+        setAction1("수락");
+        setAction2("거절");
+        break;
     }
-  }, [data.relationType]);
+  }, [data.relationType, state]);
 
-  const requestController = () => {
-    if (data.relationType === "STRANGER") {
-      friendRequest.mutate({ receiverId: data.memberResponse.memberId });
+  const requestController = (decision: requestControllerParams) => {
+    switch (state) {
+      case "STRANGER":
+        friendRequest.mutate({ receiverId: data.memberResponse.memberId });
+        break;
+      case "RECEIVED_PENDING":
+        if (decision === "ACTION1" && requestId)
+          // Accept request
+          acceptFriendRequest.mutate({ requestId });
+        else if (decision === "ACTION2" && requestId)
+          // Reject request
+          rejectFriendRequest.mutate({ requestId });
+        break;
+      case "SENT_PENDING":
+        if (requestId) deleteFriendRequest.mutate({ requestId });
+        break;
+      case "FRIEND":
+        if (friendId) deleteFriend.mutate({ friendId });
+        break;
+
+      default:
+        break;
     }
   };
 
   return (
-    <StSearchResultSingle relation={data.relationType}>
-      <img src={data.memberResponse.profilePictureUrl} />
+    <StSearchResultSingle>
+      <img
+        src={
+          data.memberResponse.profilePictureUrl === ""
+            ? defaultProfile
+            : data.memberResponse.profilePictureUrl
+        }
+      />
       <div className="profileInfo">
         <div className="name">{data.memberResponse.nickname}</div>
         <div className="counts">
@@ -48,14 +100,27 @@ const PinbuddySingle: React.FC<PinBuddySingleProps> = ({ data }) => {
           </div>
         </div>
       </div>
-      <div className="profileButton" onClick={requestController}>
-        {currentState}
+      <div className="button-area">
+        <div
+          className="profile-button b1"
+          onClick={() => requestController("ACTION1")}
+        >
+          {action1}
+        </div>
+        {action2 && (
+          <div
+            className="profile-button b2"
+            onClick={() => requestController("ACTION2")}
+          >
+            {action2}
+          </div>
+        )}
       </div>
     </StSearchResultSingle>
   );
 };
 
-const StSearchResultSingle = styled.div<{ relation: relationType }>`
+const StSearchResultSingle = styled.div`
   display: flex;
   width: 100%;
   img {
@@ -86,20 +151,30 @@ const StSearchResultSingle = styled.div<{ relation: relationType }>`
       }
     }
   }
-  .profileButton {
+  .button-area {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 55px;
-    height: 30px;
-    border-radius: 6px;
-    background-color: var(--neutral_100);
+    flex-direction: row;
     margin: auto 0 auto auto;
-    color: ${(props) =>
-      props.relation === "STRANGER" ? "" : "var(--neutral_500)"};
-    ${H6}
-    cursor: ${(props) =>
-      props.relation === "STRANGER" ? "pointer" : "default"};
+    gap: var(--spacing_8);
+
+    .profile-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 55px;
+      height: 30px;
+      border-radius: 6px;
+      ${H6}
+      cursor:pointer;
+
+      &.b1 {
+        background-color: var(--neutral_100);
+      }
+
+      &.b2 {
+        border: 1px solid var(--neutral_100);
+      }
+    }
   }
 `;
 

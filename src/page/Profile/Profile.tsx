@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import Header from "@/components/Header";
-import useFriendRequests from "@/hooks/api/pinBuddy/useFriendRequests";
+import { useReceivedFriendRequests } from "@/hooks/api/pinBuddy/useFriendRequests";
 import useProfileDetails from "@/hooks/api/profile/useProfileDetails";
 import {
   useGetPhotoReviews,
@@ -68,7 +68,7 @@ const Profile: React.FC = () => {
     page: textReviewsPage,
     size: pageSize,
   });
-  const { data: newFriendRequests } = useFriendRequests();
+  const { data: receivedFriendRequests } = useReceivedFriendRequests();
 
   // Review history swiper view state
   const [index, setIndex] = useState(0);
@@ -98,7 +98,7 @@ const Profile: React.FC = () => {
           <Header.Right>
             <img
               src={
-                newFriendRequests && newFriendRequests?.length > 0
+                receivedFriendRequests && receivedFriendRequests?.length > 0
                   ? notificationActive
                   : notificationInactive
               }

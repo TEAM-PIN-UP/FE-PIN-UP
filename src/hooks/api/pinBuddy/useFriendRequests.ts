@@ -1,15 +1,23 @@
 import getApi from "@/api/getApi";
-import { ReceivedFriendRequestResponse } from "@/interface/member";
+import { FriendRequestResponse } from "@/interface/member";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
-const useFriendRequests = (): UseQueryResult<
-  ReceivedFriendRequestResponse[]
+export const useReceivedFriendRequests = (): UseQueryResult<
+  FriendRequestResponse[]
 > => {
   const queryFn = async () => {
     const response = await getApi.getReceivedFriendRequests();
     return response.data;
   };
-  return useQuery({ queryFn, queryKey: ["getFriendRequests"] });
+  return useQuery({ queryFn, queryKey: ["getReceivedFriendRequests"] });
 };
 
-export default useFriendRequests;
+export const useSentFriendRequests = (): UseQueryResult<
+  FriendRequestResponse[]
+> => {
+  const queryFn = async () => {
+    const response = await getApi.getSentFriendRequests();
+    return response.data;
+  };
+  return useQuery({ queryFn, queryKey: ["getSentFriendRequests"] });
+};
