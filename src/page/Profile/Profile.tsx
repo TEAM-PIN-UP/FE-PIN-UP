@@ -73,15 +73,6 @@ const Profile: React.FC = () => {
   // Review history swiper view state
   const [index, setIndex] = useState(0);
 
-  const handleNotifications = () => {
-    navigate("notifications", {
-      state: { newFriendRequests },
-    });
-  };
-  const handleSettings = () => {
-    navigate("settings");
-  };
-
   const [showLogin, setShowLogin] = useState(false);
   const handleShare = async () => {
     if (checkLogin()) {
@@ -111,10 +102,14 @@ const Profile: React.FC = () => {
                   ? notificationActive
                   : notificationInactive
               }
-              onClick={handleNotifications}
+              onClick={() => navigate("notifications")}
               className="button"
             />
-            <img src={settings} onClick={handleSettings} className="button" />
+            <img
+              src={settings}
+              onClick={() => navigate("settings")}
+              className="button"
+            />
           </Header.Right>
         </Header>
 
@@ -142,11 +137,7 @@ const Profile: React.FC = () => {
                   {
                     label: "핀버디",
                     value: memberFeed?.memberResponse.pinBuddyCount,
-                    onClick: () => {
-                      navigate("/profile/pinbuddylist", {
-                        state: { newFriendRequests },
-                      });
-                    },
+                    onClick: () => navigate("/profile/pinbuddylist"),
                   },
                 ] as Stat[]
               }
