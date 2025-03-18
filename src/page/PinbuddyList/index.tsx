@@ -5,7 +5,7 @@ import {
 } from "@/hooks/api/pinBuddy/useFriendRequests";
 import { H3 } from "@/style/font";
 import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
 import PinbuddyListHeader from "./_components/Header";
@@ -36,10 +36,6 @@ const PinbuddyList = () => {
   //     state: { item },
   //   });
   // };
-
-  useEffect(() => {
-    return () => {};
-  }, []);
 
   return (
     <StDiv>
@@ -87,14 +83,8 @@ const PinbuddyList = () => {
             friends.map((friend) => (
               <PinbuddySingle
                 key={friend.memberId}
-                data={{
-                  memberResponse: friend,
-                  relationType: "FRIEND",
-                  reviewCount: 0,
-                  pinBuddyCount: 0,
-                }}
+                data={friend}
                 state="FRIEND"
-                friendId={friend.memberId}
               />
             ))}
         </div>
@@ -113,14 +103,8 @@ const PinbuddyList = () => {
             receivedFriendRequests.map((request) => (
               <PinbuddySingle
                 key={request.id}
-                data={{
-                  memberResponse: request.sender,
-                  relationType: "PENDING",
-                  reviewCount: 0,
-                  pinBuddyCount: 0,
-                }}
+                data={request}
                 state="RECEIVED_PENDING"
-                requestId={request.id}
               />
             ))}
         </div>
@@ -139,14 +123,8 @@ const PinbuddyList = () => {
             sentFriendRequests.map((request) => (
               <PinbuddySingle
                 key={request.id}
-                data={{
-                  memberResponse: request.sender,
-                  relationType: "PENDING",
-                  reviewCount: 0,
-                  pinBuddyCount: 0,
-                }}
+                data={request}
                 state="SENT_PENDING"
-                requestId={request.id}
               />
             ))}
         </div>

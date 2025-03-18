@@ -3,7 +3,6 @@ import { PhotoReview } from "./review";
 export type placeCategory = "ALL" | "RESTAURANT" | "CAFE";
 export type placeSort = "NEAR" | "LATEST" | "STAR_HIGH" | "STAR_LOW";
 export type relationType = "SELF" | "FRIEND" | "PENDING" | "STRANGER";
-export type requestRelationType = "SENT_PENDING" | "RECEIVED_PENDING";
 
 // Get places
 export interface GetPlaceParams {

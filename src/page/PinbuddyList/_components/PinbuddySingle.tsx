@@ -1,102 +1,98 @@
 import useDeleteFriend from "@/hooks/api/pinBuddy/useDeleteFriend";
 import useDeleteFriendRequests from "@/hooks/api/pinBuddy/useDeleteFriendRequest";
 import usePatchFriendRequests from "@/hooks/api/pinBuddy/usePatchFriendRequests";
-import usePostFriendRequests from "@/hooks/api/pinBuddy/usePostFriendRequest";
 import defaultProfile from "@/image/icons/defaultProfile.svg";
-import { GetPinBuddySearchResponse } from "@/interface/member";
-import { relationType, requestRelationType } from "@/interface/place";
+import { FriendRequestResponse, MemberDetails } from "@/interface/member";
 import { B3, B5, H6 } from "@/style/font";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 interface PinBuddySingleProps {
-  data: GetPinBuddySearchResponse;
-  state: relationType | requestRelationType;
-  friendId?: number;
-  requestId?: number;
+  data: FriendRequestResponse | MemberDetails;
+  state: "FRIEND" | "SENT_PENDING" | "RECEIVED_PENDING";
 }
 
 type requestControllerParams = "ACTION1" | "ACTION2";
 
-const PinbuddySingle: React.FC<PinBuddySingleProps> = ({
-  data,
-  state,
-  friendId,
-  requestId,
-}) => {
-  const friendRequest = usePostFriendRequests();
+const PinbuddySingle: React.FC<PinBuddySingleProps> = ({ data, state }) => {
   const { acceptFriendRequest, rejectFriendRequest } = usePatchFriendRequests();
   const deleteFriendRequest = useDeleteFriendRequests();
   const deleteFriend = useDeleteFriend();
   const [action1, setAction1] = useState("");
   const [action2, setAction2] = useState("");
 
+  const [profilePictureUrl, setProfilePictureUrl] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [reviewCount, setReviewCount] = useState(0);
+  const [friendCount, setFriendCount] = useState(0);
+
+  const isMemberDetails = (
+    data: FriendRequestResponse | MemberDetails
+  ): data is MemberDetails => {
+    return (data as MemberDetails).memberId !== undefined;
+  };
+
   useEffect(() => {
-    switch (state) {
-      case "FRIEND":
-        setAction1("삭제");
-        break;
-      case "PENDING":
-      case "SENT_PENDING":
-        setAction1("신청 취소");
-        break;
-      case "SELF":
-        setAction1("나야");
-        break;
-      case "STRANGER":
-        setAction1("친구 요청");
-        break;
-      case "RECEIVED_PENDING":
-        setAction1("수락");
-        setAction2("거절");
-        break;
+    if (isMemberDetails(data)) {
+      setAction1("삭제");
+      setProfilePictureUrl(data.profilePictureUrl);
+      setNickname(data.nickname);
+      setReviewCount(data.reviewCount);
+      setFriendCount(data.pinBuddyCount);
+    } else if (state === "RECEIVED_PENDING") {
+      const sender = data.sender;
+      setAction1("수락");
+      setAction2("거절");
+      setProfilePictureUrl(sender.profilePictureUrl);
+      setNickname(sender.nickname);
+      setReviewCount(sender.reviewCount);
+      setFriendCount(sender.pinBuddyCount);
+    } else if (state === "SENT_PENDING") {
+      const receiver = data.receiver;
+      setAction1("신청 취소");
+      setProfilePictureUrl(receiver.profilePictureUrl);
+      setNickname(receiver.nickname);
+      setReviewCount(receiver.reviewCount);
+      setFriendCount(receiver.pinBuddyCount);
     }
-  }, [data.relationType, state]);
+    if (profilePictureUrl === "") setProfilePictureUrl(defaultProfile);
+  }, [data, profilePictureUrl, state]);
 
   const requestController = (decision: requestControllerParams) => {
-    switch (state) {
-      case "STRANGER":
-        friendRequest.mutate({ receiverId: data.memberResponse.memberId });
-        break;
-      case "RECEIVED_PENDING":
-        if (decision === "ACTION1" && requestId)
-          // Accept request
-          acceptFriendRequest.mutate({ requestId });
-        else if (decision === "ACTION2" && requestId)
-          // Reject request
-          rejectFriendRequest.mutate({ requestId });
-        break;
-      case "SENT_PENDING":
-        if (requestId) deleteFriendRequest.mutate({ requestId });
-        break;
-      case "FRIEND":
-        if (friendId) deleteFriend.mutate({ friendId });
-        break;
-
-      default:
-        break;
-    }
+    if (isMemberDetails(data)) {
+      if (data.memberId) deleteFriend.mutate({ friendId: data.memberId });
+    } else
+      switch (state) {
+        case "RECEIVED_PENDING":
+          if (decision === "ACTION1" && data)
+            // Accept request
+            acceptFriendRequest.mutate({ request: data });
+          else if (decision === "ACTION2" && data)
+            // Reject request
+            rejectFriendRequest.mutate({ request: data });
+          break;
+        case "SENT_PENDING":
+          if (data) deleteFriendRequest.mutate({ request: data });
+          break;
+        default:
+          break;
+      }
   };
 
   return (
     <StSearchResultSingle>
-      <img
-        src={
-          data.memberResponse.profilePictureUrl === ""
-            ? defaultProfile
-            : data.memberResponse.profilePictureUrl
-        }
-      />
+      <img src={profilePictureUrl} />
+
       <div className="profileInfo">
-        <div className="name">{data.memberResponse.nickname}</div>
+        <div className="name">{nickname}</div>
         <div className="counts">
           <div className="singleInfo">
             <span className="title">리뷰</span>
-            <span>{data.reviewCount}</span>
+            <span>{reviewCount}</span>
           </div>
           <div className="singleInfo">
             <span className="title">핀버디</span>
-            <span>{data.pinBuddyCount}</span>
+            <span>{friendCount}</span>
           </div>
         </div>
       </div>

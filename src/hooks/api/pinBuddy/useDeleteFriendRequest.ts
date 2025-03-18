@@ -1,15 +1,21 @@
 import deleteApi from "@/api/deleteApi";
+import { FriendRequestResponse } from "@/interface/member";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { queryKeys } from "../queryKeys";
 
 const useDeleteFriendRequests = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ requestId }: { requestId: number }) =>
-      deleteApi.cancelFriendRequest({ requestId }),
-    onSuccess: () => {
+    mutationFn: ({ request }: { request: FriendRequestResponse }) =>
+      deleteApi.cancelFriendRequest({ requestId: request.id }),
+
+    onSuccess: (_, { request }) => {
       queryClient.invalidateQueries({
-        queryKey: ["getSentFriendRequests"],
+        queryKey: queryKeys.sentFriendRequests(request.sender.memberId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.receivedFriendRequests(request.receiver.memberId),
       });
     },
     onError: (error) =>

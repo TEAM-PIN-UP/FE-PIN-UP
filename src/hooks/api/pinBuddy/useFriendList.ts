@@ -1,6 +1,7 @@
 import getApi from "@/api/getApi";
 import { MemberDetails } from "@/interface/member";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { queryKeys } from "../queryKeys";
 
 const useFriendList = ({
   id,
@@ -10,9 +11,9 @@ const useFriendList = ({
   const queryFn = async () => {
     if (id === undefined) return [];
     const response = await getApi.getFriends({ id });
-    return response.data;
+    return response.data.content;
   };
-  return useQuery({ queryFn, queryKey: ["friendships", id], enabled: !!id });
+  return useQuery({ queryFn, queryKey: queryKeys.friends(id!), enabled: !!id });
 };
 
 export default useFriendList;
