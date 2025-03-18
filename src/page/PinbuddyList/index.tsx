@@ -5,21 +5,42 @@ import {
 } from "@/hooks/api/pinBuddy/useFriendRequests";
 import { H3 } from "@/style/font";
 import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
 import PinbuddyListHeader from "./_components/Header";
 import PinbuddySingle from "./_components/PinbuddySingle";
 
 const PinbuddyList = () => {
+  const navigate = useNavigate();
+  const { search } = useLocation();
+
   const [index, setIndex] = useState(0);
-  const [, setIsSwiping] = useState(false);
+  const [isSwiping, setIsSwiping] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const memberResponse = getMemberResponseObj();
   const { data: friends } = useFriendList({ id: memberResponse?.memberId });
   const { data: receivedFriendRequests } = useReceivedFriendRequests();
   const { data: sentFriendRequests } = useSentFriendRequests();
+
+  // Switch to tab based on url params
+  useEffect(() => {
+    const queryParams = new URLSearchParams(search);
+    const listType = queryParams.get("list");
+    if (listType === "received") setIndex(1);
+    else if (listType === "sent") setIndex(2);
+    else setIndex(0);
+  }, [search]);
+
+  const updateUrl = (newIndex: number) => {
+    const listType =
+      newIndex === 0 ? "friends" : newIndex === 1 ? "received" : "sent";
+    const searchParams = new URLSearchParams(search);
+    searchParams.set("list", listType);
+    navigate(`?list=${listType}`, { replace: true });
+  };
 
   // Distinguish between swipe & click
   const handleSwitch = () => {
@@ -30,13 +51,6 @@ const PinbuddyList = () => {
     }, 50);
   };
 
-  // const handleClick = (item) => {
-  //   if (isSwiping) return;
-  //   navigate(`photo-review/${item.reviewId}`, {
-  //     state: { item },
-  //   });
-  // };
-
   return (
     <StDiv>
       <PinbuddyListHeader />
@@ -44,19 +58,19 @@ const PinbuddyList = () => {
       <div className="pinbuddy-tabs">
         <button
           className={`pinbuddy-tab ${index === 0 ? "active" : ""}`}
-          onClick={() => setIndex(0)}
+          onClick={() => updateUrl(0)}
         >
           핀버디
         </button>
         <button
           className={`pinbuddy-tab ${index === 1 ? "active" : ""}`}
-          onClick={() => setIndex(1)}
+          onClick={() => updateUrl(1)}
         >
           받은 신청
         </button>
         <button
           className={`pinbuddy-tab ${index === 2 ? "active" : ""}`}
-          onClick={() => setIndex(2)}
+          onClick={() => updateUrl(2)}
         >
           보낸 신청
         </button>
@@ -65,7 +79,7 @@ const PinbuddyList = () => {
         slideClassName="pinbuddy-container"
         enableMouseEvents
         index={index}
-        onChangeIndex={(i) => setIndex(i)}
+        onChangeIndex={(i) => updateUrl(i)}
         onMouseDown={(e) => e.preventDefault()}
         onSwitching={handleSwitch}
         style={{ width: "100%", height: "100%" }}
@@ -85,6 +99,7 @@ const PinbuddyList = () => {
                 key={friend.memberId}
                 data={friend}
                 state="FRIEND"
+                isSwiping={isSwiping}
               />
             ))}
         </div>
@@ -105,6 +120,7 @@ const PinbuddyList = () => {
                 key={request.id}
                 data={request}
                 state="RECEIVED_PENDING"
+                isSwiping={isSwiping}
               />
             ))}
         </div>
@@ -125,6 +141,7 @@ const PinbuddyList = () => {
                 key={request.id}
                 data={request}
                 state="SENT_PENDING"
+                isSwiping={isSwiping}
               />
             ))}
         </div>

@@ -10,11 +10,16 @@ import styled from "styled-components";
 interface PinBuddySingleProps {
   data: FriendRequestResponse | MemberDetails;
   state: "FRIEND" | "SENT_PENDING" | "RECEIVED_PENDING";
+  isSwiping: boolean;
 }
 
 type requestControllerParams = "ACTION1" | "ACTION2";
 
-const PinbuddySingle: React.FC<PinBuddySingleProps> = ({ data, state }) => {
+const PinbuddySingle: React.FC<PinBuddySingleProps> = ({
+  data,
+  state,
+  isSwiping,
+}) => {
   const { acceptFriendRequest, rejectFriendRequest } = usePatchFriendRequests();
   const deleteFriendRequest = useDeleteFriendRequests();
   const deleteFriend = useDeleteFriend();
@@ -60,6 +65,8 @@ const PinbuddySingle: React.FC<PinBuddySingleProps> = ({ data, state }) => {
   }, [data, profilePictureUrl, state]);
 
   const requestController = (decision: requestControllerParams) => {
+    if (isSwiping) return;
+
     if (isMemberDetails(data)) {
       if (data.memberId) deleteFriend.mutate({ friendId: data.memberId });
     } else if (state === "RECEIVED_PENDING") {
