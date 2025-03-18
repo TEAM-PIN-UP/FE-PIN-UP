@@ -1,5 +1,7 @@
 import { B4, H4 } from "@/style/font";
 import React from "react";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import styled from "styled-components";
 
 export interface Stat {
@@ -10,9 +12,13 @@ export interface Stat {
 
 interface StatsSectionProps {
   stats: Stat[];
+  isLoading?: boolean;
 }
 
-const UserStatsSection: React.FC<StatsSectionProps> = ({ stats }) => {
+const UserStatsSection: React.FC<StatsSectionProps> = ({
+  stats,
+  isLoading = false,
+}) => {
   return (
     <StDiv>
       <div className="stats-row">
@@ -23,7 +29,10 @@ const UserStatsSection: React.FC<StatsSectionProps> = ({ stats }) => {
               className={`stat-item ${stat.onClick ? "clickable" : ""}`}
               onClick={() => stat.onClick?.()}
             >
-              <div className="stat-value">{stat.value}</div>
+              <div className="stat-value">
+                {isLoading && <Skeleton />}
+                {!isLoading && stat.value}
+              </div>
               <div className="stat-label">{stat.label}</div>
             </div>
           </React.Fragment>

@@ -56,7 +56,8 @@ const Profile: React.FC = () => {
   console.log(setPhotoReviewsPage, setTextReviewsPage);
   const pageSize = 15;
 
-  const { data: memberFeed } = useProfileDetails({ id });
+  const { data: memberFeed, isLoading: isMemberFeedLoading } =
+    useProfileDetails({ id });
   const { data: photoReviews } = useGetPhotoReviews({
     id,
     page: photoReviewsPage,
@@ -123,6 +124,7 @@ const Profile: React.FC = () => {
               className="profile-image"
             />
             <UserStatsSection
+              isLoading={isMemberFeedLoading}
               stats={
                 [
                   {
