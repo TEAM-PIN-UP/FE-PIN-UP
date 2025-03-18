@@ -8,5 +8,5 @@ export const queryKeys = {
     "sentFriendRequests",
     memberId.toString(),
   ],
-  searchMember: (nickname: string) => ["searchPinbuddy", nickname],
+  searchMember: (nickname: string) => ["searchMember", nickname],
 };

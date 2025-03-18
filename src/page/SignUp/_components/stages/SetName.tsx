@@ -26,13 +26,13 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsSubmitting(false);
     const value = e.target.value;
-    if (value.length >= lowerCharLimit && value.length <= upperCharLimit) {
+    if (value.length <= upperCharLimit) {
       updateData({ nickname: value });
 
       // English and Korean letters + jamo
       const regex =
         /^[a-zA-Z\u1100-\u1112\u1161-\u1175\u3130-\u318F\uAC00-\uD7A3]*$/;
-      setIsInputValid(regex.test(value));
+      setIsInputValid(regex.test(value) && value.length >= lowerCharLimit);
     } else {
       setIsInputValid(false);
     }

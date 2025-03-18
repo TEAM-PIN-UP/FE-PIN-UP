@@ -15,7 +15,7 @@ export const useGetTextReviews = (
     try {
       if (params.id === undefined) throw Error;
       const response = await getApi.getTextReviews(params);
-      return response.data;
+      return response.data.content;
     } catch (error) {
       console.error("Cannot get text reviews:", error);
     }
@@ -36,7 +36,7 @@ export const useGetPhotoReviews = (
     try {
       if (params.id === undefined) throw Error;
       const response = await getApi.getPhotoReviews(params);
-      return response.data;
+      return response.data.content;
     } catch (error) {
       console.error("Cannot get photo reviews:", error);
     }

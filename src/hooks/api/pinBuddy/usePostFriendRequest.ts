@@ -1,13 +1,26 @@
 import postApi from "@/api/postApi";
+import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { queryKeys } from "../queryKeys";
 
 const usePostFriendRequests = () => {
   const queryClient = useQueryClient();
+  const memberResponse = getMemberResponseObj();
+  const memberId = memberResponse?.memberId;
+
   return useMutation({
     mutationFn: ({ receiverId }: { receiverId: number }) =>
       postApi.postSendFriendRequest({ receiverId }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["searchPinbuddy"] });
+
+    onSuccess: (_, { receiverId }) => {
+      if (!memberId) {
+        console.warn("Cannot invalidate query: memberId is undefined");
+        return;
+      }
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.receivedFriendRequests(receiverId),
+      });
+      queryClient.invalidateQueries({ queryKey: ["searchMember"] });
     },
   });
 };
