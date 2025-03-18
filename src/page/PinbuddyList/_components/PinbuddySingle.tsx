@@ -61,28 +61,21 @@ const PinbuddySingle: React.FC<PinBuddySingleProps> = ({ data, state }) => {
   const requestController = (decision: requestControllerParams) => {
     if (isMemberDetails(data)) {
       if (data.memberId) deleteFriend.mutate({ friendId: data.memberId });
-    } else
-      switch (state) {
-        case "RECEIVED_PENDING":
-          if (decision === "ACTION1" && data)
-            // Accept request
-            acceptFriendRequest.mutate({ request: data });
-          else if (decision === "ACTION2" && data)
-            // Reject request
-            rejectFriendRequest.mutate({ request: data });
-          break;
-        case "SENT_PENDING":
-          if (data) deleteFriendRequest.mutate({ request: data });
-          break;
-        default:
-          break;
-      }
+    } else if (state === "RECEIVED_PENDING") {
+      if (decision === "ACTION1" && data)
+        // Accept request
+        acceptFriendRequest.mutate({ request: data });
+      else if (decision === "ACTION2" && data)
+        // Reject request
+        rejectFriendRequest.mutate({ request: data });
+    } else if (state === "SENT_PENDING") {
+      if (data) deleteFriendRequest.mutate({ request: data });
+    }
   };
 
   return (
     <StSearchResultSingle>
       <img src={profilePictureUrl} />
-
       <div className="profileInfo">
         <div className="name">{nickname}</div>
         <div className="counts">
