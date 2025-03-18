@@ -55,7 +55,11 @@ const Settings: React.FC = () => {
 
       <StTransitionWrapper duration={0.25}>
         <SettingsGroup title="계정 설정" />
-        <SettingsItem title="프로필 편집" type="arrow" />
+        <SettingsItem
+          title="프로필 편집"
+          type="arrow"
+          onClick={() => navigate(`edit-profile`)}
+        />
         <SettingsItem
           title="계정 정보"
           type="text"
