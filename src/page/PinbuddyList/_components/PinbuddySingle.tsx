@@ -33,27 +33,28 @@ const PinbuddySingle: React.FC<PinBuddySingleProps> = ({ data, state }) => {
   };
 
   useEffect(() => {
+    const setProfileInfo = (profile: {
+      profilePictureUrl: string;
+      nickname: string;
+      reviewCount: number;
+      pinBuddyCount: number;
+    }) => {
+      setProfilePictureUrl(profile.profilePictureUrl || defaultProfile);
+      setNickname(profile.nickname);
+      setReviewCount(profile.reviewCount);
+      setFriendCount(profile.pinBuddyCount);
+    };
+
     if (isMemberDetails(data)) {
       setAction1("삭제");
-      setProfilePictureUrl(data.profilePictureUrl);
-      setNickname(data.nickname);
-      setReviewCount(data.reviewCount);
-      setFriendCount(data.pinBuddyCount);
+      setProfileInfo(data);
     } else if (state === "RECEIVED_PENDING") {
-      const sender = data.sender;
       setAction1("수락");
       setAction2("거절");
-      setProfilePictureUrl(sender.profilePictureUrl);
-      setNickname(sender.nickname);
-      setReviewCount(sender.reviewCount);
-      setFriendCount(sender.pinBuddyCount);
+      setProfileInfo(data.sender);
     } else if (state === "SENT_PENDING") {
-      const receiver = data.receiver;
       setAction1("신청 취소");
-      setProfilePictureUrl(receiver.profilePictureUrl);
-      setNickname(receiver.nickname);
-      setReviewCount(receiver.reviewCount);
-      setFriendCount(receiver.pinBuddyCount);
+      setProfileInfo(data.receiver);
     }
     if (profilePictureUrl === "") setProfilePictureUrl(defaultProfile);
   }, [data, profilePictureUrl, state]);
