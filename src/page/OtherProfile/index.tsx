@@ -8,6 +8,7 @@ import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import addUser from "@/image/icons/addUser.svg";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import share from "@/image/icons/share.svg";
+import { paths } from "@/routes/paths";
 import { B4, H2, H3, H4 } from "@/style/font";
 import useToastPopup from "@/utils/toastPopup";
 import { useNavigate } from "react-router-dom";
@@ -94,7 +95,7 @@ const OtherProfile: React.FC = () => {
               icon={addUser}
               color="var(--neutral_800)"
               requestState={requestState}
-              onClick={() => navigate(`pinbuddySearch`)}
+              onClick={() => navigate(paths.profile.search())}
             />
           </div>
 

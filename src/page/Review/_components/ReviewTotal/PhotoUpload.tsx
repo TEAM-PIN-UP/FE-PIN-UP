@@ -120,17 +120,13 @@ const PhotoUpload: React.FC<PhotoUploadProp> = ({
           </SwiperSlide>
           {imageData.map((value, index) => {
             return (
-              <SwiperSlide className="uploadedImgBox">
+              <SwiperSlide key={index} className="uploadedImgBox">
                 <img
                   className="cancelIcon"
                   src={cancelIcon}
                   onClick={() => removeImg(index)}
                 />
-                <img
-                  className="uploadedImg"
-                  src={getPreviewURL(value)}
-                  key={index}
-                />
+                <img className="uploadedImg" src={getPreviewURL(value)} />
               </SwiperSlide>
             );
           })}

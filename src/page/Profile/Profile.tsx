@@ -14,6 +14,7 @@ import notificationActive from "@/image/icons/notificationActive.svg";
 import notificationInactive from "@/image/icons/notificationInactive.svg";
 import settings from "@/image/icons/settings.svg";
 import share from "@/image/icons/share.svg";
+import { paths } from "@/routes/paths";
 import { B3, B4, H1, H2, H3, H4 } from "@/style/font";
 import checkLogin from "@/utils/checkLogin";
 import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
@@ -27,9 +28,9 @@ import ReviewHistory from "./_components/reviews/ReviewHistory";
 import UserStatsSection, { Stat } from "./_components/UserStatsSection";
 
 const Profile: React.FC = () => {
+  useCheckLoginAndRoute();
   const navigate = useNavigate();
   const toast = useToastPopup();
-  useCheckLoginAndRoute();
   const memberDetails = getMemberResponseObj();
   const id = memberDetails?.memberId;
 
@@ -102,12 +103,12 @@ const Profile: React.FC = () => {
                   ? notificationActive
                   : notificationInactive
               }
-              onClick={() => navigate("notifications")}
+              onClick={() => navigate(paths.profile.notifications())}
               className="button"
             />
             <img
               src={settings}
-              onClick={() => navigate("settings")}
+              onClick={() => navigate(paths.profile.settings())}
               className="button"
             />
           </Header.Right>
@@ -138,7 +139,7 @@ const Profile: React.FC = () => {
                   {
                     label: "핀버디",
                     value: memberFeed?.memberResponse.pinBuddyCount,
-                    onClick: () => navigate("/profile/pinbuddylist"),
+                    onClick: () => navigate(paths.profile.friends()),
                   },
                 ] as Stat[]
               }
@@ -156,7 +157,7 @@ const Profile: React.FC = () => {
             <ProfileButton
               icon={addUser}
               text="핀버디 추가"
-              onClick={() => navigate(`pinbuddySearch`)}
+              onClick={() => navigate(paths.profile.search())}
             />
           </div>
 
@@ -248,7 +249,7 @@ const Profile: React.FC = () => {
                     <Button
                       className="signup-button"
                       size="xlarge"
-                      onClick={() => navigate("/signup")}
+                      onClick={() => navigate(paths.signup())}
                     >
                       로그인/회원가입
                     </Button>

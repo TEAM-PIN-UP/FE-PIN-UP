@@ -4,6 +4,7 @@ import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import moreDotsGray from "@/image/icons/moreDotsGray.svg";
 import { PhotoReview } from "@/interface/review";
+import { paths } from "@/routes/paths";
 import { B6, H3, H4 } from "@/style/font";
 import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
 import { useEffect } from "react";
@@ -19,7 +20,7 @@ export const ReviewDetails: React.FC = () => {
   const memberResponse = getMemberResponseObj();
 
   useEffect(() => {
-    if (!detail) navigate("/profile");
+    if (!detail) navigate(paths.profile());
   }, [detail, navigate]);
 
   return (

@@ -1,10 +1,10 @@
+import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
+import { paths } from "@/routes/paths";
+import { H4 } from "@/style/font";
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
-
-import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
-import { H4 } from "@/style/font";
-import { useNavigate } from "react-router-dom";
 
 interface ProfileReviewProps {
   index: number;
@@ -39,7 +39,7 @@ const ProfileReview: React.FC<ProfileReviewProps> = ({
   const handleClick = (index: number) => {
     if (isSwiping) return;
 
-    navigate(`photo-review/${index}`);
+    navigate(paths.profile.photoReview(index));
   };
 
   return (

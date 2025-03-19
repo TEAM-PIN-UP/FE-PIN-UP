@@ -1,6 +1,7 @@
 import patchApi from "@/api/patchApi";
 import Button from "@/components/Button";
 import { MemberPatchBody } from "@/interface/member";
+import { paths } from "@/routes/paths";
 import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
 import { useNavigate } from "react-router-dom";
 import { SignUpForm } from "../../SignUpInterface";
@@ -39,9 +40,10 @@ const Welcome = ({ data }: { data: SignUpForm }) => {
         memberResponse.profilePictureUrl = data.profileImage;
         localStorage.setItem("memberResponse", JSON.stringify(memberResponse));
       } else {
-        navigate("/signup");
+        navigate(paths.signup());
+        location.reload();
       }
-      navigate("/map");
+      navigate(paths.map());
     } catch (error) {
       console.error("Error:", error);
     }
@@ -64,7 +66,7 @@ const Welcome = ({ data }: { data: SignUpForm }) => {
         size="full"
         onClick={() => {
           handleClick();
-          navigate("/map");
+          navigate(paths.map());
         }}
       >
         핀업 시작하기

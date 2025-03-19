@@ -1,3 +1,4 @@
+import { paths } from "@/routes/paths";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -14,7 +15,7 @@ const NaverAuthCallback = () => {
 
       if (!code || !returnedState || returnedState !== storedState) {
         console.error("State mismatch or missing values.");
-        navigate("/");
+        navigate(paths.base());
         return;
       }
       sessionStorage.removeItem("naverAuthState");
@@ -26,7 +27,7 @@ const NaverAuthCallback = () => {
         );
         window.close();
       } else {
-        navigate("/"); // Redirect if not in popup
+        navigate(paths.base()); // Redirect if not in popup
       }
     };
 

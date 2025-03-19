@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import useCreateReview from "@/hooks/api/review/usePostCreateReview";
 import { GetSearchPlacesResponse, PlaceRequestType } from "@/interface/place";
 import { ReviewRequestType } from "@/interface/review";
+import { paths } from "@/routes/paths";
 import useModalPopup from "@/utils/modalPopup";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -75,12 +76,17 @@ const ReviewTotal: React.FC<ReviewTotalProps> = ({ pickedInfo, visitDate }) => {
       okButtonText: "확인",
       onOkButtonClick: () => {
         closeModal();
-        navigate(`/map?kakaoPlaceId=${pickedInfo.kakaoPlaceId}`);
+        navigate({
+          pathname: paths.map(),
+          search: new URLSearchParams({
+            kakaoPlaceId: pickedInfo.kakaoPlaceId,
+          }).toString(),
+        });
       },
       cancelButtonText: "취소",
       onCancelButtonClick: () => {
         closeModal();
-        navigate("/map");
+        navigate(paths.map());
       },
     });
   };

@@ -4,6 +4,7 @@ import NavBar from "@/components/NavBar";
 import { useEffect, useState } from "react";
 import Modal from "./components/Modal";
 import Toast from "./components/Toast";
+import { paths } from "./routes/paths";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -26,7 +27,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     };
   }, []);
 
-  const excludeNavBarRoutes = ["/auth/naver"];
+  const excludeNavBarRoutes = [paths.auth.naver(), paths.signup()];
   return (
     <StLayout $dynamicHeight={height}>
       <Toast />

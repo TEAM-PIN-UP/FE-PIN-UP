@@ -2,10 +2,9 @@ import fullStar from "@/image/icons/blackStar.svg";
 import emptyStar from "@/image/icons/emptyStar.svg";
 import halfStar from "@/image/icons/halfBlackStar.svg";
 import option from "@/image/icons/option.svg";
-import styled from "styled-components";
-
 import { Review } from "@/interface/review";
 import { B3, B4, B5, B6, C2, D2, H4, H5 } from "@/style/font";
+import styled from "styled-components";
 
 const ReviewSingle: React.FC<Review> = (data) => {
   const starShow = (score: number) => {

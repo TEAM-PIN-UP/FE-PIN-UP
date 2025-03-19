@@ -1,5 +1,6 @@
 import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
 import { PhotoReview, Review } from "@/interface/review";
+import { paths } from "@/routes/paths";
 import { H4 } from "@/style/font";
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -36,7 +37,7 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
 
   const handleClick = (item: Review) => {
     if (isSwiping) return;
-    navigate(`photo-review/${item.reviewId}`, {
+    navigate(paths.profile.photoReview(item.reviewId), {
       state: { item },
     });
   };

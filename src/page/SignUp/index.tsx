@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
+import { paths } from "@/routes/paths";
 import { H3 } from "@/style/font";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useEffect, useState } from "react";
@@ -58,8 +59,10 @@ const SignUpPage: React.FC = () => {
     const memberResponse: MemberResponse | null = memberResponseJson
       ? (JSON.parse(memberResponseJson) as MemberResponse)
       : null;
-    if (accessToken && memberResponse && memberResponse.nickname)
-      navigate("/map");
+    if (accessToken && memberResponse && memberResponse.nickname) {
+      navigate(paths.map());
+      location.reload();
+    }
 
     // Use system back button for prev stage
     const handlePopState = (e: PopStateEvent) => {

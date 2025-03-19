@@ -7,6 +7,7 @@ import mapPinActive from "@/image/icons/mapPinActive26.svg";
 import mapPinInactive from "@/image/icons/mapPinInactive26.svg";
 import uploadActive from "@/image/icons/uploadActive.svg";
 import uploadInactive from "@/image/icons/uploadInactive.svg";
+import { paths } from "@/routes/paths";
 import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -23,19 +24,23 @@ const NavBar: React.FC = () => {
 
   return (
     <StNavBar $path={location.pathname.split("/")[1]}>
-      <NavBarIcon path="map" active={mapPinActive} inActive={mapPinInactive} />
       <NavBarIcon
-        path="bookmarks"
+        path={paths.map()}
+        active={mapPinActive}
+        inActive={mapPinInactive}
+      />
+      <NavBarIcon
+        path={paths.bookmarks()}
         active={bookMarkActive}
         inActive={bookMarkInactive}
       />
       <NavBarIcon
-        path="review"
+        path={paths.review()}
         active={uploadActive}
         inActive={uploadInactive}
       />
       <NavBarIcon
-        path="contents"
+        path={paths.contents()}
         active={contentsActive}
         inActive={contentsInactive}
       />
