@@ -20,11 +20,13 @@ const SettingsItem: React.FC<SettingsItemProps> = ({
       <p className="title">{title}</p>
       {type === "arrow" && <img src={chevronRight} />}
       {type === "text" && (
-        <p className="description-stack">
-          {description?.split("\n").map((t) => (
-            <p className="description">{t}</p>
+        <div className="description-stack">
+          {description?.split("\n").map((t, i) => (
+            <p className="description" key={i}>
+              {t}
+            </p>
           ))}
-        </p>
+        </div>
       )}
     </StDiv>
   );

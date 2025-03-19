@@ -119,11 +119,11 @@ const MapPage: React.FC = () => {
     setFollowUser(true);
     const pos = getLastKnownPositionObj();
     if (pos) {
+      const zoom = map?.getZoom();
       map?.morph(
         new naverMaps.LatLng(pos.coords.latitude, pos.coords.longitude),
-        defaultZoom
+        zoom
       );
-      map?.setZoom(defaultZoom);
       setFollowUser(true);
     } else toast("현위치를 확인할 수 없어요.");
   };

@@ -2,8 +2,10 @@ import customAxios from "@/api/Interceptor";
 import Header from "@/components/Header";
 import TransitionWrapper from "@/components/TransitionWrapper";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
+import { ModalProps } from "@/store/modalStore";
 import { H3 } from "@/style/font";
 import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
+import useModalPopup from "@/utils/modalPopup";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import SettingsGroup from "./_components/setttings/SettingsGroup";
@@ -11,18 +13,29 @@ import SettingsItem from "./_components/setttings/SettingsItem";
 
 const Settings: React.FC = () => {
   const navigate = useNavigate();
-
-  const handleSignOut = async () => {
-    try {
-      await customAxios.post(`/api/auth/logout`, null, {
-        headers: { Access: localStorage.getItem("accessToken") },
-      });
-    } catch (error) {
-      console.warn("Logout request failed, proceeding anyway.", error);
-    }
-
-    localStorage.clear();
-    navigate("/signup");
+  const { openModal, closeModal } = useModalPopup();
+  const signoutModal: ModalProps = {
+    type: "cancel-ok",
+    title: "로그아웃 할까요?",
+    body: ["확인을 누르면", "로그아웃이 돼요."],
+    okButtonText: "확인",
+    onOkButtonClick: async () => {
+      try {
+        await customAxios.post(`/api/auth/logout`, null, {
+          headers: { Access: localStorage.getItem("accessToken") },
+        });
+      } catch (error) {
+        console.warn("Logout request failed, proceeding anyway.", error);
+      } finally {
+        localStorage.clear();
+        navigate("/signup");
+        closeModal();
+      }
+    },
+    cancelButtonText: "취소",
+    onCancelButtonClick: () => {
+      closeModal();
+    },
   };
 
   return (
@@ -42,7 +55,11 @@ const Settings: React.FC = () => {
 
       <StTransitionWrapper duration={0.25}>
         <SettingsGroup title="계정 설정" />
-        <SettingsItem title="프로필 편집" type="arrow" />
+        <SettingsItem
+          title="프로필 편집"
+          type="arrow"
+          onClick={() => navigate(`edit-profile`)}
+        />
         <SettingsItem
           title="계정 정보"
           type="text"
@@ -57,7 +74,11 @@ const Settings: React.FC = () => {
 
         <SettingsGroup title="기타" />
         <SettingsItem title="앱버전" type="text" description="V.0.1 (최신)" />
-        <SettingsItem title="로그아웃" type="text" onClick={handleSignOut} />
+        <SettingsItem
+          title="로그아웃"
+          type="text"
+          onClick={() => openModal(signoutModal)}
+        />
       </StTransitionWrapper>
     </StDiv>
   );

@@ -1,18 +1,16 @@
 import Header from "@/components/Header";
 import TransitionWrapper from "@/components/TransitionWrapper";
+import { useReceivedFriendRequests } from "@/hooks/api/pinBuddy/useFriendRequests";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import defaultProfile from "@/image/icons/defaultProfile.svg";
-import { ReceivedFriendRequestResponse } from "@/interface/member";
 import { H3 } from "@/style/font";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import NotificationItem from "./_components/notifications/NotificationItem";
 
 const Notifications: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const friendRequests = location.state
-    .newFriendRequests as ReceivedFriendRequestResponse[];
+  const { data: friendRequests } = useReceivedFriendRequests();
 
   return (
     <StDiv>

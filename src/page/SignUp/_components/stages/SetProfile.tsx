@@ -1,13 +1,13 @@
-import { useRef } from "react";
-import styled from "styled-components";
-
 import Button from "@/components/Button";
 import ProfileImagePicker from "@/components/ProfileImagePicker";
 import camera from "@/image/icons/camera.svg";
+import defaultProfile from "@/image/icons/defaultProfile.svg";
 import { B3 } from "@/style/font";
 import checkImageValidity from "@/utils/checkImageValidity";
 import { cropImage } from "@/utils/cropImage";
 import useToastPopup from "@/utils/toastPopup";
+import { useRef } from "react";
+import styled from "styled-components";
 import StGap from "../typography/StGap";
 import StGlue from "../typography/StGlue";
 import StTextContainer from "../typography/StTextContainer";
@@ -96,6 +96,7 @@ const SetProfile: React.FC<StageProps> = ({ data, updateData, onNext }) => {
           <button
             className="skip-button"
             onClick={() => {
+              updateData({ profileImage: defaultProfile });
               onNext();
             }}
           >

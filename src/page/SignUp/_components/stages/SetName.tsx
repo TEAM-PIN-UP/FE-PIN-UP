@@ -7,7 +7,8 @@ import styled, { css, keyframes } from "styled-components";
 import StTextContainer from "../typography/StTextContainer";
 import { StageProps } from "./StageProps";
 
-const charLimit = 12;
+const lowerCharLimit = 2;
+const upperCharLimit = 12;
 const shake = keyframes`
     0% { transform: translateX(0); }
     25% { transform: translateX(-5px); }
@@ -25,13 +26,13 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsSubmitting(false);
     const value = e.target.value;
-    if (value.length <= charLimit) {
+    if (value.length <= upperCharLimit) {
       updateData({ nickname: value });
 
       // English and Korean letters + jamo
       const regex =
         /^[a-zA-Z\u1100-\u1112\u1161-\u1175\u3130-\u318F\uAC00-\uD7A3]*$/;
-      setIsInputValid(regex.test(value));
+      setIsInputValid(regex.test(value) && value.length >= lowerCharLimit);
     } else {
       setIsInputValid(false);
     }
@@ -73,7 +74,7 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
       <div className="input-container">
         <TextInput
           placeholder="닉네임 입력"
-          maxLength={charLimit}
+          maxLength={upperCharLimit}
           value={data.nickname}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
@@ -82,7 +83,9 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
         />
         <div className="char-limit">
           {!(isSubmitting && !isNicknameValid) && (
-            <StB5 $isInvalid={!isInputValid}>한글, 영문만 입력 가능</StB5>
+            <StB5 $isInvalid={!isInputValid}>
+              2~12자의 한글, 영문만 입력 가능
+            </StB5>
           )}
           {isSubmitting && !isNicknameValid && (
             <StB5 style={{ color: "var(--system_error)" }}>
@@ -97,7 +100,7 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
                   : "var(--neutral_500)",
             }}
           >
-            {data.nickname.length} / {charLimit}
+            {data.nickname.length} / {upperCharLimit}
           </StB5>
         </div>
       </div>
@@ -106,7 +109,7 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
         size="full"
         active={
           data.nickname.length !== 0 &&
-          data.nickname.length <= charLimit &&
+          data.nickname.length <= upperCharLimit &&
           isInputValid
         }
         onClick={handleNext}

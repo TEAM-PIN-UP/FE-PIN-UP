@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import Header from "@/components/Header";
-import useFriendRequests from "@/hooks/api/pinBuddy/useFriendRequests";
+import { useReceivedFriendRequests } from "@/hooks/api/pinBuddy/useFriendRequests";
 import useProfileDetails from "@/hooks/api/profile/useProfileDetails";
 import {
   useGetPhotoReviews,
@@ -54,10 +54,10 @@ const Profile: React.FC = () => {
   const [photoReviewsPage, setPhotoReviewsPage] = useState(0);
   const [textReviewsPage, setTextReviewsPage] = useState(0);
   console.log(setPhotoReviewsPage, setTextReviewsPage);
-
   const pageSize = 15;
 
-  const { data: memberFeed } = useProfileDetails({ id });
+  const { data: memberFeed, isLoading: isMemberFeedLoading } =
+    useProfileDetails({ id });
   const { data: photoReviews } = useGetPhotoReviews({
     id,
     page: photoReviewsPage,
@@ -68,19 +68,10 @@ const Profile: React.FC = () => {
     page: textReviewsPage,
     size: pageSize,
   });
-  const { data: newFriendRequests } = useFriendRequests();
+  const { data: receivedFriendRequests } = useReceivedFriendRequests();
 
   // Review history swiper view state
   const [index, setIndex] = useState(0);
-
-  const handleNotifications = () => {
-    navigate("notifications", {
-      state: { newFriendRequests },
-    });
-  };
-  const handleSettings = () => {
-    navigate("settings");
-  };
 
   const [showLogin, setShowLogin] = useState(false);
   const handleShare = async () => {
@@ -107,14 +98,18 @@ const Profile: React.FC = () => {
           <Header.Right>
             <img
               src={
-                newFriendRequests && newFriendRequests?.length > 0
+                receivedFriendRequests && receivedFriendRequests?.length > 0
                   ? notificationActive
                   : notificationInactive
               }
-              onClick={handleNotifications}
+              onClick={() => navigate("notifications")}
               className="button"
             />
-            <img src={settings} onClick={handleSettings} className="button" />
+            <img
+              src={settings}
+              onClick={() => navigate("settings")}
+              className="button"
+            />
           </Header.Right>
         </Header>
 
@@ -122,13 +117,14 @@ const Profile: React.FC = () => {
           <div className="profile">
             <img
               src={
-                memberFeed?.memberResponse.profilePictureUrl
+                memberFeed && memberFeed.memberResponse.profilePictureUrl !== ""
                   ? memberFeed.memberResponse.profilePictureUrl
                   : defaultProfile
               }
               className="profile-image"
             />
             <UserStatsSection
+              isLoading={isMemberFeedLoading}
               stats={
                 [
                   {
@@ -142,11 +138,7 @@ const Profile: React.FC = () => {
                   {
                     label: "핀버디",
                     value: memberFeed?.memberResponse.pinBuddyCount,
-                    onClick: () => {
-                      navigate("/profile/pinbuddylist", {
-                        state: { newFriendRequests },
-                      });
-                    },
+                    onClick: () => navigate("/profile/pinbuddylist"),
                   },
                 ] as Stat[]
               }

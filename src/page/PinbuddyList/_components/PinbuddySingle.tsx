@@ -1,61 +1,123 @@
-import usePostFriendRequest from "@/hooks/api/pinBuddy/usePostFriendRequest";
-import { GetPinBuddySearchResponse } from "@/interface/member";
-import { relationType } from "@/interface/place";
+import useDeleteFriend from "@/hooks/api/pinBuddy/useDeleteFriend";
+import useDeleteFriendRequests from "@/hooks/api/pinBuddy/useDeleteFriendRequest";
+import usePatchFriendRequests from "@/hooks/api/pinBuddy/usePatchFriendRequests";
+import defaultProfile from "@/image/icons/defaultProfile.svg";
+import { FriendRequestResponse, MemberDetails } from "@/interface/member";
 import { B3, B5, H6 } from "@/style/font";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 interface PinBuddySingleProps {
-  data: GetPinBuddySearchResponse;
-  state: relationType;
+  data: FriendRequestResponse | MemberDetails;
+  state: "FRIEND" | "SENT_PENDING" | "RECEIVED_PENDING";
+  isSwiping: boolean;
 }
 
-const PinbuddySingle: React.FC<PinBuddySingleProps> = ({ data }) => {
-  const friendRequest = usePostFriendRequest();
-  const [currentState, setCurrentState] = useState<string>("");
+type requestControllerParams = "ACTION1" | "ACTION2";
+
+const PinbuddySingle: React.FC<PinBuddySingleProps> = ({
+  data,
+  state,
+  isSwiping,
+}) => {
+  const { acceptFriendRequest, rejectFriendRequest } = usePatchFriendRequests();
+  const deleteFriendRequest = useDeleteFriendRequests();
+  const deleteFriend = useDeleteFriend();
+  const [action1, setAction1] = useState("");
+  const [action2, setAction2] = useState("");
+
+  const [profilePictureUrl, setProfilePictureUrl] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [reviewCount, setReviewCount] = useState(0);
+  const [friendCount, setFriendCount] = useState(0);
+
+  const isMemberDetails = (
+    data: FriendRequestResponse | MemberDetails
+  ): data is MemberDetails => {
+    return (data as MemberDetails).memberId !== undefined;
+  };
 
   useEffect(() => {
-    if (data.relationType === "FRIEND") {
-      setCurrentState("삭제");
-    } else if (data.relationType === "PENDING") {
-      setCurrentState("요청보냄");
-    } else if (data.relationType === "SELF") {
-      setCurrentState("나야");
-    } else if (data.relationType === "STRANGER") {
-      setCurrentState("친구 요청");
-    }
-  }, [data.relationType]);
+    const setProfileInfo = (profile: {
+      profilePictureUrl: string;
+      nickname: string;
+      reviewCount: number;
+      pinBuddyCount: number;
+    }) => {
+      setProfilePictureUrl(profile.profilePictureUrl || defaultProfile);
+      setNickname(profile.nickname);
+      setReviewCount(profile.reviewCount);
+      setFriendCount(profile.pinBuddyCount);
+    };
 
-  const requestController = () => {
-    if (data.relationType === "STRANGER") {
-      friendRequest.mutate({ receiverId: data.memberResponse.memberId });
+    if (isMemberDetails(data)) {
+      setAction1("삭제");
+      setProfileInfo(data);
+    } else if (state === "RECEIVED_PENDING") {
+      setAction1("수락");
+      setAction2("거절");
+      setProfileInfo(data.sender);
+    } else if (state === "SENT_PENDING") {
+      setAction1("신청 취소");
+      setProfileInfo(data.receiver);
+    }
+    if (profilePictureUrl === "") setProfilePictureUrl(defaultProfile);
+  }, [data, profilePictureUrl, state]);
+
+  const requestController = (decision: requestControllerParams) => {
+    if (isSwiping) return;
+
+    if (isMemberDetails(data)) {
+      if (data.memberId) deleteFriend.mutate({ friendId: data.memberId });
+    } else if (state === "RECEIVED_PENDING") {
+      if (decision === "ACTION1" && data)
+        // Accept request
+        acceptFriendRequest.mutate({ request: data });
+      else if (decision === "ACTION2" && data)
+        // Reject request
+        rejectFriendRequest.mutate({ request: data });
+    } else if (state === "SENT_PENDING") {
+      if (data) deleteFriendRequest.mutate({ request: data });
     }
   };
 
   return (
-    <StSearchResultSingle relation={data.relationType}>
-      <img src={data.memberResponse.profilePictureUrl} />
+    <StSearchResultSingle>
+      <img src={profilePictureUrl} />
       <div className="profileInfo">
-        <div className="name">{data.memberResponse.nickname}</div>
+        <div className="name">{nickname}</div>
         <div className="counts">
           <div className="singleInfo">
             <span className="title">리뷰</span>
-            <span>{data.reviewCount}</span>
+            <span>{reviewCount}</span>
           </div>
           <div className="singleInfo">
             <span className="title">핀버디</span>
-            <span>{data.pinBuddyCount}</span>
+            <span>{friendCount}</span>
           </div>
         </div>
       </div>
-      <div className="profileButton" onClick={requestController}>
-        {currentState}
+      <div className="button-area">
+        <div
+          className="profile-button b1"
+          onClick={() => requestController("ACTION1")}
+        >
+          {action1}
+        </div>
+        {action2 && (
+          <div
+            className="profile-button b2"
+            onClick={() => requestController("ACTION2")}
+          >
+            {action2}
+          </div>
+        )}
       </div>
     </StSearchResultSingle>
   );
 };
 
-const StSearchResultSingle = styled.div<{ relation: relationType }>`
+const StSearchResultSingle = styled.div`
   display: flex;
   width: 100%;
   img {
@@ -86,20 +148,30 @@ const StSearchResultSingle = styled.div<{ relation: relationType }>`
       }
     }
   }
-  .profileButton {
+  .button-area {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 55px;
-    height: 30px;
-    border-radius: 6px;
-    background-color: var(--neutral_100);
+    flex-direction: row;
     margin: auto 0 auto auto;
-    color: ${(props) =>
-      props.relation === "STRANGER" ? "" : "var(--neutral_500)"};
-    ${H6}
-    cursor: ${(props) =>
-      props.relation === "STRANGER" ? "pointer" : "default"};
+    gap: var(--spacing_8);
+
+    .profile-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 55px;
+      height: 30px;
+      border-radius: 6px;
+      ${H6}
+      cursor:pointer;
+
+      &.b1 {
+        background-color: var(--neutral_100);
+      }
+
+      &.b2 {
+        border: 1px solid var(--neutral_100);
+      }
+    }
   }
 `;
 
