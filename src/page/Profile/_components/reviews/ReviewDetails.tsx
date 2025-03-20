@@ -2,12 +2,13 @@ import Header from "@/components/Header";
 import TransitionWrapper from "@/components/TransitionWrapper";
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
+import defaultProfile from "@/image/icons/defaultProfile.svg";
 import moreDotsGray from "@/image/icons/moreDotsGray.svg";
+import { MemberDetails } from "@/interface/member";
 import { PhotoReview } from "@/interface/review";
-import { paths } from "@/routes/paths";
 import { B6, H3, H4 } from "@/style/font";
-import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
-import { useEffect } from "react";
+import useToastPopup from "@/utils/toastPopup";
+import { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import ReviewText from "./ReviewText";
@@ -15,13 +16,24 @@ import ReviewText from "./ReviewText";
 export const ReviewDetails: React.FC = () => {
   useCheckLoginAndRoute();
   const navigate = useNavigate();
+  const toast = useToastPopup();
   const location = useLocation();
-  const detail = location.state.item as PhotoReview;
-  const memberResponse = getMemberResponseObj();
+  const writer = useRef(location.state.writer as MemberDetails);
+  const review = location.state.review as PhotoReview;
 
   useEffect(() => {
-    if (!detail) navigate(paths.profile());
-  }, [detail, navigate]);
+    if (!review) {
+      toast("상세 리뷰를 불러오지 못했어요.");
+      navigate(-1);
+    }
+    if (!writer.current) {
+      writer.current = {
+        profilePictureUrl: defaultProfile,
+        nickname: "",
+        reviewCount: 0,
+      } as MemberDetails;
+    }
+  }, [review, navigate, toast]);
 
   return (
     <StDiv>
@@ -42,23 +54,23 @@ export const ReviewDetails: React.FC = () => {
         <div className="user-header">
           <div className="profile">
             <img
-              src={memberResponse?.profilePictureUrl}
+              src={writer.current.profilePictureUrl}
               className="profile-image"
             />
             <div className="username">
-              <span className="h4">{memberResponse?.nickname}</span>
+              <span className="h4">{writer.current.nickname}</span>
               <div className="review-count">
                 <span className="b6 gray">리뷰</span>
-                <span className="b6">{}</span>
+                <span className="b6">{writer.current.reviewCount}</span>
               </div>
             </div>
           </div>
           <img src={moreDotsGray} className="more-dots" />
         </div>
         <div className="review-images">
-          <img src={detail.reviewImageUrls[0]} className="image" />
+          <img src={review.reviewImageUrls[0]} className="image" />
         </div>
-        <ReviewText item={detail} userName="나" />
+        <ReviewText item={review} userName="나" />
       </StTransitionWrapper>
     </StDiv>
   );

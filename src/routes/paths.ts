@@ -12,7 +12,7 @@ export const paths = {
   contents: () => "/contents",
   profile: (() => {
     const profile = "/profile";
-    return Object.assign(() => profile, {
+    return {
       notifications: () => `${profile}/notifications`,
       photoReview: (reviewId: number | string) =>
         `${profile}/photo-review/${reviewId}`,
@@ -34,7 +34,7 @@ export const paths = {
           {}
         );
       })(),
-    });
+    };
   })(),
   signup: () => "/signup",
   auth: (() => {

@@ -51,10 +51,6 @@ const router = createBrowserRouter([
         path: paths.contents(),
         element: <ContentsPage />,
       },
-      // {
-      //   path: paths.profile(),
-      //   element: <ProfilePage />,
-      // },
       {
         path: paths.profile.notifications(),
         element: <Notifications />,

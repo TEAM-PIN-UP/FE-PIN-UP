@@ -56,7 +56,7 @@ const Profile: React.FC = () => {
   const pageSize = 15;
 
   const { data: memberFeed, isLoading: isMemberFeedLoading } =
-    useProfileDetails({ id });
+    useProfileDetails(id);
   const { data: photoReviews } = useGetPhotoReviews({
     id,
     page: photoReviewsPage,
@@ -92,7 +92,7 @@ const Profile: React.FC = () => {
       <StDiv ref={attachRef}>
         <Header>
           <Header.Left>
-            <span className="h2">My</span>
+            <span className="h2">프로필</span>
           </Header.Left>
           <Header.Right>
             <img
@@ -137,7 +137,10 @@ const Profile: React.FC = () => {
                   {
                     label: "핀버디",
                     value: memberFeed?.memberResponse.pinBuddyCount,
-                    onClick: () => navigate(paths.profile.friends()),
+                    onClick: () => {
+                      if (!id) return;
+                      return navigate(paths.profile.id(id).friends());
+                    },
                   },
                 ] as Stat[]
               }
@@ -178,6 +181,7 @@ const Profile: React.FC = () => {
           <ReviewHistory
             index={index}
             onChangeIndex={(i) => setIndex(i)}
+            memberFeed={memberFeed}
             photos={photoReviews ? photoReviews : []}
             texts={textReviews ? textReviews : []}
           />

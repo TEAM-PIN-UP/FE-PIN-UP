@@ -1,4 +1,5 @@
 import ImgWithPlaceholder from "@/components/ImgWithPlaceholder";
+import { MemberProfileResponse } from "@/interface/member";
 import { PhotoReview, Review } from "@/interface/review";
 import { paths } from "@/routes/paths";
 import { H4 } from "@/style/font";
@@ -12,6 +13,7 @@ import ReviewText from "./ReviewText";
 interface ReviewHistoryProps {
   index: number;
   onChangeIndex: (arg0: number) => void;
+  memberFeed: MemberProfileResponse | undefined;
   photos: PhotoReview[];
   texts: Review[];
 }
@@ -19,6 +21,7 @@ interface ReviewHistoryProps {
 const ReviewHistory: React.FC<ReviewHistoryProps> = ({
   index,
   onChangeIndex,
+  memberFeed,
   photos,
   texts,
 }) => {
@@ -35,10 +38,10 @@ const ReviewHistory: React.FC<ReviewHistoryProps> = ({
     }, 50);
   };
 
-  const handleClick = (item: Review) => {
+  const handleClick = (item: PhotoReview) => {
     if (isSwiping) return;
     navigate(paths.profile.photoReview(item.reviewId), {
-      state: { item },
+      state: { writer: memberFeed?.memberResponse, review: item },
     });
   };
 
