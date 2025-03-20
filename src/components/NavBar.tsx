@@ -21,6 +21,11 @@ const NavBar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const memberResponse = getMemberResponseObj();
+  const memberId = memberResponse?.memberId;
+  if (!memberId) {
+    console.error("No member id in Navbar");
+    return;
+  }
 
   return (
     <StNavBar $path={location.pathname.split("/")[1]}>
@@ -48,7 +53,7 @@ const NavBar: React.FC = () => {
         className="profileArea"
         onClick={() => {
           if (location.pathname.split("/")[1] !== "profile")
-            navigate("/profile");
+            navigate(paths.profile.id(memberResponse?.memberId));
         }}
       >
         <img
