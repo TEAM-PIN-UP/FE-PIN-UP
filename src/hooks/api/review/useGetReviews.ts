@@ -1,6 +1,7 @@
 import getApi from "@/api/getApi";
 import { PhotoReview, Review } from "@/interface/review";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { queryKeys } from "../queryKeys";
 
 export interface GetReviewsParams {
   id: string | number | undefined;
@@ -22,8 +23,8 @@ export const useGetTextReviews = (
   };
   return useQuery({
     queryFn,
-    queryKey: ["textReviews", params.id],
-    enabled: Boolean(params.id),
+    enabled: !!params.id,
+    queryKey: queryKeys.textReviews(params.id!),
     retry: 1,
     staleTime: 1000 * 60 * 5,
   });
@@ -43,8 +44,8 @@ export const useGetPhotoReviews = (
   };
   return useQuery({
     queryFn,
-    queryKey: ["photoReviews", params.id],
-    enabled: Boolean(params.id),
+    enabled: !!params.id,
+    queryKey: queryKeys.photoReviews(params.id!),
     retry: 1,
     staleTime: 1000 * 60 * 5,
   });

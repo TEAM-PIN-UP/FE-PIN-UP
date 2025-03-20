@@ -13,7 +13,7 @@ const useFriendList = ({
     const response = await getApi.getFriends({ id });
     return response.data.content;
   };
-  return useQuery({ queryFn, queryKey: queryKeys.friends(id!), enabled: !!id });
+  return useQuery({ queryFn, enabled: !!id, queryKey: queryKeys.friends(id!) });
 };
 
 export default useFriendList;

@@ -1,3 +1,5 @@
+import { GetPlaceParams } from "@/interface/place";
+
 export const queryKeys = {
   friends: (memberId: number | string) => ["friends", memberId.toString()],
   receivedFriendRequests: (memberId: number | string) => [
@@ -9,4 +11,10 @@ export const queryKeys = {
     memberId.toString(),
   ],
   searchMember: (nickname: string) => ["searchMember", nickname],
+  places: (place: GetPlaceParams) => ["places", place],
+  searchPlaces: (keyword: string) => ["searchPlaces", keyword],
+  getProfile: (memberId: number | string) => ["profile", memberId],
+  postReview: () => [],
+  photoReviews: (memberId: number | string) => ["photoReviews", memberId],
+  textReviews: (memberId: number | string) => ["textReviews", memberId],
 };

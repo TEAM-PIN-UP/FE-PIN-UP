@@ -4,6 +4,7 @@ import {
   GetSearchPlacesResponse,
 } from "@/interface/place";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { queryKeys } from "../queryKeys";
 
 const useGetSearchPlaces = ({
   keyword,
@@ -14,8 +15,8 @@ const useGetSearchPlaces = ({
   };
   return useQuery({
     queryFn,
-    queryKey: ["searchPlaces", keyword],
-    enabled: Boolean(keyword),
+    enabled: !!keyword,
+    queryKey: queryKeys.searchPlaces(keyword),
     retry: 1,
     staleTime: 1000 * 60 * 5,
   });
