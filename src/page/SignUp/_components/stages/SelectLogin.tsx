@@ -6,6 +6,7 @@ import { styled } from "styled-components";
 import googleIcon from "../../_icons/googleIcon.png";
 // import kakaoIcon from "../../_icons/kakaoIcon.png";
 // import naverIcon from "../../_icons/naverIcon.svg";
+import { paths } from "@/routes/paths";
 import pinupLogo from "../../_icons/pinupLogo.svg";
 import SocialSignUpButton from "../SocialSignUpButton";
 import StTextContainer from "../typography/StTextContainer";
@@ -36,7 +37,10 @@ const SelectLogin: React.FC<StageProps> = ({ updateData, onNext }) => {
 
       // Check memberResponse for nickname (if not empty then existing user)
       const nickname = data.memberResponse.nickname;
-      if (typeof nickname === "string" && nickname.length > 0) navigate("/map");
+      if (typeof nickname === "string" && nickname.length > 0) {
+        navigate(paths.map());
+        location.reload();
+      }
       onNext();
     },
     onError: (errorResponse) => console.log(errorResponse),

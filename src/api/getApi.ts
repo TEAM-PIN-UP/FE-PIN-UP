@@ -32,11 +32,11 @@ const getApi = {
     customAxios.get(`/api/places/keyword`, { params: { query: keyword } }),
 
   // Signup
-  getMemberNicknameCheck: ({ nickname }: { nickname: string }) =>
+  getMemberNicknameCheck: (nickname: string) =>
     customAxios.get(`/api/members/nickname/check`, { params: { nickname } }),
 
   // Member Feed
-  getMemberDetails: ({ id }: { id: number }) =>
+  getMemberDetails: (id: string | number) =>
     customAxios.get(`/api/members/${id}`),
   getTextReviews: (params: GetReviewsParams) =>
     customAxios.get(`/api/members/${params.id}/text-reviews`, {
@@ -46,13 +46,12 @@ const getApi = {
     customAxios.get(`/api/members/${params.id}/photo-reviews`, {
       params: { page: params.page, size: params.size },
     }),
-  getReviewId: ({ id }: { id: string }) =>
-    customAxios.get(`/api/reviews/${id}`),
+  getReviewId: (id: string | number) => customAxios.get(`/api/reviews/${id}`),
   getBookmarks: (params: GetMyPlaceProps) =>
     customAxios.get(`/api/bookmarks`, { params }),
-  getSearchMember: ({ nickname }: { nickname: string }) =>
+  getSearchMember: (nickname: string) =>
     customAxios.get(`/api/members/search`, { params: { nickname } }),
-  getFriends: ({ id }: { id: string | number }) =>
+  getFriends: (id: string | number) =>
     customAxios.get(`/api/friendships/${id}`),
   getReceivedFriendRequests: () =>
     customAxios.get(`/api/friend-requests/received`),

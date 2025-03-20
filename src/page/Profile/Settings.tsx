@@ -2,6 +2,7 @@ import customAxios from "@/api/Interceptor";
 import Header from "@/components/Header";
 import TransitionWrapper from "@/components/TransitionWrapper";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
+import { paths } from "@/routes/paths";
 import { ModalProps } from "@/store/modalStore";
 import { H3 } from "@/style/font";
 import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
@@ -28,7 +29,8 @@ const Settings: React.FC = () => {
         console.warn("Logout request failed, proceeding anyway.", error);
       } finally {
         localStorage.clear();
-        navigate("/signup");
+        navigate(paths.signup());
+        location.reload();
         closeModal();
       }
     },
@@ -58,7 +60,7 @@ const Settings: React.FC = () => {
         <SettingsItem
           title="프로필 편집"
           type="arrow"
-          onClick={() => navigate(`edit-profile`)}
+          onClick={() => navigate(paths.profile.settings.editProfile())}
         />
         <SettingsItem
           title="계정 정보"

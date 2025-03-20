@@ -6,7 +6,7 @@ import {
 import { H3 } from "@/style/font";
 import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
 import PinbuddyListHeader from "./_components/Header";
@@ -15,15 +15,17 @@ import PinbuddySingle from "./_components/PinbuddySingle";
 const PinbuddyList = () => {
   const navigate = useNavigate();
   const { search } = useLocation();
+  const { uid: id } = useParams();
 
   const [index, setIndex] = useState(0);
   const [isSwiping, setIsSwiping] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const memberResponse = getMemberResponseObj();
-  const { data: friends } = useFriendList({ id: memberResponse?.memberId });
+  const { data: friends } = useFriendList({ id });
   const { data: receivedFriendRequests } = useReceivedFriendRequests();
   const { data: sentFriendRequests } = useSentFriendRequests();
+  const isOtherUser = memberResponse?.memberId !== Number(id);
 
   // Switch to tab based on url params
   useEffect(() => {
@@ -62,23 +64,28 @@ const PinbuddyList = () => {
         >
           핀버디
         </button>
-        <button
-          className={`pinbuddy-tab ${index === 1 ? "active" : ""}`}
-          onClick={() => updateUrl(1)}
-        >
-          받은 신청
-        </button>
-        <button
-          className={`pinbuddy-tab ${index === 2 ? "active" : ""}`}
-          onClick={() => updateUrl(2)}
-        >
-          보낸 신청
-        </button>
+        {!isOtherUser && (
+          <>
+            <button
+              className={`pinbuddy-tab ${index === 1 ? "active" : ""}`}
+              onClick={() => updateUrl(1)}
+            >
+              받은 신청
+            </button>
+            <button
+              className={`pinbuddy-tab ${index === 2 ? "active" : ""}`}
+              onClick={() => updateUrl(2)}
+            >
+              보낸 신청
+            </button>
+          </>
+        )}
       </div>
       <SwipeableViews
         slideClassName="pinbuddy-container"
         enableMouseEvents
-        index={index}
+        index={isOtherUser ? 0 : index}
+        disabled={isOtherUser}
         onChangeIndex={(i) => updateUrl(i)}
         onMouseDown={(e) => e.preventDefault()}
         onSwitching={handleSwitch}
@@ -100,6 +107,7 @@ const PinbuddyList = () => {
                 data={friend}
                 state="FRIEND"
                 isSwiping={isSwiping}
+                exposeActions={!isOtherUser}
               />
             ))}
         </div>

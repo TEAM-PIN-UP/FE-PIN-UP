@@ -3,14 +3,17 @@ import useDeleteFriendRequests from "@/hooks/api/pinBuddy/useDeleteFriendRequest
 import usePatchFriendRequests from "@/hooks/api/pinBuddy/usePatchFriendRequests";
 import defaultProfile from "@/image/icons/defaultProfile.svg";
 import { FriendRequestResponse, MemberDetails } from "@/interface/member";
+import { paths } from "@/routes/paths";
 import { B3, B5, H6 } from "@/style/font";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 interface PinBuddySingleProps {
   data: FriendRequestResponse | MemberDetails;
   state: "FRIEND" | "SENT_PENDING" | "RECEIVED_PENDING";
   isSwiping: boolean;
+  exposeActions?: boolean;
 }
 
 type requestControllerParams = "ACTION1" | "ACTION2";
@@ -19,7 +22,10 @@ const PinbuddySingle: React.FC<PinBuddySingleProps> = ({
   data,
   state,
   isSwiping,
+  exposeActions = true,
 }) => {
+  const navigate = useNavigate();
+
   const { acceptFriendRequest, rejectFriendRequest } = usePatchFriendRequests();
   const deleteFriendRequest = useDeleteFriendRequests();
   const deleteFriend = useDeleteFriend();
@@ -81,38 +87,51 @@ const PinbuddySingle: React.FC<PinBuddySingleProps> = ({
     }
   };
 
+  const handleVisitProfile = () => {
+    if (isMemberDetails(data))
+      navigate(`../${paths.profile.id(data.memberId)}`);
+    else if (state === "RECEIVED_PENDING")
+      navigate(`../${paths.profile.id(data.sender.memberId)}`);
+    else if (state === "SENT_PENDING")
+      navigate(`../${paths.profile.id(data.receiver.memberId)}`);
+  };
+
   return (
     <StSearchResultSingle>
-      <img src={profilePictureUrl} />
-      <div className="profileInfo">
-        <div className="name">{nickname}</div>
-        <div className="counts">
-          <div className="singleInfo">
-            <span className="title">리뷰</span>
-            <span>{reviewCount}</span>
-          </div>
-          <div className="singleInfo">
-            <span className="title">핀버디</span>
-            <span>{friendCount}</span>
+      <div className="user-area" onClick={handleVisitProfile}>
+        <img src={profilePictureUrl} />
+        <div className="profile-info">
+          <div className="name">{nickname}</div>
+          <div className="count">
+            <div className="single-info">
+              <span className="title">리뷰</span>
+              <span>{reviewCount}</span>
+            </div>
+            <div className="single-info">
+              <span className="title">핀버디</span>
+              <span>{friendCount}</span>
+            </div>
           </div>
         </div>
       </div>
-      <div className="button-area">
-        <div
-          className="profile-button b1"
-          onClick={() => requestController("ACTION1")}
-        >
-          {action1}
-        </div>
-        {action2 && (
+      {exposeActions && (
+        <div className="button-area">
           <div
-            className="profile-button b2"
-            onClick={() => requestController("ACTION2")}
+            className="profile-button b1"
+            onClick={() => requestController("ACTION1")}
           >
-            {action2}
+            {action1}
           </div>
-        )}
-      </div>
+          {action2 && (
+            <div
+              className="profile-button b2"
+              onClick={() => requestController("ACTION2")}
+            >
+              {action2}
+            </div>
+          )}
+        </div>
+      )}
     </StSearchResultSingle>
   );
 };
@@ -125,25 +144,31 @@ const StSearchResultSingle = styled.div`
     height: 40px;
     border-radius: var(--radius_circle);
   }
-  .profileInfo {
+  .user-area {
+    cursor: pointer;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 4px;
-    margin-left: 8px;
-    text-align: left;
-    .name {
-      ${B3}
-    }
-    .counts {
+    flex-direction: row;
+
+    .profile-info {
       display: flex;
-      gap: 8px;
-      ${B5}
-      .singleInfo {
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      margin-left: 8px;
+      text-align: left;
+      .name {
+        ${B3}
+      }
+      .count {
         display: flex;
-        gap: 2px;
-        .title {
-          color: var(--neutral_400);
+        gap: 8px;
+        ${B5}
+        .single-info {
+          display: flex;
+          gap: 2px;
+          .title {
+            color: var(--neutral_400);
+          }
         }
       }
     }

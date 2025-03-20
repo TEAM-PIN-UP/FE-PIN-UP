@@ -45,9 +45,7 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
   const handleNext = async () => {
     try {
       setIsSubmitting(true);
-      const response = await getApi.getMemberNicknameCheck({
-        nickname: data.nickname,
-      });
+      const response = await getApi.getMemberNicknameCheck(data.nickname);
       setIsNicknameValid(!(response.data as boolean));
     } catch (error) {
       console.error("Error checking nickname:", error);

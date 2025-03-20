@@ -1,4 +1,3 @@
-import Button from "@/components/Button";
 import Header from "@/components/Header";
 import { useReceivedFriendRequests } from "@/hooks/api/pinBuddy/useFriendRequests";
 import useProfileDetails from "@/hooks/api/profile/useProfileDetails";
@@ -7,49 +6,29 @@ import {
   useGetTextReviews,
 } from "@/hooks/api/review/useGetReviews";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
-import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import addUser from "@/image/icons/addUser.svg";
 import defaultProfile from "@/image/icons/defaultProfile.svg";
 import notificationActive from "@/image/icons/notificationActive.svg";
 import notificationInactive from "@/image/icons/notificationInactive.svg";
 import settings from "@/image/icons/settings.svg";
 import share from "@/image/icons/share.svg";
-import { B3, B4, H1, H2, H3, H4 } from "@/style/font";
-import checkLogin from "@/utils/checkLogin";
-import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
-import useToastPopup from "@/utils/toastPopup";
-import { useEffect, useRef, useState } from "react";
-import { Sheet, SheetRef } from "react-modal-sheet";
-import { useNavigate } from "react-router-dom";
+import { paths } from "@/routes/paths";
+import { B4, H2, H4 } from "@/style/font";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import ProfileButton from "./_components/ProfileButton";
 import ReviewHistory from "./_components/reviews/ReviewHistory";
+import ShareSheet from "./_components/ShareSheet";
 import UserStatsSection, { Stat } from "./_components/UserStatsSection";
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
-  const toast = useToastPopup();
-  useCheckLoginAndRoute();
-  const memberDetails = getMemberResponseObj();
-  const id = memberDetails?.memberId;
+  const { uid: id } = useParams();
 
   // Bottom sheet logic
-  const sheetRef = useRef<SheetRef>();
   const { attachRef } = useBottomSheetSnapPoints();
-  const [left, setLeft] = useState(0);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const updateLeftPosition = () => {
-    const newLeft = window.innerWidth > 440 ? (window.innerWidth - 440) / 2 : 0;
-    setLeft(newLeft);
-  };
-  useEffect(() => {
-    // Update bottom sheet alignment on window resize
-    updateLeftPosition();
-    window.addEventListener("resize", updateLeftPosition);
-    return () => {
-      window.removeEventListener("resize", updateLeftPosition);
-    };
-  }, []);
 
   const [photoReviewsPage, setPhotoReviewsPage] = useState(0);
   const [textReviewsPage, setTextReviewsPage] = useState(0);
@@ -57,7 +36,7 @@ const Profile: React.FC = () => {
   const pageSize = 15;
 
   const { data: memberFeed, isLoading: isMemberFeedLoading } =
-    useProfileDetails({ id });
+    useProfileDetails(id);
   const { data: photoReviews } = useGetPhotoReviews({
     id,
     page: photoReviewsPage,
@@ -73,27 +52,12 @@ const Profile: React.FC = () => {
   // Review history swiper view state
   const [index, setIndex] = useState(0);
 
-  const [showLogin, setShowLogin] = useState(false);
-  const handleShare = async () => {
-    if (checkLogin()) {
-      try {
-        await navigator.clipboard.writeText("profile");
-        setIsSheetOpen(false);
-        toast("링크를 클립보드에 복사했어요.");
-      } catch (err) {
-        console.error("Failed to copy: ", err);
-      }
-    } else {
-      setShowLogin(true);
-    }
-  };
-
   return (
     <>
       <StDiv ref={attachRef}>
         <Header>
           <Header.Left>
-            <span className="h2">My</span>
+            <span className="h2">프로필</span>
           </Header.Left>
           <Header.Right>
             <img
@@ -102,12 +66,12 @@ const Profile: React.FC = () => {
                   ? notificationActive
                   : notificationInactive
               }
-              onClick={() => navigate("notifications")}
+              onClick={() => navigate(paths.profile.notifications())}
               className="button"
             />
             <img
               src={settings}
-              onClick={() => navigate("settings")}
+              onClick={() => navigate(paths.profile.settings())}
               className="button"
             />
           </Header.Right>
@@ -138,7 +102,10 @@ const Profile: React.FC = () => {
                   {
                     label: "핀버디",
                     value: memberFeed?.memberResponse.pinBuddyCount,
-                    onClick: () => navigate("/profile/pinbuddylist"),
+                    onClick: () => {
+                      if (!id) return;
+                      return navigate(paths.profile.id(id).friends());
+                    },
                   },
                 ] as Stat[]
               }
@@ -156,7 +123,7 @@ const Profile: React.FC = () => {
             <ProfileButton
               icon={addUser}
               text="핀버디 추가"
-              onClick={() => navigate(`pinbuddySearch`)}
+              onClick={() => navigate(paths.profile.search())}
             />
           </div>
 
@@ -179,95 +146,18 @@ const Profile: React.FC = () => {
           <ReviewHistory
             index={index}
             onChangeIndex={(i) => setIndex(i)}
+            memberFeed={memberFeed}
             photos={photoReviews ? photoReviews : []}
             texts={textReviews ? textReviews : []}
           />
         </div>
 
         {/* Share Profile */}
-        <StSheet
-          ref={sheetRef}
-          isOpen={isSheetOpen}
-          onClose={() => {
-            setIsSheetOpen(false);
-          }}
-          snapPoints={[0.5]}
-          $left={left}
-        >
-          <Sheet.Container>
-            <Sheet.Header />
-            <Sheet.Content className="content">
-              {!showLogin && (
-                <div className="profile-share">
-                  <img
-                    src={memberFeed?.memberResponse.profilePictureUrl}
-                    className="profile-image"
-                  />
-                  <span className="username">
-                    {memberFeed?.memberResponse.nickname}
-                  </span>
-                  <UserStatsSection
-                    stats={
-                      [
-                        {
-                          label: "리뷰",
-                          value: memberFeed?.memberResponse.reviewCount,
-                        },
-                        {
-                          label: "평균 평점",
-                          value: memberFeed?.memberResponse.averageStarRating,
-                        },
-                        {
-                          label: "핀버디",
-                          value: memberFeed?.memberResponse.pinBuddyCount,
-                        },
-                      ] as Stat[]
-                    }
-                  />
-                  <Button
-                    size="xlarge"
-                    onClick={handleShare}
-                    className="share-button"
-                  >
-                    프로필 공유
-                  </Button>
-                </div>
-              )}
-              {showLogin && (
-                <div className="suggest-login">
-                  <div className="content-group">
-                    <p className="title">로그인이 필요해요!</p>
-                    <div className="body-group">
-                      <p className="body">로그인 후 핀업의</p>
-                      <p className="body">
-                        다양한 서비스를 편리하게 이용해 보세요.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="button-group">
-                    <Button
-                      className="signup-button"
-                      size="xlarge"
-                      onClick={() => navigate("/signup")}
-                    >
-                      로그인/회원가입
-                    </Button>
-                    <button
-                      className="close-button"
-                      onClick={() => setIsSheetOpen(false)}
-                    >
-                      괜찮아요
-                    </button>
-                  </div>
-                </div>
-              )}
-            </Sheet.Content>
-          </Sheet.Container>
-          <Sheet.Backdrop
-            onTap={() => setIsSheetOpen(false)}
-            style={{ backgroundColor: `var(--transparent_50)` }}
-          />
-        </StSheet>
+        <ShareSheet
+          isSheetOpen={isSheetOpen}
+          setIsSheetOpen={setIsSheetOpen}
+          memberResponse={memberFeed?.memberResponse}
+        />
       </StDiv>
     </>
   );
@@ -352,88 +242,6 @@ const StDiv = styled.div`
 
   .h2 {
     ${H2}
-  }
-`;
-
-const StSheet = styled(Sheet)<{ $left: number }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-width: var(--max_width);
-  min-width: var(--min_width);
-  left: ${({ $left }) => `${$left}px !important`};
-
-  .content {
-    flex: 1;
-
-    .profile-share {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      padding: var(--spacing_24);
-      padding-bottom: var(--spacing_48);
-      align-items: center;
-      justify-content: start;
-      height: 100%;
-      z-index: 99999999;
-
-      .profile-image {
-        width: 56px;
-        height: 56px;
-        background-size: cover;
-        background-position: center;
-        border-radius: var(--radius_circle);
-        margin-bottom: var(--spacing_12);
-      }
-
-      .username {
-        ${H3}
-        margin-bottom: var(--spacing_32);
-      }
-
-      .share-button {
-        max-width: 400px;
-        margin: var(--spacing_48) var(--spacing_20);
-        z-index: 999999999;
-      }
-    }
-
-    .suggest-login {
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-      padding: 28px 24px;
-      text-align: center;
-
-      .content-group {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        gap: var(--spacing_32);
-
-        .title {
-          ${H1}
-        }
-        .body-group {
-          gap: 6px;
-          .body {
-            ${B3}
-          }
-        }
-      }
-      .button-group {
-        .signup-button {
-          margin-top: var(--spacing_48);
-        }
-        .close-button {
-          background-color: transparent;
-          border: none;
-          color: var(--neutral_800);
-          cursor: pointer;
-          margin-top: var(--spacing_16);
-        }
-      }
-    }
   }
 `;
 

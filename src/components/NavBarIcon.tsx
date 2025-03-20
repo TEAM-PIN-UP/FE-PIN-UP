@@ -13,12 +13,12 @@ const NavBarIcon: React.FC<NavbarIconProps> = ({ path, active, inActive }) => {
 
   return (
     <>
-      {path === location.pathname.split("/")[1] ? (
+      {path.split("/")[1] === location.pathname.split("/")[1] ? (
         <StIconArea>
           <img src={active} />
         </StIconArea>
       ) : (
-        <StIconArea onClick={() => navigate(`/${path}`)}>
+        <StIconArea onClick={() => navigate(path)}>
           <img src={inActive} className="inactive" />
         </StIconArea>
       )}

@@ -1,6 +1,7 @@
 import getApi from "@/api/getApi";
 import { GetPlaceParams, GetPlaceResponse } from "@/interface/place";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { queryKeys } from "../queryKeys";
 
 const useGetPlaces = (
   params: GetPlaceParams
@@ -19,8 +20,8 @@ const useGetPlaces = (
 
   return useQuery({
     queryFn,
-    queryKey: ["places", params],
     enabled: isValid,
+    queryKey: queryKeys.places(params),
     retry: 1,
     staleTime: 1000 * 60 * 5,
   });

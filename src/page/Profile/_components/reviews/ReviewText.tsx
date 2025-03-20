@@ -1,6 +1,7 @@
 import blackStar from "@/image/icons/blackStar.svg";
 import chevronRight from "@/image/icons/chevronRightBlack.svg";
 import { Review } from "@/interface/review";
+import { paths } from "@/routes/paths";
 import { B3, B4, B5, B6, H3, H4 } from "@/style/font";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -21,10 +22,12 @@ const ReviewText: React.FC<ReviewTextProps> = ({ item, userName }) => {
           <img
             src={chevronRight}
             onClick={() => {
-              const params = new URLSearchParams({
-                kakaoPlaceId: item.kakaoPlaceId,
+              navigate({
+                pathname: paths.map(),
+                search: new URLSearchParams({
+                  kakaoPlaceId: item.kakaoPlaceId,
+                }).toString(),
               });
-              navigate(`/map?${params.toString()}`);
             }}
           />
         </button>

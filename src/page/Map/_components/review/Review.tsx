@@ -1,9 +1,9 @@
-import styled from "styled-components";
-
 import Button from "@/components/Button";
 import useGetSpecificPlaces from "@/hooks/api/place/useGetSpecificPlace";
+import { paths } from "@/routes/paths";
 import { H3 } from "@/style/font";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import styled from "styled-components";
 import Restaurant from "../Restaurant";
 import ReviewDefault from "./ReviewDefault";
 import ReviewGraph from "./ReviewGraph";
@@ -54,7 +54,7 @@ const Review: React.FC<ReviewProps> = ({
       <div className="reviewBucket">
         <div className="reviewTitle">
           <span>핀버디 리뷰</span>
-          <Button size="small" onClick={() => navigate(`/review`)}>
+          <Button size="small" onClick={() => navigate(paths.review())}>
             리뷰 작성
           </Button>
         </div>

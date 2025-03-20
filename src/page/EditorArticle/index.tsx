@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import edit from "@/image/icons/edit.svg";
+import { paths } from "@/routes/paths";
 import { H2 } from "@/style/font";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -15,7 +16,11 @@ const EditorArticlePage = () => {
           <span className="header-title">에디터 아티클</span>
         </Header.Left>
         <Header.Right>
-          <img className="post" src={edit} onClick={() => navigate("post")} />
+          <img
+            className="post"
+            src={edit}
+            onClick={() => navigate(paths.articles.post())}
+          />
         </Header.Right>
       </Header>
       <div className="cards">
