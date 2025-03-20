@@ -36,7 +36,7 @@ const getApi = {
     customAxios.get(`/api/members/nickname/check`, { params: { nickname } }),
 
   // Member Feed
-  getMemberDetails: ({ id }: { id: number }) =>
+  getMemberDetails: ({ id }: { id: string | number }) =>
     customAxios.get(`/api/members/${id}`),
   getTextReviews: (params: GetReviewsParams) =>
     customAxios.get(`/api/members/${params.id}/text-reviews`, {
@@ -46,7 +46,7 @@ const getApi = {
     customAxios.get(`/api/members/${params.id}/photo-reviews`, {
       params: { page: params.page, size: params.size },
     }),
-  getReviewId: ({ id }: { id: string }) =>
+  getReviewId: ({ id }: { id: string | number }) =>
     customAxios.get(`/api/reviews/${id}`),
   getBookmarks: (params: GetMyPlaceProps) =>
     customAxios.get(`/api/bookmarks`, { params }),

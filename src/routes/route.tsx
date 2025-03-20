@@ -1,5 +1,3 @@
-import { createBrowserRouter } from "react-router-dom";
-
 import App from "@/App";
 import MyPlace from "@/page/Bookmarks";
 import ContentsPage from "@/page/Contents";
@@ -7,7 +5,6 @@ import EditorArticlePage from "@/page/EditorArticle";
 import EditorPostPage from "@/page/EditorArticle/EditorPost";
 import LandingPage from "@/page/Landing";
 import MapPage from "@/page/Map";
-import OtherProfile from "@/page/OtherProfile";
 import PinbuddyList from "@/page/PinbuddyList";
 import PinbuddySearch from "@/page/PinbuddySearch";
 import PinBuddyLayout from "@/page/PinbuddySearch/Layout";
@@ -19,6 +16,7 @@ import { ReviewDetails } from "@/page/Profile/_components/reviews/ReviewDetails"
 import ReviewPage from "@/page/Review";
 import SignUpPage from "@/page/SignUp";
 import NaverAuthCallback from "@/page/SignUp/_components/auth/NaverAuthCallback";
+import { createBrowserRouter } from "react-router-dom";
 import { paths } from "./paths";
 
 const router = createBrowserRouter([
@@ -54,10 +52,10 @@ const router = createBrowserRouter([
         path: paths.contents(),
         element: <ContentsPage />,
       },
-      {
-        path: paths.profile(),
-        element: <ProfilePage />,
-      },
+      // {
+      //   path: paths.profile(),
+      //   element: <ProfilePage />,
+      // },
       {
         path: paths.profile.notifications(),
         element: <Notifications />,
@@ -86,7 +84,7 @@ const router = createBrowserRouter([
       },
       {
         path: paths.profile.id(":uid"),
-        element: <OtherProfile />,
+        element: <ProfilePage />,
       },
       {
         path: paths.signup(),

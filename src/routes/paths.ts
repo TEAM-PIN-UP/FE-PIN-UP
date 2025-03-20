@@ -24,14 +24,13 @@ export const paths = {
           editProfile: () => `${profileSettings}/edit-profile`,
         });
       })(),
-      id: (memberId: number | string) => `${profile}/:${memberId}`,
+      id: (memberId: number | string) => `${profile}/${memberId}`,
     });
   })(),
   signup: () => "/signup",
   auth: (() => {
     const auth = () => "/auth";
     return {
-      // index:auth,
       naver: () => `${auth}/naver`,
     };
   })(),

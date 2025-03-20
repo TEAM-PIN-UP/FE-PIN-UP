@@ -17,11 +17,10 @@ import share from "@/image/icons/share.svg";
 import { paths } from "@/routes/paths";
 import { B3, B4, H1, H2, H3, H4 } from "@/style/font";
 import checkLogin from "@/utils/checkLogin";
-import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
 import useToastPopup from "@/utils/toastPopup";
 import { useEffect, useRef, useState } from "react";
 import { Sheet, SheetRef } from "react-modal-sheet";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import ProfileButton from "./_components/ProfileButton";
 import ReviewHistory from "./_components/reviews/ReviewHistory";
@@ -31,8 +30,7 @@ const Profile: React.FC = () => {
   useCheckLoginAndRoute();
   const navigate = useNavigate();
   const toast = useToastPopup();
-  const memberDetails = getMemberResponseObj();
-  const id = memberDetails?.memberId;
+  const { uid: id } = useParams();
 
   // Bottom sheet logic
   const sheetRef = useRef<SheetRef>();

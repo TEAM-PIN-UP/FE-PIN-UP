@@ -5,7 +5,7 @@ import { useQuery, UseQueryResult } from "@tanstack/react-query";
 const useProfileDetails = ({
   id,
 }: {
-  id: number | undefined;
+  id: number | string | undefined;
 }): UseQueryResult<MemberProfileResponse> => {
   const queryFn = async () => {
     try {
