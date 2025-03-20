@@ -13,7 +13,7 @@ const useFriendSearch = ({
   setSearchList,
 }: UseFriendSearchProps): UseQueryResult<GetPinBuddySearchResponse[]> => {
   const queryFn = async () => {
-    const response = await getApi.getSearchMember({ nickname });
+    const response = await getApi.getSearchMember(nickname);
     setSearchList(response.data);
     return response.data;
   };
