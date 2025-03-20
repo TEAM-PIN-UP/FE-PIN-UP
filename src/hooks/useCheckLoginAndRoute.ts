@@ -1,3 +1,4 @@
+import { paths } from "@/routes/paths";
 import checkLogin from "@/utils/checkLogin";
 import useToastPopup from "@/utils/toastPopup";
 import { useEffect } from "react";
@@ -11,7 +12,7 @@ const useCheckLoginAndRoute = (options?: {
   const toast = useToastPopup();
 
   const toastText = options?.toastText ?? "로그인 후 이용해 주세요.";
-  const path = options?.path ?? "/signup";
+  const path = options?.path ?? paths.signup();
 
   useEffect(() => {
     const isSignedIn = checkLogin();

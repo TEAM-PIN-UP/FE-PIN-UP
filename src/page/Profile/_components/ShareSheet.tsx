@@ -44,7 +44,11 @@ const ShareSheet: React.FC<ShareSheetProps> = ({
   const handleShare = async () => {
     if (checkLogin()) {
       try {
-        await navigator.clipboard.writeText("profile");
+        await navigator.clipboard.writeText(
+          `${import.meta.env.VITE_URI}${paths.profile.id(
+            memberResponse!.memberId
+          )}`
+        );
         setIsSheetOpen(false);
         toast("링크를 클립보드에 복사했어요.");
       } catch (err) {
