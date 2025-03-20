@@ -17,14 +17,23 @@ export const paths = {
       photoReview: (reviewId: number | string) =>
         `${profile}/photo-review/${reviewId}`,
       search: () => `${profile}/search`,
-      friends: () => `${profile}/friends`,
       settings: (() => {
         const profileSettings = `${profile}/settings`;
         return Object.assign(() => profileSettings, {
           editProfile: () => `${profileSettings}/edit-profile`,
         });
       })(),
-      id: (memberId: number | string) => `${profile}/${memberId}`,
+      id: (() => {
+        const profileId = (memberId: string | number) =>
+          `${profile}/${memberId}`;
+        return Object.assign(
+          (memberId: string | number) =>
+            Object.assign(profileId(memberId), {
+              friends: () => `${profileId(memberId)}/friends`,
+            }),
+          {}
+        );
+      })(),
     });
   })(),
   signup: () => "/signup",

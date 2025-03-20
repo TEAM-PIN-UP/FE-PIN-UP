@@ -3,7 +3,6 @@ import MyPlace from "@/page/Bookmarks";
 import ContentsPage from "@/page/Contents";
 import EditorArticlePage from "@/page/EditorArticle";
 import EditorPostPage from "@/page/EditorArticle/EditorPost";
-import LandingPage from "@/page/Landing";
 import MapPage from "@/page/Map";
 import PinbuddyList from "@/page/PinbuddyList";
 import PinbuddySearch from "@/page/PinbuddySearch";
@@ -26,7 +25,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: paths.base(),
-        element: <LandingPage />,
+        element: <MapPage />,
       },
       {
         path: paths.articles(),
@@ -73,10 +72,6 @@ const router = createBrowserRouter([
           },
         ],
       },
-      {
-        path: paths.profile.friends(),
-        element: <PinbuddyList />,
-      },
       { path: paths.profile.settings(), element: <Settings /> },
       {
         path: paths.profile.settings.editProfile(),
@@ -85,6 +80,10 @@ const router = createBrowserRouter([
       {
         path: paths.profile.id(":uid"),
         element: <ProfilePage />,
+      },
+      {
+        path: paths.profile.id(":uid").friends(),
+        element: <PinbuddyList />,
       },
       {
         path: paths.signup(),
