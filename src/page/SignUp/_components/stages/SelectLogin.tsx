@@ -7,6 +7,7 @@ import googleIcon from "../../_icons/googleIcon.png";
 // import kakaoIcon from "../../_icons/kakaoIcon.png";
 // import naverIcon from "../../_icons/naverIcon.svg";
 import { paths } from "@/routes/paths";
+import useToastPopup from "@/utils/toastPopup";
 import pinupLogo from "../../_icons/pinupLogo.svg";
 import SocialSignUpButton from "../SocialSignUpButton";
 import StTextContainer from "../typography/StTextContainer";
@@ -14,36 +15,47 @@ import { StageProps } from "./StageProps";
 
 const SelectLogin: React.FC<StageProps> = ({ updateData, onNext }) => {
   const navigate = useNavigate();
+  const toast = useToastPopup();
+
   const googleLogin = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async (codeResponse) => {
-      const tokens = await axios.get(
-        `${import.meta.env.VITE_SERVER_ADDRESS}/api/auth/login/google/callback`,
-        {
-          params: {
-            code: codeResponse.code,
-          },
+      try {
+        const tokens = await axios.get(
+          `${
+            import.meta.env.VITE_SERVER_ADDRESS
+          }/api/auth/login/google/callback`,
+          {
+            params: {
+              code: codeResponse.code,
+            },
+          }
+        );
+
+        updateData({ authMethod: "google" });
+        const data = tokens.data.data;
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("refreshToken", data.refreshToken);
+        localStorage.setItem(
+          "memberResponse",
+          JSON.stringify(data.memberResponse)
+        );
+
+        // Check memberResponse for nickname (if not empty then existing user)
+        const nickname = data.memberResponse.nickname;
+        if (typeof nickname === "string" && nickname.length > 0) {
+          navigate(paths.map());
+          location.reload();
         }
-      );
-
-      updateData({ authMethod: "google" });
-      const data = tokens.data.data;
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
-      localStorage.setItem(
-        "memberResponse",
-        JSON.stringify(data.memberResponse)
-      );
-
-      // Check memberResponse for nickname (if not empty then existing user)
-      const nickname = data.memberResponse.nickname;
-      if (typeof nickname === "string" && nickname.length > 0) {
-        navigate(paths.map());
-        location.reload();
+        onNext();
+      } catch (error) {
+        toast("로그인에 문제가 발생했어요.");
+        console.error(error);
       }
-      onNext();
     },
-    onError: (errorResponse) => console.log(errorResponse),
+    onError: (errorResponse) => {
+      console.log(errorResponse);
+    },
   });
 
   // Naver auth
