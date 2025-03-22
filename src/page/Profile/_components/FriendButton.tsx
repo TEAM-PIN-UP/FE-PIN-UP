@@ -40,7 +40,7 @@ const FriendButton: React.FC<FriendButtonProps> = ({ isOtherUser }) => {
     },
     onCancelButtonClick: closeModal,
   };
-  const hasReceived = sentFriendRequests?.some(
+  const isRequestSent = sentFriendRequests?.some(
     (request) => String(request.receiver.memberId) === id
   );
 
@@ -50,14 +50,14 @@ const FriendButton: React.FC<FriendButtonProps> = ({ isOtherUser }) => {
   };
 
   return (
-    <StButton onClick={handleAddFriend}>
+    <StButton onClick={handleAddFriend} isRequestSent={!!isRequestSent}>
       <img src={addUser} />
-      <span>{hasReceived ? "신청 완료" : "핀버디 신청"}</span>
+      <span>{isRequestSent ? "신청 완료" : "핀버디 신청"}</span>
     </StButton>
   );
 };
 
-const StButton = styled.button`
+const StButton = styled.button<{ isRequestSent: boolean }>`
   ${B4}
   display: flex;
   flex-direction: row;
@@ -67,7 +67,8 @@ const StButton = styled.button`
   justify-content: center;
   border: none;
   border-radius: var(--radius_8);
-  background-color: var(--neutral_100);
+  background-color: ${({ isRequestSent }) =>
+    isRequestSent ? "var(--neutral_300)" : "var(--neutral_800)"};
   padding: var(--spacing_12);
   box-sizing: content-box;
   height: 16px;
