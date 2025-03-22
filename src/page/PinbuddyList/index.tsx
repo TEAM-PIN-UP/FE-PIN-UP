@@ -21,10 +21,10 @@ const PinbuddyList = () => {
   const [isSwiping, setIsSwiping] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const memberResponse = getMemberResponseObj();
   const { data: friends } = useFriendList({ id });
   const { data: receivedFriendRequests } = useReceivedFriendRequests();
   const { data: sentFriendRequests } = useSentFriendRequests();
+  const memberResponse = getMemberResponseObj();
   const isOtherUser = memberResponse?.memberId !== Number(id);
 
   // Switch to tab based on url params

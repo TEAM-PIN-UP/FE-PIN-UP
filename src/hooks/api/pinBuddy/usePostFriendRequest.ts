@@ -9,18 +9,21 @@ const usePostFriendRequests = () => {
   const memberId = memberResponse?.memberId;
 
   return useMutation({
-    mutationFn: ({ receiverId }: { receiverId: number }) =>
+    mutationFn: ({ receiverId }: { receiverId: number | string }) =>
       postApi.postSendFriendRequest({ receiverId }),
 
     onSuccess: (_, { receiverId }) => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.receivedFriendRequests(receiverId),
+      });
+      queryClient.invalidateQueries({ queryKey: ["searchMember"] });
       if (!memberId) {
         console.warn("Cannot invalidate query: memberId is undefined");
         return;
       }
       queryClient.invalidateQueries({
-        queryKey: queryKeys.receivedFriendRequests(receiverId),
+        queryKey: queryKeys.sentFriendRequests(memberId),
       });
-      queryClient.invalidateQueries({ queryKey: ["searchMember"] });
     },
   });
 };
