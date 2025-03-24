@@ -4,6 +4,7 @@ import addUser from "@/image/icons/addUser.svg";
 import { paths } from "@/routes/paths";
 import { ModalProps } from "@/store/modalStore";
 import { B4 } from "@/style/font";
+import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
 import useModalPopup from "@/utils/modalPopup";
 import useToastPopup from "@/utils/toastPopup";
 import React from "react";
@@ -19,6 +20,10 @@ const FriendButton: React.FC<FriendButtonProps> = ({ isOtherUser }) => {
   const { uid: id } = useParams();
   const { openModal, closeModal } = useModalPopup();
   const toast = useToastPopup();
+
+  const memberResponse = getMemberResponseObj();
+  const memberId = memberResponse?.memberId;
+  const isSelf = id === String(memberId);
 
   const friendRequest = usePostFriendRequests();
   const { data: sentFriendRequests } = useSentFriendRequests();
@@ -50,14 +55,20 @@ const FriendButton: React.FC<FriendButtonProps> = ({ isOtherUser }) => {
   };
 
   return (
-    <StButton onClick={handleAddFriend} isRequestSent={!!isRequestSent}>
+    <StButton
+      onClick={handleAddFriend}
+      isSelf={isSelf}
+      isRequestSent={!!isRequestSent}
+    >
       <img src={addUser} />
-      <span>{isRequestSent ? "신청 완료" : "핀버디 신청"}</span>
+      <span>
+        {isSelf ? "핀버디 추가" : isRequestSent ? "신청 완료" : "핀버디 신청"}
+      </span>
     </StButton>
   );
 };
 
-const StButton = styled.button<{ isRequestSent: boolean }>`
+const StButton = styled.button<{ isSelf: boolean; isRequestSent: boolean }>`
   ${B4}
   display: flex;
   flex-direction: row;
@@ -67,12 +78,18 @@ const StButton = styled.button<{ isRequestSent: boolean }>`
   justify-content: center;
   border: none;
   border-radius: var(--radius_8);
-  background-color: ${({ isRequestSent }) =>
-    isRequestSent ? "var(--neutral_300)" : "var(--neutral_800)"};
+  background-color: ${({ isSelf, isRequestSent }) =>
+    isSelf
+      ? "var(--neutral_100)"
+      : isRequestSent
+      ? "var(--neutral_300)"
+      : "var(--neutral_800)"};
   padding: var(--spacing_12);
   box-sizing: content-box;
   height: 16px;
   cursor: pointer;
+  color: ${({ isSelf, isRequestSent }) =>
+    isSelf ? "var(--black)" : isRequestSent ? "var(--black)" : "var(--white)"};
   transition: transform 0.02s ease-in-out, background-color 0.02s ease-in-out;
 
   &:active {
