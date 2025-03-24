@@ -4,7 +4,6 @@ import addUser from "@/image/icons/addUser.svg";
 import { paths } from "@/routes/paths";
 import { ModalProps } from "@/store/modalStore";
 import { B4 } from "@/style/font";
-import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
 import useModalPopup from "@/utils/modalPopup";
 import useToastPopup from "@/utils/toastPopup";
 import React from "react";
@@ -20,10 +19,6 @@ const FriendButton: React.FC<FriendButtonProps> = ({ isOtherUser }) => {
   const { uid: id } = useParams();
   const { openModal, closeModal } = useModalPopup();
   const toast = useToastPopup();
-
-  const memberResponse = getMemberResponseObj();
-  const memberId = memberResponse?.memberId;
-  const isSelf = id === String(memberId);
 
   const friendRequest = usePostFriendRequests();
   const { data: sentFriendRequests } = useSentFriendRequests();
@@ -57,12 +52,16 @@ const FriendButton: React.FC<FriendButtonProps> = ({ isOtherUser }) => {
   return (
     <StButton
       onClick={handleAddFriend}
-      isSelf={isSelf}
+      isSelf={!isOtherUser}
       isRequestSent={!!isRequestSent}
     >
       <img src={addUser} />
       <span>
-        {isSelf ? "핀버디 추가" : isRequestSent ? "신청 완료" : "핀버디 신청"}
+        {!isOtherUser
+          ? "핀버디 추가"
+          : isRequestSent
+          ? "신청 완료"
+          : "핀버디 신청"}
       </span>
     </StButton>
   );
