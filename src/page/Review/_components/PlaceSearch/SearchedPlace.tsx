@@ -1,4 +1,4 @@
-import defaultProfile from "@/image/icons/defaultProfile.svg";
+import defaultProfile from "@/image/icons/defaultProfile.png";
 import { GetSearchPlacesResponse } from "@/interface/place";
 import { B3, B5, C3 } from "@/style/font";
 import styled from "styled-components";

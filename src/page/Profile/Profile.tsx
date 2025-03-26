@@ -6,7 +6,7 @@ import {
   useGetTextReviews,
 } from "@/hooks/api/review/useGetReviews";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
-import defaultProfile from "@/image/icons/defaultProfile.svg";
+import defaultProfile from "@/image/icons/defaultProfile.png";
 import notificationActive from "@/image/icons/notificationActive.svg";
 import notificationInactive from "@/image/icons/notificationInactive.svg";
 import settings from "@/image/icons/settings.svg";

@@ -1,6 +1,7 @@
 import { useSentFriendRequests } from "@/hooks/api/pinBuddy/useFriendRequests";
 import usePostFriendRequests from "@/hooks/api/pinBuddy/usePostFriendRequest";
 import addUser from "@/image/icons/addUser.svg";
+import addUserWhite from "@/image/icons/addUserWhite.svg";
 import { paths } from "@/routes/paths";
 import { ModalProps } from "@/store/modalStore";
 import { B4 } from "@/style/font";
@@ -48,14 +49,13 @@ const FriendButton: React.FC<FriendButtonProps> = ({ isOtherUser }) => {
     if (isOtherUser) openModal(friendRequestModal);
     else navigate(paths.profile.search());
   };
-
   return (
     <StButton
       onClick={handleAddFriend}
       isSelf={!isOtherUser}
       isRequestSent={!!isRequestSent}
     >
-      <img src={addUser} />
+      <img src={isOtherUser ? addUserWhite : addUser} />
       <span>
         {!isOtherUser
           ? "핀버디 추가"

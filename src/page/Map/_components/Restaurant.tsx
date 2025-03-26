@@ -1,4 +1,4 @@
-import defaultProfile from "@/image/icons/defaultProfile.svg";
+import defaultProfile from "@/image/icons/defaultProfile.png";
 import { B4, H3, H4 } from "@/style/font";
 import React from "react";
 import styled from "styled-components";

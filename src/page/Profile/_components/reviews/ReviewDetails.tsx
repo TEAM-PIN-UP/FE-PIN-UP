@@ -2,7 +2,7 @@ import Header from "@/components/Header";
 import TransitionWrapper from "@/components/TransitionWrapper";
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
-import defaultProfile from "@/image/icons/defaultProfile.svg";
+import defaultProfile from "@/image/icons/defaultProfile.png";
 import moreDotsGray from "@/image/icons/moreDotsGray.svg";
 import { MemberDetails } from "@/interface/member";
 import { PhotoReview } from "@/interface/review";

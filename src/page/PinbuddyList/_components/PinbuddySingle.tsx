@@ -1,7 +1,7 @@
 import useDeleteFriend from "@/hooks/api/pinBuddy/useDeleteFriend";
 import useDeleteFriendRequests from "@/hooks/api/pinBuddy/useDeleteFriendRequest";
 import usePatchFriendRequests from "@/hooks/api/pinBuddy/usePatchFriendRequests";
-import defaultProfile from "@/image/icons/defaultProfile.svg";
+import defaultProfile from "@/image/icons/defaultProfile.png";
 import { FriendRequestResponse, MemberDetails } from "@/interface/member";
 import { paths } from "@/routes/paths";
 import { B3, B5, H6 } from "@/style/font";

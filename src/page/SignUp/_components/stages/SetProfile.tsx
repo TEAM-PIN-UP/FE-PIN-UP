@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import ProfileImagePicker from "@/components/ProfileImagePicker";
 import camera from "@/image/icons/camera.svg";
-import defaultProfile from "@/image/icons/defaultProfile.svg";
+import defaultProfile from "@/image/icons/defaultProfile.png";
 import { B3 } from "@/style/font";
 import checkImageValidity from "@/utils/checkImageValidity";
 import { cropImage } from "@/utils/cropImage";
