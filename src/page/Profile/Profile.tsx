@@ -6,25 +6,27 @@ import {
   useGetTextReviews,
 } from "@/hooks/api/review/useGetReviews";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
-import addUser from "@/image/icons/addUser.svg";
-import defaultProfile from "@/image/icons/defaultProfile.svg";
+import defaultProfile from "@/image/icons/defaultProfile.png";
 import notificationActive from "@/image/icons/notificationActive.svg";
 import notificationInactive from "@/image/icons/notificationInactive.svg";
 import settings from "@/image/icons/settings.svg";
-import share from "@/image/icons/share.svg";
 import { paths } from "@/routes/paths";
 import { B4, H2, H4 } from "@/style/font";
+import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import ProfileButton from "./_components/ProfileButton";
+import FriendButton from "./_components/FriendButton";
 import ReviewHistory from "./_components/reviews/ReviewHistory";
+import ShareButton from "./_components/ShareButton";
 import ShareSheet from "./_components/ShareSheet";
 import UserStatsSection, { Stat } from "./_components/UserStatsSection";
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
   const { uid: id } = useParams();
+  const memberResponse = getMemberResponseObj();
+  const isOtherUser = memberResponse?.memberId !== Number(id);
 
   // Bottom sheet logic
   const { attachRef } = useBottomSheetSnapPoints();
@@ -59,22 +61,24 @@ const Profile: React.FC = () => {
           <Header.Left>
             <span className="h2">프로필</span>
           </Header.Left>
-          <Header.Right>
-            <img
-              src={
-                receivedFriendRequests && receivedFriendRequests?.length > 0
-                  ? notificationActive
-                  : notificationInactive
-              }
-              onClick={() => navigate(paths.profile.notifications())}
-              className="button"
-            />
-            <img
-              src={settings}
-              onClick={() => navigate(paths.profile.settings())}
-              className="button"
-            />
-          </Header.Right>
+          {!isOtherUser && (
+            <Header.Right>
+              <img
+                src={
+                  receivedFriendRequests && receivedFriendRequests.length > 0
+                    ? notificationActive
+                    : notificationInactive
+                }
+                onClick={() => navigate(paths.profile.notifications())}
+                className="button"
+              />
+              <img
+                src={settings}
+                onClick={() => navigate(paths.profile.settings())}
+                className="button"
+              />
+            </Header.Right>
+          )}
         </Header>
 
         <div className="user-section">
@@ -115,16 +119,8 @@ const Profile: React.FC = () => {
           <div className="intro">{memberFeed?.memberResponse.bio}</div>
 
           <div className="profile-buttons">
-            <ProfileButton
-              icon={share}
-              text="프로필 공유"
-              onClick={() => setIsSheetOpen(true)}
-            />
-            <ProfileButton
-              icon={addUser}
-              text="핀버디 추가"
-              onClick={() => navigate(paths.profile.search())}
-            />
+            <ShareButton onClick={() => setIsSheetOpen(true)} />
+            <FriendButton isOtherUser={isOtherUser} />
           </div>
 
           <div className="review-heading">

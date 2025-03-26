@@ -1,21 +1,15 @@
+import share from "@/image/icons/share.svg";
 import { B4 } from "@/style/font";
 import React from "react";
 import styled from "styled-components";
 
-interface ProfileButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
-  icon: string;
-  text: string;
-}
-
-const ProfileButton: React.FC<ProfileButtonProps> = ({
-  icon,
-  text,
+const ShareButton: React.FC<React.HTMLAttributes<HTMLButtonElement>> = ({
   ...props
 }) => {
   return (
     <StButton {...props}>
-      <img src={icon} />
-      <span>{text}</span>
+      <img src={share} />
+      <span>프로필 공유</span>
     </StButton>
   );
 };
@@ -43,4 +37,4 @@ const StButton = styled.button`
   }
 `;
 
-export default ProfileButton;
+export default ShareButton;

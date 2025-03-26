@@ -2,7 +2,7 @@ import Header from "@/components/Header";
 import TransitionWrapper from "@/components/TransitionWrapper";
 import { useReceivedFriendRequests } from "@/hooks/api/pinBuddy/useFriendRequests";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
-import defaultProfile from "@/image/icons/defaultProfile.svg";
+import defaultProfile from "@/image/icons/defaultProfile.png";
 import { H3 } from "@/style/font";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";

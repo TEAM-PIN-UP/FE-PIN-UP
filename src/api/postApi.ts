@@ -7,11 +7,11 @@ const postApi = {
         "Content-Type": "multipart/form-data",
       },
     }),
-  postSendFriendRequest: ({ receiverId }: { receiverId: number }) =>
+  postSendFriendRequest: ({ receiverId }: { receiverId: number | string }) =>
     customAxios.post(`/api/friend-requests/send`, {
       receiverId: receiverId,
     }),
-  postMyPlace: ({ kakaoPlaceId }: { kakaoPlaceId: number }) =>
+  postMyPlace: ({ kakaoPlaceId }: { kakaoPlaceId: number | string }) =>
     customAxios.post(`/api/bookmarks`, { kakaoPlaceId }),
 };
 

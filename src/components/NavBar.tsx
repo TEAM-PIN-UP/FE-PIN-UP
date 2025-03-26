@@ -2,7 +2,7 @@ import bookMarkActive from "@/image/icons/bookmarkActive.svg";
 import bookMarkInactive from "@/image/icons/bookmarkInActive.svg";
 import contentsActive from "@/image/icons/contentsActive.svg";
 import contentsInactive from "@/image/icons/contentsInactive.svg";
-import defaultProfile from "@/image/icons/defaultProfile.svg";
+import defaultProfile from "@/image/icons/defaultProfile.png";
 import mapPinActive from "@/image/icons/mapPinActive26.svg";
 import mapPinInactive from "@/image/icons/mapPinInactive26.svg";
 import uploadActive from "@/image/icons/uploadActive.svg";
