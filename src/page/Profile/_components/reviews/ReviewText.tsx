@@ -49,7 +49,10 @@ const ReviewText: React.FC<ReviewTextProps> = ({ item, userName }) => {
             <span>{item.content}</span>
           </div>
         </div>
-        <img src={moreDots} className="review-actions" />
+        <div className="expand" />
+        <button className="review-actions">
+          <img src={moreDots} />
+        </button>
       </div>
 
       <div className="visit-date">
@@ -73,23 +76,23 @@ const StDiv = styled.div`
     padding: var(--spacing_16) var(--spacing_20);
     box-sizing: content-box;
     height: 17px;
+  }
 
-    .see-map-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: transparent;
-      background-color: transparent;
-      border: none;
-      border-radius: var(--radius_circle);
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    background-color: transparent;
+    border: none;
+    border-radius: var(--radius_circle);
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 
-      &:hover {
-        background-color: var(--neutral_100);
-      }
+    &:hover {
+      background-color: var(--neutral_100);
     }
   }
 
@@ -102,13 +105,13 @@ const StDiv = styled.div`
   .review {
     display: flex;
     flex-direction: row;
+    padding: var(--spacing_16) var(--spacing_20);
 
     .review-content {
       display: flex;
       flex-direction: column;
       align-items: start;
       justify-content: center;
-      padding: var(--spacing_16) var(--spacing_20);
       gap: 4px;
 
       .review-title {
@@ -133,7 +136,17 @@ const StDiv = styled.div`
       .review-body {
         ${B4}
         line-height: 160%;
+        text-align: start;
       }
+    }
+
+    .expand {
+      display: flex;
+      flex-grow: 1;
+    }
+
+    .review-actions {
+      padding: 16px;
     }
   }
 
