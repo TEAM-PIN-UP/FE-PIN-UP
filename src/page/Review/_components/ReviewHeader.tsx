@@ -14,7 +14,7 @@ const ReviewHeader: React.FC<HeaderProp> = ({ step, stepDown }) => {
       <Header.Left>
         {step !== 1 && <img src={chevronLeft} onClick={stepDown} />}
       </Header.Left>
-      <Header.Center>리뷰 작성</Header.Center>
+      <Header.Center>핀로그 작성</Header.Center>
     </StReviewHeader>
   );
 };

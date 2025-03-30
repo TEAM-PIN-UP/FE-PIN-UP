@@ -1,5 +1,6 @@
 import blackStar from "@/image/icons/blackStar.svg";
 import chevronRight from "@/image/icons/chevronRightBlack.svg";
+import moreDots from "@/image/icons/moreDotsBlack.svg";
 import { Review } from "@/interface/review";
 import { paths } from "@/routes/paths";
 import { B3, B4, B5, B6, H3, H4 } from "@/style/font";
@@ -35,17 +36,20 @@ const ReviewText: React.FC<ReviewTextProps> = ({ item, userName }) => {
       <div className="divider" />
 
       <div className="review">
-        <div className="review-title">
-          <span className="h3">{userName}</span>
-          <img src={blackStar} className="star" />
-          <span className="score b3">
-            {item.starRating.toFixed(1).toString()}
-          </span>
-          <span className="review-date b5 gray">{item.createdAt}</span>
+        <div className="review-content">
+          <div className="review-title">
+            <span className="h3">{userName}</span>
+            <img src={blackStar} className="star" />
+            <span className="score b3">
+              {item.starRating.toFixed(1).toString()}
+            </span>
+            <span className="review-date b5 gray">{item.createdAt}</span>
+          </div>
+          <div className="review-body">
+            <span>{item.content}</span>
+          </div>
         </div>
-        <div className="review-body">
-          <span>{item.content}</span>
-        </div>
+        <img src={moreDots} className="review-actions" />
       </div>
 
       <div className="visit-date">
@@ -97,34 +101,39 @@ const StDiv = styled.div`
 
   .review {
     display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: center;
-    padding: var(--spacing_16) var(--spacing_20);
-    gap: 4px;
+    flex-direction: row;
 
-    .review-title {
+    .review-content {
       display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: start;
+      flex-direction: column;
+      align-items: start;
+      justify-content: center;
+      padding: var(--spacing_16) var(--spacing_20);
+      gap: 4px;
 
-      .star {
-        width: 16px;
-        height: 16px;
-        margin-left: 4px;
-      }
-      .score {
-        margin-left: 2px;
-      }
-      .review-date {
-        margin-left: 8px;
-      }
-    }
+      .review-title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: start;
 
-    .review-body {
-      ${B4}
-      line-height: 160%;
+        .star {
+          width: 16px;
+          height: 16px;
+          margin-left: 4px;
+        }
+        .score {
+          margin-left: 2px;
+        }
+        .review-date {
+          margin-left: 8px;
+        }
+      }
+
+      .review-body {
+        ${B4}
+        line-height: 160%;
+      }
     }
   }
 
