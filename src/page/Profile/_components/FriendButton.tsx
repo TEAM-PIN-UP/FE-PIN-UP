@@ -41,7 +41,7 @@ const FriendButton: React.FC<FriendButtonProps> = ({ isOtherUser }) => {
     },
     onCancelButtonClick: closeModal,
   };
-  const isRequestSent = sentFriendRequests?.some(
+  const $isRequestSent = sentFriendRequests?.some(
     (request) => String(request.receiver.memberId) === id
   );
 
@@ -52,14 +52,14 @@ const FriendButton: React.FC<FriendButtonProps> = ({ isOtherUser }) => {
   return (
     <StButton
       onClick={handleAddFriend}
-      isSelf={!isOtherUser}
-      isRequestSent={!!isRequestSent}
+      $isSelf={!isOtherUser}
+      $isRequestSent={!!$isRequestSent}
     >
       <img src={isOtherUser ? addUserWhite : addUser} />
       <span>
         {!isOtherUser
           ? "핀버디 추가"
-          : isRequestSent
+          : $isRequestSent
           ? "신청 완료"
           : "핀버디 신청"}
       </span>
@@ -67,7 +67,7 @@ const FriendButton: React.FC<FriendButtonProps> = ({ isOtherUser }) => {
   );
 };
 
-const StButton = styled.button<{ isSelf: boolean; isRequestSent: boolean }>`
+const StButton = styled.button<{ $isSelf: boolean; $isRequestSent: boolean }>`
   ${B4}
   display: flex;
   flex-direction: row;
@@ -77,18 +77,22 @@ const StButton = styled.button<{ isSelf: boolean; isRequestSent: boolean }>`
   justify-content: center;
   border: none;
   border-radius: var(--radius_8);
-  background-color: ${({ isSelf, isRequestSent }) =>
-    isSelf
+  background-color: ${({ $isSelf, $isRequestSent }) =>
+    $isSelf
       ? "var(--neutral_100)"
-      : isRequestSent
+      : $isRequestSent
       ? "var(--neutral_300)"
       : "var(--neutral_800)"};
   padding: var(--spacing_12);
   box-sizing: content-box;
   height: 16px;
   cursor: pointer;
-  color: ${({ isSelf, isRequestSent }) =>
-    isSelf ? "var(--black)" : isRequestSent ? "var(--black)" : "var(--white)"};
+  color: ${({ $isSelf, $isRequestSent }) =>
+    $isSelf
+      ? "var(--black)"
+      : $isRequestSent
+      ? "var(--black)"
+      : "var(--white)"};
   transition: transform 0.02s ease-in-out, background-color 0.02s ease-in-out;
 
   &:active {

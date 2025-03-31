@@ -9,7 +9,7 @@ interface ApiErrorResponse {
   status: number;
 }
 
-type CustomAxiosError = AxiosError<ApiErrorResponse>;
+export type CustomAxiosError = AxiosError<ApiErrorResponse>;
 
 interface ErrorDetail {
   code: ErrorCodeType;
