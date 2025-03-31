@@ -8,7 +8,7 @@ import googleIcon from "../../_icons/googleIcon.png";
 // import naverIcon from "../../_icons/naverIcon.svg";
 import { paths } from "@/routes/paths";
 import useToastPopup from "@/utils/toastPopup";
-import pinupLogo from "../../_icons/pinupLogo.svg";
+import pinupLogo from "../../_icons/pinupLogo.jpg";
 import SocialSignUpButton from "../SocialSignUpButton";
 import StTextContainer from "../typography/StTextContainer";
 import { StageProps } from "./StageProps";
@@ -93,7 +93,7 @@ const SelectLogin: React.FC<StageProps> = ({ updateData, onNext }) => {
       <div className="logo-container">
         <StTextContainer style={{ alignItems: "center" }}>
           <div className="b1">서비스 보조 설명 문구</div>
-          <img src={pinupLogo} />
+          <img src={pinupLogo} className="logo" />
         </StTextContainer>
       </div>
 
@@ -143,6 +143,10 @@ const StDiv = styled.div`
     align-items: center;
     justify-content: center;
     gap: 17px;
+
+    .logo {
+      width: 200px;
+    }
   }
 
   .button-container {

@@ -1,5 +1,8 @@
+import { CustomAxiosError } from "@/api/errorHandler";
+import putApi from "@/api/putApi";
 import Header from "@/components/Header";
 import ProfileImagePicker from "@/components/ProfileImagePicker";
+import useMyProfileDetails from "@/hooks/api/profile/useMyProfileDetails";
 import camera from "@/image/icons/camera.svg";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import { B3, B5, H3, H4 } from "@/style/font";
@@ -16,16 +19,21 @@ const EditProfile: React.FC = () => {
 
   const [profileImage, setProfileImage] = useState("");
   const [name, setName] = useState("");
-  const [intro, setIntro] = useState("");
+  const [bio, setBio] = useState("");
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const lowerCharLimit = 2;
+  const upperCharLimit = 12;
+
+  const { data: myDetails, isLoading } = useMyProfileDetails();
 
   useEffect(() => {
     // Read values from backend on page load
-    setProfileImage("");
-    setName("");
-    setIntro("");
+    if (isLoading) return;
+    // setProfileImage(myDetails!.memberResponse.profilePictureUrl);
+    setName(myDetails!.memberResponse.nickname);
+    setBio(myDetails!.memberResponse.bio);
     return () => {};
-  }, []);
+  }, [isLoading, myDetails]);
 
   const handleImageChange = (file: File) => {
     if (file) {
@@ -62,12 +70,44 @@ const EditProfile: React.FC = () => {
     }
   };
 
-  const isValid = name.trim().length != 0 && intro.trim().length != 0;
-  const handleSubmit = () => {
-    // TODO: check validity
-    toast("닉네임이 변경 되었어요.");
-    // toast("현재 닉네임 변경 가능 기간이 아니에요.");
-    // toast("중복되는 닉네임이에요.");
+  const handleSubmit = async () => {
+    const regex =
+      /^[a-zA-Z\u1100-\u1112\u1161-\u1175\u3130-\u318F\uAC00-\uD7A3]*$/;
+    try {
+      if (name.length > upperCharLimit) throw Error("닉네임이 너무 길어요.");
+      if (name.length < lowerCharLimit) throw Error("닉네임이 너무 짧아요.");
+      if (!regex.test(name))
+        throw Error("닉네임은 한글과 영문만 입력해주세요.");
+
+      const formData = new FormData();
+      formData.append(
+        "updateProfileRequest",
+        JSON.stringify({ nickname: name, bio: bio })
+      );
+      if (!profileImage.startsWith("https")) {
+        const profileImageBlob = await (await fetch(profileImage)).blob();
+        const mimeType = profileImage.split(";")[0].split(":")[1];
+        const fileExtension = mimeType === "image/png" ? "png" : "jpg";
+        formData.append(
+          "multipartFile",
+          profileImageBlob,
+          `profile.${fileExtension}`
+        );
+      } else {
+        formData.append("multipartFile", "");
+      }
+
+      try {
+        await putApi.editProfile(formData);
+
+        toast("닉네임이 변경되었어요.");
+        navigate(-1);
+      } catch (error) {
+        toast(String((error as CustomAxiosError).response?.data.message));
+      }
+    } catch (error) {
+      toast((error as Error).message);
+    }
   };
 
   return (
@@ -82,11 +122,7 @@ const EditProfile: React.FC = () => {
           <span className="header-title">프로필 편집</span>
         </Header.Center>
         <Header.Right>
-          <button
-            className="save-button"
-            disabled={!isValid}
-            onClick={handleSubmit}
-          >
+          <button className="save-button" onClick={handleSubmit}>
             완료
           </button>
         </Header.Right>
@@ -118,8 +154,8 @@ const EditProfile: React.FC = () => {
             <span className="input-label">소개</span>
             <input
               type="text"
-              value={intro}
-              onChange={(e) => setIntro(e.target.value)}
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
               className="input-field"
               placeholder="소개 입력하기"
               onFocus={() => setIsInputFocused(true)}

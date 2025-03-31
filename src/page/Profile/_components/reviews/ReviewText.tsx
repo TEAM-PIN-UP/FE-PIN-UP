@@ -1,5 +1,6 @@
 import blackStar from "@/image/icons/blackStar.svg";
 import chevronRight from "@/image/icons/chevronRightBlack.svg";
+import moreDots from "@/image/icons/moreDotsBlack.svg";
 import { Review } from "@/interface/review";
 import { paths } from "@/routes/paths";
 import { B3, B4, B5, B6, H3, H4 } from "@/style/font";
@@ -35,17 +36,23 @@ const ReviewText: React.FC<ReviewTextProps> = ({ item, userName }) => {
       <div className="divider" />
 
       <div className="review">
-        <div className="review-title">
-          <span className="h3">{userName}</span>
-          <img src={blackStar} className="star" />
-          <span className="score b3">
-            {item.starRating.toFixed(1).toString()}
-          </span>
-          <span className="review-date b5 gray">{item.createdAt}</span>
+        <div className="review-content">
+          <div className="review-title">
+            <span className="h3">{userName}</span>
+            <img src={blackStar} className="star" />
+            <span className="score b3">
+              {item.starRating.toFixed(1).toString()}
+            </span>
+            <span className="review-date b5 gray">{item.createdAt}</span>
+          </div>
+          <div className="review-body">
+            <span>{item.content}</span>
+          </div>
         </div>
-        <div className="review-body">
-          <span>{item.content}</span>
-        </div>
+        <div className="expand" />
+        <button className="review-actions">
+          <img src={moreDots} />
+        </button>
       </div>
 
       <div className="visit-date">
@@ -69,23 +76,23 @@ const StDiv = styled.div`
     padding: var(--spacing_16) var(--spacing_20);
     box-sizing: content-box;
     height: 17px;
+  }
 
-    .see-map-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: transparent;
-      background-color: transparent;
-      border: none;
-      border-radius: var(--radius_circle);
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    background-color: transparent;
+    border: none;
+    border-radius: var(--radius_circle);
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 
-      &:hover {
-        background-color: var(--neutral_100);
-      }
+    &:hover {
+      background-color: var(--neutral_100);
     }
   }
 
@@ -97,34 +104,49 @@ const StDiv = styled.div`
 
   .review {
     display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: center;
+    flex-direction: row;
     padding: var(--spacing_16) var(--spacing_20);
-    gap: 4px;
 
-    .review-title {
+    .review-content {
       display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: start;
+      flex-direction: column;
+      align-items: start;
+      justify-content: center;
+      gap: 4px;
 
-      .star {
-        width: 16px;
-        height: 16px;
-        margin-left: 4px;
+      .review-title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: start;
+
+        .star {
+          width: 16px;
+          height: 16px;
+          margin-left: 4px;
+        }
+        .score {
+          margin-left: 2px;
+        }
+        .review-date {
+          margin-left: 8px;
+        }
       }
-      .score {
-        margin-left: 2px;
-      }
-      .review-date {
-        margin-left: 8px;
+
+      .review-body {
+        ${B4}
+        line-height: 160%;
+        text-align: start;
       }
     }
 
-    .review-body {
-      ${B4}
-      line-height: 160%;
+    .expand {
+      display: flex;
+      flex-grow: 1;
+    }
+
+    .review-actions {
+      padding: 16px;
     }
   }
 

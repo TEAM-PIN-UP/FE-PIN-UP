@@ -96,7 +96,7 @@ const Profile: React.FC = () => {
               stats={
                 [
                   {
-                    label: "리뷰",
+                    label: "핀로그",
                     value: memberFeed?.memberResponse.reviewCount,
                   },
                   {
@@ -128,13 +128,13 @@ const Profile: React.FC = () => {
               className={`review-filter ${index === 0 ? "active" : ""}`}
               onClick={() => setIndex(0)}
             >
-              포토 리뷰 {photoReviews?.length}
+              포토 로그 {photoReviews?.length}
             </button>
             <button
               className={`review-filter ${index === 1 ? "active" : ""}`}
               onClick={() => setIndex(1)}
             >
-              텍스트 리뷰 {textReviews?.length}
+              텍스트 로그 {textReviews?.length}
             </button>
           </div>
         </div>

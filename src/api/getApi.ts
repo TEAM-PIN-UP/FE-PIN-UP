@@ -36,6 +36,7 @@ const getApi = {
     customAxios.get(`/api/members/nickname/check`, { params: { nickname } }),
 
   // Member Feed
+  getMyDetails: () => customAxios.get(`/api/members`),
   getMemberDetails: (id: string | number) =>
     customAxios.get(`/api/members/${id}`),
   getTextReviews: (params: GetReviewsParams) =>

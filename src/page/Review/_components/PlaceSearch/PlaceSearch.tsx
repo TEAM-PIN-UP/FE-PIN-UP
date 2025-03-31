@@ -31,7 +31,7 @@ const PlaceSearch: React.FC<PlaceSearchProp> = ({ stepUp, setPickedInfo }) => {
     <StPlaceSearch>
       {infoShow ? <SearchInfo /> : <></>}
       <ReviewSearchBar
-        placeholder="리뷰 쓸 장소를 검색해주세요."
+        placeholder="핀로그 쓸 장소를 검색해주세요."
         infoHideFunc={infoHideFunc}
         infoShowFunc={infoShowFunc}
         reviewSearch={reviewSearch}
