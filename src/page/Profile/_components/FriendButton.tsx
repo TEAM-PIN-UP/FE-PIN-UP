@@ -41,8 +41,7 @@ const FriendButton: React.FC = () => {
 
   const handleAddFriend = () => {
     if (userData?.relationType === "STRANGER") openModal(friendRequestModal);
-    else if (userData?.relationType === "SELF")
-      navigate(paths.profile.search());
+    else if (userData?.relationType === "SELF") navigate(paths.profile.search);
   };
   return (
     <StButton onClick={handleAddFriend} $relationType={userData?.relationType}>

@@ -44,7 +44,7 @@ const SelectLogin: React.FC<StageProps> = ({ updateData, onNext }) => {
         // Check memberResponse for nickname (if not empty then existing user)
         const nickname = data.memberResponse.nickname;
         if (typeof nickname === "string" && nickname.length > 0) {
-          navigate(paths.map());
+          navigate(paths.map);
           location.reload();
         }
         onNext();

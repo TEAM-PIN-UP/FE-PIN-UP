@@ -77,7 +77,7 @@ const ReviewTotal: React.FC<ReviewTotalProps> = ({ pickedInfo, visitDate }) => {
       onOkButtonClick: () => {
         closeModal();
         navigate({
-          pathname: paths.map(),
+          pathname: paths.map,
           search: new URLSearchParams({
             kakaoPlaceId: pickedInfo.kakaoPlaceId,
           }).toString(),
@@ -86,7 +86,7 @@ const ReviewTotal: React.FC<ReviewTotalProps> = ({ pickedInfo, visitDate }) => {
       cancelButtonText: "취소",
       onCancelButtonClick: () => {
         closeModal();
-        navigate(paths.map());
+        navigate(paths.map);
       },
     });
   };

@@ -34,22 +34,22 @@ const NavBar: React.FC = () => {
   return (
     <StNavBar $profileStyle={isMyProfile()}>
       <NavBarIcon
-        path={paths.map()}
+        path={paths.map}
         active={mapPinActive}
         inActive={mapPinInactive}
       />
       <NavBarIcon
-        path={paths.bookmarks()}
+        path={paths.bookmarks}
         active={bookMarkActive}
         inActive={bookMarkInactive}
       />
       <NavBarIcon
-        path={paths.review()}
+        path={paths.review}
         active={uploadActive}
         inActive={uploadInactive}
       />
       <NavBarIcon
-        path={paths.contents()}
+        path={paths.contents}
         active={contentsActive}
         inActive={contentsInactive}
       />

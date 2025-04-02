@@ -60,7 +60,7 @@ const SignUpPage: React.FC = () => {
       ? (JSON.parse(memberResponseJson) as MemberResponse)
       : null;
     if (accessToken && memberResponse && memberResponse.nickname) {
-      navigate(paths.map());
+      navigate(paths.map);
       location.reload();
     }
 

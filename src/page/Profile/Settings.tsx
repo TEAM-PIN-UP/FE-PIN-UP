@@ -29,7 +29,7 @@ const Settings: React.FC = () => {
         console.warn("Logout request failed, proceeding anyway.", error);
       } finally {
         localStorage.clear();
-        navigate(paths.signup());
+        navigate(paths.signup);
         location.reload();
         closeModal();
       }
@@ -60,7 +60,7 @@ const Settings: React.FC = () => {
         <SettingsItem
           title="프로필 편집"
           type="arrow"
-          onClick={() => navigate(paths.profile.settings.editProfile())}
+          onClick={() => navigate(paths.profile.settings.editProfile)}
         />
         <SettingsItem
           title="계정 정보"

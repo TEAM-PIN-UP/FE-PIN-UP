@@ -3,6 +3,7 @@ import TransitionWrapper from "@/components/TransitionWrapper";
 import { useReceivedFriendRequests } from "@/hooks/api/pinBuddy/useFriendRequests";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import defaultProfile from "@/image/icons/defaultProfile.png";
+import { paths } from "@/routes/paths";
 import { H3 } from "@/style/font";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -40,6 +41,9 @@ const Notifications: React.FC = () => {
                 username={request.sender.nickname}
                 type="receivedRequestFromUser"
                 isRead={false}
+                onClick={() =>
+                  navigate(paths.profile.id(request.sender.memberId).friends)
+                }
               />
             ))}
           {friendRequests && friendRequests.length === 0 && (

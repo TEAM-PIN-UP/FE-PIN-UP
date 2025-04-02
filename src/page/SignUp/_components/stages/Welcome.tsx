@@ -40,10 +40,10 @@ const Welcome = ({ data }: { data: SignUpForm }) => {
         memberResponse.profilePictureUrl = data.profileImage;
         localStorage.setItem("memberResponse", JSON.stringify(memberResponse));
       } else {
-        navigate(paths.signup());
+        navigate(paths.signup);
         location.reload();
       }
-      navigate(paths.map());
+      navigate(paths.map);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -66,7 +66,7 @@ const Welcome = ({ data }: { data: SignUpForm }) => {
         size="full"
         onClick={() => {
           handleClick();
-          navigate(paths.map());
+          navigate(paths.map);
         }}
       >
         핀업 시작하기

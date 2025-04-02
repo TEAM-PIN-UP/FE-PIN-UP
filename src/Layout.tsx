@@ -27,7 +27,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     };
   }, []);
 
-  const excludeNavBarRoutes = [paths.auth.naver(), paths.signup()];
+  const excludeNavBarRoutes = [paths.auth.naver, paths.signup];
   return (
     <StLayout $dynamicHeight={height}>
       <Toast />

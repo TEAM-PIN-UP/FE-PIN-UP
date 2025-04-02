@@ -121,7 +121,7 @@ const ShareSheet: React.FC<ShareSheetProps> = ({
                 <Button
                   className="signup-button"
                   size="xlarge"
-                  onClick={() => navigate(paths.signup())}
+                  onClick={() => navigate(paths.signup)}
                 >
                   로그인/회원가입
                 </Button>
