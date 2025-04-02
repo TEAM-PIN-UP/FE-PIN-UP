@@ -61,7 +61,6 @@ const SignUpPage: React.FC = () => {
       : null;
     if (accessToken && memberResponse && memberResponse.nickname) {
       navigate(paths.map);
-      location.reload();
     }
 
     // Use system back button for prev stage

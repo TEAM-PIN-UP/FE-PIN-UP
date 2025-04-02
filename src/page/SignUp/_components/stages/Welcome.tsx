@@ -41,7 +41,6 @@ const Welcome = ({ data }: { data: SignUpForm }) => {
         localStorage.setItem("memberResponse", JSON.stringify(memberResponse));
       } else {
         navigate(paths.signup);
-        location.reload();
       }
       navigate(paths.map);
     } catch (error) {

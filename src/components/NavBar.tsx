@@ -23,6 +23,12 @@ const NavBar: React.FC = () => {
     return <></>;
   }
 
+  {
+    /* NavBar conditional rendering */
+  }
+  const excludeNavBarRoutes = [paths.auth.naver, paths.signup];
+  if (excludeNavBarRoutes.includes(location.pathname)) return <></>;
+
   const isMyProfile = () => {
     const path = location.pathname.split("/");
     return path[1] === "profile" && path[2] === String(memberId);

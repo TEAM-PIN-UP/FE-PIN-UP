@@ -30,7 +30,6 @@ const Settings: React.FC = () => {
       } finally {
         localStorage.clear();
         navigate(paths.signup);
-        location.reload();
         closeModal();
       }
     },

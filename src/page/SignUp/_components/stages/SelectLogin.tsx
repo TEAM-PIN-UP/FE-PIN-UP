@@ -45,7 +45,6 @@ const SelectLogin: React.FC<StageProps> = ({ updateData, onNext }) => {
         const nickname = data.memberResponse.nickname;
         if (typeof nickname === "string" && nickname.length > 0) {
           navigate(paths.map);
-          location.reload();
         }
         onNext();
       } catch (error) {

@@ -69,12 +69,12 @@ const Profile: React.FC = () => {
                     ? notificationActive
                     : notificationInactive
                 }
-                onClick={() => navigate(paths.profile.notifications)}
+                onClick={() => navigate(`../${paths.profile.notifications}`)}
                 className="button"
               />
               <img
                 src={settings}
-                onClick={() => navigate(paths.profile.settings)}
+                onClick={() => navigate(`../${paths.profile.settings}`)}
                 className="button"
               />
             </Header.Right>
@@ -108,7 +108,7 @@ const Profile: React.FC = () => {
                     value: memberFeed?.memberResponse.pinBuddyCount,
                     onClick: () => {
                       if (!id) return;
-                      return navigate(paths.profile.id(id).friends);
+                      return navigate(`../${paths.profile.id(id).friends}`);
                     },
                   },
                 ] as Stat[]
