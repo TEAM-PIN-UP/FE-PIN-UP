@@ -120,7 +120,7 @@ const Profile: React.FC = () => {
 
           <div className="profile-buttons">
             <ShareButton onClick={() => setIsSheetOpen(true)} />
-            <FriendButton isOtherUser={isOtherUser} />
+            <FriendButton />
           </div>
 
           <div className="review-heading">
