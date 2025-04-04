@@ -54,7 +54,7 @@ const Review: React.FC<ReviewProps> = ({
       <div className="reviewBucket">
         <div className="reviewTitle">
           <span>핀버디 리뷰</span>
-          <Button size="small" onClick={() => navigate(paths.review())}>
+          <Button size="small" onClick={() => navigate(paths.review)}>
             리뷰 작성
           </Button>
         </div>

@@ -1,26 +1,26 @@
 export const paths = {
-  base: () => "/",
+  base: "/",
   articles: (() => {
     const articles = "/articles";
-    return Object.assign(() => articles, {
-      post: () => `${articles}/post`,
+    return Object.assign(articles, {
+      post: `${articles}/post`,
     });
   })(),
-  map: () => "/map",
-  review: () => "/review",
-  bookmarks: () => "/bookmarks",
-  contents: () => "/contents",
+  map: "/map",
+  review: "/review",
+  bookmarks: "/bookmarks",
+  contents: "/contents",
   profile: (() => {
     const profile = "/profile";
     return {
-      notifications: () => `${profile}/notifications`,
+      notifications: `${profile}/notifications`,
       photoReview: (reviewId: number | string) =>
         `${profile}/photo-review/${reviewId}`,
-      search: () => `${profile}/search`,
+      search: `${profile}/search`,
       settings: (() => {
         const profileSettings = `${profile}/settings`;
-        return Object.assign(() => profileSettings, {
-          editProfile: () => `${profileSettings}/edit-profile`,
+        return Object.assign(profileSettings, {
+          editProfile: `${profileSettings}/edit-profile`,
         });
       })(),
       id: (() => {
@@ -29,18 +29,18 @@ export const paths = {
         return Object.assign(
           (memberId: string | number) =>
             Object.assign(profileId(memberId), {
-              friends: () => `${profileId(memberId)}/friends`,
+              friends: `${profileId(memberId)}/friends`,
             }),
           {}
         );
       })(),
     };
   })(),
-  signup: () => "/signup",
+  signup: "/signup",
   auth: (() => {
-    const auth = () => "/auth";
+    const auth = "/auth";
     return {
-      naver: () => `${auth}/naver`,
+      naver: `${auth}/naver`,
     };
   })(),
 };

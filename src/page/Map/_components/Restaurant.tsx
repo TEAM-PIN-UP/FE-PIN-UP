@@ -2,7 +2,7 @@ import defaultProfile from "@/image/icons/defaultProfile.png";
 import { B4, H3, H4 } from "@/style/font";
 import React from "react";
 import styled from "styled-components";
-import ImageSwiper from "./ImageSwiper";
+import ThumbImageSwiper from "./ImageSwiper";
 
 export interface RestaurantProps {
   // placeId: string;
@@ -45,7 +45,7 @@ const Restaurant: React.FC<RestaurantProps> = ({
           </div>
           <div className="profile" />
         </div>
-        <ImageSwiper imageUrls={reviewImageUrls} />
+        <ThumbImageSwiper imageUrls={reviewImageUrls} />
       </div>
       <div className="gap" />
     </StRestaurant>

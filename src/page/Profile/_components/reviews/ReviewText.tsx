@@ -24,7 +24,7 @@ const ReviewText: React.FC<ReviewTextProps> = ({ item, userName }) => {
             src={chevronRight}
             onClick={() => {
               navigate({
-                pathname: paths.map(),
+                pathname: paths.map,
                 search: new URLSearchParams({
                   kakaoPlaceId: item.kakaoPlaceId,
                 }).toString(),

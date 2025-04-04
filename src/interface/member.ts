@@ -15,7 +15,7 @@ export interface MemberDetails {
 
 export interface MemberProfileResponse {
   memberResponse: MemberDetails;
-  relationType: string;
+  relationType: relationType;
 }
 
 export interface MemberPatchBody {

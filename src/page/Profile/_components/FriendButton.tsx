@@ -1,7 +1,8 @@
-import { useSentFriendRequests } from "@/hooks/api/pinBuddy/useFriendRequests";
 import usePostFriendRequests from "@/hooks/api/pinBuddy/usePostFriendRequest";
+import useProfileDetails from "@/hooks/api/profile/useProfileDetails";
 import addUser from "@/image/icons/addUser.svg";
 import addUserWhite from "@/image/icons/addUserWhite.svg";
+import { relationType } from "@/interface/place";
 import { paths } from "@/routes/paths";
 import { ModalProps } from "@/store/modalStore";
 import { B4 } from "@/style/font";
@@ -11,18 +12,14 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
-interface FriendButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
-  isOtherUser: boolean;
-}
-
-const FriendButton: React.FC<FriendButtonProps> = ({ isOtherUser }) => {
+const FriendButton: React.FC = () => {
   const navigate = useNavigate();
   const { uid: id } = useParams();
   const { openModal, closeModal } = useModalPopup();
   const toast = useToastPopup();
 
+  const { data: userData } = useProfileDetails(id);
   const friendRequest = usePostFriendRequests();
-  const { data: sentFriendRequests } = useSentFriendRequests();
   const friendRequestModal: ModalProps = {
     type: "cancel-ok",
     title: "핀버디를 신청하시겠어요?",
@@ -41,25 +38,25 @@ const FriendButton: React.FC<FriendButtonProps> = ({ isOtherUser }) => {
     },
     onCancelButtonClick: closeModal,
   };
-  const $isRequestSent = sentFriendRequests?.some(
-    (request) => String(request.receiver.memberId) === id
-  );
 
   const handleAddFriend = () => {
-    if (isOtherUser) openModal(friendRequestModal);
-    else navigate(paths.profile.search());
+    if (userData?.relationType === "STRANGER") openModal(friendRequestModal);
+    else if (userData?.relationType === "SELF") navigate(paths.profile.search);
   };
   return (
-    <StButton
-      onClick={handleAddFriend}
-      $isSelf={!isOtherUser}
-      $isRequestSent={!!$isRequestSent}
-    >
-      <img src={isOtherUser ? addUserWhite : addUser} />
+    <StButton onClick={handleAddFriend} $relationType={userData?.relationType}>
+      <img
+        src={
+          userData?.relationType === "STRANGER" ||
+          userData?.relationType === "FRIEND"
+            ? addUserWhite
+            : addUser
+        }
+      />
       <span>
-        {!isOtherUser
+        {userData?.relationType === "SELF"
           ? "핀버디 추가"
-          : $isRequestSent
+          : userData?.relationType === "PENDING"
           ? "신청 완료"
           : "핀버디 신청"}
       </span>
@@ -67,7 +64,7 @@ const FriendButton: React.FC<FriendButtonProps> = ({ isOtherUser }) => {
   );
 };
 
-const StButton = styled.button<{ $isSelf: boolean; $isRequestSent: boolean }>`
+const StButton = styled.button<{ $relationType: relationType | undefined }>`
   ${B4}
   display: flex;
   flex-direction: row;
@@ -77,20 +74,18 @@ const StButton = styled.button<{ $isSelf: boolean; $isRequestSent: boolean }>`
   justify-content: center;
   border: none;
   border-radius: var(--radius_8);
-  background-color: ${({ $isSelf, $isRequestSent }) =>
-    $isSelf
+  background-color: ${({ $relationType }) =>
+    $relationType === "SELF"
       ? "var(--neutral_100)"
-      : $isRequestSent
+      : $relationType === "FRIEND"
       ? "var(--neutral_300)"
       : "var(--neutral_800)"};
   padding: var(--spacing_12);
   box-sizing: content-box;
   height: 16px;
   cursor: pointer;
-  color: ${({ $isSelf, $isRequestSent }) =>
-    $isSelf
-      ? "var(--black)"
-      : $isRequestSent
+  color: ${({ $relationType }) =>
+    $relationType === "SELF" || $relationType === "STRANGER"
       ? "var(--black)"
       : "var(--white)"};
   transition: transform 0.02s ease-in-out, background-color 0.02s ease-in-out;

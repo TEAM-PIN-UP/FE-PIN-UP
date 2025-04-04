@@ -19,7 +19,7 @@ const EditorArticlePage = () => {
           <img
             className="post"
             src={edit}
-            onClick={() => navigate(paths.articles.post())}
+            onClick={() => navigate(paths.articles.post)}
           />
         </Header.Right>
       </Header>

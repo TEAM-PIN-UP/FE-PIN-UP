@@ -15,7 +15,7 @@ const NaverAuthCallback = () => {
 
       if (!code || !returnedState || returnedState !== storedState) {
         console.error("State mismatch or missing values.");
-        navigate(paths.base());
+        navigate(paths.base);
         return;
       }
       sessionStorage.removeItem("naverAuthState");
@@ -27,7 +27,7 @@ const NaverAuthCallback = () => {
         );
         window.close();
       } else {
-        navigate(paths.base()); // Redirect if not in popup
+        navigate(paths.base); // Redirect if not in popup
       }
     };
 

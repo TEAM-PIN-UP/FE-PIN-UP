@@ -23,6 +23,12 @@ const NavBar: React.FC = () => {
     return <></>;
   }
 
+  {
+    /* NavBar conditional rendering */
+  }
+  const excludeNavBarRoutes = [paths.auth.naver, paths.signup];
+  if (excludeNavBarRoutes.includes(location.pathname)) return <></>;
+
   const isMyProfile = () => {
     const path = location.pathname.split("/");
     return path[1] === "profile" && path[2] === String(memberId);
@@ -34,22 +40,22 @@ const NavBar: React.FC = () => {
   return (
     <StNavBar $profileStyle={isMyProfile()}>
       <NavBarIcon
-        path={paths.map()}
+        path={paths.map}
         active={mapPinActive}
         inActive={mapPinInactive}
       />
       <NavBarIcon
-        path={paths.bookmarks()}
+        path={paths.bookmarks}
         active={bookMarkActive}
         inActive={bookMarkInactive}
       />
       <NavBarIcon
-        path={paths.review()}
+        path={paths.review}
         active={uploadActive}
         inActive={uploadInactive}
       />
       <NavBarIcon
-        path={paths.contents()}
+        path={paths.contents}
         active={contentsActive}
         inActive={contentsInactive}
       />

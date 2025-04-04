@@ -12,7 +12,7 @@ const useCheckLoginAndRoute = (options?: {
   const toast = useToastPopup();
 
   const toastText = options?.toastText ?? "로그인 후 이용해 주세요.";
-  const path = options?.path ?? paths.signup();
+  const path = options?.path ?? paths.signup;
 
   useEffect(() => {
     const isSignedIn = checkLogin();

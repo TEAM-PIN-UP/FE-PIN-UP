@@ -2,7 +2,7 @@ import getApi from "@/api/getApi";
 import Button from "@/components/Button";
 import TextInput from "@/components/TextInput";
 import { B5 } from "@/style/font";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import StTextContainer from "../typography/StTextContainer";
 import { StageProps } from "./StageProps";
@@ -26,16 +26,15 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsSubmitting(false);
     const value = e.target.value;
-    if (value.length <= upperCharLimit) {
-      updateData({ nickname: value });
-
-      // English and Korean letters + jamo
-      const regex =
-        /^[a-zA-Z\u1100-\u1112\u1161-\u1175\u3130-\u318F\uAC00-\uD7A3]*$/;
-      setIsInputValid(regex.test(value) && value.length >= lowerCharLimit);
-    } else {
-      setIsInputValid(false);
-    }
+    updateData({ nickname: value });
+    // English and Korean letters + jamo
+    const regex =
+      /^[a-zA-Z\u1100-\u1112\u1161-\u1175\u3130-\u318F\uAC00-\uD7A3]*$/;
+    setIsInputValid(
+      value.length >= lowerCharLimit &&
+        value.length <= upperCharLimit &&
+        regex.test(value)
+    );
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -46,18 +45,20 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
     try {
       setIsSubmitting(true);
       const response = await getApi.getMemberNicknameCheck(data.nickname);
-      setIsNicknameValid(!(response.data as boolean));
+      const isDuplicateNickname = response.data as boolean;
+
+      if (isDuplicateNickname) {
+        setIsNicknameValid(false);
+      } else if (isInputValid) {
+        setIsNicknameValid(true);
+        onNext();
+      }
     } catch (error) {
       console.error("Error checking nickname:", error);
       setIsNicknameValid(false);
       setIsSubmitting(false);
     }
   };
-
-  useEffect(() => {
-    if (isSubmitting && isInputValid && isNicknameValid) onNext();
-    return () => {};
-  }, [isInputValid, isNicknameValid, isSubmitting, onNext]);
 
   return (
     <StDiv>
@@ -86,7 +87,10 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
             </StB5>
           )}
           {isSubmitting && !isNicknameValid && (
-            <StB5 style={{ color: "var(--system_error)" }}>
+            <StB5
+              $isInvalid={!isNicknameValid}
+              style={{ color: "var(--system_error)" }}
+            >
               중복되는 닉네임이에요.
             </StB5>
           )}
@@ -148,7 +152,8 @@ const StDiv = styled.div`
 
 const StB5 = styled.div<{ $isInvalid?: boolean }>`
   ${B5}
-  color: ${({ $isInvalid }) => ($isInvalid ? "red" : "var(--neutral_500)")};
+  color: ${({ $isInvalid }) =>
+    $isInvalid ? "var(--system_error)" : "var(--neutral_500)"};
   animation: ${({ $isInvalid }) =>
     $isInvalid
       ? css`

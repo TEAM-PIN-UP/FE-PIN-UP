@@ -6,6 +6,7 @@ import {
   useGetTextReviews,
 } from "@/hooks/api/review/useGetReviews";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
+import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import defaultProfile from "@/image/icons/defaultProfile.png";
 import notificationActive from "@/image/icons/notificationActive.svg";
 import notificationInactive from "@/image/icons/notificationInactive.svg";
@@ -23,6 +24,7 @@ import ShareSheet from "./_components/ShareSheet";
 import UserStatsSection, { Stat } from "./_components/UserStatsSection";
 
 const Profile: React.FC = () => {
+  useCheckLoginAndRoute();
   const navigate = useNavigate();
   const { uid: id } = useParams();
   const memberResponse = getMemberResponseObj();
@@ -69,12 +71,12 @@ const Profile: React.FC = () => {
                     ? notificationActive
                     : notificationInactive
                 }
-                onClick={() => navigate(paths.profile.notifications())}
+                onClick={() => navigate(`../${paths.profile.notifications}`)}
                 className="button"
               />
               <img
                 src={settings}
-                onClick={() => navigate(paths.profile.settings())}
+                onClick={() => navigate(`../${paths.profile.settings}`)}
                 className="button"
               />
             </Header.Right>
@@ -108,7 +110,7 @@ const Profile: React.FC = () => {
                     value: memberFeed?.memberResponse.pinBuddyCount,
                     onClick: () => {
                       if (!id) return;
-                      return navigate(paths.profile.id(id).friends());
+                      return navigate(`../${paths.profile.id(id).friends}`);
                     },
                   },
                 ] as Stat[]
@@ -120,7 +122,7 @@ const Profile: React.FC = () => {
 
           <div className="profile-buttons">
             <ShareButton onClick={() => setIsSheetOpen(true)} />
-            <FriendButton isOtherUser={isOtherUser} />
+            <FriendButton />
           </div>
 
           <div className="review-heading">

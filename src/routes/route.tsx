@@ -20,39 +20,39 @@ import { paths } from "./paths";
 
 const router = createBrowserRouter([
   {
-    path: paths.base(),
+    path: paths.base,
     element: <App />, // 최상위 경로로 App 설정
     children: [
       {
-        path: paths.base(),
+        path: paths.base,
         element: <MapPage />,
       },
       {
-        path: paths.articles(),
+        path: paths.articles,
         element: <EditorArticlePage />,
       },
       {
-        path: paths.articles.post(),
+        path: paths.articles.post,
         element: <EditorPostPage />,
       },
       {
-        path: paths.map(),
+        path: paths.map,
         element: <MapPage />,
       },
       {
-        path: paths.review(),
+        path: paths.review,
         element: <ReviewPage />,
       },
       {
-        path: paths.bookmarks(),
+        path: paths.bookmarks,
         element: <MyPlace />,
       },
       {
-        path: paths.contents(),
+        path: paths.contents,
         element: <ContentsPage />,
       },
       {
-        path: paths.profile.notifications(),
+        path: paths.profile.notifications,
         element: <Notifications />,
       },
       {
@@ -63,14 +63,14 @@ const router = createBrowserRouter([
         element: <PinBuddyLayout />,
         children: [
           {
-            path: paths.profile.search(),
+            path: paths.profile.search,
             element: <PinbuddySearch />,
           },
         ],
       },
-      { path: paths.profile.settings(), element: <Settings /> },
+      { path: paths.profile.settings, element: <Settings /> },
       {
-        path: paths.profile.settings.editProfile(),
+        path: paths.profile.settings.editProfile,
         element: <EditProfile />,
       },
       {
@@ -78,15 +78,15 @@ const router = createBrowserRouter([
         element: <ProfilePage />,
       },
       {
-        path: paths.profile.id(":uid").friends(),
+        path: paths.profile.id(":uid").friends,
         element: <PinbuddyList />,
       },
       {
-        path: paths.signup(),
+        path: paths.signup,
         element: <SignUpPage />,
       },
       {
-        path: paths.auth.naver(),
+        path: paths.auth.naver,
         element: <NaverAuthCallback />,
       },
     ],
