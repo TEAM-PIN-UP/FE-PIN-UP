@@ -42,7 +42,12 @@ const Notifications: React.FC = () => {
                 type="receivedRequestFromUser"
                 isRead={false}
                 onClick={() =>
-                  navigate(paths.profile.id(request.sender.memberId).friends)
+                  navigate({
+                    pathname: paths.profile.id(request.sender.memberId).friends,
+                    search: new URLSearchParams({
+                      list: "received",
+                    }).toString(),
+                  })
                 }
               />
             ))}
