@@ -6,6 +6,7 @@ import {
   useGetTextReviews,
 } from "@/hooks/api/review/useGetReviews";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
+import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import defaultProfile from "@/image/icons/defaultProfile.png";
 import notificationActive from "@/image/icons/notificationActive.svg";
 import notificationInactive from "@/image/icons/notificationInactive.svg";
@@ -23,6 +24,7 @@ import ShareSheet from "./_components/ShareSheet";
 import UserStatsSection, { Stat } from "./_components/UserStatsSection";
 
 const Profile: React.FC = () => {
+  useCheckLoginAndRoute();
   const navigate = useNavigate();
   const { uid: id } = useParams();
   const memberResponse = getMemberResponseObj();

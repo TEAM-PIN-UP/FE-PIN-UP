@@ -8,7 +8,7 @@ interface ImageSwiperProps {
   imageUrls: string[];
 }
 
-const ImageSwiper: React.FC<ImageSwiperProps> = ({ imageUrls }) => {
+const ThumbImageSwiper: React.FC<ImageSwiperProps> = ({ imageUrls }) => {
   const images = imageUrls;
 
   return (
@@ -36,4 +36,4 @@ const StImage = styled.img`
   opacity: 1;
 `;
 
-export default ImageSwiper;
+export default ThumbImageSwiper;

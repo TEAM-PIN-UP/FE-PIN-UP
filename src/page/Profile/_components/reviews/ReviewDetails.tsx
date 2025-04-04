@@ -11,6 +11,7 @@ import useToastPopup from "@/utils/toastPopup";
 import { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { Swiper, SwiperSlide } from "swiper/react";
 import ReviewText from "./ReviewText";
 
 export const ReviewDetails: React.FC = () => {
@@ -68,7 +69,13 @@ export const ReviewDetails: React.FC = () => {
           <img src={moreDotsGray} className="more-dots" />
         </div>
         <div className="review-images">
-          <img src={review.reviewImageUrls[0]} className="image" />
+          <Swiper>
+            {review.reviewImageUrls.map((imageUrl, index) => (
+              <SwiperSlide key={index}>
+                <img className="image" src={imageUrl} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
         <ReviewText item={review} userName="나" />
       </StTransitionWrapper>
