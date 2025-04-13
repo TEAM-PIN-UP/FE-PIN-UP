@@ -44,6 +44,7 @@ const SetName: React.FC<StageProps> = ({ data, updateData, onNext }) => {
   const handleNext = async () => {
     try {
       setIsSubmitting(true);
+      setIsNicknameValid(true);
       const response = await getApi.getMemberNicknameCheck(data.nickname);
       const isDuplicateNickname = response.data as boolean;
 

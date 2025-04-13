@@ -41,6 +41,7 @@ const MapPage: React.FC = () => {
     searchParams.get("kakaoPlaceId")
   );
   const [followUser, setFollowUser] = useState(true);
+  const [focusPlace, setFocusPlace] = useState(!!kakaoPlaceId);
   const defaultZoom = 20;
   const [isGeoAvailable, setIsGeoAvailable] = useState(false);
   useMapSetup(true, map, user, followUser, setKakaoPlaceId, setIsGeoAvailable);
@@ -64,11 +65,12 @@ const MapPage: React.FC = () => {
 
   // Move map to place when kakaoPlaceId is present
   useEffect(() => {
-    if (!kakaoPlaceId || !placeData || !map) return;
+    if (!kakaoPlaceId || !placeData || !map || !focusPlace) return;
 
     // Check if current center is already there
     const newCenter = new naverMaps.LatLng(
-      placeData.mapPlaceResponse.latitude - 0.0001,
+      placeData.mapPlaceResponse.latitude -
+        0.0005 * (map.getMaxZoom() - map.getZoom()),
       placeData.mapPlaceResponse.longitude
     );
     const currentCenter = map.getCenter();
@@ -80,7 +82,14 @@ const MapPage: React.FC = () => {
     }
     map.setCenter(newCenter);
     callbackGetPlacesInView();
-  }, [kakaoPlaceId, placeData, map, naverMaps.LatLng, callbackGetPlacesInView]);
+  }, [
+    kakaoPlaceId,
+    placeData,
+    map,
+    naverMaps.LatLng,
+    callbackGetPlacesInView,
+    focusPlace,
+  ]);
 
   useEffect(() => {
     if (kakaoPlaceId) {
@@ -112,7 +121,7 @@ const MapPage: React.FC = () => {
       if (timeoutRef) clearTimeout(timeoutRef);
       naver.maps.Event.removeListener(idleListener);
     };
-  }, [isReviewView, map, callbackGetPlacesInView]);
+  }, [map, callbackGetPlacesInView]);
 
   const handleMoveToCurrent = () => {
     setKakaoPlaceId(null);
@@ -120,8 +129,14 @@ const MapPage: React.FC = () => {
     const pos = getLastKnownPositionObj();
     if (pos) {
       const zoom = map?.getZoom();
+      console.log(map?.getZoom());
+      console.log(map?.getMaxZoom());
+
       map?.morph(
-        new naverMaps.LatLng(pos.coords.latitude, pos.coords.longitude),
+        new naverMaps.LatLng(
+          pos.coords.latitude - 0.0005 * (map.getMaxZoom() - map.getZoom()),
+          pos.coords.longitude
+        ),
         zoom
       );
       setFollowUser(true);
@@ -133,8 +148,8 @@ const MapPage: React.FC = () => {
     const center = map?.getCenter();
     if (pos && center) {
       return !(
-        Math.abs(pos.coords.latitude - center.y) < 0.0005 &&
-        Math.abs(pos.coords.longitude - center.x) < 0.0005
+        Math.abs(pos.coords.latitude - center.y) < 0.005 &&
+        Math.abs(pos.coords.longitude - center.x) < 0.005
       );
     }
     return false;
@@ -157,6 +172,7 @@ const MapPage: React.FC = () => {
             ref={setMap}
             onBoundsChanged={() => {
               if (followUser) setFollowUser(false);
+              if (focusPlace) setFocusPlace(false);
             }}
           >
             <UserPositionMarker
@@ -174,6 +190,7 @@ const MapPage: React.FC = () => {
                   count={item.reviewCount.toString()}
                   onClick={() => {
                     setKakaoPlaceId(item.kakaoPlaceId);
+                    setFocusPlace(true);
                     navigate(
                       `${window.location.pathname}?kakaoPlaceId=${item.kakaoPlaceId}`
                     );
@@ -196,6 +213,7 @@ const MapPage: React.FC = () => {
                 setDataQuery,
                 setBookmark,
                 setKakaoPlaceId,
+                setFocusPlace,
               },
               mapData: { places },
               mapState: { isReviewView, category, dataQuery, bookmark },

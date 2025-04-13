@@ -27,7 +27,8 @@ const Tos: React.FC<StageProps> = ({ updateData, onNext }) => {
   };
 
   const handleAgreeAll = () => {
-    setAgreements(new Set(["TOA", "TOP", "TOG", "TOM"]));
+    if (isAllAgreed) setAgreements(new Set());
+    else setAgreements(new Set(["TOA", "TOP", "TOG", "TOM"]));
   };
 
   const isRequiredAgreed =

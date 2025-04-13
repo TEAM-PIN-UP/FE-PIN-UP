@@ -20,6 +20,7 @@ interface MapActions {
   setSort: React.Dispatch<React.SetStateAction<placeSort>>;
   setDataQuery: React.Dispatch<React.SetStateAction<string>>;
   setBookmark: React.Dispatch<React.SetStateAction<boolean>>;
+  setFocusPlace: React.Dispatch<React.SetStateAction<boolean>>;
   setKakaoPlaceId: React.Dispatch<React.SetStateAction<string | null>>;
 }
 interface MapData {
@@ -41,8 +42,14 @@ interface MapSheetProps {
 const MapSheet: React.FC<MapSheetProps> = (props) => {
   // Props
   const { attachRef } = props.sheet;
-  const { setCategory, setSort, setDataQuery, setBookmark, setKakaoPlaceId } =
-    props.mapActions;
+  const {
+    setCategory,
+    setSort,
+    setDataQuery,
+    setBookmark,
+    setKakaoPlaceId,
+    setFocusPlace,
+  } = props.mapActions;
   const { places } = props.mapData;
   const { isReviewView, category, dataQuery, bookmark } = props.mapState;
 
@@ -119,6 +126,7 @@ const MapSheet: React.FC<MapSheetProps> = (props) => {
                   key={item.kakaoPlaceId}
                   onClick={() => {
                     setKakaoPlaceId(item.kakaoPlaceId);
+                    setFocusPlace(true);
                     navigate(
                       `${window.location.pathname}?kakaoPlaceId=${item.kakaoPlaceId}`
                     );
