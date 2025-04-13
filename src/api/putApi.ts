@@ -1,8 +1,8 @@
-import customAxios from "./Interceptor";
+import apiAxios from "./interceptors";
 
 const putApi = {
   editProfile: (formData: FormData) =>
-    customAxios.put(`/api/members`, formData, {
+    apiAxios.put(`/api/members`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     }),
 };
