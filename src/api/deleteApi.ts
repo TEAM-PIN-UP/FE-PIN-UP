@@ -1,12 +1,12 @@
-import customAxios from "./Interceptor";
+import apiAxios from "./interceptors";
 
 const deleteApi = {
   myPlace: ({ kakaoPlaceId }: { kakaoPlaceId: number }) =>
-    customAxios.delete(`/api/bookmarks/${kakaoPlaceId}`),
+    apiAxios.delete(`/api/bookmarks/${kakaoPlaceId}`),
   cancelFriendRequest: ({ requestId }: { requestId: number | string }) =>
-    customAxios.delete(`/api/friend-requests/${requestId}`),
+    apiAxios.delete(`/api/friend-requests/${requestId}`),
   deleteFriend: ({ friendId }: { friendId: number | string }) =>
-    customAxios.delete(`/api/friendships/${friendId}`),
+    apiAxios.delete(`/api/friendships/${friendId}`),
 };
 
 export default deleteApi;

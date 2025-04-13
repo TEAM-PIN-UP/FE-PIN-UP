@@ -1,14 +1,14 @@
-import customAxios from "./Interceptor";
+import apiAxios from "./interceptors";
 
 const patchApi = {
   patchMembers: (formData: FormData) =>
-    customAxios.patch(`/api/members`, formData, {
+    apiAxios.patch(`/api/members`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     }),
   acceptFriendRequest: ({ requestId }: { requestId: number | string }) =>
-    customAxios.patch(`/api/friend-requests/${requestId}/accept`),
+    apiAxios.patch(`/api/friend-requests/${requestId}/accept`),
   rejectFriendRequest: ({ requestId }: { requestId: number | string }) =>
-    customAxios.patch(`/api/friend-requests/${requestId}/reject`),
+    apiAxios.patch(`/api/friend-requests/${requestId}/reject`),
 };
 
 export default patchApi;

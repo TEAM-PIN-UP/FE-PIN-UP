@@ -1,7 +1,6 @@
 import Button from "@/components/Button";
 import ProfileImagePicker from "@/components/ProfileImagePicker";
 import camera from "@/image/icons/camera.svg";
-import defaultProfile from "@/image/icons/defaultProfile.png";
 import { B3 } from "@/style/font";
 import checkImageValidity from "@/utils/checkImageValidity";
 import { cropImage } from "@/utils/cropImage";
@@ -96,7 +95,7 @@ const SetProfile: React.FC<StageProps> = ({ data, updateData, onNext }) => {
           <button
             className="skip-button"
             onClick={() => {
-              updateData({ profileImage: defaultProfile });
+              // updateData({ profileImage: defaultProfile });
               onNext();
             }}
           >

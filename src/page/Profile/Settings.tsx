@@ -1,4 +1,4 @@
-import customAxios from "@/api/Interceptor";
+import apiAxios from "@/api/interceptors";
 import Header from "@/components/Header";
 import TransitionWrapper from "@/components/TransitionWrapper";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
@@ -22,7 +22,7 @@ const Settings: React.FC = () => {
     okButtonText: "확인",
     onOkButtonClick: async () => {
       try {
-        await customAxios.post(`/api/auth/logout`, null, {
+        await apiAxios.post(`/api/auth/logout`, null, {
           headers: { Access: localStorage.getItem("accessToken") },
         });
       } catch (error) {
