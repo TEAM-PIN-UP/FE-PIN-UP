@@ -39,11 +39,11 @@ const SearchResultSingle: React.FC<PinBuddySingleProps> = ({ data }) => {
         <div className="counts">
           <div className="singleInfo">
             <span className="title">리뷰</span>
-            <span>{data.reviewCount}</span>
+            <span>{data.memberResponse.reviewCount}</span>
           </div>
           <div className="singleInfo">
             <span className="title">핀버디</span>
-            <span>{data.pinBuddyCount}</span>
+            <span>{data.memberResponse.pinBuddyCount}</span>
           </div>
         </div>
       </div>

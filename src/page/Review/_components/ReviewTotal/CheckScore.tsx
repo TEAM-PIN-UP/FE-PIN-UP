@@ -1,9 +1,8 @@
-import { H4 } from "@/style/font";
-import styled from "styled-components";
-import { useState } from "react";
-import emptyStar from "@/image/icons/emptyStar.svg";
 import fullStar from "@/image/icons/blackStar.svg";
-import halfStar from "@/image/icons/halfBlackStar.svg";
+import emptyStar from "@/image/icons/emptyStar.svg";
+import { H4 } from "@/style/font";
+import { useState } from "react";
+import styled from "styled-components";
 import ScoreModal from "./ScoreModal";
 
 interface CheckScoreProp {
@@ -22,8 +21,6 @@ const CheckScore: React.FC<CheckScoreProp> = ({ starScore, setStarScore }) => {
         stars.push(<img src={emptyStar} alt="empty star" key={i} />);
       } else if (count >= 1) {
         stars.push(<img src={fullStar} alt="full star" key={i} />);
-      } else if (count < 1 && count > 0) {
-        stars.push(<img src={halfStar} alt="half star" key={i} />);
       }
       count--;
     }
@@ -32,15 +29,13 @@ const CheckScore: React.FC<CheckScoreProp> = ({ starScore, setStarScore }) => {
 
   return (
     <>
-      {starModal ? (
+      {starModal && (
         <ScoreModal
           starScore={starScore}
           setStarScore={setStarScore}
           setStarModal={setStarModal}
           starShow={starShow}
         />
-      ) : (
-        <></>
       )}
       <StCheckScore>
         <p className="title">별점</p>
