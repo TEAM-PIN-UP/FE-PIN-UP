@@ -5,6 +5,7 @@ interface ProfileImagePickerProps
   extends React.HTMLAttributes<HTMLButtonElement> {
   imageUrl: string | null;
   onImageChange: (image: File) => void;
+  onImageRemove?: () => void;
   placeholderIcon?: string;
   ref?: RefObject<HTMLInputElement>;
   size: string;
@@ -13,33 +14,71 @@ interface ProfileImagePickerProps
 const ProfileImagePicker = forwardRef<
   HTMLInputElement,
   ProfileImagePickerProps
->(({ imageUrl, onImageChange, placeholderIcon, size, ...props }, ref) => {
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    if (file) onImageChange(file);
-  };
+>(
+  (
+    { imageUrl, onImageChange, onImageRemove, placeholderIcon, size, ...props },
+    ref
+  ) => {
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files ? event.target.files[0] : null;
+      if (file) onImageChange(file);
+    };
 
-  return (
-    <StImagePicker
-      $size={size}
-      style={{
-        backgroundImage: imageUrl ? `url(${imageUrl})` : "none",
-      }}
-      {...props}
-    >
-      {!imageUrl && placeholderIcon && (
-        <img className="placeholder-icon" src={placeholderIcon} alt="Icon" />
-      )}
-      <input
-        type="file"
-        accept="image/jpeg, image/png"
-        ref={ref}
-        className="image-input"
-        onChange={handleImageChange}
-      />
-    </StImagePicker>
-  );
-});
+    return (
+      <StDiv $size={size}>
+        {imageUrl && (
+          <button className="remove-image" onClick={onImageRemove}>
+            ×
+          </button>
+        )}
+        <StImagePicker
+          $size={size}
+          style={{
+            backgroundImage: imageUrl ? `url(${imageUrl})` : "none",
+          }}
+          {...props}
+        >
+          {!imageUrl && placeholderIcon && (
+            <img className="placeholder-icon" src={placeholderIcon} />
+          )}
+          <input
+            type="file"
+            accept="image/jpeg, image/png"
+            ref={ref}
+            className="image-input"
+            onChange={handleImageChange}
+          />
+        </StImagePicker>
+      </StDiv>
+    );
+  }
+);
+
+const StDiv = styled.div<{ $size: string }>`
+  width: ${({ $size }) => $size};
+  height: ${({ $size }) => $size};
+  position: relative;
+
+  .remove-image {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 24px;
+    height: 24px;
+    background-color: lightgray;
+    border: none;
+    border-radius: var(--radius_circle);
+    color: var(--neutral_600);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bolder;
+    font-size: 16px;
+    padding: 0px;
+    z-index: 10;
+  }
+`;
 
 const StImagePicker = styled.button<{ $size: string }>`
   position: relative;

@@ -5,6 +5,10 @@ import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import useMapSetup from "@/hooks/useMapSetup";
 import { GetPlaceResponse, placeCategory, placeSort } from "@/interface/place";
+import {
+  getCurrentView,
+  saveCurrentView,
+} from "@/page/Map/_functions/saveCurrentView";
 import { getLastKnownPositionObj } from "@/utils/getFromLocalStorage";
 import useToastPopup from "@/utils/toastPopup";
 import { useCallback, useEffect, useState } from "react";
@@ -42,7 +46,12 @@ const MapPage: React.FC = () => {
   );
   const [followUser, setFollowUser] = useState(true);
   const [focusPlace, setFocusPlace] = useState(!!kakaoPlaceId);
-  const defaultZoom = 20;
+  const defaultZoom = 12;
+  const defaultCenter = (() => {
+    const coords = getCurrentView();
+    if (!coords) return undefined;
+    return new naver.maps.LatLng(parseFloat(coords.y), parseFloat(coords.x));
+  })();
   const [isGeoAvailable, setIsGeoAvailable] = useState(false);
   useMapSetup(true, map, user, followUser, setKakaoPlaceId, setIsGeoAvailable);
 
@@ -112,9 +121,7 @@ const MapPage: React.FC = () => {
     let timeoutRef: NodeJS.Timeout | null = null;
     const handleIdle = () => {
       if (timeoutRef) clearTimeout(timeoutRef);
-      timeoutRef = setTimeout(() => {
-        callbackGetPlacesInView();
-      }, 500);
+      timeoutRef = setTimeout(() => callbackGetPlacesInView(), 500);
     };
     const idleListener = naver.maps.Event.addListener(map, "idle", handleIdle);
     return () => {
@@ -168,8 +175,10 @@ const MapPage: React.FC = () => {
       <NavermapsProvider ncpClientId={import.meta.env.VITE_NAVER_MAPS}>
         <StMapDiv>
           <NaverMap
+            defaultCenter={defaultCenter}
             zoom={defaultZoom}
             ref={setMap}
+            onCenterChanged={(coord) => saveCurrentView(coord)}
             onBoundsChanged={() => {
               if (followUser) setFollowUser(false);
               if (focusPlace) setFocusPlace(false);

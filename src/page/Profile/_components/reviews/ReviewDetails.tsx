@@ -69,9 +69,9 @@ export const ReviewDetails: React.FC = () => {
           <img src={moreDotsGray} className="more-dots" />
         </div>
         <div className="review-images">
-          <Swiper>
+          <Swiper className="swiper">
             {review.reviewImageUrls.map((imageUrl, index) => (
-              <SwiperSlide key={index}>
+              <SwiperSlide key={index} className="slide">
                 <img className="image" src={imageUrl} />
               </SwiperSlide>
             ))}
@@ -151,10 +151,21 @@ const StTransitionWrapper = styled(TransitionWrapper)`
     aspect-ratio: 1;
     margin-bottom: var(--spacing_8);
 
+    .swiper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .slide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .image {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
     }
   }
 `;

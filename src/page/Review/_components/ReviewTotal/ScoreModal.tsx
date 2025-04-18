@@ -1,10 +1,9 @@
-import emptyStar from "@/image/icons/emptyStar.svg";
-import fullStar from "@/image/icons/blackStar.svg";
-import halfStar from "@/image/icons/halfBlackStar.svg";
-import styled, { css } from "styled-components";
-import { B3, H2, H4 } from "@/style/font";
 import Button from "@/components/Button";
+import fullStar from "@/image/icons/blackStar.svg";
+import emptyStar from "@/image/icons/emptyStar.svg";
+import { B3, H2, H4 } from "@/style/font";
 import { useState } from "react";
+import styled from "styled-components";
 
 interface ScoreModalProps {
   starScore: number;
@@ -30,42 +29,14 @@ const ScoreModal: React.FC<ScoreModalProps> = ({
         stars.push(
           <StarContainer>
             <img src={emptyStar} alt="empty star" key={i} />
-            <div
-              className="leftStar"
-              onClick={() => setStarScoreTemp(i + 0.5)}
-            />
-            <div
-              className="rightStar"
-              onClick={() => setStarScoreTemp(i + 1)}
-            />
+            <div className="star" onClick={() => setStarScoreTemp(i + 1)} />
           </StarContainer>
         );
       } else if (count >= 1) {
         stars.push(
           <StarContainer>
             <img src={fullStar} alt="full star" key={i} />
-            <div
-              className="leftStar"
-              onClick={() => setStarScoreTemp(i + 0.5)}
-            />
-            <div
-              className="rightStar"
-              onClick={() => setStarScoreTemp(i + 1)}
-            />
-          </StarContainer>
-        );
-      } else if (count < 1 && count > 0) {
-        stars.push(
-          <StarContainer>
-            <img src={halfStar} alt="half star" key={i} />
-            <div
-              className="leftStar"
-              onClick={() => setStarScoreTemp(i + 0.5)}
-            />
-            <div
-              className="rightStar"
-              onClick={() => setStarScoreTemp(i + 1)}
-            />
+            <div className="star" onClick={() => setStarScoreTemp(i + 1)} />
           </StarContainer>
         );
       }
@@ -116,24 +87,13 @@ const ScoreModal: React.FC<ScoreModalProps> = ({
   );
 };
 
-const halfStyles = css`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 50%;
-  height: 100%;
-  cursor: pointer;
-`;
-
 const StarContainer = styled.div`
   position: relative;
-  .leftStar {
-    ${halfStyles}
-    left:0;
-  }
-  .rightStar {
-    ${halfStyles}
-    right: 0;
+  .star {
+    position: absolute;
+    inset: 0px;
+    width: 100%;
+    height: 100%;
   }
   img {
     width: 28px;

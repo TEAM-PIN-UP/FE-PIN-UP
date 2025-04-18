@@ -62,6 +62,7 @@ const StEditorCompo = styled.div`
     height: 90%;
     outline: none;
     resize: none;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   }
   .countInfo {
     display: flex;

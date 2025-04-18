@@ -67,7 +67,7 @@ export const handleGlobalError = async (error: CustomAxiosError) => {
   const errorMessage = errorCode ? getErrorMessage(errorCode) : defaultMessage;
 
   // Refresh on expired access token
-  if (errorCode === "AU006") {
+  if (errorCode === "AU006" || errorCode === "E_AUTH006") {
     const originalRequest = error.config as CustomAxiosRequestConfig;
     if (!originalRequest._retry) {
       originalRequest._retry = true;

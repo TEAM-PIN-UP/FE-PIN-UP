@@ -86,7 +86,7 @@ const ReviewTotal: React.FC<ReviewTotalProps> = ({ pickedInfo, visitDate }) => {
       cancelButtonText: "취소",
       onCancelButtonClick: () => {
         closeModal();
-        navigate(paths.map);
+        navigate(-1);
       },
     });
   };
