@@ -21,7 +21,8 @@ export type GlobalErrorCodeType =
   | "G17"
   | "G018"
   | "G019"
-  | "G020";
+  | "G020"
+  | "E_GLOBAL001";
 
 // Auth Error Codes
 export type AuthErrorCodeType =
@@ -174,6 +175,7 @@ const errorMessages: Record<ErrorCodeType, string> = {
   G018: "캐시 키는 null일 수 없습니다.",
   G019: "소셜 로그인 서버로부터 발급된 Access Token이 없습니다.",
   G020: "소셜 로그인 서버에서 조회한 유저 정보가 없습니다.",
+  E_GLOBAL001: "내부 서버 오류입니다.",
 
   // Auth
   AU001: "유효하지 않은 토큰입니다.",

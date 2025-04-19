@@ -1,15 +1,12 @@
-import { SignUpForm } from "@/page/SignUp/SignUpInterface";
+import { useToastStore } from "@/store";
 import checkImageValidity from "@/utils/checkImageValidity";
 import { cropImage } from "@/utils/cropImage";
 
-const uploadImage = (
-  file: File,
-  updateData: (updatedData: Partial<SignUpForm>) => void,
-  toast: (text: string) => void
-) => {
+const uploadImage = (file: File, onLoad: (loadedImageUrl: string) => void) => {
+  const { textChange, pop } = useToastStore.getState();
+
   if (file) {
     if (!checkImageValidity(file)) {
-      toast("jpeg 또는 png 형식의 이미지를 올려주세요.");
       return;
     }
 
@@ -23,13 +20,14 @@ const uploadImage = (
         image.onload = async () => {
           try {
             const croppedImageUrl = await cropImage(imageUrl);
-            updateData({ profileImage: croppedImageUrl });
+            onLoad(croppedImageUrl);
           } catch (error) {
             console.error("Error cropping image: ", error);
           }
         };
         image.onerror = () => {
-          toast("올바른 이미지 파일을 선택해주세요.");
+          textChange("올바른 이미지 파일을 선택해주세요.");
+          pop(true);
         };
 
         // Begin loading image

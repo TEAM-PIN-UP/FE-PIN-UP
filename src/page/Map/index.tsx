@@ -175,7 +175,7 @@ const MapPage: React.FC = () => {
       <NavermapsProvider ncpClientId={import.meta.env.VITE_NAVER_MAPS}>
         <StMapDiv>
           <NaverMap
-            defaultCenter={defaultCenter}
+            defaultCenter={kakaoPlaceId ? undefined : defaultCenter}
             zoom={defaultZoom}
             ref={setMap}
             onCenterChanged={(coord) => saveCurrentView(coord)}

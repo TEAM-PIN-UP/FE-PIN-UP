@@ -1,10 +1,9 @@
 import Button from "@/components/Button";
 import ProfileImagePicker from "@/components/ProfileImagePicker";
 import camera from "@/image/icons/camera.svg";
-import uploadImage from "@/page/SignUp/_functions/uploadImage";
 import { B3 } from "@/style/font";
 import checkImageValidity from "@/utils/checkImageValidity";
-import useToastPopup from "@/utils/toastPopup";
+import uploadImage from "@/utils/uploadImage";
 import { useRef } from "react";
 import styled from "styled-components";
 import StGap from "../typography/StGap";
@@ -13,8 +12,6 @@ import StTextContainer from "../typography/StTextContainer";
 import { StageProps } from "./StageProps";
 
 const SetProfile: React.FC<StageProps> = ({ data, updateData, onNext }) => {
-  const toast = useToastPopup();
-
   const isValidProfileImage = checkImageValidity(data.profileImage);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -38,7 +35,11 @@ const SetProfile: React.FC<StageProps> = ({ data, updateData, onNext }) => {
 
       <ProfileImagePicker
         imageUrl={data.profileImage}
-        onImageChange={(image) => uploadImage(image, updateData, toast)}
+        onImageChange={(image) =>
+          uploadImage(image, (loadedImageUrl) =>
+            updateData({ profileImage: loadedImageUrl })
+          )
+        }
         onImageRemove={() => updateData({ profileImage: "" })}
         size="100px"
         placeholderIcon={camera}
