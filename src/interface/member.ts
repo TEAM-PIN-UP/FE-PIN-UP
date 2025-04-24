@@ -4,6 +4,7 @@ export interface MemberDetails {
   averageStarRating: number;
   bio: string;
   email: string;
+  loginType: "GOOGLE" | "NAVER" | "KAKAO";
   memberId: number;
   name: string;
   nickname: string;
@@ -11,6 +12,12 @@ export interface MemberDetails {
   profilePictureUrl: string;
   reviewCount: number;
   termsOfMarketing: "Y" | "N";
+}
+
+export interface SignInResponse {
+  accessToken: string;
+  memberResponse: MemberDetails;
+  refreshToken: string;
 }
 
 export interface MemberProfileResponse {

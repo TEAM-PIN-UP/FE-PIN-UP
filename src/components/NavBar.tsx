@@ -19,7 +19,7 @@ const NavBar: React.FC = () => {
   const memberResponse = getMemberResponseObj();
   const memberId = memberResponse?.memberId;
   if (!memberId) {
-    console.error("No member id in Navbar");
+    // console.error("No member id in Navbar");
     return <></>;
   }
 

@@ -1,75 +1,81 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  forwardRef,
+  Ref,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import styled, { CSSProp } from "styled-components";
 
 import { H3, H4, H5 } from "@/style/font";
 
-interface buttonProps extends React.HTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   size: "full" | "xlarge" | "large" | "medium" | "small";
   active?: boolean;
   onClick: () => void;
 }
 
-interface styleProps {
+interface StyleProps {
   width: string;
   $padding: string;
   $active: boolean;
   $typo: CSSProp;
 }
 
-const Button: React.FC<buttonProps> = ({
-  size,
-  active = true,
-  onClick,
-  children,
-  ...props
-}) => {
-  const [width, setWidth] = useState<string>("max-content");
-  const [padding, setPadding] = useState<string>("12px 16px");
-  const [typo, setTypo] = useState<CSSProp>(H3);
+const Button = forwardRef(
+  (
+    { size, active = true, onClick, children, ...props }: ButtonProps,
+    ref: Ref<HTMLButtonElement>
+  ) => {
+    const [width, setWidth] = useState<string>("max-content");
+    const [padding, setPadding] = useState<string>("12px 16px");
+    const [typo, setTypo] = useState<CSSProp>(H3);
 
-  const buttonSizeCheckFunc = useCallback(() => {
-    if (size === "small") {
-      setWidth("max-content");
-      setPadding("10px 16px");
-      setTypo(H5);
-    } else if (size === "medium") {
-      setWidth("max-content");
-      setPadding("14px 24px");
-      setTypo(H5);
-    } else if (size === "large") {
-      setPadding("13.5px 40px");
-      setTypo(H4);
-    } else if (size === "xlarge") {
-      setWidth("calc( 100% - 40px )");
-      setPadding("15px 0px");
-      setTypo(H3);
-    } else if (size === "full") {
-      setWidth("100%");
-      setPadding("15px 0px");
-      setTypo(H3);
-    }
-  }, [size, setWidth, setPadding, setTypo]);
+    const buttonSizeCheckFunc = useCallback(() => {
+      if (size === "small") {
+        setWidth("max-content");
+        setPadding("10px 16px");
+        setTypo(H5);
+      } else if (size === "medium") {
+        setWidth("max-content");
+        setPadding("14px 24px");
+        setTypo(H5);
+      } else if (size === "large") {
+        setPadding("13.5px 40px");
+        setTypo(H4);
+      } else if (size === "xlarge") {
+        setWidth("calc( 100% - 40px )");
+        setPadding("15px 0px");
+        setTypo(H3);
+      } else if (size === "full") {
+        setWidth("100%");
+        setPadding("15px 0px");
+        setTypo(H3);
+      }
+    }, [size]);
 
-  useEffect(() => {
-    buttonSizeCheckFunc();
-  }, [buttonSizeCheckFunc, size]);
+    useEffect(() => {
+      buttonSizeCheckFunc();
+    }, [buttonSizeCheckFunc]);
 
-  return (
-    <StButton
-      width={width}
-      $padding={padding}
-      $active={active}
-      $typo={typo}
-      onClick={onClick}
-      disabled={!active}
-      {...props}
-    >
-      {children}
-    </StButton>
-  );
-};
+    return (
+      <StButton
+        ref={ref}
+        width={width}
+        $padding={padding}
+        $active={active}
+        $typo={typo}
+        onClick={onClick}
+        disabled={!active}
+        {...props}
+      >
+        {children}
+      </StButton>
+    );
+  }
+);
 
-const StButton = styled.button<styleProps>`
+const StButton = styled.button<StyleProps>`
   display: flex;
   justify-content: center;
   align-items: center;
