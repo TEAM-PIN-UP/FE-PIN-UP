@@ -1,7 +1,7 @@
 import apiAxios from "./interceptors";
 
 const deleteApi = {
-  myPlace: ({ kakaoPlaceId }: { kakaoPlaceId: number }) =>
+  myPlace: ({ kakaoPlaceId }: { kakaoPlaceId: number | string }) =>
     apiAxios.delete(`/api/bookmarks/${kakaoPlaceId}`),
   cancelFriendRequest: ({ requestId }: { requestId: number | string }) =>
     apiAxios.delete(`/api/friend-requests/${requestId}`),

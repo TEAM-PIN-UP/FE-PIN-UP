@@ -3,7 +3,6 @@ import usePostMyPlace from "@/hooks/api/myPlace/usePostMyPlace";
 import arrowLeft from "@/image/icons/arrowLeft.svg";
 import scrapActive from "@/image/icons/scrapActive.svg";
 import scrapInactive from "@/image/icons/scrapInactive.svg";
-import useToastPopup from "@/utils/toastPopup";
 import React from "react";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
@@ -21,19 +20,14 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({
 }) => {
   const [searchParams] = useSearchParams();
   const kakaoPlaceId = searchParams.get("kakaoPlaceId");
-  const toast = useToastPopup();
   const applyMyPlace = usePostMyPlace();
   const deleteMyPlace = useDeleteMyPlace();
 
-  const scrapHandler = () => {
-    if (kakaoPlaceId) {
-      if (bookmark) {
-        deleteMyPlace.mutate({ kakaoPlaceId: Number(kakaoPlaceId) });
-      } else {
-        applyMyPlace.mutate({ kakaoPlaceId: Number(kakaoPlaceId) });
-      }
-      toast("북마크가 등록되었어요.");
-    }
+  const handleBookmark = () => {
+    if (!kakaoPlaceId) return;
+
+    if (bookmark) deleteMyPlace.mutate({ kakaoPlaceId });
+    else applyMyPlace.mutate({ kakaoPlaceId });
   };
 
   return (
@@ -44,11 +38,11 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({
       <StActionButtons>
         <button
           onClick={() => {
-            setBookmark(!bookmark);
-            scrapHandler();
+            setBookmark((oldVal) => !oldVal);
+            handleBookmark();
           }}
         >
-          <img src={bookmark ? scrapActive : scrapInactive} alt="scrap" />
+          <img src={bookmark ? scrapActive : scrapInactive} alt="bookmark" />
         </button>
       </StActionButtons>
     </StHeaderContainer>
