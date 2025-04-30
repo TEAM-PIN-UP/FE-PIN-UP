@@ -6,9 +6,8 @@ import useMyProfileDetails from "@/hooks/api/profile/useMyProfileDetails";
 import camera from "@/image/icons/camera.svg";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
 import { B3, B5, H3, H4 } from "@/style/font";
-import checkImageValidity from "@/utils/checkImageValidity";
-import { cropImage } from "@/utils/cropImage";
 import useToastPopup from "@/utils/toastPopup";
+import uploadImage from "@/utils/uploadImage";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -29,46 +28,11 @@ const EditProfile: React.FC = () => {
   useEffect(() => {
     // Read values from backend on page load
     if (isLoading) return;
-    // setProfileImage(myDetails!.memberResponse.profilePictureUrl);
+    setProfileImage(myDetails!.memberResponse.profilePictureUrl);
     setName(myDetails!.memberResponse.nickname);
     setBio(myDetails!.memberResponse.bio);
     return () => {};
   }, [isLoading, myDetails]);
-
-  const handleImageChange = (file: File) => {
-    if (file) {
-      if (!checkImageValidity(file)) {
-        toast("jpeg 또는 png 형식의 이미지를 올려주세요.");
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const imageUrl = reader.result;
-        if (typeof imageUrl === "string") {
-          const image = new Image();
-
-          // Load success = valid image
-          image.onload = async () => {
-            try {
-              const croppedImageUrl = await cropImage(imageUrl);
-              setProfileImage(croppedImageUrl);
-            } catch (error) {
-              console.error("Error cropping image: ", error);
-            }
-          };
-          image.onerror = () => {
-            toast("jpeg 또는 png 형식의 올바른 이미지 파일을 선택해주세요.");
-          };
-
-          // Begin loading image
-          image.src = imageUrl;
-        }
-      };
-
-      reader.readAsDataURL(file);
-    }
-  };
 
   const handleSubmit = async () => {
     const regex =
@@ -130,10 +94,17 @@ const EditProfile: React.FC = () => {
 
       <div className="contents">
         <div className="image-picker">
-          <div className="overlay" />
+          {!profileImage && (
+            <div className="overlay" style={{ pointerEvents: "none" }} />
+          )}
           <ProfileImagePicker
             imageUrl={profileImage}
-            onImageChange={handleImageChange}
+            onImageChange={(image) =>
+              uploadImage(image, (loadedImageUrl) =>
+                setProfileImage(loadedImageUrl)
+              )
+            }
+            onImageRemove={() => setProfileImage("")}
             size="84px"
             placeholderIcon={camera}
           />

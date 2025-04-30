@@ -6,6 +6,7 @@ import { styled } from "styled-components";
 import googleIcon from "../../_icons/googleIcon.png";
 // import kakaoIcon from "../../_icons/kakaoIcon.png";
 // import naverIcon from "../../_icons/naverIcon.svg";
+import { SignInResponse } from "@/interface/member";
 import { paths } from "@/routes/paths";
 import useToastPopup from "@/utils/toastPopup";
 import pinupLogo from "../../_icons/pinupLogo.jpg";
@@ -20,6 +21,8 @@ const SelectLogin: React.FC<StageProps> = ({ updateData, onNext }) => {
   const googleLogin = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async (codeResponse) => {
+      console.log(codeResponse.code);
+
       try {
         const tokens = await axios.get(
           `${
@@ -31,9 +34,10 @@ const SelectLogin: React.FC<StageProps> = ({ updateData, onNext }) => {
             },
           }
         );
+        console.log(tokens);
 
         updateData({ authMethod: "google" });
-        const data = tokens.data.data;
+        const data = tokens.data.data as SignInResponse;
         localStorage.setItem("accessToken", data.accessToken);
         localStorage.setItem("refreshToken", data.refreshToken);
         localStorage.setItem(

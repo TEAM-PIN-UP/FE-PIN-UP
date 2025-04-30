@@ -68,8 +68,16 @@ const Settings: React.FC = () => {
         />
 
         <SettingsGroup title="고객센터" />
-        <SettingsItem title="문의하기" type="arrow" />
-        <SettingsItem title="건의하기" type="arrow" />
+        <SettingsItem
+          title="문의하기"
+          type="arrow"
+          onClick={() => window.open(import.meta.env.VITE_CS_ASK, "_blank")}
+        />
+        <SettingsItem
+          title="건의하기"
+          type="arrow"
+          onClick={() => window.open(import.meta.env.VITE_CS_REQUEST, "_blank")}
+        />
         <SettingsItem title="이용약관" type="arrow" />
         <SettingsItem title="개인정보 처리방침" type="arrow" />
 

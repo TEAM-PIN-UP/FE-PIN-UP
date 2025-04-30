@@ -95,9 +95,16 @@ export const handleGlobalError = async (error: CustomAxiosError) => {
           const axiosError = refreshError as AxiosError<ApiErrorResponse>;
 
           // Signout on expired refresh token
+          const code = axiosError.response?.data.code;
           if (
-            axiosError.response?.data?.code === "AU001" ||
-            axiosError.response?.data.code === "AU006"
+            code &&
+            [
+              "AU001",
+              "AU006",
+              "E_AUTH001",
+              "E_AUTH006",
+              "E_GLOBAL001",
+            ].includes(code)
           ) {
             localStorage.clear();
             textChange("세션이 만료되었어요.");

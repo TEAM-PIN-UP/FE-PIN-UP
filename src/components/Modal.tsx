@@ -1,6 +1,6 @@
 import { useModalStore } from "@/store";
 import { B3, H2 } from "@/style/font";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import Button from "./Button";
 
@@ -16,6 +16,15 @@ const Modal: React.FC = () => {
     onCancelButtonClick,
   } = useModalStore();
 
+  const okBtnRef = useRef<HTMLButtonElement>(null);
+  const cancelBtnRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (type === "ok" && okBtnRef.current) okBtnRef.current.focus();
+    if (type === "cancel-ok" && cancelBtnRef.current)
+      cancelBtnRef.current.focus();
+  }, [type]);
+
   return (
     <StDiv $modalOn={modalOn}>
       <div className="modal-box">
@@ -29,13 +38,14 @@ const Modal: React.FC = () => {
         </div>
         <div className="button-container">
           {type === "ok" && (
-            <Button size="full" onClick={onOkButtonClick}>
+            <Button ref={okBtnRef} size="full" onClick={onOkButtonClick}>
               {okButtonText}
             </Button>
           )}
           {type === "cancel-ok" && (
             <>
               <Button
+                ref={cancelBtnRef}
                 size="large"
                 onClick={onCancelButtonClick!}
                 style={{
@@ -95,7 +105,7 @@ const StDiv = styled.div<{ $modalOn: boolean }>`
     border-radius: var(--radius_16);
     background-color: var(--white);
 
-    animation: ${bounce} 0.15s;
+    animation: ${bounce} 0.15s ease-in-out;
 
     .title {
       ${H2}

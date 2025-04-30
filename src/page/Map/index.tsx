@@ -5,12 +5,13 @@ import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import useMapSetup from "@/hooks/useMapSetup";
 import { GetPlaceResponse, placeCategory, placeSort } from "@/interface/place";
+import handleMoveToCurrent from "@/page/Map/_functions/handleMoveToCurrent";
 import {
   getCurrentView,
   saveCurrentView,
 } from "@/page/Map/_functions/saveCurrentView";
+import showMoveButton from "@/page/Map/_functions/showMoveButton";
 import { getLastKnownPositionObj } from "@/utils/getFromLocalStorage";
-import useToastPopup from "@/utils/toastPopup";
 import { useCallback, useEffect, useState } from "react";
 import {
   Container as MapDiv,
@@ -28,7 +29,6 @@ const MapPage: React.FC = () => {
   useCheckLoginAndRoute();
 
   const navigate = useNavigate();
-  const toast = useToastPopup();
   const [category, setCategory] = useState<placeCategory>("ALL");
   const [sort, setSort] = useState<placeSort>("NEAR");
   const [places, setPlaces] = useState<GetPlaceResponse[]>();
@@ -39,14 +39,14 @@ const MapPage: React.FC = () => {
 
   // Geolocation and map setup
   const naverMaps = useNavermaps();
-  const [map, setMap] = useState<naver.maps.Map | null>(null);
-  const [user, setUser] = useState<naver.maps.Marker | null>(null);
+  const [map, setMap] = useState<naver.maps.Map | null>(null); // 지도 ref
+  const [user, setUser] = useState<naver.maps.Marker | null>(null); // 사용자 위치 아이콘 ref
   const [kakaoPlaceId, setKakaoPlaceId] = useState<string | null>(
     searchParams.get("kakaoPlaceId")
   );
-  const [followUser, setFollowUser] = useState(true);
-  const [focusPlace, setFocusPlace] = useState(!!kakaoPlaceId);
-  const defaultZoom = 12;
+  const [followUser, setFollowUser] = useState(true); // 지도가 사용자 위치를 따라가는가
+  const [focusPlace, setFocusPlace] = useState(!!kakaoPlaceId); // 지도가 특정 위치에 포커싱되는가
+  // 기본 지도 위치
   const defaultCenter = (() => {
     const coords = getCurrentView();
     if (!coords) return undefined;
@@ -69,7 +69,7 @@ const MapPage: React.FC = () => {
     setPlaces,
   });
   const callbackGetPlacesInView = useCallback(() => {
-    getPlacesInView(map?.getBounds(), getLastKnownPositionObj());
+    if (map) getPlacesInView(map.getBounds(), getLastKnownPositionObj());
   }, [map, getPlacesInView]);
 
   // Move map to place when kakaoPlaceId is present
@@ -86,9 +86,9 @@ const MapPage: React.FC = () => {
     if (
       Math.abs(currentCenter.y - newCenter.y) < 0.001 &&
       Math.abs(currentCenter.x - newCenter.x) < 0.001
-    ) {
+    )
       return; // Avoid unnecessary updates
-    }
+
     map.setCenter(newCenter);
     callbackGetPlacesInView();
   }, [
@@ -107,7 +107,6 @@ const MapPage: React.FC = () => {
     } else {
       setIsReviewView(false);
     }
-    return () => {};
   }, [kakaoPlaceId]);
 
   // Bottom sheet logic
@@ -130,53 +129,28 @@ const MapPage: React.FC = () => {
     };
   }, [map, callbackGetPlacesInView]);
 
-  const handleMoveToCurrent = () => {
-    setKakaoPlaceId(null);
-    setFollowUser(true);
-    const pos = getLastKnownPositionObj();
-    if (pos) {
-      const zoom = map?.getZoom();
-      console.log(map?.getZoom());
-      console.log(map?.getMaxZoom());
-
-      map?.morph(
-        new naverMaps.LatLng(
-          pos.coords.latitude - 0.0005 * (map.getMaxZoom() - map.getZoom()),
-          pos.coords.longitude
-        ),
-        zoom
-      );
-      setFollowUser(true);
-    } else toast("현위치를 확인할 수 없어요.");
-  };
-
-  const showMoveButton = (): boolean => {
-    const pos = getLastKnownPositionObj();
-    const center = map?.getCenter();
-    if (pos && center) {
-      return !(
-        Math.abs(pos.coords.latitude - center.y) < 0.005 &&
-        Math.abs(pos.coords.longitude - center.x) < 0.005
-      );
-    }
-    return false;
-  };
-
   return (
     <StDiv ref={attachRef}>
       <StButton
         className="move-to-current"
-        onClick={handleMoveToCurrent}
+        onClick={() =>
+          handleMoveToCurrent({
+            map,
+            naverMaps,
+            setFollowUser,
+            setKakaoPlaceId,
+          })
+        }
         size="small"
-        $enabled={isGeoAvailable && showMoveButton()}
+        $enabled={isGeoAvailable && showMoveButton(map)}
       >
         현위치로 이동
       </StButton>
       <NavermapsProvider ncpClientId={import.meta.env.VITE_NAVER_MAPS}>
         <StMapDiv>
           <NaverMap
-            defaultCenter={defaultCenter}
-            zoom={defaultZoom}
+            defaultCenter={kakaoPlaceId ? undefined : defaultCenter}
+            zoom={12}
             ref={setMap}
             onCenterChanged={(coord) => saveCurrentView(coord)}
             onBoundsChanged={() => {
@@ -241,7 +215,7 @@ const StDiv = styled.div`
 
 const StButton = styled(Button)<{ $enabled: boolean }>`
   position: absolute;
-  top: ${({ $enabled }) => ($enabled ? "0px" : "-40px")};
+  top: ${({ $enabled }) => ($enabled ? "8px" : "-48px")};
   transition: top 0.3s ease-in-out;
   left: 50%;
   transform: translateX(-50%);
