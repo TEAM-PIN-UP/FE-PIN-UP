@@ -9,7 +9,7 @@ import googleIcon from "../../_icons/googleIcon.png";
 import { SignInResponse } from "@/interface/member";
 import { paths } from "@/routes/paths";
 import useToastPopup from "@/utils/toastPopup";
-import pinupLogo from "../../_icons/pinupLogo.jpg";
+import pinupLogo from "../../_icons/pinupLogo.svg";
 import SocialSignUpButton from "../SocialSignUpButton";
 import StTextContainer from "../typography/StTextContainer";
 import { StageProps } from "./StageProps";
@@ -95,7 +95,7 @@ const SelectLogin: React.FC<StageProps> = ({ updateData, onNext }) => {
     <StDiv>
       <div className="logo-container">
         <StTextContainer style={{ alignItems: "center" }}>
-          <div className="b1">서비스 보조 설명 문구</div>
+          <div className="b1">찐친들과 공유하는 나만의 ‘찐’ 맛집</div>
           <img src={pinupLogo} className="logo" />
         </StTextContainer>
       </div>
@@ -148,7 +148,8 @@ const StDiv = styled.div`
     gap: 17px;
 
     .logo {
-      width: 200px;
+      width: 120px;
+      margin-top: 24px;
     }
   }
 
