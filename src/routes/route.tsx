@@ -10,7 +10,9 @@ import PinBuddyLayout from "@/page/PinbuddySearch/Layout";
 import ProfilePage from "@/page/Profile";
 import EditProfile from "@/page/Profile/EditProfile";
 import Notifications from "@/page/Profile/Notifications";
+import PrivacyPolicy from "@/page/Profile/PrivacyPolicy";
 import Settings from "@/page/Profile/Settings";
+import TermsOfService from "@/page/Profile/TermsOfService";
 import { ReviewDetails } from "@/page/Profile/_components/reviews/ReviewDetails";
 import ReviewPage from "@/page/Review";
 import SignUpPage from "@/page/SignUp";
@@ -72,6 +74,14 @@ const router = createBrowserRouter([
       {
         path: paths.profile.settings.editProfile,
         element: <EditProfile />,
+      },
+      {
+        path: paths.profile.settings.termsOfService,
+        element: <TermsOfService />,
+      },
+      {
+        path: paths.profile.settings.privacyPolicy,
+        element: <PrivacyPolicy />,
       },
       {
         path: paths.profile.id(":uid"),

@@ -21,6 +21,8 @@ export const paths = {
         const profileSettings = `${profile}/settings`;
         return Object.assign(profileSettings, {
           editProfile: `${profileSettings}/edit-profile`,
+          termsOfService: `${profileSettings}/terms-of-service`,
+          privacyPolicy: `${profileSettings}/privacy-policy`,
         });
       })(),
       id: (() => {
