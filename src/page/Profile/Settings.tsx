@@ -78,8 +78,16 @@ const Settings: React.FC = () => {
           type="arrow"
           onClick={() => window.open(import.meta.env.VITE_CS_REQUEST, "_blank")}
         />
-        <SettingsItem title="이용약관" type="arrow" />
-        <SettingsItem title="개인정보 처리방침" type="arrow" />
+        <SettingsItem
+          title="이용약관"
+          type="arrow"
+          onClick={() => navigate(paths.profile.settings.termsOfService)}
+        />
+        <SettingsItem
+          title="개인정보 처리방침"
+          type="arrow"
+          onClick={() => navigate(paths.profile.settings.privacyPolicy)}
+        />
 
         <SettingsGroup title="기타" />
         <SettingsItem title="앱버전" type="text" description="V.0.1 (최신)" />
