@@ -17,9 +17,9 @@ const Settings: React.FC = () => {
   const { openModal, closeModal } = useModalPopup();
   const signoutModal: ModalProps = {
     type: "cancel-ok",
-    title: "로그아웃 할까요?",
-    body: ["확인을 누르면", "로그아웃이 돼요."],
-    okButtonText: "확인",
+    title: "로그아웃 하시겠어요?",
+    body: ["아쉬워요 😥", "언제든 다시 놀러오세요!"],
+    okButtonText: "로그아웃",
     onOkButtonClick: async () => {
       try {
         await apiAxios.post(`/api/auth/logout`, null, {

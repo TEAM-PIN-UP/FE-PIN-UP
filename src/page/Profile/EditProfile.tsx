@@ -1,11 +1,15 @@
 import { CustomAxiosError } from "@/api/errorHandler";
+import apiAxios from "@/api/interceptors";
 import putApi from "@/api/putApi";
 import Header from "@/components/Header";
 import ProfileImagePicker from "@/components/ProfileImagePicker";
 import useMyProfileDetails from "@/hooks/api/profile/useMyProfileDetails";
 import camera from "@/image/icons/camera.svg";
 import chevronLeft from "@/image/icons/chevronLeft.svg";
+import { paths } from "@/routes/paths";
+import { ModalProps } from "@/store/modalStore";
 import { B3, B5, H3, H4 } from "@/style/font";
+import useModalPopup from "@/utils/modalPopup";
 import useToastPopup from "@/utils/toastPopup";
 import uploadImage from "@/utils/uploadImage";
 import React, { useEffect, useState } from "react";
@@ -22,6 +26,7 @@ const EditProfile: React.FC = () => {
   const [isInputFocused, setIsInputFocused] = useState(false);
   const lowerCharLimit = 2;
   const upperCharLimit = 12;
+  const { openModal, closeModal } = useModalPopup();
 
   const { data: myDetails, isLoading } = useMyProfileDetails();
 
@@ -31,7 +36,6 @@ const EditProfile: React.FC = () => {
     setProfileImage(myDetails!.memberResponse.profilePictureUrl);
     setName(myDetails!.memberResponse.nickname);
     setBio(myDetails!.memberResponse.bio);
-    return () => {};
   }, [isLoading, myDetails]);
 
   const handleSubmit = async () => {
@@ -72,6 +76,32 @@ const EditProfile: React.FC = () => {
     } catch (error) {
       toast((error as Error).message);
     }
+  };
+
+  const deleteAccountModal: ModalProps = {
+    type: "cancel-ok",
+    title: "핀업을 탈퇴하시겠어요?",
+    body: [
+      "탈퇴 시 작성한 모든 내용이 삭제되며,",
+      "삭제 된 정보는 복구가 불가능해요.",
+    ],
+    okButtonText: "탈퇴",
+    onOkButtonClick: async () => {
+      try {
+        await apiAxios.delete(`/api/members`);
+        localStorage.clear();
+        navigate(paths.signup);
+      } catch (error) {
+        console.error("Delete request failed:", error);
+        toast("회원탈퇴 중 오류가 발생했어요.");
+      } finally {
+        closeModal();
+      }
+    },
+    cancelButtonText: "취소",
+    onCancelButtonClick: () => {
+      closeModal();
+    },
   };
 
   return (
@@ -140,6 +170,7 @@ const EditProfile: React.FC = () => {
           </span>
           <button
             className={`delete-account ${isInputFocused ? "active" : ""}`}
+            onClick={() => openModal(deleteAccountModal)}
           >
             회원탈퇴
           </button>
