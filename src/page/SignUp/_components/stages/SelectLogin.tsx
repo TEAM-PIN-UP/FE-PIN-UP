@@ -146,6 +146,7 @@ const StDiv = styled.div`
     align-items: center;
     justify-content: center;
     gap: 17px;
+    pointer-events: none;
 
     .logo {
       width: 120px;

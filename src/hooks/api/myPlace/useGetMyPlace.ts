@@ -1,14 +1,14 @@
 import getApi from "@/api/getApi";
 import {
   GetMyPlaceResponse,
-  placeCategory,
-  placeSort,
+  PlaceCategory,
+  PlaceSort,
 } from "@/interface/place";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 export interface GetMyPlaceProps {
-  sort: placeSort;
-  category: placeCategory;
+  sort: PlaceSort;
+  category: PlaceCategory;
   currentLatitude: number | string;
   currentLongitude: number | string;
 }

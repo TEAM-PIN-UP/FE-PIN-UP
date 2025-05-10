@@ -1,12 +1,12 @@
 import bookmarkActive from "@/image/icons/bookmarkActive.svg";
 import cafePin from "@/image/icons/coffee.svg";
 import foodPin from "@/image/icons/food.svg";
-import { GetMyPlaceResponse, placeCategory } from "@/interface/place";
+import { GetMyPlaceResponse, PlaceCategory } from "@/interface/place";
 import { B5, H4 } from "@/style/font";
 import styled from "styled-components";
 
 interface Props {
-  sort: placeCategory;
+  sort: PlaceCategory;
   data: GetMyPlaceResponse;
 }
 
@@ -22,7 +22,10 @@ const RestaurantBoxForm: React.FC<Props> = ({ sort, data }) => {
       </div>
       <div className="restaurantInfo">
         <div className="title">
-          <img src={data.placeCategory === "CAFE" ? cafePin : foodPin} />
+          <img
+            src={data.placeCategory === "CAFE" ? cafePin : foodPin}
+            className="type-icon"
+          />
           <p>{data.placeName}</p>
         </div>
         <p className="address">{data.placeAddress}</p>
@@ -46,8 +49,8 @@ const StRestaurantBoxForm = styled.div`
     border-radius: 8px;
     .mark {
       position: absolute;
-      top: 15.6px;
-      right: 16.6px;
+      top: 16px;
+      right: 16px;
     }
   }
 
@@ -56,8 +59,14 @@ const StRestaurantBoxForm = styled.div`
     flex-direction: column;
     gap: 4px;
     align-items: start;
+    text-align: start;
     .title {
+      .type-icon {
+        width: 16px;
+        height: 16px;
+      }
       display: flex;
+      width: 100%;
       gap: 4px;
       ${H4}
     }

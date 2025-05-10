@@ -1,4 +1,4 @@
-import { relationType } from "./place";
+import { RelationType } from "./place";
 
 export interface MemberDetails {
   averageStarRating: number;
@@ -22,7 +22,7 @@ export interface SignInResponse {
 
 export interface MemberProfileResponse {
   memberResponse: MemberDetails;
-  relationType: relationType;
+  relationType: RelationType;
 }
 
 export interface MemberPatchBody {
@@ -43,7 +43,7 @@ export interface FriendRequestResponse {
 // Search member
 export interface GetPinBuddySearchResponse {
   memberResponse: MemberDetails;
-  relationType: relationType;
+  relationType: RelationType;
   reviewCount: number;
   pinBuddyCount: number;
 }

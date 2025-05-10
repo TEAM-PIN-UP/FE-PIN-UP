@@ -2,7 +2,7 @@ import usePostFriendRequests from "@/hooks/api/pinBuddy/usePostFriendRequest";
 import useProfileDetails from "@/hooks/api/profile/useProfileDetails";
 import addUser from "@/image/icons/addUser.svg";
 import addUserWhite from "@/image/icons/addUserWhite.svg";
-import { relationType } from "@/interface/place";
+import { RelationType } from "@/interface/place";
 import { paths } from "@/routes/paths";
 import { ModalProps } from "@/store/modalStore";
 import { B4 } from "@/style/font";
@@ -64,7 +64,7 @@ const FriendButton: React.FC = () => {
   );
 };
 
-const StButton = styled.button<{ $relationType: relationType | undefined }>`
+const StButton = styled.button<{ $relationType: RelationType | undefined }>`
   ${B4}
   display: flex;
   flex-direction: row;

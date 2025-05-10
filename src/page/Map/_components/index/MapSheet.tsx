@@ -1,6 +1,6 @@
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import noReviews from "@/image/icons/receiptLines.svg";
-import { GetPlaceResponse, placeCategory, placeSort } from "@/interface/place";
+import { GetPlaceResponse, PlaceCategory, PlaceSort } from "@/interface/place";
 import { H3 } from "@/style/font";
 import { getLastKnownPositionObj } from "@/utils/getFromLocalStorage";
 import { useEffect, useRef, useState } from "react";
@@ -16,8 +16,8 @@ interface SheetSetup {
   attachRef: React.RefObject<HTMLDivElement>;
 }
 interface MapActions {
-  setCategory: React.Dispatch<React.SetStateAction<placeCategory>>;
-  setSort: React.Dispatch<React.SetStateAction<placeSort>>;
+  setCategory: React.Dispatch<React.SetStateAction<PlaceCategory>>;
+  setSort: React.Dispatch<React.SetStateAction<PlaceSort>>;
   setDataQuery: React.Dispatch<React.SetStateAction<string>>;
   setBookmark: React.Dispatch<React.SetStateAction<boolean>>;
   setFocusPlace: React.Dispatch<React.SetStateAction<boolean>>;
@@ -28,7 +28,7 @@ interface MapData {
 }
 interface MapState {
   isReviewView: boolean;
-  category: placeCategory;
+  category: PlaceCategory;
   dataQuery: string;
   bookmark: boolean;
 }

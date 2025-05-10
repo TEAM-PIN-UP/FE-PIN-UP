@@ -1,6 +1,6 @@
 import useGetBookmarks from "@/hooks/api/myPlace/useGetMyPlace";
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
-import { placeCategory, placeSort } from "@/interface/place";
+import { PlaceCategory, PlaceSort } from "@/interface/place";
 import { getLastKnownPositionObj } from "@/utils/getFromLocalStorage";
 import { useState } from "react";
 import styled from "styled-components";
@@ -11,8 +11,8 @@ import RestaurantBoxForm from "./_components/RestaurantBoxForm";
 const BookmarkPage: React.FC = () => {
   useCheckLoginAndRoute();
 
-  const [category, setCategory] = useState<placeCategory>("CAFE");
-  const [sort, setSort] = useState<placeSort>("NEAR");
+  const [category, setCategory] = useState<PlaceCategory>("ALL");
+  const [sort, setSort] = useState<PlaceSort>("NEAR");
   const pos = getLastKnownPositionObj();
   const { data } = useGetBookmarks({
     sort,
@@ -32,11 +32,7 @@ const BookmarkPage: React.FC = () => {
         {data &&
           data?.map((val) => {
             return (
-              <RestaurantBoxForm
-                data={val}
-                sort={"CAFE"}
-                key={val.kakaoPlaceId}
-              />
+              <RestaurantBoxForm data={val} sort="ALL" key={val.kakaoPlaceId} />
             );
           })}
       </StCardGrid>
