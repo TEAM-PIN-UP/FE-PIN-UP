@@ -1,6 +1,6 @@
 import usePostFriendRequests from "@/hooks/api/pinBuddy/usePostFriendRequest";
 import { GetPinBuddySearchResponse } from "@/interface/member";
-import { relationType } from "@/interface/place";
+import { RelationType } from "@/interface/place";
 import { B3, B5, H6 } from "@/style/font";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -54,7 +54,7 @@ const SearchResultSingle: React.FC<PinBuddySingleProps> = ({ data }) => {
   );
 };
 
-const StSearchResultSingle = styled.div<{ relation: relationType }>`
+const StSearchResultSingle = styled.div<{ relation: RelationType }>`
   display: flex;
   width: 100%;
   img {

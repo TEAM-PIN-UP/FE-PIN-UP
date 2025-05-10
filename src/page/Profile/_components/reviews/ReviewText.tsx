@@ -1,11 +1,15 @@
 import blackStar from "@/image/icons/blackStar.svg";
 import chevronRight from "@/image/icons/chevronRightBlack.svg";
+import edit from "@/image/icons/editInactive.svg";
 import moreDots from "@/image/icons/moreDotsBlack.svg";
+import trash from "@/image/icons/trash.svg";
 import { Review } from "@/interface/review";
 import { paths } from "@/routes/paths";
 import { B3, B4, B5, B6, H3, H4 } from "@/style/font";
+import { DropdownMenu } from "radix-ui";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import dropdownStyles from "./DropdownMenu.module.css";
 
 interface ReviewTextProps {
   item: Review;
@@ -50,9 +54,30 @@ const ReviewText: React.FC<ReviewTextProps> = ({ item, userName }) => {
           </div>
         </div>
         <div className="expand" />
-        <button className="review-actions">
-          <img src={moreDots} />
-        </button>
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger>
+            <button className={dropdownStyles.IconButton}>
+              <img src={moreDots} />
+            </button>
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Portal>
+            <DropdownMenu.Content
+              className={dropdownStyles.Content}
+              sideOffset={5}
+              align="end"
+            >
+              <DropdownMenu.Item className={dropdownStyles.Item}>
+                <img src={edit} />
+                로그 수정
+              </DropdownMenu.Item>
+              <DropdownMenu.Separator className={dropdownStyles.Separator} />
+              <DropdownMenu.Item className={dropdownStyles.Item}>
+                <img src={trash} />
+                로그 삭제
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Portal>
+        </DropdownMenu.Root>
       </div>
 
       <div className="visit-date">

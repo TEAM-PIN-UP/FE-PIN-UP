@@ -1,5 +1,5 @@
 import useGetPlaces from "@/hooks/api/place/useGetPlaces";
-import { GetPlaceResponse, placeCategory, placeSort } from "@/interface/place";
+import { GetPlaceResponse, PlaceCategory, PlaceSort } from "@/interface/place";
 import { useEffect, useState } from "react";
 
 interface MapBounds {
@@ -9,8 +9,8 @@ interface MapBounds {
 
 interface UseUpdatePlacesProps {
   query?: string;
-  category: placeCategory;
-  sort: placeSort;
+  category: PlaceCategory;
+  sort: PlaceSort;
   setPlaces: React.Dispatch<
     React.SetStateAction<GetPlaceResponse[] | undefined>
   >;

@@ -27,15 +27,15 @@ const ScoreModal: React.FC<ScoreModalProps> = ({
     for (let i = 0; i < 5; i++) {
       if (count <= 0) {
         stars.push(
-          <StarContainer>
-            <img src={emptyStar} alt="empty star" key={i} />
+          <StarContainer key={i}>
+            <img src={emptyStar} alt="empty star" />
             <div className="star" onClick={() => setStarScoreTemp(i + 1)} />
           </StarContainer>
         );
       } else if (count >= 1) {
         stars.push(
-          <StarContainer>
-            <img src={fullStar} alt="full star" key={i} />
+          <StarContainer key={i}>
+            <img src={fullStar} alt="full star" />
             <div className="star" onClick={() => setStarScoreTemp(i + 1)} />
           </StarContainer>
         );

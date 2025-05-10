@@ -1,14 +1,14 @@
 import { PhotoReview } from "./review";
 
-export type placeCategory = "ALL" | "RESTAURANT" | "CAFE";
-export type placeSort = "NEAR" | "LATEST" | "STAR_HIGH" | "STAR_LOW";
-export type relationType = "SELF" | "FRIEND" | "PENDING" | "STRANGER";
+export type PlaceCategory = "ALL" | "RESTAURANT" | "CAFE";
+export type PlaceSort = "NEAR" | "LATEST" | "STAR_HIGH" | "STAR_LOW";
+export type RelationType = "SELF" | "FRIEND" | "PENDING" | "STRANGER";
 
 // Get places
 export interface GetPlaceParams {
   query?: string;
-  category?: placeCategory;
-  sort?: placeSort;
+  category?: PlaceCategory;
+  sort?: PlaceSort;
   swLatitude: string | number;
   swLongitude: string | number;
   neLatitude: string | number;
@@ -25,7 +25,7 @@ export interface GetPlaceResponse {
   distance: string;
   latitude: number;
   longitude: number;
-  placeCategory: placeCategory;
+  placeCategory: PlaceCategory;
   reviewImageUrls: string[];
   reviewerProfileImageUrls: string[];
 }
@@ -57,7 +57,7 @@ export interface GetMyPlaceResponse {
   placeLatitude: number;
   placeLongitude: number;
   placeStatus: string;
-  placeCategory: placeCategory;
+  placeCategory: PlaceCategory;
   kakaoPlaceId: string;
 }
 
@@ -75,7 +75,7 @@ export interface GetSpecificPlaceResponse {
     distance: string;
     latitude: number;
     longitude: number;
-    placeCategory: placeCategory;
+    placeCategory: PlaceCategory;
     reviewImageUrls: string[];
     reviewerProfileImageUrls: string[];
     bookmark: boolean;

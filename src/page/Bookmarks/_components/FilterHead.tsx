@@ -1,18 +1,18 @@
 import Chip from "@/components/Chip";
-import ChevronDown from "@/image/icons/chevronDown.svg";
+import chevronDown from "@/image/icons/chevronDown.svg";
 import coffee from "@/image/icons/coffee.svg";
 import coffeeWhite from "@/image/icons/coffeeWhite.svg";
 import food from "@/image/icons/food.svg";
 import foodWhite from "@/image/icons/foodWhite.svg";
-import { placeCategory, placeSort } from "@/interface/place";
+import { PlaceCategory, PlaceSort } from "@/interface/place";
 import { B4, H6 } from "@/style/font";
 import { useState } from "react";
 import styled from "styled-components";
 
 interface FilterProps {
-  setSort: React.Dispatch<React.SetStateAction<placeSort>>;
-  category: placeCategory;
-  setCategory: React.Dispatch<React.SetStateAction<placeCategory>>;
+  setSort: React.Dispatch<React.SetStateAction<PlaceSort>>;
+  category: PlaceCategory;
+  setCategory: React.Dispatch<React.SetStateAction<PlaceCategory>>;
 }
 
 const FilterHead: React.FC<FilterProps> = ({
@@ -21,7 +21,7 @@ const FilterHead: React.FC<FilterProps> = ({
   setCategory,
 }) => {
   const [showSortMenu, setShowSortMenu] = useState(false);
-  const [sortType, setSortType] = useState<placeSort>("NEAR");
+  const [sortType, setSortType] = useState<PlaceSort>("NEAR");
 
   const sortOptions = {
     NEAR: "가까운 순",
@@ -39,15 +39,11 @@ const FilterHead: React.FC<FilterProps> = ({
         selected={category === "RESTAURANT"}
         onClick={() => setCategory("RESTAURANT")}
       >
-        {category === "RESTAURANT" ? (
-          <img src={foodWhite} />
-        ) : (
-          <img src={food} />
-        )}
+        <img src={category === "RESTAURANT" ? foodWhite : food} />
         <span>음식점</span>
       </Chip>
       <Chip selected={category === "CAFE"} onClick={() => setCategory("CAFE")}>
-        {category === "CAFE" ? <img src={coffeeWhite} /> : <img src={coffee} />}
+        <img src={category === "CAFE" ? coffeeWhite : coffee} />
         <span>카페</span>
       </Chip>
 
@@ -55,7 +51,7 @@ const FilterHead: React.FC<FilterProps> = ({
         <StPickedContainer onClick={() => setShowSortMenu(!showSortMenu)}>
           <span className="pickedSort">{sortOptions[sortType]}</span>
           <img
-            src={ChevronDown}
+            src={chevronDown}
             style={{
               transform: showSortMenu ? "rotate(180deg)" : "rotate(0deg)",
               transition: "transform 0.2s ease-in-out",
@@ -65,7 +61,7 @@ const FilterHead: React.FC<FilterProps> = ({
 
         {showSortMenu && (
           <SortMenu>
-            {(Object.keys(sortOptions) as placeSort[]).map((type) => (
+            {(Object.keys(sortOptions) as PlaceSort[]).map((type) => (
               <SortMenuItem
                 key={type}
                 selected={sortType === type}

@@ -4,7 +4,7 @@ import useUpdatePlaces from "@/hooks/api/place/useUpdatePlaces";
 import useBottomSheetSnapPoints from "@/hooks/useBottomSheetSnapPoints";
 import useCheckLoginAndRoute from "@/hooks/useCheckLoginAndRoute";
 import useMapSetup from "@/hooks/useMapSetup";
-import { GetPlaceResponse, placeCategory, placeSort } from "@/interface/place";
+import { GetPlaceResponse, PlaceCategory, PlaceSort } from "@/interface/place";
 import handleMoveToCurrent from "@/page/Map/_functions/handleMoveToCurrent";
 import {
   getCurrentView,
@@ -29,8 +29,8 @@ const MapPage: React.FC = () => {
   useCheckLoginAndRoute();
 
   const navigate = useNavigate();
-  const [category, setCategory] = useState<placeCategory>("ALL");
-  const [sort, setSort] = useState<placeSort>("NEAR");
+  const [category, setCategory] = useState<PlaceCategory>("ALL");
+  const [sort, setSort] = useState<PlaceSort>("NEAR");
   const [places, setPlaces] = useState<GetPlaceResponse[]>();
   const [dataQuery, setDataQuery] = useState<string>("");
   const [searchParams] = useSearchParams();
