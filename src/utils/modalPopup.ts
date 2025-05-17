@@ -1,5 +1,5 @@
-import { useModalStore } from "@/store";
-import { ModalProps } from "@/store/modalStore";
+import { useModalStore } from "@/stores";
+import { ModalProps } from "@/stores/modalStore";
 import { useCallback } from "react";
 
 const useModalPopup = () => {

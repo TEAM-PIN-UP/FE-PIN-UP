@@ -1,5 +1,5 @@
 import deleteApi from "@/api/deleteApi";
-import { useToastStore } from "@/store";
+import { useToastStore } from "@/stores";
 import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

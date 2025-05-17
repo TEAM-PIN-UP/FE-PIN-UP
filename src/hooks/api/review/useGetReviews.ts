@@ -1,5 +1,5 @@
 import getApi from "@/api/getApi";
-import { PhotoReview, Review } from "@/interface/review";
+import { PhotoReview, Review } from "@/interfaces/review";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { queryKeys } from "../queryKeys";
 
