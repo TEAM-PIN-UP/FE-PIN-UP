@@ -1,5 +1,5 @@
 import getApi from "@/api/getApi";
-import { GetPlaceParams, GetPlaceResponse } from "@/interface/place";
+import { GetPlaceParams, GetPlaceResponse } from "@/interfaces/place";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { queryKeys } from "../queryKeys";
 

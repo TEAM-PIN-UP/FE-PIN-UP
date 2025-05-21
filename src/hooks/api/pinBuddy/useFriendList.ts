@@ -1,5 +1,5 @@
 import getApi from "@/api/getApi";
-import { MemberDetails } from "@/interface/member";
+import { MemberDetails } from "@/interfaces/member";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { queryKeys } from "../queryKeys";
 

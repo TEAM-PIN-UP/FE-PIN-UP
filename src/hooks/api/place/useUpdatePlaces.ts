@@ -1,5 +1,5 @@
 import useGetPlaces from "@/hooks/api/place/useGetPlaces";
-import { GetPlaceResponse, PlaceCategory, PlaceSort } from "@/interface/place";
+import { GetPlaceResponse, PlaceCategory, PlaceSort } from "@/interfaces/place";
 import { useEffect, useState } from "react";
 
 interface MapBounds {

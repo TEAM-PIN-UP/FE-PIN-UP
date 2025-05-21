@@ -2,7 +2,7 @@ import getApi from "@/api/getApi";
 import {
   GetSpecificPlaceRequest,
   GetSpecificPlaceResponse,
-} from "@/interface/place";
+} from "@/interfaces/place";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 interface setProp {

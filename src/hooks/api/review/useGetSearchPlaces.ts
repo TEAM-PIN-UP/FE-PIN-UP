@@ -2,7 +2,7 @@ import getApi from "@/api/getApi";
 import {
   GetSearchPlacesRequest,
   GetSearchPlacesResponse,
-} from "@/interface/place";
+} from "@/interfaces/place";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { queryKeys } from "../queryKeys";
 

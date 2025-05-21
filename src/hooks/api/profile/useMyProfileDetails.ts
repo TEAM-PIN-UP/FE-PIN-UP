@@ -1,5 +1,5 @@
 import getApi from "@/api/getApi";
-import { MemberProfileResponse } from "@/interface/member";
+import { MemberProfileResponse } from "@/interfaces/member";
 import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { queryKeys } from "../queryKeys";
