@@ -1,5 +1,5 @@
-import { useModalStore } from "@/store";
-import { B3, H2 } from "@/style/font";
+import { useModalStore } from "@/stores";
+import { B3, H2 } from "@/styles/font";
 import React, { useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import Button from "./Button";

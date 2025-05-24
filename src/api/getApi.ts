@@ -4,7 +4,7 @@ import {
   GetPlaceParams,
   GetSearchPlacesRequest,
   GetSpecificPlaceRequest,
-} from "@/interface/place";
+} from "@/interfaces/place";
 import apiAxios from "./interceptors";
 
 const getApi = {

@@ -1,4 +1,4 @@
-import { useToastStore } from "@/store";
+import { useToastStore } from "@/stores";
 import { useCallback } from "react";
 
 const useToastPopup = () => {

@@ -1,5 +1,5 @@
 import getApi from "@/api/getApi";
-import { FriendRequestResponse } from "@/interface/member";
+import { FriendRequestResponse } from "@/interfaces/member";
 import { getMemberResponseObj } from "@/utils/getFromLocalStorage";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { queryKeys } from "../queryKeys";

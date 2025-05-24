@@ -1,4 +1,4 @@
-import { useToastStore } from "@/store";
+import { useToastStore } from "@/stores";
 import checkImageValidity from "@/utils/checkImageValidity";
 import { cropImage } from "@/utils/cropImage";
 

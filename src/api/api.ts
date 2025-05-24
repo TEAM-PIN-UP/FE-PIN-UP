@@ -1,5 +1,5 @@
 import { GetReviewsParams } from "@/hooks/api/review/useGetReviews";
-import { MemberProfileResponse } from "@/interface/member";
+import { MemberProfileResponse } from "@/interfaces/member";
 import {
   GetPlaceParams,
   GetPlaceResponse,
@@ -7,8 +7,8 @@ import {
   GetSearchPlacesResponse,
   GetSpecificPlaceRequest,
   GetSpecificPlaceResponse,
-} from "@/interface/place";
-import { Review } from "@/interface/review";
+} from "@/interfaces/place";
+import { Review } from "@/interfaces/review";
 import { apiGet } from "./apiRequests";
 
 const api = {

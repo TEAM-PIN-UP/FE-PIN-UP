@@ -1,0 +1,199 @@
+import blackStar from "@/images/icons/blackStar.svg";
+import chevronRight from "@/images/icons/chevronRightBlack.svg";
+import edit from "@/images/icons/editInactive.svg";
+import moreDots from "@/images/icons/moreDotsBlack.svg";
+import trash from "@/images/icons/trash.svg";
+import { Review } from "@/interfaces/review";
+import { paths } from "@/routes/paths";
+import { B3, B4, B5, B6, H3, H4 } from "@/styles/font";
+import { DropdownMenu } from "radix-ui";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import dropdownStyles from "./DropdownMenu.module.css";
+
+interface ReviewTextProps {
+  item: Review;
+  userName: string;
+}
+
+const ReviewText: React.FC<ReviewTextProps> = ({ item, userName }) => {
+  const navigate = useNavigate();
+
+  return (
+    <StDiv>
+      <div className="header">
+        <span>{item.placeName}</span>
+        <button className="see-map-button">
+          <img
+            src={chevronRight}
+            onClick={() => {
+              navigate({
+                pathname: paths.map,
+                search: new URLSearchParams({
+                  kakaoPlaceId: item.kakaoPlaceId,
+                }).toString(),
+              });
+            }}
+          />
+        </button>
+      </div>
+      <div className="divider" />
+
+      <div className="review">
+        <div className="review-content">
+          <div className="review-title">
+            <span className="h3">{userName}</span>
+            <img src={blackStar} className="star" />
+            <span className="score b3">
+              {item.starRating.toFixed(1).toString()}
+            </span>
+            <span className="review-date b5 gray">{item.createdAt}</span>
+          </div>
+          <div className="review-body">
+            <span>{item.content}</span>
+          </div>
+        </div>
+        <div className="expand" />
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger>
+            <button className={dropdownStyles.IconButton}>
+              <img src={moreDots} />
+            </button>
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Portal>
+            <DropdownMenu.Content
+              className={dropdownStyles.Content}
+              sideOffset={5}
+              align="end"
+            >
+              <DropdownMenu.Item className={dropdownStyles.Item}>
+                <img src={edit} />
+                로그 수정
+              </DropdownMenu.Item>
+              <DropdownMenu.Separator className={dropdownStyles.Separator} />
+              <DropdownMenu.Item className={dropdownStyles.Item}>
+                <img src={trash} />
+                로그 삭제
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Portal>
+        </DropdownMenu.Root>
+      </div>
+
+      <div className="visit-date">
+        <span>방문 날짜 {item.visitedDate}</span>
+      </div>
+    </StDiv>
+  );
+};
+
+const StDiv = styled.div`
+  width: 100%;
+  background-color: var(--white);
+  padding: var(--spacing_8) 0px;
+
+  .header {
+    ${H4}
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing_16) var(--spacing_20);
+    box-sizing: content-box;
+    height: 17px;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    background-color: transparent;
+    border: none;
+    border-radius: var(--radius_circle);
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: var(--neutral_100);
+    }
+  }
+
+  .divider {
+    height: 1px;
+    background-color: var(--neutral_100);
+    margin: 0px var(--spacing_20);
+  }
+
+  .review {
+    display: flex;
+    flex-direction: row;
+    padding: var(--spacing_16) var(--spacing_20);
+
+    .review-content {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      justify-content: center;
+      gap: 4px;
+
+      .review-title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: start;
+
+        .star {
+          width: 16px;
+          height: 16px;
+          margin-left: 4px;
+        }
+        .score {
+          margin-left: 2px;
+        }
+        .review-date {
+          margin-left: 8px;
+        }
+      }
+
+      .review-body {
+        ${B4}
+        line-height: 160%;
+        text-align: start;
+      }
+    }
+
+    .expand {
+      display: flex;
+      flex-grow: 1;
+    }
+
+    .review-actions {
+      padding: 16px;
+    }
+  }
+
+  .visit-date {
+    ${B6}
+    color:var(--neutral_400);
+    text-align: end;
+    padding: var(--spacing_4) var(--spacing_20);
+  }
+
+  .h3 {
+    ${H3}
+  }
+  .b3 {
+    ${B3}
+  }
+  .b5 {
+    ${B5}
+  }
+  .gray {
+    color: var(--neutral_400);
+  }
+`;
+
+export default ReviewText;

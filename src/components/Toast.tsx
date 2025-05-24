@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 
-import alertIcon from "@/image/icons/alertCircleRed.svg";
-import { useToastStore } from "@/store";
-import { B4 } from "@/style/font";
+import alertIcon from "@/images/icons/alertCircleRed.svg";
+import { useToastStore } from "@/stores";
+import { B4 } from "@/styles/font";
 
 interface ToastStyle {
   $toastOn: boolean;

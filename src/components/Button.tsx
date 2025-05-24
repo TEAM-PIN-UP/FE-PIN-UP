@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import styled, { CSSProp } from "styled-components";
 
-import { H3, H4, H5 } from "@/style/font";
+import { H3, H4, H5 } from "@/styles/font";
 
 interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   size: "full" | "xlarge" | "large" | "medium" | "small";

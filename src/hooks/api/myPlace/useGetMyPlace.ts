@@ -3,7 +3,7 @@ import {
   GetMyPlaceResponse,
   PlaceCategory,
   PlaceSort,
-} from "@/interface/place";
+} from "@/interfaces/place";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 export interface GetMyPlaceProps {

@@ -1,5 +1,5 @@
-import prev from "@/image/icons/arrowLeft.svg";
-import next from "@/image/icons/chevronDown.svg";
+import prev from "@/images/icons/arrowLeft.svg";
+import next from "@/images/icons/chevronDown.svg";
 import { getMonth, getYear } from "date-fns";
 import React, { lazy, Suspense } from "react";
 import "react-datepicker/dist/react-datepicker.css";

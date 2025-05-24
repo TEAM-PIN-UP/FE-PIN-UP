@@ -1,5 +1,5 @@
 // errorHandler.ts
-import { useToastStore } from "@/store";
+import { useToastStore } from "@/stores";
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { ErrorCodes, ErrorCodeType, getErrorMessage } from "./errorCodes";
 

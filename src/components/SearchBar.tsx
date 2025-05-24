@@ -1,7 +1,7 @@
-import chevronLeft from "@/image/icons/chevronLeft.svg";
-import search from "@/image/icons/search.svg";
-import xCircle from "@/image/icons/xCircle.svg";
-import { B3 } from "@/style/font";
+import chevronLeft from "@/images/icons/chevronLeft.svg";
+import search from "@/images/icons/search.svg";
+import xCircle from "@/images/icons/xCircle.svg";
+import { B3 } from "@/styles/font";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 

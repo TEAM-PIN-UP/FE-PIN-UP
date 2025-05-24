@@ -1,4 +1,4 @@
-import { MemberResponse } from "@/page/SignUp/SignUpInterface";
+import { MemberResponse } from "@/pages/SignUp/SignUpInterface";
 
 export const getMemberResponseObj = () => {
   const memberResponseJson = localStorage.getItem("memberResponse");

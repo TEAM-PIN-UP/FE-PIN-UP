@@ -1,4 +1,4 @@
-import { GetPlaceParams } from "@/interface/place";
+import { GetPlaceParams } from "@/interfaces/place";
 
 export const queryKeys = {
   friends: (memberId: number | string) => ["friends", memberId.toString()],

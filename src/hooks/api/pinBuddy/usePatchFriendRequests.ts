@@ -1,5 +1,5 @@
 import patchApi from "@/api/patchApi";
-import { FriendRequestResponse } from "@/interface/member";
+import { FriendRequestResponse } from "@/interfaces/member";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "../queryKeys";
 

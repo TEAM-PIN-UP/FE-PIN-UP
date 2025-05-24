@@ -1,5 +1,5 @@
 import deleteApi from "@/api/deleteApi";
-import { FriendRequestResponse } from "@/interface/member";
+import { FriendRequestResponse } from "@/interfaces/member";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "../queryKeys";
 
